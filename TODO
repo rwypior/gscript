@@ -1,0 +1,23 @@
+- RETURN statement
+- class member syntax:
+  - class.function()
+  - class.variable
+- operators
+- execution control
+  - if
+  - for
+  - while
+  - do ... while
+  - foreach
+  - break
+  - continue
+- arrays
+- creating class objects
+  - assign class object with CLASS type and store as variable
+  - call constructor upon object creation
+- access control
+  - private
+  - public
+  - protected
+- refactor
+- change returning raw pointers to shared_ptr

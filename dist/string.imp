@@ -1,0 +1,4 @@
+class String
+{
+	static string tostring(@any var) = @extern:sys_func_tostring
+}

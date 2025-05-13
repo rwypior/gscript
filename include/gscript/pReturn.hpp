@@ -1,0 +1,22 @@
+#ifndef _h_parser_return
+#define _h_parser_return
+
+#include "pEntity.hpp"
+#include "pStatement.hpp"
+
+#include <string>
+
+namespace gscript
+{
+	class ParserReturn : public ParserEntity
+	{
+	public:
+		const std::string KW_RETURN = "return";
+
+		ParserStatement value;
+
+		virtual ParseResult parse(StringIteratorRange itrange) override;
+	};
+}
+
+#endif

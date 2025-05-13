@@ -1,0 +1,34 @@
+#include "pFor.hpp"
+#include "utilParserWord.hpp"
+#include "pArglistStart.hpp"
+#include "pArglistEnd.hpp"
+#include "pCallArglist.hpp"
+
+namespace gscript
+{
+	const char *ParserFor::KW_FOR = "for";
+
+	ParserFor::ParserFor()
+	{ }
+
+	ParseResult ParserFor::parse(StringIteratorRange itrange)
+	{
+		ParseResult parentResult = Util::Word::parse(itrange, ParserFor::KW_FOR);
+		if (parentResult.status != ParseResult::STATUS_T::S_OK)
+			return parentResult;
+
+		ParseResult arglistres = this->arglist.parse(StringIteratorRange(parentResult.result.end, itrange.end));
+		if (!arglistres.isOk())
+			return ParseResult(ParseResult::STATUS_T::S_FATAL, ParserEntity::StringIteratorRange());
+
+		std::string::iterator begin = arglistres.result.end;
+
+		ParseResult bodyres = this->body.parse(StringIteratorRange(begin, itrange.end));
+		if (bodyres.isOk())
+			begin = bodyres.result.end;
+		else
+			return ParseResult(ParseResult::STATUS_T::S_FATAL, ParserEntity::StringIteratorRange());
+
+		return ParseResult(ParseResult::STATUS_T::S_OK, ParserEntity::StringIteratorRange(parentResult.result.begin, begin));
+	}
+}

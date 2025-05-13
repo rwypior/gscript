@@ -1,0 +1,31 @@
+#ifndef _h_script_callable
+#define _h_script_callable
+
+#include <memory>
+#include <vector>
+
+#include "scriptValue.hpp"
+
+#include "lib.hpp"
+
+namespace gscript
+{
+	class ScriptScope;
+
+	class ScriptCallable
+	{
+	protected:
+		ScriptScope &scope;
+
+	public:
+		SCRIPT_API ScriptCallable(ScriptScope &scope);
+
+		SCRIPT_API virtual const ScriptType *getType() const = 0;
+
+		SCRIPT_API virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) = 0;
+
+		SCRIPT_API ScriptScope &getScope();
+	};
+}
+
+#endif

@@ -1,0 +1,25 @@
+#ifndef _h_script_new
+#define _h_script_new
+
+#include "defs.hpp"
+#include "statement.hpp"
+#include "scriptValue.hpp"
+#include "funcCall.hpp"
+
+#include <string>
+
+namespace gscript
+{
+	class ScriptNew : public ScriptFuncCall
+	{
+	protected:
+		ScriptClass & sclass;
+
+	public:
+		ScriptNew(ScriptClass &sclass, const std::vector<ScriptStatement> &params);
+
+		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+	};
+}
+
+#endif

@@ -1,0 +1,5 @@
+class Console
+{
+	static void print() = @extern:sys_func_print
+	static void println() = @extern:sys_func_println
+}

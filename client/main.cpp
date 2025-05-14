@@ -12,6 +12,12 @@ typedef std::chrono::high_resolution_clock Clock;
 
 int main(int argc, char **argv)
 {
+	if (argc <= 1)
+	{
+		std::cout << "Please specify path to the script" << std::endl;
+		return 1;
+	}
+
 	gscript::Script scr = gscript::Script::load(argv[1]);
 
 	scr.loadDefaultExtensions();

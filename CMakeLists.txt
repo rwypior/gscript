@@ -5,15 +5,7 @@ if (POLICY CMP0141)
   set(CMAKE_MSVC_DEBUG_INFORMATION_FORMAT "$<IF:$<AND:$<C_COMPILER_ID:MSVC>,$<CXX_COMPILER_ID:MSVC>>,$<$<CONFIG:Debug,RelWithDebInfo>:EditAndContinue>,$<$<CONFIG:Debug,RelWithDebInfo>:ProgramDatabase>>")
 endif()
 
-if(NOT CMAKE_BUILD_TYPE)
-	set(CMAKE_BUILD_TYPE Release)
-endif()
-
-if(CMAKE_BUILD_TYPE STREQUAL "Debug")
-    set(CMAKE_DEBUG_POSTFIX "d")
-else()
-    set(CMAKE_DEBUG_POSTFIX "")
-endif()
+set(CMAKE_DEBUG_POSTFIX "d")
 
 project ("GScript")
 add_library(gscript)
@@ -21,7 +13,11 @@ add_library(gscript::gscript ALIAS gscript)
 
 set_property(TARGET gscript PROPERTY CXX_STANDARD 17)
 
-target_compile_definitions(gscript PRIVATE BUILD_SCRIPT_DLL)
+if(${BUILD_SHARED_LIBS})
+    target_compile_definitions(gscript PRIVATE BUILD_SCRIPT_DLL)
+else()
+    target_compile_definitions(gscript PRIVATE BUILD_NOLIB)
+endif()
 
 target_include_directories (gscript PUBLIC 
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/gscript>"
@@ -30,6 +26,7 @@ target_include_directories (gscript PUBLIC
 
 add_subdirectory ("src")
 add_subdirectory ("include/gscript")
+add_subdirectory ("client")
 
 if(${BUILD_TESTING})
     message("Building unit tests")

@@ -10,4 +10,10 @@ project ("GScriptClient")
 add_executable(gscriptClient)
 set_property(TARGET gscriptClient PROPERTY CXX_STANDARD 17)
 
+target_sources(gscriptClient PRIVATE "main.cpp")
+
+if(NOT DEFINED BUILD_SHARED_LIBS OR NOT ${BUILD_SHARED_LIBS})
+    target_compile_definitions(gscriptClient PRIVATE BUILD_NOLIB)
+endif()
+
 target_link_libraries(gscriptClient PRIVATE gscript)

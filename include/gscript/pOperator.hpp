@@ -1,5 +1,5 @@
-#ifndef _h_parser_operator
-#define _h_parser_operator
+#ifndef _h_gscript_parser_operator
+#define _h_gscript_parser_operator
 
 #include "pEntity.hpp"
 #include "operator.hpp"

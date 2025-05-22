@@ -1,5 +1,5 @@
-#ifndef _h_script_runnable
-#define _h_script_runnable
+#ifndef _h_gscript_runnable
+#define _h_gscript_runnable
 
 #include "callable.hpp"
 #include "scope.hpp"

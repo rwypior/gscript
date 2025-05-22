@@ -1,5 +1,5 @@
-#ifndef _h_parser_special_directive
-#define _h_parser_special_directive
+#ifndef _h_gscript_parser_special_directive
+#define _h_gscript_parser_special_directive
 
 #include "pEntity.hpp"
 

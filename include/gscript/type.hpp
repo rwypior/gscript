@@ -1,5 +1,5 @@
-#ifndef _h_script_type
-#define _h_script_type
+#ifndef _h_gscript_type
+#define _h_gscript_type
 
 #include "defs.hpp"
 

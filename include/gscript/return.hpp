@@ -1,5 +1,5 @@
-#ifndef _h_script_return
-#define _h_script_return
+#ifndef _h_gscript_return
+#define _h_gscript_return
 
 #include "callable.hpp"
 #include "statement.hpp"

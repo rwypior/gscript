@@ -1,5 +1,5 @@
-#ifndef _h_parser_fielddeclaration
-#define _h_parser_fielddeclaration
+#ifndef _h_gscript_parser_fielddeclaration
+#define _h_gscript_parser_fielddeclaration
 
 #include "pVarDeclaration.hpp"
 #include "pAccessSpecifier.hpp"

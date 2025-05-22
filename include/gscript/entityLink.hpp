@@ -1,5 +1,5 @@
-#ifndef _h_entitylink
-#define _h_entitylink
+#ifndef _h_gscript_entitylink
+#define _h_gscript_entitylink
 
 #include "classInstance.hpp"
 #include "class.hpp"

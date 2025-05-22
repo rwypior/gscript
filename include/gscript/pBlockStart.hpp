@@ -1,5 +1,5 @@
-#ifndef _h_parse_blockstart
-#define _h_parse_blockstart
+#ifndef _h_gscript_parse_blockstart
+#define _h_gscript_parse_blockstart
 
 #include "pEntity.hpp"
 

@@ -1,5 +1,5 @@
-#ifndef _h_script_scope
-#define _h_script_scope
+#ifndef _h_gscript_scope
+#define _h_gscript_scope
 
 #include <vector>
 #include <string>

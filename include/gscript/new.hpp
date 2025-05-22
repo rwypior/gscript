@@ -1,5 +1,5 @@
-#ifndef _h_script_new
-#define _h_script_new
+#ifndef _h_gscript_new
+#define _h_gscript_new
 
 #include "defs.hpp"
 #include "statement.hpp"

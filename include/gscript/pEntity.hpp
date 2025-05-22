@@ -1,5 +1,5 @@
-#ifndef _h_parser_entity
-#define _h_parser_entity
+#ifndef _h_gscript_parser_entity
+#define _h_gscript_parser_entity
 
 #include <vector>
 #include <string>

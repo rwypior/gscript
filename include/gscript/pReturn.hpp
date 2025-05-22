@@ -1,5 +1,5 @@
-#ifndef _h_parser_return
-#define _h_parser_return
+#ifndef _h_gscript_parser_return
+#define _h_gscript_parser_return
 
 #include "pEntity.hpp"
 #include "pStatement.hpp"

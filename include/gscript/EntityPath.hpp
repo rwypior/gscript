@@ -1,5 +1,5 @@
-#ifndef _h_function_path
-#define _h_function_path
+#ifndef _h_gscript_function_path
+#define _h_gscript_function_path
 
 #include <string>
 #include <vector>

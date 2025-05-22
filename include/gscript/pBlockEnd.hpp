@@ -1,5 +1,5 @@
-#ifndef _h_parser_blockend
-#define _h_parser_blockend
+#ifndef _h_gscript_parser_blockend
+#define _h_gscript_parser_blockend
 
 namespace gscript
 {

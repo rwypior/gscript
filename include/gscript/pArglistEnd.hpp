@@ -1,5 +1,5 @@
-#ifndef _h_parser_arglist_end
-#define _h_parser_arglist_end
+#ifndef _h_gscript_parser_arglist_end
+#define _h_gscript_parser_arglist_end
 
 #include "pArglistStart.hpp"
 

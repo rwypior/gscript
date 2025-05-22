@@ -1,5 +1,5 @@
-#ifndef _h_script_varread
-#define _h_script_varread
+#ifndef _h_gscript_varread
+#define _h_gscript_varread
 
 #include "callable.hpp"
 #include "entityLink.hpp"

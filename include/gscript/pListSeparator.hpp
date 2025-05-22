@@ -1,5 +1,5 @@
-#ifndef _h_parser_listseparator
-#define _h_parser_listseparator
+#ifndef _h_gscript_parser_listseparator
+#define _h_gscript_parser_listseparator
 
 #include "pEntity.hpp"
 

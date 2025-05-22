@@ -1,5 +1,5 @@
-#ifndef _h_iteratorrange
-#define _h_iteratorrange
+#ifndef _h_gscript_iteratorrange
+#define _h_gscript_iteratorrange
 
 #include <string>
 

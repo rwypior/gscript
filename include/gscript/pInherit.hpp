@@ -1,5 +1,5 @@
-#ifndef _h_parser_inherit
-#define _h_parser_inherit
+#ifndef _h_gscript_parser_inherit
+#define _h_gscript_parser_inherit
 
 #include "pEntity.hpp"
 

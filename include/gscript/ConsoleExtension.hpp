@@ -1,5 +1,5 @@
-#ifndef _h_extension_console
-#define _h_extension_console
+#ifndef _h_gscript_extension_console
+#define _h_gscript_extension_console
 
 #include "script.hpp"
 #include "scriptExtension.hpp"

@@ -1,5 +1,5 @@
-#ifndef _h_util
-#define _h_util
+#ifndef _h_gscript_util
+#define _h_gscript_util
 
 #include <tuple>
 #include <vector>

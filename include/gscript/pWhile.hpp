@@ -1,5 +1,5 @@
-#ifndef _h_parser_while
-#define _h_parser_while
+#ifndef _h_gscript_parser_while
+#define _h_gscript_parser_while
 
 #include "pEntity.hpp"
 #include "pCallArglist.hpp"

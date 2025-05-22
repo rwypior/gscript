@@ -1,5 +1,5 @@
-#ifndef _h_parser_new
-#define _h_parser_new
+#ifndef _h_gscript_parser_new
+#define _h_gscript_parser_new
 
 #include "pEntity.hpp"
 #include "pFuncCall.hpp"

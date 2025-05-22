@@ -1,5 +1,5 @@
-#ifndef _h_parser_control_import
-#define _h_parser_control_import
+#ifndef _h_gscript_parser_control_import
+#define _h_gscript_parser_control_import
 
 #include "pEntity.hpp"
 #include "pControlDirective.hpp"

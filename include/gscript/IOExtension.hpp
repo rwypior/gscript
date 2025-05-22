@@ -1,5 +1,5 @@
-#ifndef _h_extension_io
-#define _h_extension_io
+#ifndef _h_gscript_extension_io
+#define _h_gscript_extension_io
 
 #include <sys/stat.h>
 

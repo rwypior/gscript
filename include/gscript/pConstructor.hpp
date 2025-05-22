@@ -1,5 +1,5 @@
-#ifndef _h_parser_constructor
-#define _h_parser_constructor
+#ifndef _h_gscript_parser_constructor
+#define _h_gscript_parser_constructor
 
 #include "pEntity.hpp"
 #include "pMethod.hpp"

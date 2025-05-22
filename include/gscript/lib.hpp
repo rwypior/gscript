@@ -1,5 +1,5 @@
-#ifndef _h_script_lib
-#define _h_script_lib
+#ifndef _h_gscript_lib
+#define _h_gscript_lib
 
 #if defined (__GNUC__) 
 	#define SCRIPT_API __attribute__ ((__visibility__("default")))

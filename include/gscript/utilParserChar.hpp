@@ -1,5 +1,5 @@
-#ifndef _h_util_p_char
-#define _h_util_p_char
+#ifndef _h_gscript_util_p_char
+#define _h_gscript_util_p_char
 
 #include <string>
 #include "pEntity.hpp"

@@ -1,5 +1,5 @@
-#ifndef _h_parser_array_accessor
-#define _h_parser_array_accessor
+#ifndef _h_gscript_parser_array_accessor
+#define _h_gscript_parser_array_accessor
 
 #include "pEntity.hpp"
 #include "pStatement.hpp"

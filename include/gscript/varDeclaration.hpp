@@ -1,5 +1,5 @@
-#ifndef _h_script_vardeclaration
-#define _h_script_vardeclaration
+#ifndef _h_gscript_vardeclaration
+#define _h_gscript_vardeclaration
 
 #include "callable.hpp"
 #include "scriptValue.hpp"

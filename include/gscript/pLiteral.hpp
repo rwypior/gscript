@@ -1,5 +1,5 @@
-#ifndef _h_parser_literal
-#define _h_parser_literal
+#ifndef _h_gscript_parser_literal
+#define _h_gscript_parser_literal
 
 #include "pEntity.hpp"
 #include "defs.hpp"

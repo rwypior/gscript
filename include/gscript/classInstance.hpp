@@ -1,5 +1,5 @@
-#ifndef _h_script_classinstance
-#define _h_script_classinstance
+#ifndef _h_gscript_classinstance
+#define _h_gscript_classinstance
 
 #include "scope.hpp"
 

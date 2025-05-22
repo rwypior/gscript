@@ -1,5 +1,5 @@
-#ifndef _h_parser_namespecifier
-#define _h_parser_namespecifier
+#ifndef _h_gscript_parser_namespecifier
+#define _h_gscript_parser_namespecifier
 
 #include "pEntity.hpp"
 #include "EntityPath.hpp"

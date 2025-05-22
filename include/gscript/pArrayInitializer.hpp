@@ -1,5 +1,5 @@
-#ifndef _h_parser_array_initializer
-#define _h_parser_array_initializer
+#ifndef _h_gscript_parser_array_initializer
+#define _h_gscript_parser_array_initializer
 
 #include "pEntity.hpp"
 #include "pCallArglist.hpp"

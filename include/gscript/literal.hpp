@@ -1,5 +1,5 @@
-#ifndef _h_script_literal
-#define _h_script_literal
+#ifndef _h_gscript_literal
+#define _h_gscript_literal
 
 #include "callable.hpp"
 #include "pLiteral.hpp"

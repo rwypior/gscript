@@ -1,5 +1,5 @@
-#ifndef _h_parser_begin
-#define _h_parser_begin
+#ifndef _h_gscript_parser_begin
+#define _h_gscript_parser_begin
 
 #include "pEntity.hpp"
 #include "pClass.hpp"

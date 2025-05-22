@@ -1,5 +1,5 @@
-#ifndef _h_parser_block
-#define _h_parser_block
+#ifndef _h_gscript_parser_block
+#define _h_gscript_parser_block
 
 #include "pEntity.hpp"
 #include "pBlockBody.hpp"

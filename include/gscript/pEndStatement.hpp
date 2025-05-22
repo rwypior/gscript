@@ -1,5 +1,5 @@
-#ifndef _h_parser_endstatement
-#define _h_parser_endstatement
+#ifndef _h_gscript_parser_endstatement
+#define _h_gscript_parser_endstatement
 
 #include "pEntity.hpp"
 

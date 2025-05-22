@@ -1,5 +1,5 @@
-#ifndef _h_parser_if
-#define _h_parser_if
+#ifndef _h_gscript_parser_if
+#define _h_gscript_parser_if
 
 #include "pEntity.hpp"
 #include "pCallArglist.hpp"

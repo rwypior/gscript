@@ -1,5 +1,5 @@
-#ifndef _h_typespecifier
-#define _h_typespecifier
+#ifndef _h_gscript_typespecifier
+#define _h_gscript_typespecifier
 
 #include "pNameSpecifier.hpp"
 

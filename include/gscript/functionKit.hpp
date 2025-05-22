@@ -1,5 +1,5 @@
-#ifndef _h_script_kit_function
-#define _h_script_kit_function
+#ifndef _h_gscript_kit_function
+#define _h_gscript_kit_function
 
 #include "defs.hpp"
 #include "type.hpp"

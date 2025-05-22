@@ -1,5 +1,5 @@
-#ifndef _h_script_funccall
-#define _h_script_funccall
+#ifndef _h_gscript_funccall
+#define _h_gscript_funccall
 
 #include "callable.hpp"
 #include "statement.hpp"

@@ -1,5 +1,5 @@
-#ifndef _hpp_lib_path
-#define _hpp_lib_path
+#ifndef _h_gscript_lib_path
+#define _h_gscript_lib_path
 
 #include <string>
 #include <vector>

@@ -1,5 +1,5 @@
-#ifndef _h_script_class
-#define _h_script_class
+#ifndef _h_gscript_class
+#define _h_gscript_class
 
 #include <string>
 #include <vector>

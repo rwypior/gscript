@@ -1,5 +1,5 @@
-#ifndef _h_script_script
-#define _h_script_script
+#ifndef _h_gscript_script
+#define _h_gscript_script
 
 #include "function.hpp"
 #include "lib.hpp"

@@ -1,5 +1,5 @@
-#ifndef _h_util_p_word
-#define _h_util_p_word
+#ifndef _h_gscript_util_p_word
+#define _h_gscript_util_p_word
 
 #include <string>
 

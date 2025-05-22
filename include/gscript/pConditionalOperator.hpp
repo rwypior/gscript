@@ -1,5 +1,5 @@
-#ifndef _h_parser_conditional_operator
-#define _h_parser_conditional_operator
+#ifndef _h_gscript_parser_conditional_operator
+#define _h_gscript_parser_conditional_operator
 
 #include "pEntity.hpp"
 #include "pForArglist.hpp"

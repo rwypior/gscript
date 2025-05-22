@@ -1,5 +1,5 @@
-#ifndef _h_script_func_tostring
-#define _h_script_func_tostring
+#ifndef _h_gscript_func_tostring
+#define _h_gscript_func_tostring
 
 #include "function.hpp"
 

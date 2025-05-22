@@ -1,5 +1,5 @@
-#ifndef _h_parser_arglist
-#define _h_parser_arglist
+#ifndef _h_gscript_parser_arglist
+#define _h_gscript_parser_arglist
 
 #include "pEntity.hpp"
 #include "pArglistStart.hpp"

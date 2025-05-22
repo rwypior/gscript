@@ -1,5 +1,5 @@
-#ifndef _h_script_variable
-#define _h_script_variable
+#ifndef _h_gscript_variable
+#define _h_gscript_variable
 
 #include "defs.hpp"
 

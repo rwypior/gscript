@@ -1,5 +1,5 @@
-#ifndef _h_parser_extern_special
-#define _h_parser_extern_special
+#ifndef _h_gscript_parser_extern_special
+#define _h_gscript_parser_extern_special
 
 #include "pEntity.hpp"
 #include "pSpecialDirective.hpp"

@@ -1,5 +1,5 @@
-#ifndef _h_parser_blockbody
-#define _h_parser_blockbody
+#ifndef _h_gscript_parser_blockbody
+#define _h_gscript_parser_blockbody
 
 #include "pEntity.hpp"
 

@@ -1,5 +1,5 @@
-#ifndef _h_parser_var
-#define _h_parser_var
+#ifndef _h_gscript_parser_var
+#define _h_gscript_parser_var
 
 #include "pNameSpecifier.hpp"
 

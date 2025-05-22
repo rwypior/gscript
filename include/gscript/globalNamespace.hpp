@@ -1,5 +1,5 @@
-#ifndef _h_script_globalnamespace
-#define _h_script_globalnamespace
+#ifndef _h_gscript_globalnamespace
+#define _h_gscript_globalnamespace
 
 #include "namespace.hpp"
 

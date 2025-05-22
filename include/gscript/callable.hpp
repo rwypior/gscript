@@ -1,5 +1,5 @@
-#ifndef _h_script_callable
-#define _h_script_callable
+#ifndef _h_gscript_callable
+#define _h_gscript_callable
 
 #include <memory>
 #include <vector>

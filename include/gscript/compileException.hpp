@@ -1,5 +1,5 @@
-#ifndef _h_compileexception
-#define _h_compileexception
+#ifndef _h_gscript_compileexception
+#define _h_gscript_compileexception
 
 #include <exception>
 #include <string>

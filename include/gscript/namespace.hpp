@@ -1,5 +1,5 @@
-#ifndef _h_script_namespace
-#define _h_script_namespace
+#ifndef _h_gscript_namespace
+#define _h_gscript_namespace
 
 #include "scope.hpp"
 

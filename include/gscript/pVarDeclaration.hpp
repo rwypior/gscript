@@ -1,5 +1,5 @@
-#ifndef _h_parser_vardeclaration
-#define _h_parser_vardeclaration
+#ifndef _h_gscript_parser_vardeclaration
+#define _h_gscript_parser_vardeclaration
 
 #include "pEntity.hpp"
 #include "pStatement.hpp"

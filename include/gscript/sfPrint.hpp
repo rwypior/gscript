@@ -1,5 +1,5 @@
-#ifndef _h_sf_print
-#define _h_sf_print
+#ifndef _h_gscript_sf_print
+#define _h_gscript_sf_print
 
 #include "function.hpp"
 

@@ -1,5 +1,5 @@
-#ifndef _h_script_array_initializer
-#define _h_script_array_initializer
+#ifndef _h_gscript_array_initializer
+#define _h_gscript_array_initializer
 
 #include "defs.hpp"
 #include "statement.hpp"

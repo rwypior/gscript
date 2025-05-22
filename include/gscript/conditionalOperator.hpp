@@ -1,5 +1,5 @@
-#ifndef _h_script_conditionaloperator
-#define _h_script_conditionaloperator
+#ifndef _h_gscript_conditionaloperator
+#define _h_gscript_conditionaloperator
 
 #include "callable.hpp"
 #include "statement.hpp"

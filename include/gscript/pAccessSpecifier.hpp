@@ -1,5 +1,5 @@
-#ifndef _h_parser_accessspecifier
-#define _h_parser_accessspecifier
+#ifndef _h_gscript_parser_accessspecifier
+#define _h_gscript_parser_accessspecifier
 
 #include "pEntity.hpp"
 #include "defs.hpp"

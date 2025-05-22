@@ -1,5 +1,5 @@
-#ifndef _h_script_scoped_call
-#define _h_script_scoped_call
+#ifndef _h_gscript_scoped_call
+#define _h_gscript_scoped_call
 
 #include "entityLink.hpp"
 

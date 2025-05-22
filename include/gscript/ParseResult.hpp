@@ -1,5 +1,5 @@
-#ifndef _h_parsestatus
-#define _h_parsestatus
+#ifndef _h_gscript_parsestatus
+#define _h_gscript_parsestatus
 
 #include "IteratorRange.hpp"
 

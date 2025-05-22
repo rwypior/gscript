@@ -1,5 +1,5 @@
-#ifndef _h_script_while
-#define _h_script_while
+#ifndef _h_gscript_while
+#define _h_gscript_while
 
 #include <memory>
 

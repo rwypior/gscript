@@ -1,5 +1,5 @@
-#ifndef _h_stringutils
-#define _h_stringutils
+#ifndef _h_gscript_stringutils
+#define _h_gscript_stringutils
 
 #include <algorithm> 
 #include <cctype>

@@ -1,5 +1,5 @@
-#ifndef _h_script_defs
-#define _h_script_defs
+#ifndef _h_gscript_defs
+#define _h_gscript_defs
 
 #include <unordered_map>
 #include <list>

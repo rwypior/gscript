@@ -8,6 +8,8 @@
 
 #include <sys/stat.h>
 
+// TODO - move this to separate project, tests maybe?
+
 namespace gscript
 {
 	class SampleExtension : public ScriptExtension

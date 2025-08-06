@@ -18,13 +18,10 @@ namespace gscript
 
 	class ScriptFor : public ScriptRunnable, public ScriptCallable
 	{
-	private:
-		static const ScriptType *returnType;
-
 	public:
-		ScriptVarDeclaration * vardecl;
-		ScriptStatement *condition;
-		ScriptStatement *progress;
+		ScriptVarDeclaration *vardecl = nullptr;
+		ScriptStatement *condition = nullptr;
+		ScriptStatement *progress = nullptr;
 
 		ScriptFor(ScriptScope &scope, const ScriptVarDeclaration &vardecl, const ScriptStatement &condition, const ScriptStatement &progress);
 		ScriptFor(ScriptScope &scope, const ParserFor &pfor);
@@ -32,6 +29,9 @@ namespace gscript
 		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 
 		virtual const ScriptType *getType() const override;
+
+	private:
+		static const ScriptType *returnType;
 	};
 }
 

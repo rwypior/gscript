@@ -167,8 +167,8 @@ namespace gscript
 
 			OPERATOR_POSITION_T pos = (isBegin || prevOperator) ? OPERATOR_POSITION_T::OP_RIGHT : OPERATOR_POSITION_T::OP_LEFT;
 
-			if (pos == OPERATOR_POSITION_T::OP_LEFT)
-				assert(!"DEBUG");
+			//if (pos == OPERATOR_POSITION_T::OP_LEFT)
+			//	assert(!"DEBUG");
 
 			ParserOperator oper(pos);
 			ParseResult operres = oper.parse(StringIteratorRange(end, itrange.end));

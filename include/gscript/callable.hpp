@@ -14,9 +14,6 @@ namespace gscript
 
 	class ScriptCallable
 	{
-	protected:
-		ScriptScope &scope;
-
 	public:
 		SCRIPT_API ScriptCallable(ScriptScope &scope);
 
@@ -25,6 +22,9 @@ namespace gscript
 		SCRIPT_API virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) = 0;
 
 		SCRIPT_API ScriptScope &getScope();
+
+	protected:
+		ScriptScope& scope;
 	};
 }
 

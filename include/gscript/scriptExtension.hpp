@@ -18,12 +18,6 @@ namespace gscript
 			virtual void setup() {};
 		};
 
-	private:
-		bool loaded = false;
-
-	protected:
-		SCRIPT_API virtual void run(Script &script) = 0;
-
 	public:
 		void load(Script &script)
 		{
@@ -35,6 +29,12 @@ namespace gscript
 		}
 
 		virtual std::string getName() const { return ""; }
+
+	protected:
+		SCRIPT_API virtual void run(Script &script) = 0;
+
+	private:
+		bool loaded = false;
 	};
 }
 

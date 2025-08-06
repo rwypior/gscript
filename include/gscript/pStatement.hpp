@@ -13,10 +13,6 @@ namespace gscript
 	public:
 		typedef std::vector<std::shared_ptr<ParserEntity>> CONTAINER_T;
 
-	protected:
-		bool isSubStatement;
-		bool forceEnclosing;
-
 	public:
 		CONTAINER_T components;
 
@@ -24,6 +20,10 @@ namespace gscript
 		~ParserStatement();
 
 		virtual ParseResult parse(StringIteratorRange itrange) override;
+
+	protected:
+		bool isSubStatement = false;
+		bool forceEnclosing = false;
 	};
 }
 

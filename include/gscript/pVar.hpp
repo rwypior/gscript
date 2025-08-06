@@ -10,7 +10,7 @@ namespace gscript
 	class ParserVar : public ParserNameSpecifier
 	{
 	public:
-		ParserArrayAccessor * arrayAccessor = NULL;
+		ParserArrayAccessor *arrayAccessor = nullptr;
 
 		ParserVar() = default;
 		ParserVar(const ParserVar &copy);

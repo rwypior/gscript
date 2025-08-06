@@ -28,7 +28,7 @@ namespace gscript
 		{
 		public:
 			ConstructorFile(ScriptScope &scope, const std::string &name)
-				:ScriptMethod(
+				: ScriptMethod(
 					scope,
 					name,
 					ScriptType::create(VALUE_TYPE_T::VT_VOID, this->scope),
@@ -60,7 +60,7 @@ namespace gscript
 		{
 		public:
 			FuncReadAll(ScriptScope &scope, const std::string &name)
-				:ScriptMethod(
+				: ScriptMethod(
 					scope,
 					name,
 					ScriptType::create(VALUE_TYPE_T::VT_INT, this->scope),
@@ -97,7 +97,7 @@ namespace gscript
 		{
 		public:
 			FuncStaticExists(ScriptScope &scope, const std::string &name)
-				:ScriptMethod(
+				: ScriptMethod(
 					scope,
 					name,
 					ScriptType::create(VALUE_TYPE_T::VT_BOOL, this->scope),
@@ -127,9 +127,6 @@ namespace gscript
 			friend class ConstructorFile;
 			friend class FuncReadAll;
 
-		protected:
-			std::fstream str;
-
 		public:
 			ClassFile(ScriptScope &scope, const std::string &name)
 				: ScriptClass(scope, name)
@@ -144,6 +141,9 @@ namespace gscript
 				if (this->str.is_open())
 					this->str.close();
 			}
+
+		protected:
+			std::fstream str;
 		};
 
 		void run(Script &script)

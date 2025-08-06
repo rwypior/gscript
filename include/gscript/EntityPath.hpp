@@ -16,22 +16,6 @@ namespace gscript
 
 		class scope_iterator : public std::iterator<std::forward_iterator_tag, std::string>
 		{
-		protected:
-			std::string::const_iterator it;
-			std::string::const_iterator it2;
-			const std::string &target;
-			const char *separator;
-
-			void update()
-			{
-				auto x = this->it - this->target.begin();
-				size_t res = this->target.find_first_of(this->separator, this->it - this->target.begin());
-				if (res == std::string::npos)
-					it2 = this->target.end();
-				else
-					it2 = this->target.begin() + res;
-			}
-
 		public:
 			const std::string operator*() const
 			{
@@ -91,10 +75,23 @@ namespace gscript
 			{
 				this->update();
 			}
-		};
 
-	private:
-		std::string path;
+		protected:
+			std::string::const_iterator it;
+			std::string::const_iterator it2;
+			const std::string& target;
+			const char* separator = nullptr;
+
+			void update()
+			{
+				auto x = this->it - this->target.begin();
+				size_t res = this->target.find_first_of(this->separator, this->it - this->target.begin());
+				if (res == std::string::npos)
+					it2 = this->target.end();
+				else
+					it2 = this->target.begin() + res;
+			}
+		};
 
 	public:
 		EntityPath() = default;
@@ -110,6 +107,9 @@ namespace gscript
 
 		operator std::string() const;
 		const std::string &getString() const;
+
+	private:
+		std::string path;
 	};
 }
 

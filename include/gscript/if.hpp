@@ -19,12 +19,9 @@ namespace gscript
 
 	class ScriptIf : public ScriptRunnable, public ScriptCallable
 	{
-	private:
-		static const ScriptType *returnType;
-
 	public:
-		ScriptStatement * condition;
-		ScriptIf *selse = NULL;
+		ScriptStatement *condition = nullptr;
+		ScriptIf *selse = nullptr;
 
 		ScriptIf(ScriptScope &scope, const ScriptStatement &condition);
 		ScriptIf(ScriptScope &scope, const ParserIf &pif, ScriptScope &parentScope);
@@ -34,6 +31,9 @@ namespace gscript
 		//void setup(const ParserBlockBody &pbody);
 
 		virtual const ScriptType *getType() const override;
+
+	private:
+		static const ScriptType *returnType;
 	};
 }
 

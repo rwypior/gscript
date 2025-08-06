@@ -10,7 +10,7 @@ namespace gscript
 	class ScriptLiteral : public ScriptCallable
 	{
 	public:
-		ScriptValue * val;
+		ScriptValue *val = nullptr;
 
 		ScriptLiteral(ScriptScope &scope, ScriptValue *val);
 		ScriptLiteral(ScriptScope &scope, ParserLiteral pliteral);

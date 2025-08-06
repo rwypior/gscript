@@ -11,7 +11,7 @@ namespace gscript
 	public:
 		std::string type;
 		std::string name;
-		bool sub;
+		bool sub = false;
 
 		ParserStatement value;
 

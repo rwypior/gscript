@@ -30,9 +30,6 @@ namespace gscript
 	template<typename T>
 	class DirectEntityLink : public EntityLink<T>
 	{
-	protected:
-		T target;
-
 	public:
 		explicit DirectEntityLink(T target)
 			:target(target)
@@ -42,6 +39,9 @@ namespace gscript
 		{
 			return this->target;
 		}
+
+	protected:
+		T target;
 	};
 
 	///
@@ -51,8 +51,8 @@ namespace gscript
 	class MemberEntityLink : public EntityLink<T>
 	{
 	public:
-		CONTAINER_T * container;
-		size_t offset;
+		CONTAINER_T *container = nullptr;
+		size_t offset = 0;
 		T original;
 
 		explicit MemberEntityLink(CONTAINER_T *container, size_t offset, T original)
@@ -79,8 +79,8 @@ namespace gscript
 	class MemberEntityLink<ScriptVariable&, CONTAINER_T> : public EntityLink<ScriptVariable&>
 	{
 	public:
-		CONTAINER_T * container;
-		size_t offset;
+		CONTAINER_T *container = nullptr;
+		size_t offset = 0;
 		ScriptVariable& original;
 
 		explicit MemberEntityLink(CONTAINER_T *container, size_t offset, ScriptVariable& original)
@@ -109,7 +109,7 @@ namespace gscript
 	{
 	public:
 		T original;
-		ScriptClassInstance *instance;
+		ScriptClassInstance *instance = nullptr;
 
 		explicit VirtualEntityLink(T original)
 			: original(original)

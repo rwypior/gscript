@@ -18,9 +18,6 @@ namespace gscript
 			IT_STATEMENT = 8
 		};
 
-	protected:
-		int indexType;
-
 	public:
 		static const char KW_ARRAY_ACCESSOR_BEGIN;
 		static const char KW_ARRAY_ACCESSOR_END;
@@ -28,10 +25,13 @@ namespace gscript
 		ParserArrayAccessor(int indexType);
 
 		bool gotValue = false;
-		size_t staticIndex;
+		size_t staticIndex = 0;
 		ParserStatement statement;
 
 		virtual ParseResult parse(StringIteratorRange itrange) override;
+
+	protected:
+		int indexType = 0;
 	};
 }
 

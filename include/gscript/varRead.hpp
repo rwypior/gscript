@@ -15,7 +15,7 @@ namespace gscript
 	{
 	public:
 		//ScriptVariable *var;
-		EntityLink<ScriptVariable*> *var;
+		EntityLink<ScriptVariable*> *var = nullptr;
 
 		ScriptVarRead(ScriptScope &scope);
 		ScriptVarRead(ScriptScope &scope, ScriptVariable *var);
@@ -30,22 +30,20 @@ namespace gscript
 
 	class ScriptArrayRead : public ScriptVarRead
 	{
-	protected:
-		ScriptCallable * accessor;
-
 	public:
 		ScriptArrayRead(ScriptScope &scope, ScriptVariable *var, ScriptCallable *accessor);
 		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 
 		virtual const ScriptType *getType() const override;
+
+	protected:
+		ScriptCallable *accessor = nullptr;
 	};
 
 	// RESOLV
 
 	class ScriptVarReadResolv : public ScriptVarRead
 	{
-	protected:
-
 	public:
 		std::string name;
 		ScriptVarReadResolv(ScriptScope &scope, const std::string &name);
@@ -55,13 +53,13 @@ namespace gscript
 
 	class ScriptArrayReadResolv : public ScriptVarReadResolv
 	{
-	protected:
-		ScriptCallable * accessor;
-
 	public:
 		ScriptArrayReadResolv(ScriptScope &scope, ScriptCallable *accessor, const std::string &name);
 
 		ScriptVarRead *resolve(ScriptScope &scope, bool member);
+
+	protected:
+		ScriptCallable *accessor = nullptr;
 	};
 }
 

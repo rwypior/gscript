@@ -21,15 +21,7 @@ namespace gscript
 		typedef std::list<ScriptNamespace*> NAMESPACE_CONTAINER_T;
 		typedef std::list<ScriptClassPrototype*> CLASS_PROTOTYPE_CONTAINER_T;
 		typedef std::list<ScriptClass*> CLASS_CONTAINER_T;
-
-	private:
-		std::string name = "";
-
-	protected:
-		NAMESPACE_CONTAINER_T namespaces;
-		CLASS_CONTAINER_T classes;
-		CLASS_PROTOTYPE_CONTAINER_T classPrototypes;
-		
+				
 	public:
 		SCRIPT_API ScriptNamespace(ScriptScope *parentScope = NULL);
 		SCRIPT_API ScriptNamespace(ScriptScope *parentScope, const ParserNamespace &ns);
@@ -52,6 +44,14 @@ namespace gscript
 		void resolveFunctions();
 		void resolveClasses();
 		void resolveClassMembers();
+
+	protected:
+		NAMESPACE_CONTAINER_T namespaces;
+		CLASS_CONTAINER_T classes;
+		CLASS_PROTOTYPE_CONTAINER_T classPrototypes;
+
+	private:
+		std::string name = "";
 	};
 }
 

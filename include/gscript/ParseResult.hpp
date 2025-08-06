@@ -19,29 +19,30 @@ namespace gscript
 			S_COMMENT = 16
 		};
 
-		STATUS_T status;
+		STATUS_T status = STATUS_T::S_VOID;
 		IteratorRange<std::string> result;
-		void *subResult;
+		void *subResult = nullptr;
 
 		ParseResult(STATUS_T status = STATUS_T::S_VOID)
-			:status(status)
+			: status(status)
+			, subResult(nullptr)
 		{}
 
 		ParseResult(STATUS_T status, IteratorRange<std::string> result, void *subResult = NULL)
-			:status(status),
-			result(result),
-			subResult(subResult)
+			: status(status)
+			, result(result)
+			, subResult(subResult)
 		{}
 
 		ParseResult(STATUS_T status, std::string::iterator begin, std::string::iterator end)
-			:status(status),
-			result(begin, end)
+			: status(status)
+			, result(begin, end)
 		{}
 
 		ParseResult(const ParseResult &b)
-			:status(b.status),
-			result(b.result),
-			subResult(b.subResult)
+			: status(b.status)
+			, result(b.result)
+			, subResult(b.subResult)
 		{
 		}
 

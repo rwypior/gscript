@@ -12,13 +12,13 @@ namespace gscript
 {
 	class ScriptNew : public ScriptFuncCall
 	{
-	protected:
-		ScriptClass & sclass;
-
 	public:
 		ScriptNew(ScriptClass &sclass, const std::vector<ScriptStatement> &params);
 
 		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+
+	protected:
+		ScriptClass &sclass;
 	};
 }
 

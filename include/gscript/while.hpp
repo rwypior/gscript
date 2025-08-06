@@ -16,9 +16,6 @@ namespace gscript
 
 	class ScriptWhile : public ScriptRunnable, public ScriptCallable
 	{
-	private:
-		static const ScriptType *returnType;
-
 	public:
 		ScriptStatement * condition;
 
@@ -28,6 +25,9 @@ namespace gscript
 		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 
 		virtual const ScriptType *getType() const override;
+
+	private:
+		static const ScriptType *returnType;
 	};
 }
 

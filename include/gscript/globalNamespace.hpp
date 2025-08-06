@@ -14,9 +14,6 @@ namespace gscript
 
 	class ScriptGlobalNamespace : public ScriptNamespace
 	{
-	protected:
-		Script &script;
-
 	public:
 		typedef std::unordered_map<std::string, ScriptExternFunction*> EXTERN_FUNCTION_CONTAINER;
 
@@ -28,6 +25,9 @@ namespace gscript
 		SCRIPT_API ScriptExternFunction *findExternFunction(const std::string &name);
 
 		SCRIPT_API Script &getScript();
+
+	protected:
+		Script &script;
 	};
 }
 

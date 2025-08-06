@@ -18,9 +18,9 @@ namespace gscript
 	class ParserForArglist : public ParserEntity
 	{
 	public:
-		char separator;
-		char start;
-		char end;
+		char separator = 0;
+		char start = 0;
+		char end = 0;
 
 		ParserVarDeclaration *varDecl = nullptr;
 		ParserStatement *condition = nullptr;

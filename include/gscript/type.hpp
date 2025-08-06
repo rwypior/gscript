@@ -17,7 +17,7 @@ namespace gscript
 	{
 		VALUE_TYPE_T type;
 		std::string name;
-		TypeDescriptor *subType;
+		TypeDescriptor *subType = nullptr;
 
 		explicit TypeDescriptor(VALUE_TYPE_T type, const TypeDescriptor &subType, const std::string &name = "")
 			:type(type),
@@ -48,9 +48,6 @@ namespace gscript
 	
 	class ScriptType
 	{
-	protected:
-		VALUE_TYPE_T type;
-
 	public:
 		typedef std::pair<std::string, VALUE_TYPE_T> TYPEMAP_DATA_T;
 		typedef std::unordered_map<std::string, VALUE_TYPE_T> TYPEMAP_T;
@@ -75,6 +72,9 @@ namespace gscript
 
 		SCRIPT_API virtual VALUE_TYPE_T getTypeDescriptor() const;
 		SCRIPT_API virtual VALUE_TYPE_T getAbsoluteTypeDescriptor() const;
+
+	protected:
+		VALUE_TYPE_T type;
 	};
 
 	class ScriptClassType : public ScriptType
@@ -92,7 +92,7 @@ namespace gscript
 	class ScriptArrayType : public ScriptType
 	{
 	public:
-		const ScriptType *subType;
+		const ScriptType *subType = nullptr;
 
 		SCRIPT_API ScriptArrayType(const ScriptType *subType);
 
@@ -104,7 +104,7 @@ namespace gscript
 	class ScriptReferenceType : public ScriptType
 	{
 	public:
-		const ScriptType *subType;
+		const ScriptType *subType = nullptr;
 
 		SCRIPT_API ScriptReferenceType(const ScriptType *subType);
 

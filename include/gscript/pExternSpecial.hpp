@@ -13,7 +13,7 @@ namespace gscript
 	public:
 		static const char *DIRECTIVE_EXTERN;
 
-		char terminator;
+		char terminator = 0;
 
 		std::string name;
 

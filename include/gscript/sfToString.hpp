@@ -7,14 +7,14 @@ namespace gscript
 {
 	class ScriptFuncToString : public ScriptFunction
 	{
-	private:
-		static const ScriptType returnType;
-
 	public:
 		ScriptFuncToString(ScriptScope &scope, const std::string &name);
 		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 
 		virtual const ScriptType &getType();
+
+	private:
+		static const ScriptType returnType;
 	};
 }
 

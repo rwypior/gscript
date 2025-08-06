@@ -22,26 +22,6 @@ namespace gscript
 
 	class ScriptFunction : public ScriptRunnable, public ScriptCallable
 	{
-	protected:
-		void throwBadParameters(const std::string &text);
-
-		size_t internalPointer;
-
-		template<typename T>
-		T *getParam(ScriptValue *p)
-		{
-			if (p->getType()->getAbsoluteTypeDescriptor() == VALUE_TYPE_T::VT_REFERENCE)
-				return static_cast<ScriptReferenceValue*>(p)->resolve<T*>();
-
-			return static_cast<T*>(p);
-		}
-
-		void registerParameters(const CALLABLE_PARAMS_T &c);
-
-		const std::string name;
-		ScriptType *returnType;
-		PARAMS_T parameters;
-
 	public:
 
 		SCRIPT_API ScriptFunction(ScriptScope &scope, const std::string &name, ScriptType *returnType, const PARAMS_T &parameters = PARAMS_T());
@@ -63,6 +43,26 @@ namespace gscript
 		}
 
 		void setup(const ParserFunction &pfunc);
+
+	protected:
+		void throwBadParameters(const std::string& text);
+
+		size_t internalPointer;
+
+		template<typename T>
+		T* getParam(ScriptValue* p)
+		{
+			if (p->getType()->getAbsoluteTypeDescriptor() == VALUE_TYPE_T::VT_REFERENCE)
+				return static_cast<ScriptReferenceValue*>(p)->resolve<T*>();
+
+			return static_cast<T*>(p);
+		}
+
+		void registerParameters(const CALLABLE_PARAMS_T& c);
+
+		const std::string name;
+		ScriptType* returnType = nullptr;
+		PARAMS_T parameters;
 	};
 
 	///
@@ -72,14 +72,14 @@ namespace gscript
 	///
 	class ScriptFunctionPrototype
 	{
-	protected:
-		ScriptFunction & target;
-		const ParserFunction &pfunc;
-
 	public:
 		SCRIPT_API ScriptFunctionPrototype(ScriptFunction &target, const ParserFunction &pfunc);
 
 		SCRIPT_API void build();
+
+	protected:
+		ScriptFunction &target;
+		const ParserFunction &pfunc;
 	};
 
 	///
@@ -101,13 +101,13 @@ namespace gscript
 	///
 	class ScriptExternFunctionConnector : public ScriptFunction
 	{
-	protected:
-		ScriptExternFunction & target;
-
 	public:
 		SCRIPT_API ScriptExternFunctionConnector(const std::string &externName, ScriptScope &scope, const std::string &name, ScriptType *returnType, const PARAMS_T &parameters = PARAMS_T());
 
 		SCRIPT_API virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+
+	protected:
+		ScriptExternFunction &target;
 	};
 }
 

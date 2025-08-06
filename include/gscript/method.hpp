@@ -16,11 +16,8 @@ namespace gscript
 
 	class ScriptMethod : public ScriptFunction
 	{
-	protected:
-		void createThis(ScriptClass &sclass);
-
 	public:
-		const BITFLAG_T accessModifier;
+		const BITFLAG_T accessModifier = 0x00;
 
 		SCRIPT_API ScriptMethod(ScriptFunction &func, const BITFLAG_T access);
 
@@ -41,6 +38,9 @@ namespace gscript
 		SCRIPT_API ScriptClassInstance *getClassInstance();
 
 		SCRIPT_API virtual ScriptValue *instrun(ScriptClassInstance *instance, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T());
+
+	protected:
+		void createThis(ScriptClass &sclass);
 	};
 
 	///
@@ -61,9 +61,6 @@ namespace gscript
 	///
 	class ScriptExternMethod : public ScriptMethod
 	{
-	protected:
-		ScriptExternFunction & target;
-
 	public:
 		SCRIPT_API ScriptExternMethod(
 			const std::string &externName,
@@ -75,6 +72,9 @@ namespace gscript
 		);
 
 		SCRIPT_API virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+
+	protected:
+		ScriptExternFunction &target;
 	};
 }
 

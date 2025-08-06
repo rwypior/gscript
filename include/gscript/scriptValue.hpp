@@ -33,7 +33,7 @@ namespace gscript
 #define SV_TYPE_INIT_CLS(c) ,type(new ScriptClassType(*c)) 
 #define SV_TYPE_INIT_ARR(c) ,type(new ScriptArrayType(*c)) 
 #define SV_GETTYPE_M() virtual const ScriptType *getType() override { return this->type; }
-#define SV_TYPE_M() const ScriptType *type;
+#define SV_TYPE_M() const ScriptType *type = nullptr;
 // END TYPE
 
 // CONSTRUCTOR
@@ -86,10 +86,6 @@ namespace gscript
 
 	class ScriptBoolValue : public ScriptValue
 	{
-	private:
-		bool val;
-		SV_TYPE_M();
-
 	public:
 		SV_CTOR_M(ScriptBoolValue, bool) SV_VAL_INIT(v) SV_TYPE_INIT(VALUE_TYPE_T::VT_BOOL) SV_CTOR_END_M();
 		SV_GETSIZE_M(bool);
@@ -104,14 +100,14 @@ namespace gscript
 		{
 			return this->type->getAbsoluteTypeDescriptor() == VALUE_TYPE_T::VT_REFERENCE ? (reinterpret_cast<const ScriptReferenceValue*>(this))->resolve<ScriptBoolValue>().getValue() : this->val;
 		}*/
+
+	private:
+		bool val = 0;
+		SV_TYPE_M();
 	};
 
 	class ScriptCharValue : public ScriptValue
 	{
-	protected:
-		char val;
-		SV_TYPE_M();
-
 	public:
 		SV_CTOR_M(ScriptCharValue, char) SV_VAL_INIT(v) SV_TYPE_INIT(VALUE_TYPE_T::VT_CHAR) SV_CTOR_END_M();
 		SV_GETSIZE_M(char);
@@ -121,14 +117,14 @@ namespace gscript
 		SV_GETVAL(ScriptCharValue, char);
 		SV_SETVAL(char);
 		SV_ASSIGN(ScriptCharValue);
+
+	protected:
+		char val = 0;
+		SV_TYPE_M();
 	};
 
 	class ScriptByteValue : public ScriptValue
 	{
-	protected:
-		unsigned char val;
-		SV_TYPE_M();
-
 	public:
 		SV_CTOR_M(ScriptByteValue, unsigned char) SV_VAL_INIT(v) SV_TYPE_INIT(VALUE_TYPE_T::VT_BYTE) SV_CTOR_END_M();
 		SV_GETSIZE_M(unsigned char);
@@ -138,14 +134,14 @@ namespace gscript
 		SV_GETVAL(ScriptByteValue, unsigned char);
 		SV_SETVAL(unsigned char);
 		SV_ASSIGN(ScriptByteValue);
+
+	protected:
+		unsigned char val = 0;
+		SV_TYPE_M();
 	};
 
 	class ScriptIntValue : public ScriptValue
 	{
-	protected:
-		int val;
-		SV_TYPE_M();
-
 	public:
 		SV_CTOR_M(ScriptIntValue, int) SV_VAL_INIT(v) SV_TYPE_INIT(VALUE_TYPE_T::VT_INT) SV_CTOR_END_M();
 		SV_GETSIZE_M(int);
@@ -155,14 +151,14 @@ namespace gscript
 		SV_GETVAL(ScriptIntValue, int);
 		SV_SETVAL(int);
 		SV_ASSIGN(ScriptIntValue);
+
+	protected:
+		int val = 0;
+		SV_TYPE_M();
 	};
 
 	class ScriptUnsignedIntValue : public ScriptValue
 	{
-	protected:
-		unsigned int val;
-		SV_TYPE_M();
-
 	public:
 		SV_CTOR_M(ScriptUnsignedIntValue, unsigned int) SV_VAL_INIT(v) SV_TYPE_INIT(VALUE_TYPE_T::VT_UNSIGNED_INT) SV_CTOR_END_M();
 		SV_GETSIZE_M(unsigned int);
@@ -172,14 +168,14 @@ namespace gscript
 		SV_GETVAL(ScriptUnsignedIntValue, unsigned int);
 		SV_SETVAL(unsigned int);
 		SV_ASSIGN(ScriptUnsignedIntValue);
+
+	protected:
+		unsigned int val = 0;
+		SV_TYPE_M();
 	};
 
 	class ScriptFloatValue : public ScriptValue
 	{
-	protected:
-		float val;
-		SV_TYPE_M();
-
 	public:
 		SV_CTOR_M(ScriptFloatValue, float) SV_VAL_INIT(v) SV_TYPE_INIT(VALUE_TYPE_T::VT_FLOAT) SV_CTOR_END_M();
 		SV_GETSIZE_M(float);
@@ -189,14 +185,14 @@ namespace gscript
 		SV_GETVAL(ScriptFloatValue, float);
 		SV_SETVAL(float);
 		SV_ASSIGN(ScriptFloatValue);
+
+	protected:
+		float val = 0;
+		SV_TYPE_M();
 	};
 
 	class ScriptDoubleValue : public ScriptValue
 	{
-	protected:
-		double val;
-		SV_TYPE_M();
-
 	public:
 		SV_CTOR_M(ScriptDoubleValue, double) SV_VAL_INIT(v) SV_TYPE_INIT(VALUE_TYPE_T::VT_DOUBLE) SV_CTOR_END_M();
 		SV_GETSIZE_M(double);
@@ -206,14 +202,14 @@ namespace gscript
 		SV_GETVAL(ScriptDoubleValue, double);
 		SV_SETVAL(double);
 		SV_ASSIGN(ScriptDoubleValue);
+
+	protected:
+		double val = 0;
+		SV_TYPE_M();
 	};
 
 	class ScriptStringValue : public ScriptValue
 	{
-	protected:
-		std::string val;
-		SV_TYPE_M();
-
 	public:
 		SV_CTOR_M(ScriptStringValue, std::string) SV_VAL_INIT(v) SV_TYPE_INIT(VALUE_TYPE_T::VT_STRING) SV_CTOR_END_M();
 		SV_GETSIZE_M(std::string);
@@ -227,14 +223,14 @@ namespace gscript
 		{
 			return ScriptBoolValue(this->val.length());
 		}
+
+	protected:
+		std::string val;
+		SV_TYPE_M();
 	};
 
 	class ScriptClassValue : public ScriptValue
 	{
-	protected:
-		ScriptClassInstance * val;
-		SV_TYPE_M();
-
 	public:
 		SCRIPT_API ScriptClassValue(ScriptClassInstance *inst);
 		SCRIPT_API ScriptClassValue(ScriptClassInstance *inst, ScriptClass &sclass);
@@ -246,14 +242,14 @@ namespace gscript
 		SV_GETVAL(ScriptClassValue, ScriptClassInstance*);
 		SV_SETVAL(ScriptClassInstance*);
 		SV_ASSIGN(ScriptClassValue);
+
+	protected:
+		ScriptClassInstance *val = nullptr;
+		SV_TYPE_M();
 	};
 
 	class ScriptArrayValue : public ScriptValue
 	{
-	protected:
-		ScriptValue * *val;
-		SV_TYPE_M();
-
 	public:
 		ScriptArrayValue(const ScriptArrayType *type = NULL, ScriptValue **val = NULL)
 			:val(val),
@@ -266,14 +262,14 @@ namespace gscript
 		SV_BOOLEAN();
 		SV_GETVAL(ScriptArrayValue, ScriptValue**);
 		SV_ASSIGN(ScriptArrayValue);
+
+	protected:
+		ScriptValue **val = nullptr;
+		SV_TYPE_M();
 	};
 
 	class ScriptReferenceValue : public ScriptValue
 	{
-	protected:
-		ScriptValue * val;
-		SV_TYPE_M();
-
 	public:
 		ScriptReferenceValue(const ScriptReferenceType *type = NULL, ScriptValue *val = NULL)
 			:val(val),
@@ -333,13 +329,14 @@ namespace gscript
 		{
 			this->val->assign(*val);
 		}
+
+	protected:
+		ScriptValue *val = nullptr;
+		SV_TYPE_M();
 	};
 
 	class ScriptNullValue : public ScriptValue
 	{
-	protected:
-		SV_TYPE_M();
-
 	public:
 		int getSize() override
 		{
@@ -356,6 +353,9 @@ namespace gscript
 		{
 			return ScriptBoolValue(false);
 		}
+
+	protected:
+		SV_TYPE_M();
 	};
 }
 

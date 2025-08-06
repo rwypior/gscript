@@ -16,16 +16,16 @@ namespace gscript
 	public:
 		typedef std::vector<ScriptStatement*> STATEMENT_CONTAINER_T;
 
-	protected:
-		const ScriptType *type;
-		STATEMENT_CONTAINER_T statements;
-
 	public:
 		ScriptArrayInitializer(ScriptScope &scope, ParserArrayInitializer &arrayInitializer);
 
 		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 
 		virtual const ScriptType *getType() const;
+
+	protected:
+		const ScriptType* type = nullptr;
+		STATEMENT_CONTAINER_T statements;
 	};
 }
 

@@ -18,13 +18,10 @@ namespace gscript
 
 	class ScriptOperator : public ScriptCallable
 	{
-	protected:
-		OperatorFunctionFactory::OPERATOR_FUNCTION_T operatorFunction = NULL;
-
 	public:
-		OPERATOR_LINK_T linkage;
-		ScriptCallable *left;
-		ScriptCallable *right;
+		OPERATOR_LINK_T linkage = OPERATOR_LINK_T::OL_SINGLE;
+		ScriptCallable *left = nullptr;
+		ScriptCallable *right = nullptr;
 
 		ScriptOperator(ScriptScope &scope, OPERATOR_LINK_T linkage);
 
@@ -37,6 +34,9 @@ namespace gscript
 		virtual void setup() {};
 
 		void assignOperatorFunction();
+
+	protected:
+		OperatorFunctionFactory::OPERATOR_FUNCTION_T operatorFunction = nullptr;
 	};
 
 	class ScriptOperatorMemberAccessor : public ScriptOperator
@@ -60,9 +60,6 @@ namespace gscript
 
 	class ScriptOperatorAssign : public ScriptOperator
 	{
-	protected:
-		ScriptVarRead * varRead;
-
 	public:
 		using ScriptOperator::ScriptOperator;
 		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
@@ -70,6 +67,9 @@ namespace gscript
 		virtual const OPERATOR_TYPE_T getOperatorType() const;
 		virtual bool needFactory() const override;
 		virtual void setup() override;
+
+	protected:
+		ScriptVarRead *varRead = nullptr;
 	};
 
 	class ScriptOperatorEquals : public ScriptOperator

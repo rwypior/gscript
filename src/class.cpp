@@ -19,9 +19,10 @@ namespace gscript
 	const char *ScriptClass::KW_THIS = "this";
 
 	ScriptClass::ScriptClass(ScriptScope &scope, const std::string &name, ScriptClass *base)
-		: ScriptNamespace(&scope),
-		name(name),
-		base(base)
+		: ScriptNamespace(&scope)
+		, name(name)
+		, base(base)
+		, modifier(0x00)
 	{
 	}
 

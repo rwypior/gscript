@@ -22,7 +22,7 @@ namespace gscript
 	{
 	public:
 		//ScriptVariable &var;
-		EntityLink<ScriptVariable&> *var;
+		EntityLink<ScriptVariable&> *var = nullptr;
 		ScriptStatement statement;
 
 		ScriptVarDeclaration(ScriptScope &scope, ScriptVariable &var, const ScriptStatement &statement);

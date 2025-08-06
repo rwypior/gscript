@@ -14,7 +14,7 @@ namespace gscript
 		const char *KW_ELSE = "else";
 
 		ParserBlock body;
-		ParserIf *pif;
+		ParserIf *pif = nullptr;
 
 		virtual ParseResult parse(StringIteratorRange itrange) override;
 	};

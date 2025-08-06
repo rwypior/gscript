@@ -10,7 +10,7 @@ namespace gscript
 	public:
 		bool isReference = false;
 		bool isArray = false;
-		size_t arraySize;
+		size_t arraySize = 0;
 
 		virtual ParseResult parse(StringIteratorRange itrange) override;
 	};

@@ -29,13 +29,6 @@ namespace gscript
 		typedef std::list<ScriptFunctionPrototype*> FUNCTION_PROTOTYPE_CONTAINER;
 		typedef std::list<ScriptVariable> VARIABLE_CONTAINER;
 
-	protected:
-		ScriptScope *parentScope;
-
-		ScriptScope::FUNCTION_CONTAINER functions;
-		ScriptScope::FUNCTION_PROTOTYPE_CONTAINER functionPrototypes;
-		ScriptScope::VARIABLE_CONTAINER variables;
-
 	public:
 		SCRIPT_API ScriptScope(ScriptScope *parentScope);
 
@@ -63,6 +56,13 @@ namespace gscript
 		SCRIPT_API ScriptScope *getParentScope() const;
 
 		SCRIPT_API bool isAccessible(ScriptScope &targetScope, BITFLAG_T access);
+
+	protected:
+		ScriptScope *parentScope = nullptr;
+
+		ScriptScope::FUNCTION_CONTAINER functions;
+		ScriptScope::FUNCTION_PROTOTYPE_CONTAINER functionPrototypes;
+		ScriptScope::VARIABLE_CONTAINER variables;
 	};
 }
 

@@ -16,9 +16,6 @@ namespace gscript
 	template <typename T>
 	class make_vector
 	{
-	private:
-		std::vector<T> v;
-
 	public:
 		make_vector<T>& operator<<(const T& val)
 		{
@@ -30,23 +27,23 @@ namespace gscript
 		{
 			return v;
 		}
+
+	private:
+		std::vector<T> v;
 	};
 
 	class make_sarray
 	{
-	private:
-		ScriptArrayType * type;
-		ScriptValue **v;
-		size_t i = 0;
-
 	public:
 		SCRIPT_API make_sarray(ScriptType *subType, size_t count);
-
 		SCRIPT_API make_sarray(ScriptType *subType, size_t count, char **argv);
-
 		SCRIPT_API make_sarray& operator<<(ScriptValue* val);
-
 		SCRIPT_API operator ScriptArrayValue *() const;
+
+	private:
+		ScriptArrayType *type = nullptr;
+		ScriptValue **v = nullptr;
+		size_t i = 0;
 	};
 
 	namespace hash_tuple

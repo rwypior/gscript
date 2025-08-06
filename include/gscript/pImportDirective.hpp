@@ -29,7 +29,7 @@ namespace gscript
 		//char enclosureBegin;
 		//char enclosureEnd;
 
-		IMPORT_TYPE_T type;
+		IMPORT_TYPE_T type = IMPORT_TYPE_T::IT_INVALID;
 
 		std::string filename;
 

@@ -20,13 +20,13 @@ namespace gscript
 	public:
 		typedef std::vector<ParserStatement*> STATEMENT_CONTAINER_T;
 
-		int maxCount;
-		int minCount;
-		char separator;
-		char start;
-		char end;
+		int maxCount = 0;
+		int minCount = 0;
+		char separator = 0;
+		char start = 0;
+		char end = 0;
 
-		BITFLAG_T allowedEntities;
+		BITFLAG_T allowedEntities = 0x00;
 
 		STATEMENT_CONTAINER_T parameters;
 

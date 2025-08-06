@@ -13,13 +13,13 @@ namespace gscript
 
 	class ParserConstructor : public ParserMethod
 	{
-	protected:
-		ParserClass & pClass;
-
 	public:
 		ParserConstructor(ParserClass &pClass);
 
 		virtual ParseResult parse(StringIteratorRange itrange) override;
+
+	protected:
+		ParserClass &pClass;
 	};
 }
 

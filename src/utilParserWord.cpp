@@ -10,8 +10,8 @@ namespace gscript
 
 	ParseResult Util::Word::parse(ParserEntity::StringIteratorRange itrange, const std::string &word, void *subResult, bool allowSpaces)
 	{
-		if (word == ":")
-			assert(!"DEBUG");
+		//if (word == ":")
+		//	assert(!"DEBUG");
 
 		int length = word.length();
 

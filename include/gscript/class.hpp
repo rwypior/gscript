@@ -27,22 +27,8 @@ namespace gscript
 
 		typedef std::vector<ScriptVarDeclaration*> VAR_DECLARATION_CONTAINER;
 
-	protected:
-		const std::string name;
-		ScriptClass * base;
-		ScriptMethod *constructor = NULL;
-
-		ScriptClass::VAR_DECLARATION_CONTAINER varDeclarations;
-
-		BITFLAG_T modifier;
-
-		SCRIPT_API void assignConstructor(ScriptFunction &f);
-		void createThis();
-
-		void inheritAbstracts();
-
 	public:
-		SCRIPT_API ScriptClass(ScriptScope &scope, const std::string &name, ScriptClass *base = NULL);
+		SCRIPT_API ScriptClass(ScriptScope &scope, const std::string &name, ScriptClass *base = nullptr);
 
 		SCRIPT_API ScriptMethod *findMethod(const std::string &name, const PARAMS_T &params);
 		SCRIPT_API ScriptClass *getBase() const;
@@ -73,30 +59,45 @@ namespace gscript
 		SCRIPT_API bool isAbstract();
 
 		SCRIPT_API void setup();
+
+	protected:
+		const std::string name;
+		ScriptClass* base = nullptr;
+		ScriptMethod* constructor = nullptr;
+
+		ScriptClass::VAR_DECLARATION_CONTAINER varDeclarations;
+
+		BITFLAG_T modifier = 0x00;
+
+		SCRIPT_API void assignConstructor(ScriptFunction& f);
+		void createThis();
+
+		void inheritAbstracts();
 	};
 
 	class ScriptClassResolv : public ScriptClass
 	{
-	protected:
-		ScriptNamespace *snamespace;
-		ParserClass *pClass;
-
 	public:
 		SCRIPT_API ScriptClassResolv(ScriptNamespace *snamespace, ParserClass *pClass);
 
 		ScriptClass *resolve();
+
+	protected:
+		ScriptNamespace *snamespace = nullptr;
+		ParserClass *pClass = nullptr;
+
 	};
 
 	class ScriptClassPrototype
 	{
-	protected:
-		ScriptClass &target;
-		const ParserClass &pClass;
-
 	public:
 		SCRIPT_API ScriptClassPrototype(ScriptClass &target, const ParserClass &pClass);
 
 		void build();
+
+	protected:
+		ScriptClass &target;
+		const ParserClass &pClass;
 	};
 }
 

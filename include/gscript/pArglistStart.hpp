@@ -15,7 +15,7 @@ namespace gscript
 		{
 		}
 
-		const char KW_BLOCKSTART;
+		const char KW_BLOCKSTART = 0;
 
 		virtual ParseResult parse(StringIteratorRange itrange) override;
 	};

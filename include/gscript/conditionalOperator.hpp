@@ -22,9 +22,9 @@ namespace gscript
 	class ScriptConditionalOperator : public ScriptCallable
 	{
 	public:
-		ScriptStatement* cond;
-		ScriptStatement* ontrue;
-		ScriptStatement* onfalse;
+		ScriptStatement* cond = nullptr;
+		ScriptStatement* ontrue = nullptr;
+		ScriptStatement* onfalse = nullptr;
 
 		ScriptConditionalOperator(ScriptScope& scope, ParserConditionalOperator* cond);
 		ScriptConditionalOperator(ScriptScope& scope, ScriptStatement* cond, ScriptStatement* ontrue, ScriptStatement* onfalse);

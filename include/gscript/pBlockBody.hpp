@@ -9,9 +9,6 @@ namespace gscript
 {
 	class ParserBlockBody : public ParserEntity
 	{
-	protected:
-		unsigned int maxEntries = 0;
-
 	public:
 		std::vector<std::shared_ptr<ParserEntity>> statements;
 
@@ -19,6 +16,9 @@ namespace gscript
 		void setMaxEntries(unsigned int maxEntries);
 
 		virtual ParseResult parse(StringIteratorRange itrange) override;
+
+	protected:
+		unsigned int maxEntries = 0;
 	};
 }
 

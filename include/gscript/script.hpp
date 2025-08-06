@@ -20,18 +20,6 @@ namespace gscript
 	public:
 		typedef std::unordered_map<std::string, ScriptExtension*> EXTENSIONS_CONTAINER_T;
 
-	private:
-		std::string path;
-		bool isExtern = false;
-
-	protected:
-		std::string content;
-		ScriptGlobalNamespace *mainScope;
-		EXTENSIONS_CONTAINER_T extensions;
-
-		void init();
-		void import(const std::string &path);
-
 	public:
 		SCRIPT_API static ScriptNullValue *SCR_NULL;
 		SCRIPT_API static ScriptBoolValue *SCR_TRUE;
@@ -56,6 +44,18 @@ namespace gscript
 		SCRIPT_API static Script load(const std::string &path, ScriptGlobalNamespace *parentMainScope = NULL);
 
 		SCRIPT_API ScriptGlobalNamespace *getMainScope();
+
+	protected:
+		std::string content;
+		ScriptGlobalNamespace *mainScope = nullptr;
+		EXTENSIONS_CONTAINER_T extensions;
+
+		void init();
+		void import(const std::string &path);
+
+	private:
+		std::string path;
+		bool isExtern = false;
 	};
 }
 

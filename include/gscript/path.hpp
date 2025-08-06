@@ -57,20 +57,6 @@ namespace gscript
 
 	class Path
 	{
-	protected:
-		std::string path;
-
-		void normalize()
-		{
-			if (this->path.length())
-			{
-				this->path = Path::fixDirectorySeparators(this->path);
-
-				if (!this->isFile() && this->path.back() != DIRECTORY_SEPARATOR)
-					this->path.push_back(DIRECTORY_SEPARATOR);
-			}
-		}
-
 	public:
 		static constexpr bool duplicatedSeparators(char lhs, char rhs)
 		{
@@ -332,6 +318,20 @@ namespace gscript
 				return DIRECTORY_SEPARATOR;
 
 			return separator;
+		}
+
+	protected:
+		std::string path;
+
+		void normalize()
+		{
+			if (this->path.length())
+			{
+				this->path = Path::fixDirectorySeparators(this->path);
+
+				if (!this->isFile() && this->path.back() != DIRECTORY_SEPARATOR)
+					this->path.push_back(DIRECTORY_SEPARATOR);
+			}
 		}
 	};
 }

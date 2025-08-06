@@ -15,7 +15,7 @@ namespace gscript
 		static const char C_CONTROL_PARAM_TERMINATOR;
 
 		std::string directive;
-		bool parameterized;
+		bool parameterized = false;
 
 		ParserSpecialDirective(const std::string &directive, bool parameterized = false);
 		virtual ParseResult parse(StringIteratorRange itrange) override;

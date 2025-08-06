@@ -15,10 +15,6 @@ namespace gscript
 {
 	class ParserOperator : public ParserEntity
 	{
-	protected:
-		OPERATOR_POSITION_T position;
-		std::string opchar;
-
 	public:
 		ParserOperator(OPERATOR_POSITION_T position);
 		ParserOperator(const char *op = "", OPERATOR_POSITION_T position = OPERATOR_POSITION_T::OP_IRRELEVANT);
@@ -44,6 +40,10 @@ namespace gscript
 			assert(false && "Invalid operator");
 			return NULL;
 		}
+
+	protected:
+		OPERATOR_POSITION_T position;
+		std::string opchar;
 	};
 
 	class ParserOperatorMemberAccessor : public ParserOperator

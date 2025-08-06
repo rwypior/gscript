@@ -22,7 +22,7 @@ namespace gscript
 	{
 	public:
 		//ScriptFunction *func;
-		EntityLink<ScriptFunction*> *func;
+		EntityLink<ScriptFunction*> *func = nullptr;
 
 		std::vector<ScriptStatement> params;
 
@@ -47,15 +47,15 @@ namespace gscript
 
 	class ScriptFuncCallResolv : public ScriptFuncCall
 	{
-	protected:
-		std::string name;
-		PARAMS_T paramTypes;
-		bool staticCall;
-
 	public:
 		ScriptFuncCallResolv(ScriptScope &originalScope, const std::vector<ScriptStatement> &params, const std::string &name, PARAMS_T paramTypes, bool staticCall);
 
 		ScriptFuncCall *resolve(const ScriptScope *scope);
+
+	protected:
+		std::string name;
+		PARAMS_T paramTypes;
+		bool staticCall = false;
 	};
 }
 

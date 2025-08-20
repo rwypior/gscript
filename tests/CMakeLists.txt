@@ -12,9 +12,8 @@ set_property(TARGET gscriptTest PROPERTY CXX_STANDARD 17)
 
 target_sources(gscriptTest PRIVATE "main.cpp" "arrayInitializerTest.cpp" "common.h" "extensiontest.cpp")
 
-if(NOT DEFINED BUILD_SHARED_LIBS OR NOT ${BUILD_SHARED_LIBS})
-    target_compile_definitions(gscriptTest PRIVATE BUILD_NOLIB)
-endif()
+# We're compiling against obj files - don't use DLL macros
+target_compile_definitions(gscriptTest PRIVATE BUILD_NOLIB)
 
 find_package(Catch2 3.6.0 REQUIRED)
 

@@ -20,10 +20,10 @@ namespace gscript
 		std::shared_ptr<ScriptCallable> callable = nullptr;
 
 		//SCRIPT_API ScriptStatement(ScriptScope &scope, const ParserStatement &pstatement);
-		SCRIPT_API ScriptStatement(ScriptScope &scope, std::vector<std::unique_ptr<ScriptCallable>>&& callables);
-		SCRIPT_API ScriptStatement(ScriptScope &scope);
-		ScriptStatement(ScriptStatement&& stmt);
+		SCRIPT_API ScriptStatement(ScriptStatement&& stmt);
 		ScriptStatement(const ScriptStatement& stmt) = delete;
+		SCRIPT_API ScriptStatement(ScriptScope &scope);
+		SCRIPT_API ScriptStatement(ScriptScope &scope, std::vector<std::unique_ptr<ScriptCallable>>&& callables);
 
 		SCRIPT_API virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T());
 

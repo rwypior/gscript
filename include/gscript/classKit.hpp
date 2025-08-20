@@ -3,10 +3,10 @@
 
 #include "defs.hpp"
 #include "type.hpp"
-#include "funcParam.hpp"
-#include "scriptValue.hpp"
-#include "method.hpp"
-#include "class.hpp"
-#include "classInstance.hpp"
+#include "runtime/funcParam.hpp"
+#include "runtime/scriptValue.hpp"
+#include "runtime/method.hpp"
+#include "runtime/class.hpp"
+#include "runtime/classInstance.hpp"
 
 #endif

@@ -2,6 +2,6 @@
 #define _h_gscript_kit_extension
 
 #include "defs.hpp"
-#include "scriptExtension.hpp"
+#include "extension/scriptExtension.hpp"
 
 #endif

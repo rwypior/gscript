@@ -18,7 +18,7 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
-	gscript::Script scr = gscript::Script::load(argv[1]);
+	gscript::Script scr(argv[1]);
 
 	scr.loadDefaultExtensions();
 

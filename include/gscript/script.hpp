@@ -1,14 +1,16 @@
 #ifndef _h_gscript_script
 #define _h_gscript_script
 
-#include "function.hpp"
+#include "runtime/scriptValue.hpp"
+#include "runtime/globalNamespace.hpp"
+#include "runtime/function.hpp"
 #include "lib.hpp"
 
 #include <string>
 #include <vector>
 #include <list>
 #include <unordered_map>
-
+#include <memory>
 
 namespace gscript
 {
@@ -18,20 +20,11 @@ namespace gscript
 	class Script
 	{
 	public:
-		typedef std::unordered_map<std::string, ScriptExtension*> EXTENSIONS_CONTAINER_T;
-
-	public:
-		SCRIPT_API static ScriptNullValue *SCR_NULL;
-		SCRIPT_API static ScriptBoolValue *SCR_TRUE;
-		SCRIPT_API static ScriptBoolValue *SCR_FALSE;
-		
 		SCRIPT_API Script();
-		SCRIPT_API Script(const std::string &path, const std::string &content);
-		SCRIPT_API Script(const std::string &path, const std::string &content, ScriptGlobalNamespace *mainScope);
-		SCRIPT_API Script(const std::string &path, const std::string &content, Script &parent);
-		SCRIPT_API ~Script();
-
-		SCRIPT_API Script &operator=(const Script &b);
+		SCRIPT_API Script(const std::string &path);
+		SCRIPT_API Script(const std::string &path, std::shared_ptr<ScriptGlobalNamespace> mainScope);
+		SCRIPT_API Script(const std::string &path, Script &parent);
+		~Script() = default;
 
 		SCRIPT_API void extend(ScriptExtension *ext, const std::string &name = "");
 		SCRIPT_API void loadDefaultExtensions();
@@ -40,18 +33,16 @@ namespace gscript
 		SCRIPT_API bool compile();
 		SCRIPT_API int run(int argc, char **argv);
 		
-		SCRIPT_API const std::string &getContent();
-		SCRIPT_API static Script load(const std::string &path, ScriptGlobalNamespace *parentMainScope = NULL);
-
 		SCRIPT_API ScriptGlobalNamespace *getMainScope();
 
 	protected:
-		std::string content;
-		ScriptGlobalNamespace *mainScope = nullptr;
-		EXTENSIONS_CONTAINER_T extensions;
+		std::shared_ptr<ScriptGlobalNamespace> mainScope = nullptr;
+		std::unordered_map<std::string, std::shared_ptr<ScriptExtension>> extensions;
 
 		void init();
 		void import(const std::string &path);
+
+		static std::string loadSource(const std::string& path);
 
 	private:
 		std::string path;

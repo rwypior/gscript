@@ -1,26 +1,21 @@
 #include "utilParserWord.hpp"
 
-#include <iostream>
-#include <cctype>
-#include <cassert>
+#include <string>
 
 namespace gscript
 {
 	extern const std::string Util::Word::WORD_ANY = "";
 
-	ParseResult Util::Word::parse(ParserEntity::StringIteratorRange itrange, const std::string &word, void *subResult, bool allowSpaces)
+	ParseResult Util::Word::parse(StringIteratorRange itrange, const std::string &word, std::shared_ptr<ParserEntity>&& subResult, bool allowSpaces)
 	{
-		//if (word == ":")
-		//	assert(!"DEBUG");
-
 		int length = word.length();
 
 		if (itrange.end - itrange.begin < length + 1)
 			return ParseResult(ParseResult::STATUS_T::S_FATAL);
 
-		char *buffer = new char[length];
+		std::string buffer(length, '0');
 
-		ParserEntity::StringIteratorRange::ITERATOR_T it = itrange.begin;
+		StringIteratorRange::ITERATOR_T it = itrange.begin;
 
 		while (std::isspace(*it))
 		{
@@ -38,7 +33,7 @@ namespace gscript
 
 			if (i == length)
 			{
-				if (allowSpaces && strncmp(buffer, word.c_str(), length) == 0)
+				if (allowSpaces && buffer == word)
 					break;
 
 				if (it + 1 == itrange.end)
@@ -47,24 +42,21 @@ namespace gscript
 				if (!std::isalnum(next))
 					break;
 
-				delete[] buffer;
 				return ParseResult(ParseResult::STATUS_T::S_FATAL);
 			}
 		}
 
-		if (strncmp(buffer, word.c_str(), length) == 0)
+		if (buffer == word)
 		{
-			ParserEntity::StringIteratorRange::ITERATOR_T foundBegin = it + 1 - length; // * MSVC if this is it - length + 1 <- an error will be generated
-			delete[] buffer;
+			StringIteratorRange::ITERATOR_T foundBegin = it + 1 - length; // * MSVC if this is it - length + 1 <- an error will be generated
 
-			return ParseResult(ParseResult::STATUS_T::S_OK, ParserEntity::StringIteratorRange(foundBegin, it + 1), subResult);
+			return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(foundBegin, it + 1), std::move(subResult));
 		}
 
-		delete[] buffer;
 		return ParseResult(ParseResult::STATUS_T::S_FATAL);
 	}
 
-	ParseResult Util::Word::parseUntil(ParserEntity::StringIteratorRange itrange, const std::string &word, void *subResult, const std::string &allowed)
+	ParseResult Util::Word::parseUntil(StringIteratorRange itrange, const std::string &word, std::shared_ptr<ParserEntity>&& subResult, const std::string &allowed)
 	{
 		int length = word.length();
 
@@ -73,18 +65,18 @@ namespace gscript
 
 		char *buffer = new char[length];
 
-		ParserEntity::StringIteratorRange::ITERATOR_T it = itrange.begin;
+		StringIteratorRange::ITERATOR_T it = itrange.begin;
 
 		int i = 0;
 		for (; it != itrange.end; ++it)
 		{
-			Util::Word::copy(buffer, ParserEntity::StringIteratorRange(it, it + length));
+			Util::Word::copy(buffer, StringIteratorRange(it, it + length));
 			bool ok = strncmp(buffer, word.c_str(), length) == 0;
 
 			if (ok)
 			{
 				delete[] buffer;
-				return ParseResult(ParseResult::STATUS_T::S_OK, ParserEntity::StringIteratorRange(itrange.begin, it + 1), subResult);
+				return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(itrange.begin, it + 1), std::move(subResult));
 			}
 			else if (!allowed.empty())
 			{
@@ -99,10 +91,10 @@ namespace gscript
 		return ParseResult(ParseResult::STATUS_T::S_FATAL);
 	}
 
-	void Util::Word::copy(char *destination, ParserEntity::StringIteratorRange itrange)
+	void Util::Word::copy(char *destination, StringIteratorRange itrange)
 	{
 		int i = 0;
-		for (ParserEntity::StringIteratorRange::ITERATOR_T it = itrange.begin; it != itrange.end; ++it, ++i)
+		for (StringIteratorRange::ITERATOR_T it = itrange.begin; it != itrange.end; ++it, ++i)
 		{
 			destination[i] = *it;
 		}

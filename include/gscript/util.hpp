@@ -1,10 +1,10 @@
 #ifndef _h_gscript_util
 #define _h_gscript_util
 
+#include "lib.hpp"
+
 #include <tuple>
 #include <vector>
-
-#include "lib.hpp"
 
 namespace gscript
 {

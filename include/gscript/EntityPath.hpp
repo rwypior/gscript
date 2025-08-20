@@ -1,10 +1,9 @@
 #ifndef _h_gscript_function_path
 #define _h_gscript_function_path
 
-#include <string>
-#include <vector>
-
 #include "defs.hpp"
+
+#include <string>
 
 namespace gscript
 {

@@ -2,10 +2,10 @@
 #define _h_gscript_type
 
 #include "defs.hpp"
-
 #include "lib.hpp"
 
 #include <string>
+#include <unordered_map>
 
 namespace gscript
 {

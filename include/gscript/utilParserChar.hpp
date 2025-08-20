@@ -1,8 +1,10 @@
 #ifndef _h_gscript_util_p_char
 #define _h_gscript_util_p_char
 
+#include "parser/pEntity.hpp"
+#include "IteratorRange.hpp"
+
 #include <string>
-#include "pEntity.hpp"
 
 namespace gscript
 {
@@ -11,7 +13,7 @@ namespace gscript
 		namespace Char
 		{
 			bool inString(char ch, const std::string &str);
-			ParseResult parse(ParserEntity::StringIteratorRange itrange, char c, bool ltrimWhitespaces = true);
+			ParseResult parse(StringIteratorRange itrange, char c, bool ltrimWhitespaces = true);
 		};
 	}
 }

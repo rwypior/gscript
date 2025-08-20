@@ -1,16 +1,13 @@
-#include "script.hpp"
 #include "type.hpp"
 #include "defs.hpp"
-#include "scope.hpp"
-#include "namespace.hpp"
-#include "globalNamespace.hpp"
 #include "compileException.hpp"
-#include "class.hpp"
-
-#include "pReference.hpp"
-#include "pArrayAccessor.hpp"
-
-#include "variable.hpp"
+#include "runtime/scope.hpp"
+#include "runtime/namespace.hpp"
+#include "runtime/globalNamespace.hpp"
+#include "runtime/class.hpp"
+#include "runtime/variable.hpp"
+#include "parser/pReference.hpp"
+#include "parser/pArrayAccessor.hpp"
 
 #include <cassert>
 
@@ -76,7 +73,7 @@ namespace gscript
 		case VALUE_TYPE_T::VT_CLASS: return new ScriptClassValue(nullptr, static_cast<const ScriptClassType*>(t)->sclass);
 		case VALUE_TYPE_T::VT_ARRAY: return new ScriptArrayValue();
 		case VALUE_TYPE_T::VT_REFERENCE: return new ScriptReferenceValue(static_cast<const ScriptReferenceType*>(t));
-		case VALUE_TYPE_T::VT_NULL: return Script::SCR_NULL;
+		case VALUE_TYPE_T::VT_NULL: return SCR_NULL;
 		}
 
 		throw new CompileException("Invalid type given");

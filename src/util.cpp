@@ -1,5 +1,5 @@
 #include "util.hpp"
-#include "scriptValue.hpp"
+#include "runtime/scriptValue.hpp"
 
 namespace gscript
 {

@@ -11,6 +11,8 @@ project ("GScript")
 add_library(gscript)
 add_library(gscript::gscript ALIAS gscript)
 
+#set_target_properties(gscript PROPERTIES DEBUG_POSTFIX ${CMAKE_DEBUG_POSTFIX})
+
 set_property(TARGET gscript PROPERTY CXX_STANDARD 17)
 
 if(${BUILD_SHARED_LIBS})

@@ -10,7 +10,7 @@ project ("GScriptTest")
 add_executable(gscriptTest)
 set_property(TARGET gscriptTest PROPERTY CXX_STANDARD 17)
 
-target_sources(gscriptTest PRIVATE "main.cpp")
+target_sources(gscriptTest PRIVATE "main.cpp" "arrayInitializerTest.cpp" "common.h" "extensiontest.cpp")
 
 if(NOT DEFINED BUILD_SHARED_LIBS OR NOT ${BUILD_SHARED_LIBS})
     target_compile_definitions(gscriptTest PRIVATE BUILD_NOLIB)
@@ -18,10 +18,14 @@ endif()
 
 find_package(Catch2 3.6.0 REQUIRED)
 
+add_library(gscriptobj STATIC $<TARGET_OBJECTS:gscript>)
+
 target_include_directories(gscriptTest PRIVATE "${CMAKE_SOURCE_DIR}/include")
+target_include_directories(gscriptTest PRIVATE "${CMAKE_SOURCE_DIR}/include/gscript")
 target_include_directories(gscriptTest PRIVATE "include")
 
-target_link_libraries(gscriptTest PRIVATE gscript)
+#target_link_libraries(gscriptTest PRIVATE gscript)
+target_link_libraries(gscriptTest PRIVATE gscriptobj)
 target_link_libraries(gscriptTest PRIVATE Catch2::Catch2WithMain)
 
 list(APPEND CMAKE_MODULE_PATH ${Catch2_SOURCE_DIR}/extras)

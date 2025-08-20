@@ -1,93 +1,62 @@
-#include <iostream>
-#include <fstream>
-#include <string>
-
 #include "script.hpp"
+
+#include "parser/pClass.hpp"
+#include "parser/pNamespace.hpp"
+#include "parser/pStatement.hpp"
+#include "parser/pVarDeclaration.hpp"
+
+#include "runtime/scriptValue.hpp"
+#include "runtime/classInstance.hpp"
+#include "runtime/globalNamespace.hpp"
+
+#include "framework/sfPrint.hpp"
+#include "framework/sfToString.hpp"
+
+#include "extension/scriptExtension.hpp"
+#include "extension/ConsoleExtension.hpp"
+#include "extension/IOExtension.hpp"
+
+#include "compiler/compiler.hpp"
+
 #include "IteratorRange.hpp"
-
-#include "pClass.hpp"
-#include "pNamespace.hpp"
-
-#include "pStatement.hpp"
-#include "pVarDeclaration.hpp"
-
-#include "compileException.hpp"
-#include "runtimeException.hpp"
-
-#include "scriptValue.hpp"
-
-#include "classInstance.hpp"
-#include "globalNamespace.hpp"
-
-#include "sfPrint.hpp"
-#include "sfToString.hpp"
-
 #include "defs.hpp"
 #include "type.hpp"
 #include "path.hpp"
 #include "util.hpp"
-
-#include "scriptExtension.hpp"
-
-#include "ConsoleExtension.hpp"
-#include "IOExtension.hpp"
-#include "SampleExtension.hpp"
-
+#include "compileException.hpp"
+#include "runtimeException.hpp"
 #include "debug.hpp"
+
+#include <iostream>
+#include <fstream>
+#include <string>
 
 namespace gscript
 {
-	ScriptNullValue *Script::SCR_NULL = new ScriptNullValue;
-	ScriptBoolValue *Script::SCR_TRUE = new ScriptBoolValue(true);
-	ScriptBoolValue *Script::SCR_FALSE = new ScriptBoolValue(false);
-
 	Script::Script()
-		: mainScope(new ScriptGlobalNamespace(*this))
+		: mainScope(std::make_unique<ScriptGlobalNamespace>(*this))
 	{
 	}
 
-	Script::Script(const std::string &path, const std::string &content)
-		:content(content),
-		path(path),
-		mainScope(new ScriptGlobalNamespace(*this))
+	Script::Script(const std::string &path)
+		: path(path)
+		, mainScope(std::make_unique<ScriptGlobalNamespace>(*this))
 	{
 	}
 
-	Script::Script(const std::string &path, const std::string &content, ScriptGlobalNamespace *mainScope)
-		: content(content),
-		path(path),
-		mainScope(mainScope),
-		isExtern(true)
+	Script::Script(const std::string &path, std::shared_ptr<ScriptGlobalNamespace> mainScope)
+		: path(path)
+		, mainScope(mainScope)
+		, isExtern(true)
 	{
 	}
 
-	Script::Script(const std::string &path, const std::string &content, Script &script)
-		: content(content),
-		path(path),
-		mainScope(script.mainScope),
-		extensions(script.extensions),
-		isExtern(true)
+	Script::Script(const std::string &path, Script &script)
+		: path(path)
+		, mainScope(script.mainScope)
+		, extensions(script.extensions)
+		, isExtern(true)
 	{
-	}
-
-	Script::~Script()
-	{
-		if (!this->isExtern)
-		{
-			if (this->mainScope)
-				delete this->mainScope;
-
-			for (EXTENSIONS_CONTAINER_T::iterator it = this->extensions.begin(); it != this->extensions.end(); ++it)
-				delete it->second;
-		}
-	}
-
-	Script &Script::operator=(const Script &b)
-	{
-		this->path = b.path;
-		this->content = b.content;
-
-		return *this;
 	}
 
 	void Script::extend(ScriptExtension *extension, const std::string &name)
@@ -99,54 +68,61 @@ namespace gscript
 	{
 		this->extend(new ConsoleExtension());
 		this->extend(new IOExtension());
-		this->extend(new SampleExtension());
 	}
 
 	ScriptExtension *Script::findExtension(const std::string &name)
 	{
-		Script::EXTENSIONS_CONTAINER_T::const_iterator it = this->extensions.find(name);
+		auto it = this->extensions.find(name);
 		if (it == this->extensions.end())
 			return nullptr;
 
-		return it->second;
+		return it->second.get();
 	}
 
 	bool Script::compile()
 	{
-		ParserNamespace mainNamespace(NAMESPACE_TYPE_T::NT_MAIN);
-		mainNamespace.parse(ParserEntity::StringIteratorRange(this->content.begin(), this->content.end()));
+		std::string source = loadSource(this->path);
 
-		for (ParserNamespace::IMPORT_CONTAINER_T::iterator it = mainNamespace.extensions.begin(); it != mainNamespace.extensions.end(); ++it)
+		Compiler compiler;
+
+		ParserNamespace mainNamespace(NAMESPACE_TYPE_T::NT_MAIN);
+		mainNamespace.parse(StringIteratorRange(source.begin(), source.end()));
+
+		for (auto& ex : mainNamespace.extensions)
 		{
-			if (ScriptExtension *ext = this->mainScope->getScript().findExtension(*it))
+			if (ScriptExtension *ext = this->mainScope->getScript().findExtension(ex))
 				ext->load(this->mainScope->getScript());
 			else
-				throw CompileException(std::string("Extension \"" + *it + "\" could not be found"));
+				throw CompileException(std::string("Extension \"" + ex + "\" could not be found"));
 		}
 
 		if (!this->isExtern)
 			this->init();
 		
-		for (ParserNamespace::NAMESPACE_CONTAINER_T::iterator it = mainNamespace.namespaces.begin(); it != mainNamespace.namespaces.end(); ++it)
+		for (auto& ns : mainNamespace.namespaces)
 		{
-			this->mainScope->registerNamespace(*it);
+			this->mainScope->registerNamespace(compiler.compileNamespace(this->mainScope.get(), ns));
+			//this->mainScope->registerNamespace(*it);
 		}
 
-		for (ParserNamespace::IMPORT_CONTAINER_T::iterator it = mainNamespace.imports.begin(); it != mainNamespace.imports.end(); ++it)
+		for (auto& imp : mainNamespace.imports)
 		{
-			this->import(*it);
+			this->import(imp);
 		}
 
-		for (ParserNamespace::CLASS_CONTAINER_T::iterator it = mainNamespace.classes.begin(); it != mainNamespace.classes.end(); ++it)
+		for (auto& cls : mainNamespace.classes)
 		{
-			this->mainScope->registerClassPrototype(*it);
+			//this->mainScope->registerClassPrototype(*it);
+			this->mainScope->registerClass(compiler.compileClass(this->mainScope.get(), cls));
 		}
 
-		this->mainScope->resolveClasses();
+		// this->mainScope->resolveClasses(); // TODO
 
 		for (ParserNamespace::FUNCTION_CONTAINER_T::iterator it = mainNamespace.functions.begin(); it != mainNamespace.functions.end(); ++it)
+		for (auto& fnc : mainNamespace.functions)
 		{
-			this->mainScope->registerFunctionPrototype(*it);
+			this->mainScope->registerFunction(compiler.compileFunction(this->mainScope.get(), fnc));
+			//this->mainScope->registerFunctionPrototype(*it);
 		}
 
 		this->mainScope->resolveFunctions();
@@ -157,14 +133,14 @@ namespace gscript
 
 	void Script::init()
 	{
-		this->mainScope->registerVariable(KW_NULL, Script::SCR_NULL->getType(), Script::SCR_NULL);
-		this->mainScope->registerVariable(KW_TRUE, Script::SCR_TRUE->getType(), Script::SCR_TRUE);
-		this->mainScope->registerVariable(KW_FALSE, Script::SCR_FALSE->getType(), Script::SCR_FALSE);
+		this->mainScope->registerVariable(KW_NULL, SCR_NULL->getType(), SCR_NULL);
+		this->mainScope->registerVariable(KW_TRUE, SCR_TRUE->getType(), SCR_TRUE);
+		this->mainScope->registerVariable(KW_FALSE, SCR_FALSE->getType(), SCR_FALSE);
 
-		this->mainScope->registerFunction(new ScriptFuncToString(*this->mainScope, "tostring"));
+		this->mainScope->registerFunction(std::make_unique<ScriptFuncToString>(*this->mainScope, "tostring"));
 
-		ScriptClass *entrypoint = new ScriptClass(*this->mainScope, "entrypoint", nullptr);
-		entrypoint->registerFunction(new ScriptMethod(
+		auto entrypoint = std::make_unique<ScriptClass>(*this->mainScope, "entrypoint", nullptr);
+		entrypoint->registerFunction(std::make_unique<ScriptMethod>(
 			*entrypoint,
 			"run",
 			ScriptType::create(VALUE_TYPE_T::VT_INT, *entrypoint),
@@ -172,7 +148,7 @@ namespace gscript
 			static_cast<BITFLAG_T>(MODIFIER_T::M_VIRTUAL) | static_cast<BITFLAG_T>(MODIFIER_T::M_ABSTRACT)
 		));
 
-		this->mainScope->registerClass(entrypoint);
+		this->mainScope->registerClass(std::move(entrypoint));
 	}
 
 	int Script::run(int argc, char **argv)
@@ -207,22 +183,17 @@ namespace gscript
 	void Script::import(const std::string &path)
 	{
 		Path p = Path(this->path);
-		Script scr = Script::load(p.getDirectory().clone(path), this->mainScope);
-		scr.isExtern = true;
+		Path importPath = p.getDirectory().clone(path);
+		Script scr(importPath, this->mainScope);
 		scr.compile();
-	}
-
-	const std::string &Script::getContent()
-	{
-		return this->content;
 	}
 
 	ScriptGlobalNamespace *Script::getMainScope()
 	{
-		return this->mainScope;
+		return this->mainScope.get();
 	}
 
-	Script Script::load(const std::string &path, ScriptGlobalNamespace *parentMainScope)
+	std::string Script::loadSource(const std::string &path)
 	{
 		std::ifstream str(path, std::ios_base::in | std::ios_base::ate);
 
@@ -235,9 +206,6 @@ namespace gscript
 		str.read(&scr[0], size);
 		str.close();
 
-		if (parentMainScope)
-			return Script(path, scr, parentMainScope);
-
-		return Script(path, scr);
+		return scr;
 	}
 }

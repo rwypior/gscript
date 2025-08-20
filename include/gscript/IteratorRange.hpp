@@ -9,7 +9,7 @@ namespace gscript
 	class IteratorRange
 	{
 	public:
-		typedef typename T::iterator ITERATOR_T;
+		typedef typename T::const_iterator ITERATOR_T;
 
 		ITERATOR_T begin;
 		ITERATOR_T end;
@@ -32,6 +32,8 @@ namespace gscript
 			return end - begin;
 		}
 	};
+
+	typedef IteratorRange<std::string> StringIteratorRange;
 }
 
 #endif

@@ -1,3 +1,13 @@
+- Move ParserEntity::StringIteratorRange to separate file
+- Fix includes after refactoring
+- Add factory classes which will create runtime statements from parser statements
+- Create unit tests
+- Add serialization/deserialization classes which will enable quick loading pre-parsed scripts
+- Create unit tests for that
+- Remove that weird access control class from runtime and add it to parser
+
+======
+
 - RETURN statement
 - class member syntax:
   - class.function()

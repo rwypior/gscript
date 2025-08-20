@@ -1,0 +1,27 @@
+target_sources(gscript PRIVATE		
+globalNamespace.hpp       pControlDirective.hpp  pTypeSpecifier.hpp
+ConsoleExtension.hpp         if.hpp                    pElse.hpp              pVar.hpp
+EntityPath.hpp               lib.hpp                   pEndStatement.hpp      pVarDeclaration.hpp
+IOExtension.hpp              literal.hpp               pEntity.hpp            pWhile.hpp
+IteratorRange.hpp            method.hpp                pExternSpecial.hpp     path.hpp
+OperatorFunctionFactory.hpp  namespace.hpp             pFieldDeclaration.hpp  return.hpp
+ParseResult.hpp              new.hpp                   pFor.hpp               runnable.hpp
+SampleExtension.hpp          operator.hpp              pForArglist.hpp        runtimeException.hpp
+StringUtils.hpp              pAbstractSpecial.hpp      pFuncCall.hpp          scope.hpp
+arrayInitializer.hpp         pAccessSpecifier.hpp      pFunction.hpp          scopedCall.hpp
+callable.hpp                 pArglist.hpp              pIf.hpp                script.hpp
+class.hpp                    pArglistEnd.hpp           pImportDirective.hpp   scriptExtension.hpp
+classInstance.hpp            pArglistStart.hpp         pInherit.hpp           scriptValue.hpp
+classKit.hpp                 pArrayAccessor.hpp        pLineComment.hpp       sfPrint.hpp
+compileException.hpp         pArrayInitializer.hpp     pListSeparator.hpp     sfToString.hpp
+conditionalOperator.hpp      pBlock.hpp                pLiteral.hpp           statement.hpp
+debug.hpp                    pBlockBody.hpp            pMethod.hpp            type.hpp
+defs.hpp                     pBlockComment.hpp         pNameSpecifier.hpp     util.hpp
+entityLink.hpp               pBlockEnd.hpp             pNamespace.hpp         utilParserChar.hpp
+extensionKit.hpp             pBlockStart.hpp           pNew.hpp               utilParserWord.hpp
+for.hpp                      pCallArglist.hpp          pOperator.hpp          varDeclaration.hpp
+funcCall.hpp                 pClass.hpp                pReference.hpp         varRead.hpp
+funcParam.hpp                pComment.hpp              pReturn.hpp            variable.hpp
+function.hpp                 pConditionalOperator.hpp  pSpecialDirective.hpp  while.hpp
+functionKit.hpp              pConstructor.hpp          pStatement.hpp
+)

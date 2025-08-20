@@ -1,9 +1,11 @@
 #ifndef _h_gscript_util_p_word
 #define _h_gscript_util_p_word
 
-#include <string>
+#include "parser/pEntity.hpp"
+#include "IteratorRange.hpp"
 
-#include "pEntity.hpp"
+#include <string>
+#include <memory>
 
 namespace gscript
 {
@@ -15,9 +17,9 @@ namespace gscript
 		{
 			extern const std::string WORD_ANY;
 
-			ParseResult parse(ParserEntity::StringIteratorRange itrange, const std::string &word, void *subResult = NULL, bool allowSpaces = false);
-			ParseResult parseUntil(ParserEntity::StringIteratorRange itrange, const std::string &word, void *subResult = NULL, const std::string &allowed = "");
-			void copy(char *destination, ParserEntity::StringIteratorRange itrange);
+			ParseResult parse(StringIteratorRange itrange, const std::string &word, std::shared_ptr<ParserEntity>&& subResult = nullptr, bool allowSpaces = false);
+			ParseResult parseUntil(StringIteratorRange itrange, const std::string &word, std::shared_ptr<ParserEntity>&& subResult = nullptr, const std::string &allowed = "");
+			void copy(char *destination, StringIteratorRange itrange);
 		};
 	}
 }

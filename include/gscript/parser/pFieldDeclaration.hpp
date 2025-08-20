@@ -1,0 +1,19 @@
+#ifndef _h_gscript_parser_fielddeclaration
+#define _h_gscript_parser_fielddeclaration
+
+#include "pVarDeclaration.hpp"
+#include "pAccessSpecifier.hpp"
+#include "IteratorRange.hpp"
+
+namespace gscript
+{
+	class ParserFieldDeclaration : public ParserVarDeclaration
+	{
+	public:
+		ParserAccessSpecifier accessSpecifier;
+
+		virtual ParseResult parse(StringIteratorRange itrange) override;
+	};
+}
+
+#endif

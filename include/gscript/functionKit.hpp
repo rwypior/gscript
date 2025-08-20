@@ -3,8 +3,8 @@
 
 #include "defs.hpp"
 #include "type.hpp"
-#include "funcParam.hpp"
-#include "scriptValue.hpp"
-#include "function.hpp"
+#include "runtime/funcParam.hpp"
+#include "runtime/scriptValue.hpp"
+#include "runtime/function.hpp"
 
 #endif

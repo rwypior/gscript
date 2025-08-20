@@ -1,10 +1,7 @@
 #ifndef _h_gscript_defs
 #define _h_gscript_defs
 
-#include <unordered_map>
-#include <list>
-#include <string>
-#include <cassert>
+#include <vector>
 
 #define NOARG
 
@@ -16,6 +13,8 @@ namespace gscript
 	class ScriptType;
 	class ScriptArrayType;
 	class ScriptArrayValue;
+	class ScriptNullValue;
+	class ScriptBoolValue;
 
 	enum class MODIFIER_T
 	{
@@ -66,6 +65,7 @@ namespace gscript
 
 	enum class OPERATOR_TYPE_T
 	{
+		OT_INVALID = 0,
 		OT_MEMBER_ACCESSOR = 1,
 		OT_ADD = 2,
 		OT_ADD_TO = 3,
@@ -126,6 +126,10 @@ namespace gscript
 	extern const char *KW_NULL;
 	extern const char *KW_TRUE;
 	extern const char *KW_FALSE;
+
+	extern ScriptNullValue* SCR_NULL;
+	extern ScriptBoolValue* SCR_TRUE;
+	extern ScriptBoolValue* SCR_FALSE;
 }
 
 #endif

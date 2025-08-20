@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <exception>
 
 #if defined(_WIN32) || defined(_WIN64)
 	#define OPSYSTEM_WINDOWS
@@ -276,8 +277,7 @@ namespace gscript
 			HMODULE mod = GetModuleHandle(NULL);
 			if (mod == NULL)
 			{
-				std::cout << "Program path could not be obtained\n";
-				exit(EXIT_FAILURE);
+				throw std::runtime_error("Program path could not be determined");
 			}
 
 			char path[MAX_PATH];

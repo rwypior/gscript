@@ -12,6 +12,44 @@
 
 namespace gscript
 {
+	std::unordered_map<OPERATOR_TYPE_T, std::string> ScriptOperator::opmap = {
+		{ OPERATOR_TYPE_T::OT_INVALID, "Invalid" },
+		{ OPERATOR_TYPE_T::OT_MEMBER_ACCESSOR, "Member accessor" },
+		{ OPERATOR_TYPE_T::OT_ADD, "Add" },
+		{ OPERATOR_TYPE_T::OT_ADD_TO, "Add to" },
+		{ OPERATOR_TYPE_T::OT_SUBTRACT, "Subtract" },
+		{ OPERATOR_TYPE_T::OT_SUBTRACT_FROM, "Subtract from" },
+		{ OPERATOR_TYPE_T::OT_MULTIPLY, "Multiply" },
+		{ OPERATOR_TYPE_T::OT_MULTIPLY_BY, "Multiply by" },
+		{ OPERATOR_TYPE_T::OT_DIVIDE, "Divide" },
+		{ OPERATOR_TYPE_T::OT_DIVIDE_BY, " Divide by" },
+		{ OPERATOR_TYPE_T::OT_EQUALS , "Equals" },
+		{ OPERATOR_TYPE_T::OT_NOT_EQUALS , "Not equals" },
+		{ OPERATOR_TYPE_T::OT_GREATER_THAN , "Greater than" },
+		{ OPERATOR_TYPE_T::OT_GREATER_THAN_OR_EQUAL , "Greater than or equal" },
+		{ OPERATOR_TYPE_T::OT_LESSER_THAN , "Less than" },
+		{ OPERATOR_TYPE_T::OT_LESSER_THAN_OR_EQUAL , "Less than or equal" },
+		{ OPERATOR_TYPE_T::OT_ASSIGN , "Assign" },
+		{ OPERATOR_TYPE_T::OT_NEGATE , "Negate" },
+		{ OPERATOR_TYPE_T::OT_INCREMENT , "Increment" },
+		{ OPERATOR_TYPE_T::OT_PRE_INCREMENT , "Pre increment" },
+		{ OPERATOR_TYPE_T::OT_POST_INCREMENT , "Post increment" },
+		{ OPERATOR_TYPE_T::OT_DECREMENT , "Decrement" },
+		{ OPERATOR_TYPE_T::OT_PRE_DECREMENT , "Pre decrement" },
+		{ OPERATOR_TYPE_T::OT_POST_DECREMENT , "Post decrement" },
+		{ OPERATOR_TYPE_T::OT_CONDITIONAL_IF , "Conditional if" },
+		{ OPERATOR_TYPE_T::OT_CONDITIONAL_ELSE , "Conditional else" },
+		{ OPERATOR_TYPE_T::OT_CONDITIONAL_NULL, "Conditional null" }
+	};
+
+	std::string ScriptOperator::translateOperator(OPERATOR_TYPE_T t)
+	{
+		auto it = opmap.find(t);
+		if (it == opmap.end())
+			return "";
+		return it->second;
+	}
+
 	ScriptOperator::ScriptOperator(ScriptScope &scope, OPERATOR_LINK_T linkage)
 		: ScriptCallable(scope)
 		, linkage(linkage)

@@ -28,7 +28,7 @@ namespace gscript
 
 	SCRIPT_API void ScriptExecutiveBlock::merge(ScriptExecutiveBlock&& block)
 	{
-		this->statements.insert(this->statements.end(), std::make_move_iterator(block.statements.end()), std::make_move_iterator(block.statements.end()));
+		this->statements.insert(this->statements.end(), std::make_move_iterator(block.statements.begin()), std::make_move_iterator(block.statements.end()));
 	}
 
 	SCRIPT_API void ScriptExecutiveBlock::merge(std::unique_ptr<ScriptExecutiveBlock>&& block)

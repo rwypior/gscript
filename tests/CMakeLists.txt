@@ -10,7 +10,7 @@ project ("GScriptTest")
 add_executable(gscriptTest)
 set_property(TARGET gscriptTest PROPERTY CXX_STANDARD 17)
 
-target_sources(gscriptTest PRIVATE "main.cpp" "arrayInitializerTest.cpp" "common.h" "extensiontest.cpp")
+target_sources(gscriptTest PRIVATE "common.h" "main.cpp")
 
 # We're compiling against obj files - don't use DLL macros
 target_compile_definitions(gscriptTest PRIVATE BUILD_NOLIB)
@@ -23,9 +23,13 @@ target_include_directories(gscriptTest PRIVATE "${CMAKE_SOURCE_DIR}/include")
 target_include_directories(gscriptTest PRIVATE "${CMAKE_SOURCE_DIR}/include/gscript")
 target_include_directories(gscriptTest PRIVATE "include")
 
-#target_link_libraries(gscriptTest PRIVATE gscript)
 target_link_libraries(gscriptTest PRIVATE gscriptobj)
 target_link_libraries(gscriptTest PRIVATE Catch2::Catch2WithMain)
+
+add_subdirectory("extension")
+#add_subdirectory("integration")
+#add_subdirectory("parser")
+add_subdirectory("runtime")
 
 list(APPEND CMAKE_MODULE_PATH ${Catch2_SOURCE_DIR}/extras)
 include(Catch)

@@ -49,13 +49,10 @@ namespace gscript
 	class ScriptType
 	{
 	public:
-		typedef std::pair<std::string, VALUE_TYPE_T> TYPEMAP_DATA_T;
-		typedef std::unordered_map<std::string, VALUE_TYPE_T> TYPEMAP_T;
-
-		static TYPEMAP_DATA_T typemapData[];
-		static TYPEMAP_T typemap;
+		static std::unordered_map<std::string, VALUE_TYPE_T> typemap;
 
 		static TypeDescriptor translateType(const std::string &name);
+		static std::string translateType(VALUE_TYPE_T t);
 		static ScriptValue *createEmptyValue(VALUE_TYPE_T type, const ScriptType *t = nullptr);
 
 		SCRIPT_API explicit ScriptType(VALUE_TYPE_T type);

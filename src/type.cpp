@@ -15,27 +15,25 @@ namespace gscript
 {
 	// TYPE FACTORY
 
-	ScriptType::TYPEMAP_DATA_T ScriptType::typemapData[] = {
-		std::make_pair("bool", VALUE_TYPE_T::VT_BOOL),
-		std::make_pair("byte", VALUE_TYPE_T::VT_BYTE),
-		std::make_pair("char", VALUE_TYPE_T::VT_CHAR),
-		std::make_pair("int", VALUE_TYPE_T::VT_INT),
-		std::make_pair("unsigned int", VALUE_TYPE_T::VT_UNSIGNED_INT),
-		std::make_pair("float", VALUE_TYPE_T::VT_FLOAT),
-		std::make_pair("double", VALUE_TYPE_T::VT_DOUBLE),
-		std::make_pair("string", VALUE_TYPE_T::VT_STRING),
-		std::make_pair("class", VALUE_TYPE_T::VT_CLASS),
-		std::make_pair("array", VALUE_TYPE_T::VT_ARRAY),
-		std::make_pair("reference", VALUE_TYPE_T::VT_REFERENCE),
-		std::make_pair("null", VALUE_TYPE_T::VT_NULL),
-		std::make_pair("void", VALUE_TYPE_T::VT_NULL)
-	};
-
-	ScriptType::TYPEMAP_T ScriptType::typemap(ScriptType::typemapData, ScriptType::typemapData + sizeof ScriptType::typemapData / sizeof ScriptType::typemapData[0]);
+	std::unordered_map<std::string, VALUE_TYPE_T> ScriptType::typemap({
+		{ "bool", VALUE_TYPE_T::VT_BOOL },
+		{ "byte", VALUE_TYPE_T::VT_BYTE },
+		{ "char", VALUE_TYPE_T::VT_CHAR },
+		{ "int", VALUE_TYPE_T::VT_INT },
+		{ "unsigned int", VALUE_TYPE_T::VT_UNSIGNED_INT },
+		{ "float", VALUE_TYPE_T::VT_FLOAT },
+		{ "double", VALUE_TYPE_T::VT_DOUBLE },
+		{ "string", VALUE_TYPE_T::VT_STRING },
+		{ "class", VALUE_TYPE_T::VT_CLASS },
+		{ "array", VALUE_TYPE_T::VT_ARRAY },
+		{ "reference", VALUE_TYPE_T::VT_REFERENCE },
+		{ "null", VALUE_TYPE_T::VT_NULL },
+		{ "void", VALUE_TYPE_T::VT_NULL }
+	});
 
 	TypeDescriptor ScriptType::translateType(const std::string &name)
 	{
-		TYPEMAP_T::iterator it = typemap.find(name);
+		auto it = typemap.find(name);
 		if (it != typemap.end())
 			return TypeDescriptor(it->second);
 
@@ -43,7 +41,7 @@ namespace gscript
 		if (firstBracket != std::string::npos)
 		{
 			std::string subName = name.substr(0, firstBracket);
-			TYPEMAP_T::iterator it2 = typemap.find(subName);
+			auto it2 = typemap.find(subName);
 			return TypeDescriptor(typemap.at("array"), translateType(subName));
 		}
 
@@ -51,11 +49,21 @@ namespace gscript
 		if (firstRef != std::string::npos)
 		{
 			std::string subName = name.substr(0, firstRef);
-			TYPEMAP_T::iterator it2 = typemap.find(subName);
+			auto it2 = typemap.find(subName);
 			return TypeDescriptor(typemap.at("reference"), translateType(subName));
 		}
 
 		return TypeDescriptor(typemap.at("class"), name);
+	}
+
+	std::string ScriptType::translateType(VALUE_TYPE_T t)
+	{
+		auto it = std::find_if(typemap.begin(), typemap.end(), [t](const std::pair<std::string, VALUE_TYPE_T>& p) {
+			return p.second == t;
+		});
+		if (it == typemap.end())
+			return "";
+		return it->first;
 	}
 
 	ScriptValue *ScriptType::createEmptyValue(VALUE_TYPE_T type, const ScriptType *t)

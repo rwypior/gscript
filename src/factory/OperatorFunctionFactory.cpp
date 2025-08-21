@@ -3,6 +3,8 @@
 #include "runtime/callable.hpp"
 #include "runtime/varRead.hpp"
 #include "runtime/variable.hpp"
+#include "runtime/operator.hpp"
+#include "type.hpp"
 #include "compileException.hpp"
 
 namespace gscript
@@ -174,9 +176,11 @@ namespace gscript
 		OPERATOR_FUNCTION_T OperatorFunctionFactory::getFunction(VALUE_TYPE_T left, VALUE_TYPE_T right, OPERATOR_TYPE_T oper)
 		{
 			FUNCMAP_T::const_iterator it = funcmap.find(std::make_tuple(left, right, oper));
-
+			
 			if (it == funcmap.end())
-				throw CompileException("Could not resolve given operator for given types");
+				throw CompileException(std::string(
+					"Could not resolve the operator \"") + ScriptOperator::translateOperator(oper) +
+					"\" for types \"" + ScriptType::translateType(left) + "\" and \"" + ScriptType::translateType(right) + "\"");
 
 			return it->second;
 		}

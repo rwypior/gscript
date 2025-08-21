@@ -16,7 +16,6 @@ namespace gscript
 	class ScriptFor : public ScriptExecutiveBlock, public ScriptCallable
 	{
 	public:
-
 		ScriptFor(
 			ScriptScope &scope, 
 			std::unique_ptr<ScriptVarDeclaration>&& vardecl, 

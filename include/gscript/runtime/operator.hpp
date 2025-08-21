@@ -17,11 +17,13 @@ namespace gscript
 	class ScriptOperator : public ScriptCallable
 	{
 	public:
-		OPERATOR_LINK_T linkage = OPERATOR_LINK_T::OL_SINGLE;
+		static std::unordered_map<OPERATOR_TYPE_T, std::string> opmap;
+
+		OPERATOR_LINK_T linkage;
 		std::shared_ptr<ScriptCallable> left = nullptr;
 		std::shared_ptr<ScriptCallable> right = nullptr;
 
-		ScriptOperator(ScriptScope &scope, OPERATOR_LINK_T linkage);
+		ScriptOperator(ScriptScope &scope, OPERATOR_LINK_T linkage = OPERATOR_LINK_T::OL_SINGLE);
 
 		virtual const ScriptType *getType() const override;
 
@@ -32,6 +34,8 @@ namespace gscript
 		virtual void setup() {};
 
 		void assignOperatorFunction();
+
+		static std::string translateOperator(OPERATOR_TYPE_T t);
 
 	protected:
 		OperatorFunctionFactory::OPERATOR_FUNCTION_T operatorFunction = nullptr;

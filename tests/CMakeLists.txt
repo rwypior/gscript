@@ -21,7 +21,7 @@ add_library(gscriptobj STATIC $<TARGET_OBJECTS:gscript>)
 
 target_include_directories(gscriptTest PRIVATE "${CMAKE_SOURCE_DIR}/include")
 target_include_directories(gscriptTest PRIVATE "${CMAKE_SOURCE_DIR}/include/gscript")
-target_include_directories(gscriptTest PRIVATE "include")
+target_include_directories(gscriptTest PRIVATE ".")
 
 target_link_libraries(gscriptTest PRIVATE gscriptobj)
 target_link_libraries(gscriptTest PRIVATE Catch2::Catch2WithMain)

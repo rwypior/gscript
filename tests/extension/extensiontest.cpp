@@ -4,8 +4,6 @@
 #include "gscript/runtime/class.hpp"
 #include "gscript/runtime/globalNamespace.hpp"
 
-// TODO - move this to separate project, tests maybe?
-
 namespace gscript
 {
 	class SampleExtension : public ScriptExtension

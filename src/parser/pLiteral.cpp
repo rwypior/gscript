@@ -1,5 +1,4 @@
 #include "parser/pLiteral.hpp"
-#include "utilParserWord.hpp"
 
 namespace gscript
 {
@@ -13,10 +12,12 @@ namespace gscript
 		bool cleanEnd = true;
 		bool isInt = false;
 
-		std::string::const_iterator begin;
+		std::string::const_iterator begin = itrange.end;
+		size_t newlines = 0;
 
 		for (auto it = itrange.begin; it != itrange.end; ++it)
 		{
+			newlines += std::isspace(*it);
 			if (!std::isspace(*it))
 			{
 				begin = it;
@@ -25,6 +26,9 @@ namespace gscript
 		}
 
 		auto it = begin;
+
+		if (it == itrange.end)
+			return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange.shifted(newlines), "Expected literal value, got empty string" });
 
 		if (*begin == '"')
 		{

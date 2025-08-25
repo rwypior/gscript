@@ -1,10 +1,10 @@
 #include "parser/pBlockStart.hpp"
-#include "utilParserChar.hpp"
+#include "parser/pChar.hpp"
 
 namespace gscript
 {
 	ParseResult ParserBlockStart::parse(StringIteratorRange itrange)
 	{
-		return Util::Char::parse(itrange, this->KW_BLOCKSTART);
+		return ParserChar::parse(itrange, this->KW_BLOCKSTART);
 	}
 }

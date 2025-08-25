@@ -1,6 +1,5 @@
 #include "parser/pFuncCall.hpp"
 #include "parser/pNameSpecifier.hpp"
-#include "utilParserChar.hpp"
 
 namespace gscript
 {

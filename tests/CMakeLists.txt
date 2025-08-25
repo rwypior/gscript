@@ -28,7 +28,7 @@ target_link_libraries(gscriptTest PRIVATE Catch2::Catch2WithMain)
 
 add_subdirectory("extension")
 #add_subdirectory("integration")
-#add_subdirectory("parser")
+add_subdirectory("parser")
 add_subdirectory("runtime")
 
 list(APPEND CMAKE_MODULE_PATH ${Catch2_SOURCE_DIR}/extras)

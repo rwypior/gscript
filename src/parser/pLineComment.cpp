@@ -1,16 +1,15 @@
 #include "parser/pLineComment.hpp"
-#include "utilParserWord.hpp"
-#include "utilParserChar.hpp"
+#include "parser/pWord.hpp"
 
 namespace gscript
 {
 	ParseResult ParserLineComment::parse(StringIteratorRange itrange)
 	{
-		ParseResult res = Util::Word::parseUntil(itrange, ParserLineComment::CHR_LINE_COMMENT, nullptr, " \t\n");
+		ParseResult res = ParserWord::parseUntil(itrange, ParserLineComment::CHR_LINE_COMMENT, nullptr, " \t\n");
 
 		if (res.isOk())
 		{
-			ParseResult nlRes = Util::Word::parseUntil(StringIteratorRange(res.result.end, itrange.end), "\n");
+			ParseResult nlRes = ParserWord::parseUntil(StringIteratorRange(res.result.end, itrange.end), "\n");
 
 			auto end = itrange.end;
 			if (nlRes.isOk())

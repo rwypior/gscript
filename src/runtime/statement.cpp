@@ -7,7 +7,6 @@
 #include "runtime/variable.hpp"
 #include "runtime/arrayInitializer.hpp"
 #include "runtime/namespace.hpp"
-#include "runtime/globalNamespace.hpp"
 #include "runtime/class.hpp"
 #include "runtime/function.hpp"
 

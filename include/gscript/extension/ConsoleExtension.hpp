@@ -6,7 +6,6 @@
 #include "runtime/function.hpp"
 #include "runtime/method.hpp"
 #include "runtime/class.hpp"
-#include "runtime/globalNamespace.hpp"
 #include "runtime/scope.hpp"
 
 #include <string>

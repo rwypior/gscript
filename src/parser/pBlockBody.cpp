@@ -21,6 +21,11 @@ namespace gscript
 	{
 	}
 
+	void ParserBlockBody::setMinEntries(unsigned int minEntries)
+	{
+		this->minEntries = minEntries;
+	}
+
 	void ParserBlockBody::setMaxEntries(unsigned int maxEntries)
 	{
 		this->maxEntries = maxEntries;
@@ -109,6 +114,14 @@ namespace gscript
 				pifres.isOk() ||
 				pwhileres.isOk();*/
 		} while (anyGood && (!this->maxEntries || ++processedEntries < this->maxEntries));
+
+		if (!anyGood && this->minEntries > 0)
+		{
+			if (this->maxEntries == 1)
+				return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange, "Expected statement" });
+
+			return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange, "Expected body block" });
+		}
 
 		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(itrange.begin, endPosition));
 	}

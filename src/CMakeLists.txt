@@ -1,5 +1,5 @@
 target_sources(gscript PRIVATE
-	"defs.cpp" "EntityPath.cpp" "script.cpp" "type.cpp" "util.cpp" "utilParserChar.cpp" "utilParserWord.cpp"
+	"defs.cpp" "EntityPath.cpp" "script.cpp" "type.cpp" "util.cpp"
 )
 add_subdirectory("compiler")
 add_subdirectory("extension")

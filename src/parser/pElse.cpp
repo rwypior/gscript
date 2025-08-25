@@ -3,13 +3,13 @@
 #include "parser/pArglistStart.hpp"
 #include "parser/pArglistEnd.hpp"
 #include "parser/pCallArglist.hpp"
-#include "utilParserWord.hpp"
+#include "parser/pWord.hpp"
 
 namespace gscript
 {
 	ParseResult ParserElse::parse(StringIteratorRange itrange)
 	{
-		ParseResult parentResult = Util::Word::parse(itrange, ParserElse::KW_ELSE);
+		ParseResult parentResult = ParserWord::parse(itrange, ParserElse::KW_ELSE);
 		if (parentResult.status != ParseResult::STATUS_T::S_OK)
 			return parentResult;
 

@@ -1,6 +1,5 @@
 #include "parser/pImportDirective.hpp"
-#include "utilParserChar.hpp"
-#include "utilParserWord.hpp"
+#include "parser/pChar.hpp"
 
 #include <string>
 
@@ -39,10 +38,10 @@ namespace gscript
 		//if (beginResult.status != ParseResult::STATUS_T::S_OK)
 			//return beginResult;
 
-		ParseResult beginResult = Util::Char::parse(StringIteratorRange(controlResult.result.end, itrange.end), ParserImportDirective::ENCLOSURE_BEGIN);
+		ParseResult beginResult = ParserChar::parse(StringIteratorRange(controlResult.result.end, itrange.end), ParserImportDirective::ENCLOSURE_BEGIN);
 		if (!beginResult.isOk())
 		{
-			beginResult = Util::Char::parse(StringIteratorRange(controlResult.result.end, itrange.end), ParserImportDirective::EXTENSION_ENCLOSURE_BEGIN);
+			beginResult = ParserChar::parse(StringIteratorRange(controlResult.result.end, itrange.end), ParserImportDirective::EXTENSION_ENCLOSURE_BEGIN);
 
 			if (!beginResult.isOk())
 				return beginResult;

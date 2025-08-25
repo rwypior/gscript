@@ -2,7 +2,6 @@
 #include "runtime/function.hpp"
 #include "runtime/class.hpp"
 #include "runtime/namespace.hpp"
-#include "runtime/globalNamespace.hpp"
 #include "runtime/function.hpp"
 #include "type.hpp"
 #include "defs.hpp"
@@ -157,26 +156,34 @@ namespace gscript
 
 	ScriptNamespace *ScriptScope::getClosestNamespace(bool includeSelf)
 	{
-		if (ScriptNamespace *ns = dynamic_cast<ScriptNamespace*>(this))
+		if (ScriptNamespace* ns = dynamic_cast<ScriptNamespace*>(this))
+		{
 			if (includeSelf)
 				return ns;
+		}
 
 		if (this->parentScope)
+		{
 			if (ScriptNamespace *ns = this->parentScope->getClosestNamespace(true))
 				return ns;
+		}
 
-		return NULL;
+		return nullptr;
 	}
 
-	ScriptGlobalNamespace *ScriptScope::getGlobalNamespace()
+	ScriptNamespace* ScriptScope::getGlobalNamespace()
 	{
-		if (ScriptGlobalNamespace *ns = dynamic_cast<ScriptGlobalNamespace*>(this))
+		if (this->parentScope)
+		{
+			auto parentNamespace = this->parentScope->getGlobalNamespace();
+			if (ScriptNamespace* ns = dynamic_cast<ScriptNamespace*>(parentNamespace))
+				return ns;
+		}
+
+		if (ScriptNamespace* ns = dynamic_cast<ScriptNamespace*>(this))
 			return ns;
 
-		if (this->parentScope)
-			return this->parentScope->getGlobalNamespace();
-
-		return NULL;
+		return nullptr;
 	}
 
 	void ScriptScope::setParentScope(ScriptScope *scope)
@@ -206,15 +213,6 @@ namespace gscript
 		}
 
 		return false;
-	}
-
-	ScriptExternFunction &ScriptScope::getExternFunction(const std::string &name)
-	{
-		if (ScriptGlobalNamespace *global = this->getGlobalNamespace())
-			if (ScriptExternFunction *ext = global->findExternFunction(name))
-				return *ext;
-
-		throw CompileException(std::string("Extern function \"" + name + "\" not found"));
 	}
 
 	/*ScriptClass *ScriptScope::findClass(const EntityPath &path)

@@ -1,7 +1,6 @@
 target_sources(gscript PRIVATE
 	"classKit.hpp" "compileException.hpp" "debug.hpp" "defs.hpp" "EntityPath.hpp" "extensionKit.hpp" "functionKit.hpp"
 	"IteratorRange.hpp" "lib.hpp" "path.hpp" "runtimeException.hpp" "script.hpp" "StringUtils.hpp" "type.hpp" "util.hpp"
-	"utilParserChar.hpp" "utilParserWord.hpp"
 )
 add_subdirectory("compiler")
 add_subdirectory("extension")

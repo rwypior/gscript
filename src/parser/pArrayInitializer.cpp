@@ -1,7 +1,6 @@
 #include "parser/pArrayInitializer.hpp"
 #include "parser/pComment.hpp"
 #include "parser/pLiteral.hpp"
-#include "utilParserChar.hpp"
 
 namespace gscript
 {

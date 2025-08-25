@@ -11,6 +11,7 @@ namespace gscript
 		ParseResult begin = (ParserBlockStart()).parse(StringIteratorRange(itrange.begin, itrange.end));
 		if (!begin.isOk())
 		{
+			this->body.setMinEntries(1);
 			this->body.setMaxEntries(1);
 			ParseResult bodyres = this->body.parse(StringIteratorRange(itrange.begin, itrange.end));
 

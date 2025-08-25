@@ -1,5 +1,4 @@
 #include "runtime/method.hpp"
-#include "runtime/globalNamespace.hpp"
 #include "runtime/class.hpp"
 
 #include "defs.hpp"
@@ -80,22 +79,22 @@ namespace gscript
 
 	// EXTERN
 
-	ScriptExternMethod::ScriptExternMethod
-	(
-		const std::string &externName,
-		ScriptScope &scope,
-		const std::string &name,
-		ScriptType *returnType,
-		const PARAMS_T &parameters,
-		BITFLAG_T modifier
-	)
-		: ScriptMethod(scope, name, returnType, parameters, modifier)
-		, target(scope.getExternFunction(externName))
-	{
-	}
+	//ScriptExternMethod::ScriptExternMethod
+	//(
+	//	const std::string &externName,
+	//	ScriptScope &scope,
+	//	const std::string &name,
+	//	ScriptType *returnType,
+	//	const PARAMS_T &parameters,
+	//	BITFLAG_T modifier
+	//)
+	//	: ScriptMethod(scope, name, returnType, parameters, modifier)
+	//	, target(scope.getExternFunction(externName))
+	//{
+	//}
 
-	ScriptValue *ScriptExternMethod::run(const CALLABLE_PARAMS_T &c)
-	{
-		return this->target.run(c);
-	}
+	//ScriptValue *ScriptExternMethod::run(const CALLABLE_PARAMS_T &c)
+	//{
+	//	return this->target.run(c);
+	//}
 }

@@ -7,7 +7,6 @@
 
 #include "runtime/scriptValue.hpp"
 #include "runtime/classInstance.hpp"
-#include "runtime/globalNamespace.hpp"
 
 #include "framework/sfPrint.hpp"
 #include "framework/sfToString.hpp"
@@ -34,17 +33,17 @@
 namespace gscript
 {
 	Script::Script()
-		: mainScope(std::make_unique<ScriptGlobalNamespace>(*this))
+		: mainScope(std::make_shared<ScriptNamespace>())
 	{
 	}
 
 	Script::Script(const std::string &path)
 		: path(path)
-		, mainScope(std::make_unique<ScriptGlobalNamespace>(*this))
+		, mainScope(std::make_shared<ScriptNamespace>())
 	{
 	}
 
-	Script::Script(const std::string &path, std::shared_ptr<ScriptGlobalNamespace> mainScope)
+	Script::Script(const std::string &path, std::shared_ptr<ScriptNamespace> mainScope)
 		: path(path)
 		, mainScope(mainScope)
 		, isExtern(true)
@@ -86,12 +85,12 @@ namespace gscript
 		Compiler compiler;
 
 		ParserNamespace mainNamespace(NAMESPACE_TYPE_T::NT_MAIN);
-		mainNamespace.parse(StringIteratorRange(source.begin(), source.end()));
+		mainNamespace.parse(StringIteratorRange(source.begin(), source.end(), this->path, 0));
 
 		for (auto& ex : mainNamespace.extensions)
 		{
-			if (ScriptExtension *ext = this->mainScope->getScript().findExtension(ex))
-				ext->load(this->mainScope->getScript());
+			if (ScriptExtension *ext = this->findExtension(ex))
+				ext->load(*this);
 			else
 				throw CompileException(std::string("Extension \"" + ex + "\" could not be found"));
 		}
@@ -118,7 +117,6 @@ namespace gscript
 
 		// this->mainScope->resolveClasses(); // TODO
 
-		for (ParserNamespace::FUNCTION_CONTAINER_T::iterator it = mainNamespace.functions.begin(); it != mainNamespace.functions.end(); ++it)
 		for (auto& fnc : mainNamespace.functions)
 		{
 			this->mainScope->registerFunction(compiler.compileFunction(this->mainScope.get(), fnc));
@@ -188,7 +186,7 @@ namespace gscript
 		scr.compile();
 	}
 
-	ScriptGlobalNamespace *Script::getMainScope()
+	ScriptNamespace *Script::getMainScope()
 	{
 		return this->mainScope.get();
 	}

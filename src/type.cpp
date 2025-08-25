@@ -3,7 +3,6 @@
 #include "compileException.hpp"
 #include "runtime/scope.hpp"
 #include "runtime/namespace.hpp"
-#include "runtime/globalNamespace.hpp"
 #include "runtime/class.hpp"
 #include "runtime/variable.hpp"
 #include "parser/pReference.hpp"

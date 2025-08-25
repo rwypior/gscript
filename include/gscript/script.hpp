@@ -2,7 +2,6 @@
 #define _h_gscript_script
 
 #include "runtime/scriptValue.hpp"
-#include "runtime/globalNamespace.hpp"
 #include "runtime/function.hpp"
 #include "lib.hpp"
 
@@ -15,14 +14,13 @@
 namespace gscript
 {
 	class ScriptExtension;
-	class ScriptGlobalNamespace;
 
 	class Script
 	{
 	public:
 		SCRIPT_API Script();
 		SCRIPT_API Script(const std::string &path);
-		SCRIPT_API Script(const std::string &path, std::shared_ptr<ScriptGlobalNamespace> mainScope);
+		SCRIPT_API Script(const std::string &path, std::shared_ptr<ScriptNamespace> mainScope);
 		SCRIPT_API Script(const std::string &path, Script &parent);
 		~Script() = default;
 
@@ -33,10 +31,10 @@ namespace gscript
 		SCRIPT_API bool compile();
 		SCRIPT_API int run(int argc, char **argv);
 		
-		SCRIPT_API ScriptGlobalNamespace *getMainScope();
+		SCRIPT_API ScriptNamespace* getMainScope();
 
 	protected:
-		std::shared_ptr<ScriptGlobalNamespace> mainScope = nullptr;
+		std::shared_ptr<ScriptNamespace> mainScope = nullptr; // Must be shared in case the script is imported by another script
 		std::unordered_map<std::string, std::shared_ptr<ScriptExtension>> extensions;
 
 		void init();

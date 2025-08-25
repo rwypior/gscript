@@ -2,20 +2,19 @@
 #define _h_gscript_test_common
 
 #include "gscript/script.hpp"
-#include "gscript/scope.hpp"
-#include "gscript/globalNamespace.hpp"
+#include "gscript/runtime/scope.hpp"
 
 class GscriptTest
 {
 public:
 	GscriptTest()
-		: globalNamespace(script)
+		: globalNamespace(*script.getMainScope())
 	{
 	}
 
 protected:
 	gscript::Script script;
-	gscript::ScriptGlobalNamespace globalNamespace;
+	gscript::ScriptNamespace& globalNamespace;
 };
 
 #endif

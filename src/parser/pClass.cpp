@@ -6,13 +6,13 @@
 #include "parser/pMethod.hpp"
 #include "parser/pFieldDeclaration.hpp"
 #include "parser/pConstructor.hpp"
-#include "utilParserWord.hpp"
+#include "parser/pWord.hpp"
 
 namespace gscript
 {
 	ParseResult ParserClass::parse(StringIteratorRange itrange)
 	{
-		ParseResult parentResult = Util::Word::parse(itrange, ParserClass::KW_CLASS);
+		ParseResult parentResult = ParserWord::parse(itrange, ParserClass::KW_CLASS);
 		if (parentResult.status != ParseResult::STATUS_T::S_OK)
 			return parentResult;
 

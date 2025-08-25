@@ -1,12 +1,12 @@
 #include "parser/pReturn.hpp"
 #include "parser/pStatement.hpp"
-#include "utilParserWord.hpp"
+#include "parser/pWord.hpp"
 
 namespace gscript
 {
 	ParseResult ParserReturn::parse(StringIteratorRange itrange)
 	{
-		ParseResult parentResult = Util::Word::parse(itrange, ParserReturn::KW_RETURN);
+		ParseResult parentResult = ParserWord::parse(itrange, ParserReturn::KW_RETURN);
 		if (parentResult.status != ParseResult::STATUS_T::S_OK)
 			return parentResult;
 

@@ -89,29 +89,29 @@ namespace gscript
 	/// Used to represent functions created on host-side. Overrides setup
 	/// function to act like prototype, but without usage of parser entities.
 	///
-	class ScriptExternFunction : public ScriptFunction
-	{
-	public:
-		using ScriptFunction::ScriptFunction;
+	//class ScriptExternFunction : public ScriptFunction
+	//{
+	//public:
+	//	using ScriptFunction::ScriptFunction;
 
-		SCRIPT_API virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override = 0;
-		virtual void setup() {};
-	};
+	//	SCRIPT_API virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override = 0;
+	//	virtual void setup() {};
+	//};
 
 	///
 	/// Used to map internal function representation to existing registered
 	/// external function. Works the same as ScriptExternMethod.
 	///
-	class ScriptExternFunctionConnector : public ScriptFunction
-	{
-	public:
-		SCRIPT_API ScriptExternFunctionConnector(const std::string &externName, ScriptScope &scope, const std::string &name, ScriptType *returnType, const PARAMS_T &parameters = PARAMS_T());
+	//class ScriptExternFunctionConnector : public ScriptFunction
+	//{
+	//public:
+	//	SCRIPT_API ScriptExternFunctionConnector(const std::string &externName, ScriptScope &scope, const std::string &name, ScriptType *returnType, const PARAMS_T &parameters = PARAMS_T());
 
-		SCRIPT_API virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+	//	SCRIPT_API virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 
-	protected:
-		ScriptExternFunction &target;
-	};
+	//protected:
+	//	ScriptExternFunction &target;
+	//};
 }
 
 #endif

@@ -1,6 +1,6 @@
 #include "parser/pSpecialDirective.hpp"
-#include "utilParserChar.hpp"
-#include "utilParserWord.hpp"
+#include "parser/pChar.hpp"
+#include "parser/pWord.hpp"
 
 namespace gscript
 {
@@ -16,17 +16,17 @@ namespace gscript
 
 	ParseResult ParserSpecialDirective::parse(StringIteratorRange itrange)
 	{
-		ParseResult parentResult = Util::Char::parse(itrange, ParserSpecialDirective::C_CONTROL);
+		ParseResult parentResult = ParserChar::parse(itrange, ParserSpecialDirective::C_CONTROL);
 		if (parentResult.status != ParseResult::STATUS_T::S_OK)
 			return parentResult;
 
-		ParseResult directiveResult = Util::Word::parse(StringIteratorRange(parentResult.result.end, itrange.end), this->directive);
+		ParseResult directiveResult = ParserWord::parse(StringIteratorRange(parentResult.result.end, itrange.end), this->directive);
 
 		if (directiveResult.isOk())
 		{
 			if (this->parameterized)
 			{
-				ParseResult paramResult = Util::Char::parse(StringIteratorRange(directiveResult.result.end, itrange.end), ParserSpecialDirective::C_CONTROL_PARAM);
+				ParseResult paramResult = ParserChar::parse(StringIteratorRange(directiveResult.result.end, itrange.end), ParserSpecialDirective::C_CONTROL_PARAM);
 
 				if (paramResult.isOk())
 					return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(parentResult.result.begin, paramResult.result.end));

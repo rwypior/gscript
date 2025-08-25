@@ -3,7 +3,7 @@
 
 #include "pEntity.hpp"
 //#include "operator.hpp"
-#include "utilParserWord.hpp"
+#include "parser/pWord.hpp"
 #include "defs.hpp"
 
 #include <string>
@@ -56,7 +56,7 @@ namespace gscript
 
 		ParseResult parse(StringIteratorRange itrange)
 		{
-			return Util::Word::parse(itrange, this->opchar, std::make_shared<ParserOperatorMemberAccessor>(*this), true);
+			return ParserWord::parse(itrange, this->opchar, std::make_shared<ParserOperatorMemberAccessor>(*this)/*, true*/);
 		}
 
 		virtual OPERATOR_TYPE_T getType() const override
@@ -77,7 +77,7 @@ namespace gscript
 
 		ParseResult parse(StringIteratorRange itrange)
 		{
-			return Util::Word::parse(itrange, this->opchar, std::make_shared<ParserOperatorNegate>(*this), true);
+			return ParserWord::parse(itrange, this->opchar, std::make_shared<ParserOperatorNegate>(*this)/*, true*/);
 		}
 
 		virtual OPERATOR_TYPE_T getType() const override
@@ -98,7 +98,7 @@ namespace gscript
 
 		ParseResult parse(StringIteratorRange itrange)
 		{
-			return Util::Word::parse(itrange, this->opchar, std::make_shared<ParserOperatorAssign>(*this), true);
+			return ParserWord::parse(itrange, this->opchar, std::make_shared<ParserOperatorAssign>(*this)/*, true*/);
 		}
 
 		virtual OPERATOR_TYPE_T getType() const override
@@ -119,7 +119,7 @@ namespace gscript
 
 		ParseResult parse(StringIteratorRange itrange)
 		{
-			return Util::Word::parse(itrange, this->opchar, std::make_shared<ParserOperatorEquals>(*this), true);
+			return ParserWord::parse(itrange, this->opchar, std::make_shared<ParserOperatorEquals>(*this)/*, true*/);
 		}
 
 		virtual OPERATOR_TYPE_T getType() const override
@@ -140,7 +140,7 @@ namespace gscript
 
 		ParseResult parse(StringIteratorRange itrange)
 		{
-			return Util::Word::parse(itrange, this->opchar, std::make_shared<ParserOperatorGreaterThan>(*this), true);
+			return ParserWord::parse(itrange, this->opchar, std::make_shared<ParserOperatorGreaterThan>(*this)/*, true*/);
 		}
 
 		virtual OPERATOR_TYPE_T getType() const override
@@ -161,7 +161,7 @@ namespace gscript
 
 		ParseResult parse(StringIteratorRange itrange)
 		{
-			return Util::Word::parse(itrange, this->opchar, std::make_shared<ParserOperatorLessThan>(*this), true);
+			return ParserWord::parse(itrange, this->opchar, std::make_shared<ParserOperatorLessThan>(*this)/*, true*/);
 		}
 
 		virtual OPERATOR_TYPE_T getType() const override
@@ -182,7 +182,7 @@ namespace gscript
 
 		ParseResult parse(StringIteratorRange itrange)
 		{
-			return Util::Word::parse(itrange, this->opchar, std::make_shared<ParserOperatorGreaterThanOrEqual>(*this), true);
+			return ParserWord::parse(itrange, this->opchar, std::make_shared<ParserOperatorGreaterThanOrEqual>(*this)/*, true*/);
 		}
 
 		virtual OPERATOR_TYPE_T getType() const override
@@ -203,7 +203,7 @@ namespace gscript
 
 		ParseResult parse(StringIteratorRange itrange)
 		{
-			return Util::Word::parse(itrange, this->opchar, std::make_shared<ParserOperatorLessThanOrEqual>(*this), true);
+			return ParserWord::parse(itrange, this->opchar, std::make_shared<ParserOperatorLessThanOrEqual>(*this)/*, true*/);
 		}
 
 		virtual OPERATOR_TYPE_T getType() const override
@@ -224,7 +224,7 @@ namespace gscript
 
 		ParseResult parse(StringIteratorRange itrange)
 		{
-			return Util::Word::parse(itrange, this->opchar, std::make_shared<ParserOperatorAdd>(*this), true);
+			return ParserWord::parse(itrange, this->opchar, std::make_shared<ParserOperatorAdd>(*this)/*, true*/);
 		}
 
 		virtual OPERATOR_TYPE_T getType() const override
@@ -245,7 +245,7 @@ namespace gscript
 
 		ParseResult parse(StringIteratorRange itrange)
 		{
-			return Util::Word::parse(itrange, this->opchar, std::make_shared<ParserOperatorAddTo>(*this), true);
+			return ParserWord::parse(itrange, this->opchar, std::make_shared<ParserOperatorAddTo>(*this)/*, true*/);
 		}
 
 		virtual OPERATOR_TYPE_T getType() const override
@@ -266,7 +266,7 @@ namespace gscript
 
 		ParseResult parse(StringIteratorRange itrange)
 		{
-			return Util::Word::parse(itrange, this->opchar, std::make_shared<ParserOperatorSubtract>(*this), true);
+			return ParserWord::parse(itrange, this->opchar, std::make_shared<ParserOperatorSubtract>(*this)/*, true*/);
 		}
 
 		virtual OPERATOR_TYPE_T getType() const override
@@ -287,7 +287,7 @@ namespace gscript
 
 		ParseResult parse(StringIteratorRange itrange)
 		{
-			return Util::Word::parse(itrange, this->opchar, std::make_shared<ParserOperatorSubtractFrom>(*this), true);
+			return ParserWord::parse(itrange, this->opchar, std::make_shared<ParserOperatorSubtractFrom>(*this)/*, true*/);
 		}
 
 		virtual OPERATOR_TYPE_T getType() const override
@@ -308,7 +308,7 @@ namespace gscript
 
 		ParseResult parse(StringIteratorRange itrange)
 		{
-			return Util::Word::parse(itrange, this->opchar, std::make_shared<ParserOperatorMultiply>(*this), true);
+			return ParserWord::parse(itrange, this->opchar, std::make_shared<ParserOperatorMultiply>(*this)/*, true*/);
 		}
 
 		virtual OPERATOR_TYPE_T getType() const override
@@ -329,7 +329,7 @@ namespace gscript
 
 		ParseResult parse(StringIteratorRange itrange)
 		{
-			return Util::Word::parse(itrange, this->opchar, std::make_shared<ParserOperatorMultiplyBy>(*this), true);
+			return ParserWord::parse(itrange, this->opchar, std::make_shared<ParserOperatorMultiplyBy>(*this)/*, true*/);
 		}
 
 		virtual OPERATOR_TYPE_T getType() const override
@@ -350,7 +350,7 @@ namespace gscript
 
 		ParseResult parse(StringIteratorRange itrange)
 		{
-			return Util::Word::parse(itrange, this->opchar, std::make_shared<ParserOperatorDivide>(*this), true);
+			return ParserWord::parse(itrange, this->opchar, std::make_shared<ParserOperatorDivide>(*this)/*, true*/);
 		}
 
 		virtual OPERATOR_TYPE_T getType() const override
@@ -371,7 +371,7 @@ namespace gscript
 
 		ParseResult parse(StringIteratorRange itrange)
 		{
-			return Util::Word::parse(itrange, this->opchar, std::make_shared<ParserOperatorDivideBy>(*this), true);
+			return ParserWord::parse(itrange, this->opchar, std::make_shared<ParserOperatorDivideBy>(*this)/*, true*/);
 		}
 
 		virtual OPERATOR_TYPE_T getType() const override
@@ -402,7 +402,7 @@ namespace gscript
 
 		ParseResult parse(StringIteratorRange itrange)
 		{
-			return Util::Word::parse(itrange, this->opchar, std::make_shared<ParserOperatorIncrement>(*this), true);
+			return ParserWord::parse(itrange, this->opchar, std::make_shared<ParserOperatorIncrement>(*this)/*, true*/);
 		}
 
 		virtual OPERATOR_TYPE_T getType() const override
@@ -428,7 +428,7 @@ namespace gscript
 
 		ParseResult parse(StringIteratorRange itrange)
 		{
-			return Util::Word::parse(itrange, this->opchar, std::make_shared<ParserOperatorDecrement>(*this), true);
+			return ParserWord::parse(itrange, this->opchar, std::make_shared<ParserOperatorDecrement>(*this)/*, true*/);
 		}
 
 		virtual OPERATOR_TYPE_T getType() const override
@@ -449,7 +449,7 @@ namespace gscript
 
 		ParseResult parse(StringIteratorRange itrange)
 		{
-			return Util::Word::parse(itrange, this->opchar, std::make_shared<ParserOperatorConditionalNull>(*this), true);
+			return ParserWord::parse(itrange, this->opchar, std::make_shared<ParserOperatorConditionalNull>(*this)/*, true*/);
 		}
 
 		virtual OPERATOR_TYPE_T getType() const override
@@ -470,7 +470,7 @@ namespace gscript
 
 		ParseResult parse(StringIteratorRange itrange)
 		{
-			return Util::Word::parse(itrange, this->opchar, std::make_shared<ParserOperatorConditionalA>(*this), true);
+			return ParserWord::parse(itrange, this->opchar, std::make_shared<ParserOperatorConditionalA>(*this)/*, true*/);
 		}
 
 		virtual OPERATOR_TYPE_T getType() const override
@@ -491,7 +491,7 @@ namespace gscript
 
 		ParseResult parse(StringIteratorRange itrange)
 		{
-			return Util::Word::parse(itrange, this->opchar, std::make_shared<ParserOperatorConditionalB>(*this), true);
+			return ParserWord::parse(itrange, this->opchar, std::make_shared<ParserOperatorConditionalB>(*this)/*, true*/);
 		}
 
 		virtual OPERATOR_TYPE_T getType() const override

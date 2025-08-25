@@ -2,7 +2,7 @@
 #include "parser/pArglistStart.hpp"
 #include "parser/pArglistEnd.hpp"
 #include "parser/pCallArglist.hpp"
-#include "utilParserWord.hpp"
+#include "parser/pWord.hpp"
 
 namespace gscript
 {
@@ -13,7 +13,7 @@ namespace gscript
 
 	ParseResult ParserIf::parse(StringIteratorRange itrange)
 	{
-		ParseResult parentResult = Util::Word::parse(itrange, ParserIf::KW_IF);
+		ParseResult parentResult = ParserWord::parse(itrange, ParserIf::KW_IF);
 		if (parentResult.status != ParseResult::STATUS_T::S_OK)
 			return parentResult;
 

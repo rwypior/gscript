@@ -177,14 +177,14 @@ namespace gscript
 
 	// EXTERN
 
-	ScriptExternFunctionConnector::ScriptExternFunctionConnector(const std::string &externName, ScriptScope &scope, const std::string &name, ScriptType *returnType, const PARAMS_T &parameters)
-		: ScriptFunction(scope, name, returnType, parameters)
-		, target(scope.getExternFunction(externName))
-	{
-	}
+	//ScriptExternFunctionConnector::ScriptExternFunctionConnector(const std::string &externName, ScriptScope &scope, const std::string &name, ScriptType *returnType, const PARAMS_T &parameters)
+	//	: ScriptFunction(scope, name, returnType, parameters)
+	//	, target(scope.getExternFunction(externName))
+	//{
+	//}
 
-	ScriptValue *ScriptExternFunctionConnector::run(const CALLABLE_PARAMS_T &c)
-	{
-		return this->target.run(c);
-	}
+	//ScriptValue *ScriptExternFunctionConnector::run(const CALLABLE_PARAMS_T &c)
+	//{
+	//	return this->target.run(c);
+	//}
 }

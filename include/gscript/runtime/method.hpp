@@ -9,9 +9,8 @@
 
 namespace gscript
 {
-	class ParserMethod;
 	class ScriptScope;
-	class ScriptExternFunction;
+	//class ScriptExternFunction;
 
 	class ScriptMethod : public ScriptFunction
 	{
@@ -58,23 +57,23 @@ namespace gscript
 	/// Extern method holds reference to unmanaged methods, referenced by script
 	/// by using @extern directive
 	///
-	class ScriptExternMethod : public ScriptMethod
-	{
-	public:
-		SCRIPT_API ScriptExternMethod(
-			const std::string &externName,
-			ScriptScope &scope,
-			const std::string &name,
-			ScriptType *returnType,
-			const PARAMS_T &parameters = PARAMS_T(),
-			BITFLAG_T modifier = static_cast<BITFLAG_T>(MODIFIER_T::M_NONE)
-		);
+	//class ScriptExternMethod : public ScriptMethod
+	//{
+	//public:
+	//	SCRIPT_API ScriptExternMethod(
+	//		const std::string &externName,
+	//		ScriptScope &scope,
+	//		const std::string &name,
+	//		ScriptType *returnType,
+	//		const PARAMS_T &parameters = PARAMS_T(),
+	//		BITFLAG_T modifier = static_cast<BITFLAG_T>(MODIFIER_T::M_NONE)
+	//	);
 
-		SCRIPT_API virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+	//	SCRIPT_API virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 
-	protected:
-		ScriptExternFunction &target;
-	};
+	//protected:
+	//	ScriptExternFunction &target;
+	//};
 }
 
 #endif

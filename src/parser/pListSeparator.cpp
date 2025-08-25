@@ -1,5 +1,5 @@
 #include "parser/pListSeparator.hpp"
-#include "utilParserChar.hpp"
+#include "parser/pChar.hpp"
 
 namespace gscript
 {
@@ -11,6 +11,6 @@ namespace gscript
 
 	ParseResult ParserListSeparator::parse(StringIteratorRange itrange)
 	{
-		return Util::Char::parse(itrange, this->KW_SEPARATOR);
+		return ParserChar::parse(itrange, this->KW_SEPARATOR);
 	}
 }

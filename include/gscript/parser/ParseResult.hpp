@@ -9,6 +9,20 @@
 namespace gscript
 {
 	class ParserEntity;
+	class ParseResult;
+
+	struct ParseDetails
+	{
+		ParseDetails(const std::string& file = "", size_t line = 0, const std::string& message = "");
+		ParseDetails(const StringIteratorRange& itrange, const std::string& message = "");
+		ParseDetails(const ParseResult& result, const std::string& message = "");
+
+		operator std::string() const;
+
+		std::string file = "";
+		size_t line = 0;
+		std::string message = "";
+	};
 
 	class ParseResult
 	{
@@ -25,60 +39,19 @@ namespace gscript
 		STATUS_T status = STATUS_T::S_VOID;
 		IteratorRange<std::string> result;
 		std::shared_ptr<ParserEntity> subResult = nullptr;
+		ParseDetails details;
 
-		ParseResult(STATUS_T status = STATUS_T::S_VOID)
-			: status(status)
-			, subResult(nullptr)
-		{
-		}
+		ParseResult(STATUS_T status = STATUS_T::S_VOID, const ParseDetails& details = {});
+		ParseResult(STATUS_T status, IteratorRange<std::string> result, std::shared_ptr<ParserEntity> subResult = nullptr, const ParseDetails& details = {});
+		ParseResult(STATUS_T status, std::string::iterator begin, std::string::iterator end, const ParseDetails& details = {});
+		ParseResult(const ParseResult& b);
 
-		ParseResult(STATUS_T status, IteratorRange<std::string> result, std::shared_ptr<ParserEntity> subResult = nullptr)
-			: status(status)
-			, result(result)
-			, subResult(subResult)
-		{
-		}
+		ParseResult operator=(const ParseResult& b);
+		std::string getWord() const;
 
-		ParseResult(STATUS_T status, std::string::iterator begin, std::string::iterator end)
-			: status(status)
-			, result(begin, end)
-		{
-		}
-
-		ParseResult(const ParseResult &b)
-			: status(b.status)
-			, result(b.result)
-			, subResult(b.subResult)
-		{
-		}
-
-		ParseResult operator=(const ParseResult &b)
-		{
-			this->status = b.status;
-			this->result = b.result;
-			this->subResult = b.subResult;
-			return *this;
-		}
-
-		std::string getWord() const
-		{
-			return std::string(result.begin, result.end);
-		}
-
-		bool isOk() const
-		{
-			return this->status == STATUS_T::S_OK;
-		}
-
-		bool isComment() const
-		{
-			return this->status == STATUS_T::S_COMMENT;
-		}
-
-		unsigned int getLength() const
-		{
-			return this->result.end - this->result.begin;
-		}
+		bool isOk() const;
+		bool isComment() const;
+		unsigned int getLength() const;
 	};
 }
 

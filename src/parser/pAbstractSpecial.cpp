@@ -1,8 +1,5 @@
 #include "parser/pAbstractSpecial.hpp"
 
-#include "utilParserChar.hpp"
-#include "utilParserWord.hpp"
-
 #include <string>
 #include <cctype>
 
@@ -11,7 +8,7 @@ namespace gscript
 	const char *ParserAbstractSpecial::DIRECTIVE_ABSTRACT = "abstract";
 
 	ParserAbstractSpecial::ParserAbstractSpecial()
-		:ParserSpecialDirective(ParserAbstractSpecial::DIRECTIVE_ABSTRACT, false)
+		: ParserSpecialDirective(ParserAbstractSpecial::DIRECTIVE_ABSTRACT, false)
 	{
 	}
 

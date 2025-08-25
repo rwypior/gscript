@@ -1,6 +1,6 @@
 #include "parser/pControlDirective.hpp"
-#include "utilParserChar.hpp"
-#include "utilParserWord.hpp"
+#include "parser/pChar.hpp"
+#include "parser/pWord.hpp"
 
 namespace gscript
 {
@@ -13,11 +13,11 @@ namespace gscript
 
 	ParseResult ParserControlDirective::parse(StringIteratorRange itrange)
 	{
-		ParseResult parentResult = Util::Char::parse(itrange, ParserControlDirective::C_CONTROL);
+		ParseResult parentResult = ParserChar::parse(itrange, ParserControlDirective::C_CONTROL);
 		if (parentResult.status != ParseResult::STATUS_T::S_OK)
 			return parentResult;
 
-		ParseResult directiveResult = Util::Word::parse(StringIteratorRange(parentResult.result.end, itrange.end), this->directive);
+		ParseResult directiveResult = ParserWord::parse(StringIteratorRange(parentResult.result.end, itrange.end), this->directive);
 
 		if (directiveResult.isOk())
 		{

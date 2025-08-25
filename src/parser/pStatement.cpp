@@ -10,7 +10,6 @@
 #include "parser/pComment.hpp"
 #include "parser/pArrayInitializer.hpp"
 #include "parser/pConditionalOperator.hpp"
-#include "utilParserWord.hpp"
 
 #include <cassert>
 

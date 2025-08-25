@@ -3,6 +3,7 @@
 
 #include "IteratorRange.hpp"
 #include "ParseResult.hpp"
+#include "pInfo.hpp"
 
 #include <string>
 
@@ -17,6 +18,8 @@ namespace gscript
 		{
 			return "unknown";
 		}
+
+		ParserInfo info;
 	};
 }
 

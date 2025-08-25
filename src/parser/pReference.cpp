@@ -1,5 +1,5 @@
 #include "parser/pReference.hpp"
-#include "utilParserChar.hpp"
+#include "parser/pChar.hpp"
 
 namespace gscript
 {
@@ -7,6 +7,6 @@ namespace gscript
 
 	ParseResult ParserReference::parse(StringIteratorRange itrange)
 	{
-		return Util::Char::parse(itrange, ParserReference::KW_REFERENCE);
+		return ParserChar::parse(itrange, ParserReference::KW_REFERENCE);
 	}
 }

@@ -1,7 +1,7 @@
 #include "parser/pArrayAccessor.hpp"
 #include "parser/pComment.hpp"
 #include "parser/pLiteral.hpp"
-#include "utilParserChar.hpp"
+#include "parser/pChar.hpp"
 #include "IteratorRange.hpp"
 
 #include <cassert>
@@ -27,7 +27,7 @@ namespace gscript
 		if (itrange.end - itrange.begin < 1)
 			return ParseResult(ParseResult::STATUS_T::S_FATAL, COMMENT_RESULT(itrange, commentLength));
 
-		ParseResult beginResult = Util::Char::parse(StringIteratorRange(itrange.begin, itrange.end), ParserArrayAccessor::KW_ARRAY_ACCESSOR_BEGIN);
+		ParseResult beginResult = ParserChar::parse(StringIteratorRange(itrange.begin, itrange.end), ParserArrayAccessor::KW_ARRAY_ACCESSOR_BEGIN);
 
 		if (!beginResult.isOk())
 			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange(beginResult.result.begin, beginResult.result.end));
@@ -62,7 +62,7 @@ namespace gscript
 				return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange(beginResult.result.begin, end));
 		}
 
-		ParseResult endResult = Util::Char::parse(StringIteratorRange(end, itrange.end), ParserArrayAccessor::KW_ARRAY_ACCESSOR_END);
+		ParseResult endResult = ParserChar::parse(StringIteratorRange(end, itrange.end), ParserArrayAccessor::KW_ARRAY_ACCESSOR_END);
 
 		if (!endResult.isOk())
 			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange(endResult.result.begin, endResult.result.end));

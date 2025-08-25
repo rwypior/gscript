@@ -1,13 +1,13 @@
 #include "parser/pNew.hpp"
 #include "parser/pNameSpecifier.hpp"
 #include "parser/pFuncCall.hpp"
-#include "utilParserWord.hpp"
+#include "parser/pWord.hpp"
 
 namespace gscript
 {
 	ParseResult ParserNew::parse(StringIteratorRange itrange)
 	{
-		ParseResult rnew = Util::Word::parse(itrange, ParserNew::KW_NEW);
+		ParseResult rnew = ParserWord::parse(itrange, ParserNew::KW_NEW);
 		if (!rnew.isOk())
 			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
 

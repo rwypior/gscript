@@ -1,5 +1,5 @@
 #include "parser/pAccessSpecifier.hpp"
-#include "utilParserWord.hpp"
+#include "parser/pWord.hpp"
 #include "compileException.hpp"
 
 namespace gscript
@@ -23,7 +23,7 @@ namespace gscript
 		{
 			anyGood = false;
 
-			ParseResult rpublic = Util::Word::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::KW_M_AS_PUBLIC);
+			ParseResult rpublic = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::KW_M_AS_PUBLIC);
 			if (rpublic.isOk())
 			{
 				this->modifier |= static_cast<int>(MODIFIER_T::M_ACCESS_PUBLIC);
@@ -31,7 +31,7 @@ namespace gscript
 				anyGood = true;
 			}
 
-			ParseResult rprotected = Util::Word::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::KW_M_AS_PROTECTED);
+			ParseResult rprotected = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::KW_M_AS_PROTECTED);
 			if (rprotected.isOk())
 			{
 				this->modifier |= static_cast<int>(MODIFIER_T::M_ACCESS_PROTECTED);
@@ -39,7 +39,7 @@ namespace gscript
 				anyGood = true;
 			}
 
-			ParseResult rprivate = Util::Word::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::KW_M_AS_PRIVATE);
+			ParseResult rprivate = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::KW_M_AS_PRIVATE);
 			if (rprivate.isOk())
 			{
 				this->modifier |= static_cast<int>(MODIFIER_T::M_ACCESS_PRIVATE);
@@ -47,7 +47,7 @@ namespace gscript
 				anyGood = true;
 			}
 
-			ParseResult rconst = Util::Word::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::KW_M_CONST);
+			ParseResult rconst = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::KW_M_CONST);
 			if (rconst.isOk())
 			{
 				this->modifier |= static_cast<int>(MODIFIER_T::M_CONST);
@@ -55,7 +55,7 @@ namespace gscript
 				anyGood = true;
 			}
 
-			ParseResult rstatic = Util::Word::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::KW_M_STATIC);
+			ParseResult rstatic = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::KW_M_STATIC);
 			if (rstatic.isOk())
 			{
 				this->modifier |= static_cast<int>(MODIFIER_T::M_STATIC);
@@ -63,7 +63,7 @@ namespace gscript
 				anyGood = true;
 			}
 
-			ParseResult rvirtual = Util::Word::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::KW_M_VIRTUAL);
+			ParseResult rvirtual = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::KW_M_VIRTUAL);
 			if (rvirtual.isOk())
 			{
 				this->modifier |= static_cast<int>(MODIFIER_T::M_VIRTUAL);
@@ -77,7 +77,7 @@ namespace gscript
 			(this->modifier & static_cast<int>(MODIFIER_T::M_ACCESS_PRIVATE) && this->modifier & static_cast<int>(MODIFIER_T::M_ACCESS_PROTECTED)) ||
 			(this->modifier & static_cast<int>(MODIFIER_T::M_ACCESS_PROTECTED) && this->modifier & static_cast<int>(MODIFIER_T::M_ACCESS_PUBLIC))
 			)
-			throw CompileException("Only one of PRIVATE, PROTECTED or PUBLIC modifiers might be in use");
+			throw CompileException("Only one of PRIVATE, PROTECTED or PUBLIC modifiers may be used");
 
 		if (
 			!(this->modifier & static_cast<int>(MODIFIER_T::M_ACCESS_PUBLIC)) &&

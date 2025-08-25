@@ -16,10 +16,9 @@ namespace gscript
 	class ScriptVariable;
 	class ScriptStatement;
 	class ScriptNamespace;
-	class ScriptGlobalNamespace;
 	class EntityPath;
-	class ScriptFunctionPrototype;
-	class ScriptExternFunction;
+	//class ScriptFunctionPrototype;
+	//class ScriptExternFunction;
 
 	class ScriptScope
 	{
@@ -50,10 +49,8 @@ namespace gscript
 
 		SCRIPT_API std::vector<std::unique_ptr<ScriptVariable>> &getVariables();
 
-		SCRIPT_API ScriptNamespace *getClosestNamespace(bool includeSelf = false);
-		SCRIPT_API ScriptGlobalNamespace *getGlobalNamespace();
-
-		SCRIPT_API ScriptExternFunction &getExternFunction(const std::string &name);
+		SCRIPT_API ScriptNamespace* getClosestNamespace(bool includeSelf = false);
+		SCRIPT_API ScriptNamespace* getGlobalNamespace();
 
 		SCRIPT_API void setParentScope(ScriptScope *scope);
 		SCRIPT_API ScriptScope *getParentScope() const;

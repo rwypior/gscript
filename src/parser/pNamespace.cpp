@@ -4,8 +4,8 @@
 #include "parser/pNameSpecifier.hpp"
 #include "parser/pImportDirective.hpp"
 #include "StringUtils.hpp"
-#include "utilParserWord.hpp"
-#include "utilParserChar.hpp"
+#include "parser/pChar.hpp"
+#include "parser/pWord.hpp"
 #include "compileException.hpp"
 
 #include <iostream>
@@ -19,7 +19,8 @@ namespace gscript
 
 	ParserNamespace::ParserNamespace(NAMESPACE_TYPE_T type)
 		: type(type)
-	{ }
+	{
+	}
 
 	ParseResult ParserNamespace::parse(StringIteratorRange itrange)
 	{
@@ -28,7 +29,7 @@ namespace gscript
 
 		if (static_cast<BITFLAG_T>(this->type) & static_cast<BITFLAG_T>(NAMESPACE_TYPE_T::NT_NAMED))
 		{
-			ParseResult nsResult = Util::Word::parse(StringIteratorRange(endPosition, itrange.end), ParserNamespace::KW_NAMESPACE);
+			ParseResult nsResult = ParserWord::parse(StringIteratorRange(endPosition, itrange.end), ParserNamespace::KW_NAMESPACE);
 
 			if (!nsResult.isOk())
 				return ParseResult(ParseResult::STATUS_T::S_FATAL);
@@ -47,7 +48,7 @@ namespace gscript
 
 		if (static_cast<BITFLAG_T>(this->type) & static_cast<BITFLAG_T>(NAMESPACE_TYPE_T::NT_ENCLOSED))
 		{
-			ParseResult enclosureResult = Util::Char::parse(StringIteratorRange(endPosition, itrange.end), ParserNamespace::KW_ENCLOSURE_BEGIN);
+			ParseResult enclosureResult = ParserChar::parse(StringIteratorRange(endPosition, itrange.end), ParserNamespace::KW_ENCLOSURE_BEGIN);
 
 			if (!enclosureResult.isOk())
 				return ParseResult(ParseResult::STATUS_T::S_FATAL);
@@ -134,7 +135,7 @@ namespace gscript
 
 		if (static_cast<BITFLAG_T>(this->type) & static_cast<BITFLAG_T>(NAMESPACE_TYPE_T::NT_ENCLOSED))
 		{
-			ParseResult enclosureResult = Util::Char::parse(StringIteratorRange(endPosition, itrange.end), ParserNamespace::KW_ENCLOSURE_END);
+			ParseResult enclosureResult = ParserChar::parse(StringIteratorRange(endPosition, itrange.end), ParserNamespace::KW_ENCLOSURE_END);
 
 			if (!enclosureResult.isOk())
 				return ParseResult(ParseResult::STATUS_T::S_FATAL);

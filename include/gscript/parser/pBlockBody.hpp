@@ -15,12 +15,14 @@ namespace gscript
 		std::vector<std::shared_ptr<ParserEntity>> statements;
 
 		ParserBlockBody(unsigned int maxEntries = 0);
+		void setMinEntries(unsigned int minEntries);
 		void setMaxEntries(unsigned int maxEntries);
 
 		virtual ParseResult parse(StringIteratorRange itrange) override;
 
 	protected:
 		unsigned int maxEntries = 0;
+		unsigned int minEntries = 0;
 	};
 }
 

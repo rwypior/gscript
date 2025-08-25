@@ -6,7 +6,6 @@
 #include "scriptExtension.hpp"
 #include "runtime/function.hpp"
 #include "runtime/class.hpp"
-#include "runtime/globalNamespace.hpp"
 #include "runtimeException.hpp"
 
 #include <fstream>

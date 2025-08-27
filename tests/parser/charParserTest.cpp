@@ -45,32 +45,26 @@ TEST_CASE("ParseCharTrailingLeadingSpaces")
 
 TEST_CASE("ParseCharSpacesNotAllowedFailure")
 {
-	{
-		std::string txt = "     x";
-		auto result = gscript::ParserChar::parse(txt, 'x', false);
+	std::string txt = "     x";
+	auto result = gscript::ParserChar::parse(txt, 'x', false);
 
-		REQUIRE(!result.isOk());
-	}
+	REQUIRE(!result.isOk());
 }
 
 TEST_CASE("ParseCharSpacesNotAllowed")
 {
-	{
-		std::string txt = "x";
-		auto result = gscript::ParserChar::parse(txt, 'x', false);
+	std::string txt = "x";
+	auto result = gscript::ParserChar::parse(txt, 'x', false);
 
-		REQUIRE(result.isOk());
-	}
+	REQUIRE(result.isOk());
 }
 
 TEST_CASE("ParseCharSpacesNotAllowedWithTrailing")
 {
-	{
-		std::string txt = "x     ";
-		auto result = gscript::ParserChar::parse(txt, 'x', false);
+	std::string txt = "x     ";
+	auto result = gscript::ParserChar::parse(txt, 'x', false);
 
-		REQUIRE(result.isOk());
-		REQUIRE(result.result.begin == txt.begin());
-		REQUIRE(result.result.end == txt.begin() + 1);
-	}
+	REQUIRE(result.isOk());
+	REQUIRE(result.result.begin == txt.begin());
+	REQUIRE(result.result.end == txt.begin() + 1);
 }

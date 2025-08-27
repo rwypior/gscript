@@ -37,12 +37,12 @@ namespace gscript
 		};
 
 		STATUS_T status = STATUS_T::S_VOID;
-		IteratorRange<std::string> result;
+		StringIteratorRange result;
 		std::shared_ptr<ParserEntity> subResult = nullptr;
 		ParseDetails details;
 
 		ParseResult(STATUS_T status = STATUS_T::S_VOID, const ParseDetails& details = {});
-		ParseResult(STATUS_T status, IteratorRange<std::string> result, std::shared_ptr<ParserEntity> subResult = nullptr, const ParseDetails& details = {});
+		ParseResult(STATUS_T status, StringIteratorRange result, std::shared_ptr<ParserEntity> subResult = nullptr, const ParseDetails& details = {});
 		ParseResult(STATUS_T status, std::string::iterator begin, std::string::iterator end, const ParseDetails& details = {});
 		ParseResult(const ParseResult& b);
 

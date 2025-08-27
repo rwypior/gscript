@@ -40,7 +40,7 @@ namespace gscript
 	{
 	}
 
-	ParseResult::ParseResult(STATUS_T status, IteratorRange<std::string> result, std::shared_ptr<ParserEntity> subResult, const ParseDetails& details)
+	ParseResult::ParseResult(STATUS_T status, StringIteratorRange result, std::shared_ptr<ParserEntity> subResult, const ParseDetails& details)
 		: status(status)
 		, result(result)
 		, subResult(subResult)

@@ -1,22 +1,8 @@
 #include "parser/pWord.hpp"
+#include "StringUtils.hpp"
 
 #include <string>
-
-namespace
-{
-	std::string quoted(const std::string& word)
-	{
-		return "\"" + word + "\"";
-	}
-
-	std::string errmsg(const std::string& expected, const std::string& got = "")
-	{
-		std::string msg = "Expected \"" + expected + "\"";
-		if (!expected.empty())
-			msg += ", got " + got;
-		return msg;
-	}
-}
+#include <sstream>
 
 namespace gscript
 {
@@ -28,7 +14,7 @@ namespace gscript
 
 		//if (itrange.end - itrange.begin < length + 1)
 		if (itrange.end - itrange.begin < length)
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange, errmsg(word, "empty statement") });
+			return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange, (std::stringstream() << "Expected \"" << word << "\", got empty statement").str()});
 
 		std::string buffer(length, '0');
 
@@ -37,12 +23,12 @@ namespace gscript
 
 		while (it != itrange.end && std::isspace(*it))
 		{
-			newlines += std::isspace(*it);
+			newlines += isNewLine(*it);
 			++it;
 		}
 
 		if (it == itrange.end)
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange.shifted(newlines), errmsg(word, "empty statement") });
+			return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange.shifted(newlines), (std::stringstream() << "Expected \"" << word << "\", got empty statement").str() });
 
 		if (std::isdigit(*it))
 			return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange.shifted(newlines), "Expected alphanumeric word, got number" });
@@ -75,7 +61,7 @@ namespace gscript
 			return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(foundBegin, it + 1), std::move(subResult));
 		}
 
-		return ParseResult(ParseResult::STATUS_T::S_FATAL, {itrange.shifted(newlines), errmsg(word, quoted(buffer)) });
+		return ParseResult(ParseResult::STATUS_T::S_FATAL, {itrange.shifted(newlines), (std::stringstream() << "Expected \"" << word << "\", got \"" << buffer << "\"").str() });
 	}
 
 	ParseResult ParserWord::parseUntil(StringIteratorRange itrange, const std::string &word, std::shared_ptr<ParserEntity>&& subResult, const std::string &allowed)
@@ -104,7 +90,7 @@ namespace gscript
 			else if (!allowed.empty())
 			{
 				char chr = *it;
-				newlines += std::isspace(chr);
+				newlines += isNewLine(chr);
 
 				if (allowed.find(chr) == std::string::npos)
 					return ParseResult(ParseResult::STATUS_T::S_FATAL, {itrange.shifted(newlines), "Expected one of \"" + allowed + "\", got \"" + chr + "\""});

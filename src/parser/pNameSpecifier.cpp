@@ -1,5 +1,6 @@
 #include "parser/pNameSpecifier.hpp"
 #include "parser/pComment.hpp"
+#include "StringUtils.hpp"
 
 namespace gscript
 {
@@ -23,7 +24,7 @@ namespace gscript
 		size_t newlines = 0;
 		while (it != itrange.end && std::isspace(*it))
 		{
-			newlines += std::isspace(*it);
+			newlines += isNewLine(*it);
 			++it;
 		}
 

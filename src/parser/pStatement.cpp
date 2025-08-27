@@ -10,6 +10,7 @@
 #include "parser/pComment.hpp"
 #include "parser/pArrayInitializer.hpp"
 #include "parser/pConditionalOperator.hpp"
+#include "StringUtils.hpp"
 
 #include <cassert>
 
@@ -30,8 +31,11 @@ namespace gscript
 		unsigned int commentLength = 0;
 		COMMENT(itrange, begin, commentLength);
 
-		while (*begin == ' ')
+		size_t newlines = 0;
+		//while (*begin == ' ')
+		while (begin != itrange.end && std::isspace(*begin))
 		{
+			newlines += isNewLine(*begin);
 			++begin;
 		}
 
@@ -47,7 +51,8 @@ namespace gscript
 				inArglist = true;
 			}
 			else
-				return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+				//return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+				return arglistStart;
 		}
 
 		// Scan for actual content of statement
@@ -80,7 +85,7 @@ namespace gscript
 				end = statementres.result.end;
 				this->components.push_back(std::make_shared<ParserStatement>(std::move(statement)));
 				if (!prevOperator)
-					return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+					return ParseResult(ParseResult::STATUS_T::S_FATAL, { statementres.result, "Expected operator, got statement" });
 				prevOperator = false;
 
 				anyOk = true;
@@ -95,7 +100,7 @@ namespace gscript
 				end = pnewres.result.end;
 				this->components.push_back(std::make_shared<ParserNew>(std::move(pnew)));
 				if (!prevOperator)
-					return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+					return ParseResult(ParseResult::STATUS_T::S_FATAL, { pnewres.result, "Expected operator, got new" });
 				prevOperator = false;
 
 				anyOk = true;
@@ -110,7 +115,7 @@ namespace gscript
 				end = funccallres.result.end;
 				this->components.push_back(std::make_shared<ParserFuncCall>(std::move(funccall)));
 				if (!prevOperator)
-					return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+					return ParseResult(ParseResult::STATUS_T::S_FATAL, { funccallres.result, "Expected operator, got function call" });
 				prevOperator = false;
 
 				anyOk = true;
@@ -125,7 +130,7 @@ namespace gscript
 				end = pvarres.result.end;
 				this->components.push_back(std::make_shared<ParserVar>(std::move(pvar)));
 				if (!prevOperator)
-					return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+					return ParseResult(ParseResult::STATUS_T::S_FATAL, { pvarres.result, "Expected operator, got variable" });
 				prevOperator = false;
 
 				anyOk = true;
@@ -140,7 +145,7 @@ namespace gscript
 				end = literalres.result.end;
 				this->components.push_back(std::make_shared<ParserLiteral>(std::move(literal)));
 				if (!prevOperator)
-					return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+					return ParseResult(ParseResult::STATUS_T::S_FATAL, { literalres.result, "Expected operator, got literal" });
 				prevOperator = false;
 
 				anyOk = true;
@@ -155,7 +160,7 @@ namespace gscript
 				end = arrres.result.end;
 				this->components.push_back(std::make_shared<ParserArrayInitializer>(std::move(arr)));
 				if (!prevOperator)
-					return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+					return ParseResult(ParseResult::STATUS_T::S_FATAL, { arrres.result, "Expected operator, got array initializer" });
 				prevOperator = false;
 
 				anyOk = true;
@@ -185,7 +190,8 @@ namespace gscript
 		{
 			ParseResult arglistEnd = (ParserArglistEnd()).parse(StringIteratorRange(end, itrange.end));
 			if (!arglistEnd.isOk())
-				return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+				//return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+				return arglistEnd;
 			end = arglistEnd.result.end;
 		}
 
@@ -194,7 +200,8 @@ namespace gscript
 		{
 			ParseResult statementEnd = (ParserEndStatement()).parse(StringIteratorRange(end, itrange.end));
 			if (!statementEnd.isOk())
-				return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+				//return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+				return statementEnd;
 			end = statementEnd.result.end;
 		}
 

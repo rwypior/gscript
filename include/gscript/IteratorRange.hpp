@@ -44,14 +44,14 @@ namespace gscript
 		{
 		}
 
-		StringIteratorRange(ITERATOR_T begin, ITERATOR_T end, const std::string& file = "", size_t line = 0)
+		StringIteratorRange(ITERATOR_T begin, ITERATOR_T end, const std::string& file = "", size_t line = 1)
 			: IteratorRange<std::string>(begin, end)
 			, file(file)
 			, line(line)
 		{
 		}
 
-		StringIteratorRange(const std::string& str, const std::string& file = "", size_t line = 0)
+		StringIteratorRange(const std::string& str, const std::string& file = "", size_t line = 1)
 			: StringIteratorRange(str.begin(), str.end(), file, line)
 		{
 		}
@@ -88,7 +88,7 @@ namespace gscript
 
 	protected:
 		std::string file = "";
-		size_t line = 0;
+		size_t line = 1;
 	};
 }
 

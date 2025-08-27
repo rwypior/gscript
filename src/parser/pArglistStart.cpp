@@ -13,7 +13,7 @@ namespace gscript
 
 		//if (itrange.begin + 1 >= itrange.end)
 		if (itrange.begin >= itrange.end)
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, COMMENT_RESULT(itrange, commentLength));
+			return ParseResult(ParseResult::STATUS_T::S_FATAL, COMMENT_RESULT(itrange, commentLength), nullptr, { itrange, "Expected argument list" });
 
 		return ParserChar::parse(StringIteratorRange(itrange.begin, itrange.end), this->KW_BLOCKSTART);
 	}

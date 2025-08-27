@@ -64,3 +64,23 @@ TEST_CASE("ParserArglistInvalidArgname")
 
 	REQUIRE(!result.isOk());
 }
+
+TEST_CASE("ParserArglistFailureNoEnclosure")
+{
+	std::string txt = "(";
+
+	gscript::ParserArglist pArglist;
+	auto result = pArglist.parse(txt);
+
+	REQUIRE(!result.isOk());
+}
+
+TEST_CASE("ParserArglistFailureEmptyString")
+{
+	std::string txt = "";
+
+	gscript::ParserArglist pArglist;
+	auto result = pArglist.parse(txt);
+
+	REQUIRE(!result.isOk());
+}

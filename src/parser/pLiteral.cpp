@@ -1,4 +1,5 @@
 #include "parser/pLiteral.hpp"
+#include "StringUtils.hpp"
 
 namespace gscript
 {
@@ -17,7 +18,7 @@ namespace gscript
 
 		for (auto it = itrange.begin; it != itrange.end; ++it)
 		{
-			newlines += std::isspace(*it);
+			newlines += isNewLine(*it);
 			if (!std::isspace(*it))
 			{
 				begin = it;

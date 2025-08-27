@@ -5,6 +5,7 @@
 #include <cctype>
 #include <locale>
 #include <string>
+#include <sstream>
 
 namespace gscript
 {
@@ -58,6 +59,11 @@ namespace gscript
 		return std::find_if(s.rbegin(), s.rend(), [](int ch) {
 			return !std::isspace(ch);
 		}).base();
+	}
+
+	static inline bool isNewLine(char c)
+	{
+		return c == '\n';
 	}
 }
 

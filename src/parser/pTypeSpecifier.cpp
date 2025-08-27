@@ -11,7 +11,7 @@ namespace gscript
 
 		if (nameResult.isOk())
 		{
-			ParserArrayAccessor arrayAccessor = ParserArrayAccessor(ParserArrayAccessor::IT_OPTIONAL | ParserArrayAccessor::IT_LITERAL);
+			ParserArrayAccessor arrayAccessor = ParserArrayAccessor(ParserArrayAccessor::IndexType::Optional | ParserArrayAccessor::IndexType::Literal);
 			ParseResult arrayResult = arrayAccessor.parse(StringIteratorRange(nameResult.result.end, itrange.end));
 
 			if (arrayResult.isOk())

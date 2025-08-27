@@ -66,7 +66,7 @@ namespace gscript
 
 		ScriptClass::VAR_DECLARATION_CONTAINER varDeclarations;
 
-		BITFLAG_T modifier = 0x00;
+		CLASS_MODIFIER_T modifier = CLASS_MODIFIER_T::CM_NONE;
 
 		SCRIPT_API void assignConstructor(ScriptFunction& f);
 		void createThis();

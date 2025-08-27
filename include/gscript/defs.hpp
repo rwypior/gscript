@@ -1,6 +1,8 @@
 #ifndef _h_gscript_defs
 #define _h_gscript_defs
 
+#include "bitfield.hpp"
+
 #include <vector>
 
 #define NOARG
@@ -118,9 +120,6 @@ namespace gscript
 	};
 
 	typedef std::vector<FunctionParameter> PARAMS_T;
-
-	typedef unsigned int BITFLAG_T;
-
 	typedef std::vector<ScriptValue*> CALLABLE_PARAMS_T;
 
 	extern const char *KW_NULL;
@@ -131,5 +130,12 @@ namespace gscript
 	extern ScriptBoolValue* SCR_TRUE;
 	extern ScriptBoolValue* SCR_FALSE;
 }
+
+DEFINE_BITFIELD(gscript::MODIFIER_T);
+DEFINE_BITFIELD(gscript::CLASS_MODIFIER_T);
+DEFINE_BITFIELD(gscript::ENTITY_TYPE_T);
+DEFINE_BITFIELD(gscript::OPERATOR_POSITION_T);
+DEFINE_BITFIELD(gscript::OPERATOR_LINK_T);
+DEFINE_BITFIELD(gscript::NAMESPACE_TYPE_T);
 
 #endif

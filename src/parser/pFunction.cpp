@@ -72,7 +72,7 @@ namespace gscript
 			{
 				if (ParserMethod *method = dynamic_cast<ParserMethod*>(this))
 				{
-					method->accessSpecifier.modifier |= static_cast<BITFLAG_T>(MODIFIER_T::M_ABSTRACT);
+					method->accessSpecifier.modifier |= MODIFIER_T::M_ABSTRACT;
 				}
 				else
 					throw CompileException("Only methods may be declared abstract");

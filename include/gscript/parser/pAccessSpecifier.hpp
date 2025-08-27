@@ -4,6 +4,7 @@
 #include "pEntity.hpp"
 #include "defs.hpp"
 #include "IteratorRange.hpp"
+#include "bitfield.hpp"
 
 namespace gscript
 {
@@ -21,11 +22,11 @@ namespace gscript
 		static const char *KW_M_VIRTUAL;
 
 		//std::string access;
-		BITFLAG_T modifier = static_cast<int>(MODIFIER_T::M_NONE);
+		MODIFIER_T modifier = MODIFIER_T::M_NONE;
 
 		virtual ParseResult parse(StringIteratorRange itrange) override;
 
-		int getModifier() const;
+		MODIFIER_T getModifier() const;
 
 		//operator MODIFIER_T() const;
 		//ParserAccessSpecifier &operator =(const ParserAccessSpecifier &specifier);

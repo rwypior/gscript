@@ -12,6 +12,7 @@ namespace gscript
 	class ParserEntity
 	{
 	public:
+		virtual ~ParserEntity() = default;
 		virtual ParseResult parse(StringIteratorRange itrange) = 0;
 
 		virtual std::string _name() const

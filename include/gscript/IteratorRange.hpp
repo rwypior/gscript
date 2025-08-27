@@ -37,6 +37,8 @@ namespace gscript
 
 	class StringIteratorRange : public IteratorRange<std::string>
 	{
+	// Constructor from const char* not allowed - it's not supposed to hold copy of string
+
 	public:
 		StringIteratorRange()
 		{

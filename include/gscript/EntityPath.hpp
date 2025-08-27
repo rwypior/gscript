@@ -107,6 +107,8 @@ namespace gscript
 		operator std::string() const;
 		const std::string &getString() const;
 
+		bool operator==(const std::string& str) const;
+
 	private:
 		std::string path;
 	};

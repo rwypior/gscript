@@ -4,26 +4,27 @@
 #include "pEntity.hpp"
 #include "pStatement.hpp"
 #include "IteratorRange.hpp"
+#include "bitfield.hpp"
 
 namespace gscript
 {
 	class ParserArrayAccessor : public ParserEntity
 	{
 	public:
-		enum INDEX_TYPE_T
+		enum class IndexType
 		{
-			IT_NONE = 0,
-			IT_REQUIRED = 1,
-			IT_OPTIONAL = 2,
-			IT_LITERAL = 4,
-			IT_STATEMENT = 8
+			None = 0,
+			Required = 1,
+			Optional = 2,
+			Literal = 4,
+			Statement = 8
 		};
 
 	public:
 		static const char KW_ARRAY_ACCESSOR_BEGIN;
 		static const char KW_ARRAY_ACCESSOR_END;
 
-		ParserArrayAccessor(int indexType);
+		ParserArrayAccessor(IndexType indexType);
 
 		bool gotValue = false;
 		size_t staticIndex = 0;
@@ -32,8 +33,10 @@ namespace gscript
 		virtual ParseResult parse(StringIteratorRange itrange) override;
 
 	protected:
-		int indexType = 0;
+		IndexType indexType = IndexType::None;
 	};
 }
+
+DEFINE_BITFIELD(gscript::ParserArrayAccessor::IndexType);
 
 #endif

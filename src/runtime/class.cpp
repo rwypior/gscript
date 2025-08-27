@@ -17,7 +17,6 @@ namespace gscript
 		: ScriptNamespace(&scope)
 		, name(name)
 		, base(base)
-		, modifier(0x00)
 	{
 	}
 
@@ -33,12 +32,12 @@ namespace gscript
 
 	void ScriptClass::makeAbstract()
 	{
-		this->modifier |= static_cast<int>(CLASS_MODIFIER_T::CM_ABSTRACT);
+		this->modifier |= CLASS_MODIFIER_T::CM_ABSTRACT;
 	}
 
 	bool ScriptClass::isAbstract()
 	{
-		return this->modifier & static_cast<int>(CLASS_MODIFIER_T::CM_ABSTRACT);
+		return this->modifier & CLASS_MODIFIER_T::CM_ABSTRACT;
 	}
 
 	ScriptClassInstance *ScriptClass::instantiate(const CALLABLE_PARAMS_T &c)

@@ -15,7 +15,7 @@ namespace gscript
 	class ScriptMethod : public ScriptFunction
 	{
 	public:
-		const BITFLAG_T accessModifier = 0x00;
+		const MODIFIER_T accessModifier = MODIFIER_T::M_NONE;
 
 		//SCRIPT_API ScriptMethod(ScriptFunction &func, const BITFLAG_T access);
 
@@ -24,7 +24,7 @@ namespace gscript
 			const std::string &name,
 			ScriptType *returnType,
 			const PARAMS_T &parameters = PARAMS_T(),
-			BITFLAG_T modifier = static_cast<BITFLAG_T>(MODIFIER_T::M_NONE)
+			MODIFIER_T modifier = MODIFIER_T::M_NONE
 		);
 		
 		SCRIPT_API bool isStatic() const;

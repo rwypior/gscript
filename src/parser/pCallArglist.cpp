@@ -9,19 +9,21 @@
 
 namespace gscript
 {
-	ParserCallArglist::ParserCallArglist(const int maxCount, const int minCount, const char separator, char start, char end, BITFLAG_T allowedEntities)
-		:maxCount(maxCount),
-		minCount(minCount),
-		separator(separator),
-		start(start),
-		end(end),
-		allowedEntities(allowedEntities)
+	ParserCallArglist::ParserCallArglist(const int maxCount, const int minCount, const char separator, char start, char end, ENTITY_TYPE_T allowedEntities)
+		: maxCount(maxCount)
+		, minCount(minCount)
+		, separator(separator)
+		, start(start)
+		, end(end)
+		, allowedEntities(allowedEntities)
 	{
-
 	}
 
 	ParseResult ParserCallArglist::parse(StringIteratorRange itrange)
 	{
+		if (itrange.end - itrange.begin < 2)
+			return ParseResult(ParseResult::STATUS_T::S_FATAL, {itrange, "Argument list must contain opening and closing characters"});
+
 		ParseResult start = (ParserArglistStart(this->start)).parse(itrange);
 		if (!start.isOk())
 			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());

@@ -26,7 +26,7 @@ namespace gscript
 			ParseResult rpublic = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::KW_M_AS_PUBLIC);
 			if (rpublic.isOk())
 			{
-				this->modifier |= static_cast<int>(MODIFIER_T::M_ACCESS_PUBLIC);
+				this->modifier |= MODIFIER_T::M_ACCESS_PUBLIC;
 				it = rpublic.result.end;
 				anyGood = true;
 			}
@@ -34,7 +34,7 @@ namespace gscript
 			ParseResult rprotected = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::KW_M_AS_PROTECTED);
 			if (rprotected.isOk())
 			{
-				this->modifier |= static_cast<int>(MODIFIER_T::M_ACCESS_PROTECTED);
+				this->modifier |= MODIFIER_T::M_ACCESS_PROTECTED;
 				it = rprotected.result.end;
 				anyGood = true;
 			}
@@ -42,7 +42,7 @@ namespace gscript
 			ParseResult rprivate = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::KW_M_AS_PRIVATE);
 			if (rprivate.isOk())
 			{
-				this->modifier |= static_cast<int>(MODIFIER_T::M_ACCESS_PRIVATE);
+				this->modifier |= MODIFIER_T::M_ACCESS_PRIVATE;
 				it = rprivate.result.end;
 				anyGood = true;
 			}
@@ -50,7 +50,7 @@ namespace gscript
 			ParseResult rconst = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::KW_M_CONST);
 			if (rconst.isOk())
 			{
-				this->modifier |= static_cast<int>(MODIFIER_T::M_CONST);
+				this->modifier |= MODIFIER_T::M_CONST;
 				it = rconst.result.end;
 				anyGood = true;
 			}
@@ -58,7 +58,7 @@ namespace gscript
 			ParseResult rstatic = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::KW_M_STATIC);
 			if (rstatic.isOk())
 			{
-				this->modifier |= static_cast<int>(MODIFIER_T::M_STATIC);
+				this->modifier |= MODIFIER_T::M_STATIC;
 				it = rstatic.result.end;
 				anyGood = true;
 			}
@@ -66,30 +66,30 @@ namespace gscript
 			ParseResult rvirtual = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::KW_M_VIRTUAL);
 			if (rvirtual.isOk())
 			{
-				this->modifier |= static_cast<int>(MODIFIER_T::M_VIRTUAL);
+				this->modifier |= MODIFIER_T::M_VIRTUAL;
 				it = rvirtual.result.end;
 				anyGood = true;
 			}
 		}
 
 		if (
-			(this->modifier & static_cast<int>(MODIFIER_T::M_ACCESS_PRIVATE) && this->modifier & static_cast<int>(MODIFIER_T::M_ACCESS_PUBLIC)) ||
-			(this->modifier & static_cast<int>(MODIFIER_T::M_ACCESS_PRIVATE) && this->modifier & static_cast<int>(MODIFIER_T::M_ACCESS_PROTECTED)) ||
-			(this->modifier & static_cast<int>(MODIFIER_T::M_ACCESS_PROTECTED) && this->modifier & static_cast<int>(MODIFIER_T::M_ACCESS_PUBLIC))
+			(this->modifier & MODIFIER_T::M_ACCESS_PRIVATE && this->modifier & MODIFIER_T::M_ACCESS_PUBLIC) ||
+			(this->modifier & MODIFIER_T::M_ACCESS_PRIVATE && this->modifier & MODIFIER_T::M_ACCESS_PROTECTED) ||
+			(this->modifier & MODIFIER_T::M_ACCESS_PROTECTED && this->modifier & MODIFIER_T::M_ACCESS_PUBLIC)
 			)
 			throw CompileException("Only one of PRIVATE, PROTECTED or PUBLIC modifiers may be used");
 
 		if (
-			!(this->modifier & static_cast<int>(MODIFIER_T::M_ACCESS_PUBLIC)) &&
-			!(this->modifier & static_cast<int>(MODIFIER_T::M_ACCESS_PROTECTED)) &&
-			!(this->modifier & static_cast<int>(MODIFIER_T::M_ACCESS_PRIVATE))
+			!(this->modifier & MODIFIER_T::M_ACCESS_PUBLIC) &&
+			!(this->modifier & MODIFIER_T::M_ACCESS_PROTECTED) &&
+			!(this->modifier & MODIFIER_T::M_ACCESS_PRIVATE)
 			)
-			this->modifier |= static_cast<int>(MODIFIER_T::M_ACCESS_PUBLIC);
+			this->modifier |= MODIFIER_T::M_ACCESS_PUBLIC;
 
 		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(itrange.begin, it + 1));
 	}
 
-	int ParserAccessSpecifier::getModifier() const
+	MODIFIER_T ParserAccessSpecifier::getModifier() const
 	{
 		return this->modifier;
 	}

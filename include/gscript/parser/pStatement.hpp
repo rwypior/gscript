@@ -17,14 +17,16 @@ namespace gscript
 	public:
 		CONTAINER_T components;
 
-		ParserStatement(bool isSubStatement = false, bool forceEnclosing = false);
-		~ParserStatement();
+		ParserStatement(bool isSubStatement = false, bool forceEnclosing = false, bool allowEmpty = true);
 
 		virtual ParseResult parse(StringIteratorRange itrange) override;
+
+		void setAllowEmpty(bool allowEmpty = true);
 
 	protected:
 		bool isSubStatement = false;
 		bool forceEnclosing = false;
+		bool allowEmpty = true;
 	};
 }
 

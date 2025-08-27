@@ -24,8 +24,8 @@ namespace gscript
 			PARAMS_T({
 				FunctionParameter(ScriptType::create(VALUE_TYPE_T::VT_STRING, scope)),
 				FunctionParameter(ScriptType::create(VALUE_TYPE_T::VT_STRING, scope))
-				}),
-			static_cast<BITFLAG_T>(MODIFIER_T::M_ACCESS_PUBLIC)
+			}),
+			MODIFIER_T::M_ACCESS_PUBLIC
 		)
 	{
 	}
@@ -53,8 +53,8 @@ namespace gscript
 			ScriptType::create(VALUE_TYPE_T::VT_INT, this->scope),
 			PARAMS_T({
 				FunctionParameter(ScriptType::create(TypeDescriptor(VALUE_TYPE_T::VT_REFERENCE, VALUE_TYPE_T::VT_STRING), scope))
-				}),
-			static_cast<BITFLAG_T>(MODIFIER_T::M_ACCESS_PUBLIC)
+			}),
+			MODIFIER_T::M_ACCESS_PUBLIC
 		)
 	{
 	}
@@ -88,8 +88,8 @@ namespace gscript
 			ScriptType::create(VALUE_TYPE_T::VT_BOOL, this->scope),
 			PARAMS_T({
 				FunctionParameter(ScriptType::create(TypeDescriptor(VALUE_TYPE_T::VT_STRING), scope))
-				}),
-			static_cast<BITFLAG_T>(MODIFIER_T::M_ACCESS_PUBLIC) | static_cast<BITFLAG_T>(MODIFIER_T::M_STATIC)
+			}),
+			MODIFIER_T::M_ACCESS_PUBLIC | MODIFIER_T::M_STATIC
 		)
 	{
 	}

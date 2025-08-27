@@ -55,7 +55,7 @@ namespace gscript
 		SCRIPT_API void setParentScope(ScriptScope *scope);
 		SCRIPT_API ScriptScope *getParentScope() const;
 
-		SCRIPT_API bool isAccessible(ScriptScope &targetScope, BITFLAG_T access);
+		SCRIPT_API bool isAccessible(ScriptScope &targetScope, MODIFIER_T access);
 
 	protected:
 		ScriptScope *parentScope = nullptr;

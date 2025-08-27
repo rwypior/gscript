@@ -196,15 +196,15 @@ namespace gscript
 		return this->parentScope;
 	}
 
-	bool ScriptScope::isAccessible(ScriptScope &targetScope, BITFLAG_T access)
+	bool ScriptScope::isAccessible(ScriptScope &targetScope, MODIFIER_T access)
 	{
-		if (access & static_cast<int>(MODIFIER_T::M_ACCESS_PUBLIC))
+		if (access & MODIFIER_T::M_ACCESS_PUBLIC)
 			return true;
 
-		if (access & static_cast<int>(MODIFIER_T::M_ACCESS_PRIVATE) && &targetScope == this)
+		if (access & MODIFIER_T::M_ACCESS_PRIVATE && &targetScope == this)
 			return true;
 
-		if (access & static_cast<int>(MODIFIER_T::M_ACCESS_PROTECTED))
+		if (access & MODIFIER_T::M_ACCESS_PROTECTED)
 		{
 			ScriptClass *thisClass = dynamic_cast<ScriptClass*>(this);
 			ScriptClass *targetClass = dynamic_cast<ScriptClass*>(&targetScope);

@@ -15,9 +15,10 @@
 
 namespace gscript
 {
-	ParserStatement::ParserStatement(bool isSubStatement, bool forceEnclosing)
+	ParserStatement::ParserStatement(bool isSubStatement, bool forceEnclosing, bool allowEmpty)
 		: isSubStatement(isSubStatement)
 		, forceEnclosing(forceEnclosing)
+		, allowEmpty(allowEmpty)
 	{
 	}
 
@@ -197,10 +198,14 @@ namespace gscript
 			end = statementEnd.result.end;
 		}
 
+		if (!this->allowEmpty && this->components.empty())
+			return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange, "Expected non-empty statement"});
+
 		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(begin, end));
 	}
 
-	ParserStatement::~ParserStatement()
+	void ParserStatement::setAllowEmpty(bool allowEmpty)
 	{
+		this->allowEmpty = allowEmpty;
 	}
 }

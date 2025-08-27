@@ -19,7 +19,7 @@ namespace gscript
 		const std::string &name,
 		ScriptType *returnType,
 		const PARAMS_T &parameters,
-		BITFLAG_T modifier
+		MODIFIER_T modifier
 	)
 		: ScriptFunction(scope, name, returnType, parameters)
 		, accessModifier(modifier)
@@ -42,17 +42,17 @@ namespace gscript
 
 	bool ScriptMethod::isStatic() const
 	{
-		return this->accessModifier & static_cast<int>(MODIFIER_T::M_STATIC);
+		return this->accessModifier & MODIFIER_T::M_STATIC;
 	}
 
 	bool ScriptMethod::isVirtual() const
 	{
-		return this->accessModifier & static_cast<int>(MODIFIER_T::M_VIRTUAL);
+		return this->accessModifier & MODIFIER_T::M_VIRTUAL;
 	}
 
 	bool ScriptMethod::isAbstract() const
 	{
-		return this->accessModifier & static_cast<int>(MODIFIER_T::M_ABSTRACT);
+		return this->accessModifier & MODIFIER_T::M_ABSTRACT;
 	}
 
 	void ScriptMethod::setClassInstance(ScriptClassInstance *inst)

@@ -24,7 +24,7 @@ namespace gscript
 		char start = 0;
 		char end = 0;
 
-		BITFLAG_T allowedEntities = 0x00;
+		ENTITY_TYPE_T allowedEntities = ENTITY_TYPE_T::ET_NONE;
 
 		std::vector<std::unique_ptr<ParserStatement>> parameters;
 
@@ -34,7 +34,7 @@ namespace gscript
 			const char separator = ',',
 			char start = ParserArglistStart::C_ARGLIST_START,
 			char end = ParserArglistEnd::C_ARGLIST_END,
-			BITFLAG_T allowedEntities = static_cast<int>(ENTITY_TYPE_T::ET_STATEMENT)
+			ENTITY_TYPE_T allowedEntities = ENTITY_TYPE_T::ET_STATEMENT
 		);
 		ParserCallArglist(const ParserCallArglist&) = delete;
 		ParserCallArglist(ParserCallArglist&& b)

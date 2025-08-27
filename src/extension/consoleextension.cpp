@@ -12,7 +12,7 @@ namespace gscript
 			name,
 			ScriptType::create(VALUE_TYPE_T::VT_VOID, this->scope),
 			PARAMS_T({ FunctionParameter(ScriptType::create(VALUE_TYPE_T::VT_STRING, scope)) }),
-			static_cast<BITFLAG_T>(MODIFIER_T::M_STATIC)
+			MODIFIER_T::M_STATIC
 		)
 	{
 	}
@@ -37,7 +37,7 @@ namespace gscript
 			name,
 			ScriptType::create(VALUE_TYPE_T::VT_VOID, this->scope),
 			PARAMS_T({ FunctionParameter(ScriptType::create(VALUE_TYPE_T::VT_STRING, scope)) }),
-			static_cast<BITFLAG_T>(MODIFIER_T::M_STATIC)
+			MODIFIER_T::M_STATIC
 		)
 	{
 	}
@@ -62,7 +62,7 @@ namespace gscript
 			name,
 			ScriptType::create(VALUE_TYPE_T::VT_STRING, this->scope),
 			PARAMS_T(),
-			static_cast<BITFLAG_T>(MODIFIER_T::M_STATIC)
+			MODIFIER_T::M_STATIC
 		)
 	{
 	}

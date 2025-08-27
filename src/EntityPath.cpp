@@ -44,4 +44,9 @@ namespace gscript
 	{
 		return this->path;
 	}
+
+	bool EntityPath::operator==(const std::string& str) const
+	{
+		return this->getString() == str;
+	}
 }

@@ -143,7 +143,7 @@ namespace gscript
 			"run",
 			ScriptType::create(VALUE_TYPE_T::VT_INT, *entrypoint),
 			make_vector<FunctionParameter>() << ScriptType(VALUE_TYPE_T::VT_INT) << ScriptType::create(TypeDescriptor(VALUE_TYPE_T::VT_ARRAY, VALUE_TYPE_T::VT_STRING), *entrypoint),
-			static_cast<BITFLAG_T>(MODIFIER_T::M_VIRTUAL) | static_cast<BITFLAG_T>(MODIFIER_T::M_ABSTRACT)
+			MODIFIER_T::M_VIRTUAL | MODIFIER_T::M_ABSTRACT
 		));
 
 		this->mainScope->registerClass(std::move(entrypoint));

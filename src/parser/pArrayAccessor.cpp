@@ -11,9 +11,9 @@ namespace gscript
 	const char ParserArrayAccessor::KW_ARRAY_ACCESSOR_BEGIN = '[';
 	const char ParserArrayAccessor::KW_ARRAY_ACCESSOR_END = ']';
 
-	ParserArrayAccessor::ParserArrayAccessor(int indexType)
-		:indexType(indexType),
-		statement(true, false)
+	ParserArrayAccessor::ParserArrayAccessor(IndexType indexType)
+		: indexType(indexType)
+		, statement(true, false, false)
 	{
 	}
 
@@ -34,15 +34,16 @@ namespace gscript
 
 		auto end = beginResult.result.end;
 
-		if (this->indexType & ParserArrayAccessor::INDEX_TYPE_T::IT_REQUIRED || this->indexType & ParserArrayAccessor::INDEX_TYPE_T::IT_OPTIONAL)
+		if (this->indexType & IndexType::Required || this->indexType & IndexType::Optional)
 		{
 			ParseResult statementResult;
 
-			if (this->indexType & ParserArrayAccessor::INDEX_TYPE_T::IT_STATEMENT)
+			if (this->indexType & IndexType::Statement)
 			{
-				statementResult = this->statement.parse(StringIteratorRange(beginResult.result.end, itrange.end));
+				this->statement.setAllowEmpty(!(this->indexType & IndexType::Required));
+				statementResult = this->statement.parse(StringIteratorRange(beginResult.result.end, itrange.end - 1));
 			}
-			else if (this->indexType & ParserArrayAccessor::IT_LITERAL)
+			else if (this->indexType & IndexType::Literal)
 			{
 				ParserLiteral lit;
 				statementResult = lit.parse(StringIteratorRange(beginResult.result.end, itrange.end));
@@ -51,14 +52,14 @@ namespace gscript
 					this->staticIndex = std::stoi(lit.value);
 			}
 			else
-				assert(!"Array specifier must contain either IT_REQUIRED or IT_STATEMENT bitflags");
+				assert(!"Array specifier' type must include either IndexType::Statement or IndexType::Literal");
 
 			if (statementResult.isOk())
 			{
 				end = statementResult.result.end;
 				this->gotValue = true;
 			}
-			else if (this->indexType & ParserArrayAccessor::INDEX_TYPE_T::IT_REQUIRED)
+			else if (this->indexType & IndexType::Required)
 				return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange(beginResult.result.begin, end));
 		}
 

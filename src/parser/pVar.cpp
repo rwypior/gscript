@@ -24,7 +24,7 @@ namespace gscript
 
 		auto end = nameResult.result.end;
 
-		ParserArrayAccessor arrayAccessor(ParserArrayAccessor::INDEX_TYPE_T::IT_REQUIRED | ParserArrayAccessor::INDEX_TYPE_T::IT_STATEMENT);
+		ParserArrayAccessor arrayAccessor(ParserArrayAccessor::IndexType::Required | ParserArrayAccessor::IndexType::Statement);
 		ParseResult arrayResult = arrayAccessor.parse(StringIteratorRange(end, itrange.end));
 
 		if (arrayResult.isOk())

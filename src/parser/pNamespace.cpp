@@ -27,7 +27,7 @@ namespace gscript
 		auto beginPosition = itrange.end;
 		auto endPosition = itrange.begin;
 
-		if (static_cast<BITFLAG_T>(this->type) & static_cast<BITFLAG_T>(NAMESPACE_TYPE_T::NT_NAMED))
+		if (this->type & NAMESPACE_TYPE_T::NT_NAMED)
 		{
 			ParseResult nsResult = ParserWord::parse(StringIteratorRange(endPosition, itrange.end), ParserNamespace::KW_NAMESPACE);
 
@@ -46,7 +46,7 @@ namespace gscript
 			endPosition = nsNameResult.result.end;
 		}
 
-		if (static_cast<BITFLAG_T>(this->type) & static_cast<BITFLAG_T>(NAMESPACE_TYPE_T::NT_ENCLOSED))
+		if (this->type & NAMESPACE_TYPE_T::NT_ENCLOSED)
 		{
 			ParseResult enclosureResult = ParserChar::parse(StringIteratorRange(endPosition, itrange.end), ParserNamespace::KW_ENCLOSURE_BEGIN);
 
@@ -66,7 +66,7 @@ namespace gscript
 			anyGood = false;
 			StringIteratorRange range(endPosition, itrange.end);
 
-			if (static_cast<BITFLAG_T>(this->type) & static_cast<BITFLAG_T>(NAMESPACE_TYPE_T::NT_MAIN))
+			if (this->type & NAMESPACE_TYPE_T::NT_MAIN)
 			{
 				ParserImportDirective pdimport;
 				ParseResult pdimportres = pdimport.parse(range);
@@ -133,7 +133,7 @@ namespace gscript
 			}
 		} while ((endPosition < itrange.end) && anyGood);
 
-		if (static_cast<BITFLAG_T>(this->type) & static_cast<BITFLAG_T>(NAMESPACE_TYPE_T::NT_ENCLOSED))
+		if (this->type & NAMESPACE_TYPE_T::NT_ENCLOSED)
 		{
 			ParseResult enclosureResult = ParserChar::parse(StringIteratorRange(endPosition, itrange.end), ParserNamespace::KW_ENCLOSURE_END);
 

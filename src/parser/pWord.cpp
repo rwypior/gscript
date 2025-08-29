@@ -85,7 +85,7 @@ namespace gscript
 			if (ok)
 			{
 				//return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(itrange.begin, it + 1), std::move(subResult));
-				return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(itrange.begin, it), std::move(subResult));
+				return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(itrange.begin, it, itrange.getFile(), itrange.getLine() + newlines), std::move(subResult));
 			}
 			else if (!allowed.empty())
 			{

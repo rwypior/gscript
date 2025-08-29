@@ -4,10 +4,16 @@ namespace gscript
 {
 	// Details
 
-	ParseDetails::ParseDetails(const std::string& file, size_t line, const std::string& message)
+	ParseDetails::ParseDetails(const std::string& file, size_t line, const std::string& message, size_t newlines)
 		: file(file)
 		, line(line)
 		, message(message)
+		, newlines(newlines)
+	{
+	}
+
+	ParseDetails::ParseDetails(size_t newlines = 0)
+		: newlines(newlines)
 	{
 	}
 
@@ -21,6 +27,11 @@ namespace gscript
 	ParseDetails::ParseDetails(const ParseResult& result, const std::string& message)
 		: ParseDetails(result.details.file, result.details.line, message.empty() ? result.details.message : message)
 	{
+	}
+
+	ParseDetails ParseDetails::withMessage(const std::string& msg) const
+	{
+		return ParseDetails(this->file, this->line, msg, this->newlines);
 	}
 
 	ParseDetails::operator std::string() const

@@ -7,6 +7,7 @@
 #include "parser/pFieldDeclaration.hpp"
 #include "parser/pConstructor.hpp"
 #include "parser/pWord.hpp"
+#include "StringUtils.hpp"
 
 namespace gscript
 {
@@ -16,58 +17,71 @@ namespace gscript
 		if (parentResult.status != ParseResult::STATUS_T::S_OK)
 			return parentResult;
 
-		ParseResult name = (ParserNameSpecifier()).parse(StringIteratorRange(parentResult.result.end + 1, itrange.end));
+		ParseResult name = (ParserNameSpecifier()).parse(StringIteratorRange(parentResult.result.end + 1, itrange.end, itrange.getFile(), itrange.getLine()));
 
 		if (!name.isOk())
 			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
 
 		this->name = name.getWord();
 
-		ParseResult inherit = (ParserInherit()).parse(StringIteratorRange(name.result.end + 1, itrange.end));
-		ParseResult blockBegin = (ParserBlockStart()).parse(StringIteratorRange(inherit.isOk() ? inherit.result.end + 1 : name.result.end + 1, itrange.end));
+		ParseResult inherit = (ParserInherit()).parse(
+			StringIteratorRange(name.result.end + 1, itrange.end, itrange.getFile(), name.result.getLine()));
+		ParseResult blockBegin = (ParserBlockStart()).parse(
+			StringIteratorRange(inherit.isOk() ? inherit.result.end + 1 : name.result.end + 1, itrange.end, inherit.result.getFile(), inherit.result.getLine()));
 
 		if (inherit.isOk())
 			this->base = inherit.getWord();
 
 		if (!blockBegin.isOk())
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+			return blockBegin;
+			//return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
 
 		bool anyMatched = false;
-		auto begin = blockBegin.result.end + 1;
+		auto begin = blockBegin.result.end;
+
+		//size_t line = blockBegin.result.getLine();
+		size_t newlines = skipWhitespaces(begin, itrange.end);
+		size_t line = blockBegin.result.getLine() + newlines;
 
 		do
 		{
 			ParserConstructor pconstructor(*this);
-			ParseResult pconstructorres = pconstructor.parse(StringIteratorRange(begin, itrange.end));
+			ParseResult pconstructorres = pconstructor.parse(StringIteratorRange(begin, itrange.end, blockBegin.result.getFile(), line));
 			if (pconstructorres.isOk())
 			{
 				this->methods.push_back(pconstructor);
 				begin = pconstructorres.result.end;
+				line = pconstructorres.result.getLine();
 			}
 
 			ParserMethod pmethod;
-			ParseResult pmethodres = pmethod.parse(StringIteratorRange(begin, itrange.end));
+			ParseResult pmethodres = pmethod.parse(StringIteratorRange(begin, itrange.end, blockBegin.result.getFile(), line));
 			if (pmethodres.isOk())
 			{
 				this->methods.push_back(pmethod);
 				begin = pmethodres.result.end;
+				line = pmethodres.result.getLine();
 			}
 
 			ParserFieldDeclaration pfield = ParserFieldDeclaration();
-			ParseResult pfieldres = pfield.parse(StringIteratorRange(begin, itrange.end));
+			ParseResult pfieldres = pfield.parse(StringIteratorRange(begin, itrange.end, blockBegin.result.getFile(), line));
 			if (pfieldres.isOk())
 			{
 				this->fields.push_back(pfield);
 				begin = pfieldres.result.end;
+				line = pfieldres.result.getLine();
 			}
 
 			anyMatched = pmethodres.isOk() || pfieldres.isOk() || pconstructorres.isOk();
 		} while (anyMatched);
 
-		ParseResult blockEnd = (ParserBlockEnd()).parse(StringIteratorRange(begin, itrange.end));
+		ParseResult blockEnd = (ParserBlockEnd()).parse(StringIteratorRange(begin, itrange.end, blockBegin.result.getFile(), line));
 
 		if (!blockEnd.isOk())
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+			return ParseResult(
+				ParseResult::STATUS_T::S_FATAL, 
+				blockEnd.details.withMessage("Expected one of: constructor, method, field; got \"" + getCharsUntil(begin, itrange.end, '\n') + "\"")
+			);
 
 		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(parentResult.result.begin, blockEnd.result.end));
 	}

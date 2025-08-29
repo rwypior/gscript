@@ -53,8 +53,10 @@ namespace gscript
 
 	bool ParserNameSpecifier::validateChar(std::string::const_iterator it, StringIteratorRange itrange)
 	{
-		if (std::isalnum(*it))
+		if (std::isalnum(*it) || *it == '_')
 			return true;
+
+		// asdas:dasd:
 
 		if (*it == ':')
 		{
@@ -64,7 +66,7 @@ namespace gscript
 					return true;
 			}
 
-			if (it != itrange.end)
+			if (it != itrange.end - 1)
 			{
 				if (*(it + 1) == ':')
 					return true;

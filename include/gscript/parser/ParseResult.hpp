@@ -13,15 +13,19 @@ namespace gscript
 
 	struct ParseDetails
 	{
-		ParseDetails(const std::string& file = "", size_t line = 0, const std::string& message = "");
+		ParseDetails(const std::string& file = "", size_t line = 0, const std::string& message = "", size_t newlines = 0);
+		ParseDetails(size_t newlines);
 		ParseDetails(const StringIteratorRange& itrange, const std::string& message = "");
 		ParseDetails(const ParseResult& result, const std::string& message = "");
+
+		ParseDetails withMessage(const std::string& msg) const;
 
 		operator std::string() const;
 
 		std::string file = "";
 		size_t line = 0;
 		std::string message = "";
+		size_t newlines = 0;
 	};
 
 	class ParseResult

@@ -65,6 +65,28 @@ namespace gscript
 	{
 		return c == '\n';
 	}
+
+	static inline size_t skipWhitespaces(std::string::const_iterator& it, std::string::const_iterator end)
+	{
+		size_t newlines = 0;
+		while (it != end && std::isspace(*it))
+		{
+			newlines += isNewLine(*it);
+			it++;
+		}
+		return newlines;
+	}
+
+	static inline std::string getCharsUntil(std::string::const_iterator& it, std::string::const_iterator end, char until)
+	{
+		std::string res;
+		while (it != end && *it != until)
+		{
+			res += *it;
+			it++;
+		}
+		return res;
+	}
 }
 
 #endif

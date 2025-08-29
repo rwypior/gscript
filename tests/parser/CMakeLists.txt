@@ -1,1 +1,1 @@
-target_sources(gscriptTest PRIVATE "forTest.cpp" "wordParserTest.cpp" "charParserTest.cpp" "specialDirectiveTest.cpp" "arglistTest.cpp" "arrayAccessorTest.cpp" "arrayInitializerTest.cpp" "blockTest.cpp")
+target_sources(gscriptTest PRIVATE "forTest.cpp" "wordParserTest.cpp" "charParserTest.cpp" "specialDirectiveTest.cpp" "arglistTest.cpp" "arrayAccessorTest.cpp" "arrayInitializerTest.cpp" "blockTest.cpp" "callarglistTest.cpp" "classTest.cpp" "nameSpecifierTest.cpp")

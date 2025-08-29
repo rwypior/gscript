@@ -17,6 +17,18 @@ TEST_CASE("ParserBlockSimple")
 	REQUIRE(result.isOk());
 }
 
+TEST_CASE("ParserBlockOneLiner")
+{
+	std::string txt = 
+		"a_statement;"
+		;
+
+	gscript::ParserBlock pBlock;
+	auto result = pBlock.parse(txt);
+
+	REQUIRE(result.isOk());
+}
+
 TEST_CASE("ParserBlockFailureNoSemicolon")
 {
 	std::string txt = 
@@ -30,4 +42,28 @@ TEST_CASE("ParserBlockFailureNoSemicolon")
 
 	REQUIRE(!result.isOk());
 	REQUIRE(result.details.message == "Expected \"}\", got \"a\"");
+}
+
+TEST_CASE("ParserBlockFailureNoEnclosure")
+{
+	std::string txt = 
+		"{\n"
+		;
+
+	gscript::ParserBlock pBlock;
+	auto result = pBlock.parse(txt);
+
+	REQUIRE(!result.isOk());
+	REQUIRE(result.details.message == "Expected \"}\", got empty string");
+}
+
+TEST_CASE("ParserBlockFailureEmptyString")
+{
+	std::string txt = "";
+
+	gscript::ParserBlock pBlock;
+	auto result = pBlock.parse(txt);
+
+	REQUIRE(!result.isOk());
+	REQUIRE(result.details.message == "Expected statement");
 }

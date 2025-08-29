@@ -86,7 +86,7 @@ namespace gscript
 			)
 			this->modifier |= MODIFIER_T::M_ACCESS_PUBLIC;
 
-		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(itrange.begin, it + 1));
+		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(itrange.begin, it));
 	}
 
 	MODIFIER_T ParserAccessSpecifier::getModifier() const

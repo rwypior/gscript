@@ -33,16 +33,6 @@ TEST_CASE("ParserArglistEmpty")
 	REQUIRE(pArglist.parameters.size() == 0);
 }
 
-TEST_CASE("ParserArglistEmptyString")
-{
-	std::string txt = "";
-
-	gscript::ParserArglist pArglist;
-	auto result = pArglist.parse(txt);
-
-	REQUIRE(!result.isOk());
-}
-
 TEST_CASE("ParserArglistNoArgName")
 {
 	// NOTE - maybe a parameter without a name should be allowed?

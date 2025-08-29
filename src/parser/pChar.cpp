@@ -30,7 +30,7 @@ namespace gscript
 			return ParseResult(ParseResult::STATUS_T::S_FATAL, {itrange.shifted(newlines), (std::stringstream() << "Expected \"" << c << "\", got empty string").str()});
 
 		if (*it == c)
-			return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(it, it + 1));
+			return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(it, it + 1, itrange.getFile(), itrange.getLine()), nullptr, { newlines });
 
 		return ParseResult(ParseResult::STATUS_T::S_FATAL, {itrange.shifted(newlines), (std::stringstream() << "Expected \"" << c << "\", got \"" << *it << "\"").str()});
 	}

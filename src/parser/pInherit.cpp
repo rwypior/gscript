@@ -14,7 +14,7 @@ namespace gscript
 			char chr = *it;
 			if (chr == ParserInherit::KW_INHERIT)
 			{
-				ParseResult nameResult = (ParserNameSpecifier()).parse(StringIteratorRange(it + 1, itrange.end));
+				ParseResult nameResult = (ParserNameSpecifier()).parse(StringIteratorRange(it + 1, itrange.end, itrange.getFile(), itrange.getLine()));
 
 				return nameResult;
 			}

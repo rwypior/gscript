@@ -20,9 +20,9 @@ namespace gscript
 		auto begin = itrange.begin;
 
 		unsigned int commentLength = 0;
-		COMMENT(itrange, itrange.begin, commentLength)
+		COMMENT(itrange, itrange.begin, commentLength);
 
-			ParserTypeSpecifier type = ParserTypeSpecifier();
+		ParserTypeSpecifier type = ParserTypeSpecifier();
 		ParseResult typeres = type.parse(itrange);
 		if (!typeres.isOk())
 			return ParseResult(ParseResult::STATUS_T::S_FATAL, COMMENT_RESULT(itrange, commentLength));

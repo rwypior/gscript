@@ -12,23 +12,16 @@ namespace gscript
 	{
 		int length = word.length();
 
-		//if (itrange.end - itrange.begin < length + 1)
-		if (itrange.end - itrange.begin < length)
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange, (std::stringstream() << "Expected \"" << word << "\", got empty statement").str()});
-
-		std::string buffer(length, '0');
-
 		StringIteratorRange::ITERATOR_T it = itrange.begin;
-		size_t newlines = 0;
-
-		while (it != itrange.end && std::isspace(*it))
-		{
-			newlines += isNewLine(*it);
-			++it;
-		}
+		size_t newlines = skipWhitespaces(it, itrange.end);
 
 		if (it == itrange.end)
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange.shifted(newlines), (std::stringstream() << "Expected \"" << word << "\", got empty statement").str() });
+			return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange.shifted(newlines), (std::stringstream() << "Expected \"" << word << "\", got empty statement").str()});
+
+		if (itrange.end - it < length)
+			return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange.shifted(newlines), (std::stringstream() << "Expected \"" << word << "\", got \"" + getCharsUntilEol(it, itrange.end) + "\"").str()});
+
+		std::string buffer(length, '0');
 
 		if (std::isdigit(*it))
 			return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange.shifted(newlines), "Expected alphanumeric word, got number" });
@@ -47,10 +40,10 @@ namespace gscript
 				if (it + 1 == itrange.end)
 					break;
 				char next = *(it + 1);
-				if (!std::isalnum(next))
+				if (!std::isalnum(next) && next != '_')
 					break;
 
-				return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange.shifted(newlines), "Expected alphanumeric word, got special character" });
+				return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange.shifted(newlines), "Expected \"" + word + "\"" });
 			}
 		}
 

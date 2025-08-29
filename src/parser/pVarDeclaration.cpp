@@ -4,6 +4,7 @@
 #include "parser/pEndStatement.hpp"
 #include "parser/pOperator.hpp"
 #include "parser/pComment.hpp"
+#include "StringUtils.hpp"
 
 #include <iostream>
 
@@ -19,18 +20,20 @@ namespace gscript
 	{
 		auto begin = itrange.begin;
 
+		size_t newlines = skipWhitespaces(begin, itrange.end);
+
 		unsigned int commentLength = 0;
 		COMMENT(itrange, itrange.begin, commentLength);
 
 		ParserTypeSpecifier type = ParserTypeSpecifier();
-		ParseResult typeres = type.parse(itrange);
+		ParseResult typeres = type.parse(StringIteratorRange(begin, itrange.end));
 		if (!typeres.isOk())
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, COMMENT_RESULT(itrange, commentLength));
+			return typeres;
 		this->type = typeres.getWord();
 
-		ParseResult name = (ParserNameSpecifier()).parse(StringIteratorRange(typeres.result.end + 1, itrange.end));
+		ParseResult name = (ParserNameSpecifier()).parse(StringIteratorRange(typeres.result.end, itrange.end));
 		if (!name.isOk())
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, COMMENT_RESULT(itrange, commentLength));
+			return name;
 		this->name = name.getWord();
 
 		auto end = name.result.end;
@@ -48,7 +51,7 @@ namespace gscript
 		{
 			ParseResult endstatement = (ParserEndStatement()).parse(StringIteratorRange(end, itrange.end));
 			if (!endstatement.isOk())
-				return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+				return endstatement;
 			end = endstatement.result.end;
 		}
 

@@ -10,11 +10,11 @@ struct Bitfield
     Bitfield(unsigned int value) : value(static_cast<T>(value)) {}
     operator T() const { return value; }
     operator bool() const { return static_cast<unsigned int>(value); }
-    Bitfield<T> operator |(T b) { return static_cast<T>(static_cast<unsigned int>(value) | static_cast<unsigned int>(b)); };
-    Bitfield<T> operator &(T b) { return static_cast<T>(static_cast<unsigned int>(value) & static_cast<unsigned int>(b)); };
-    Bitfield<T> operator |=(T b) { return static_cast<T>(value = static_cast<T>(static_cast<unsigned int>(value) | static_cast<unsigned int>(b))); };
-    Bitfield<T> operator &=(T b) { return static_cast<T>(value = static_cast<T>(static_cast<unsigned int>(value) & static_cast<unsigned int>(b))); };
-    Bitfield<T> operator ~() { return static_cast<T>(~static_cast<unsigned int>(value)); };
+    Bitfield<T> operator |(const T b) const { return static_cast<T>(static_cast<unsigned int>(value) | static_cast<unsigned int>(b)); };
+    Bitfield<T> operator &(const T b) const { return static_cast<T>(static_cast<unsigned int>(value) & static_cast<unsigned int>(b)); };
+    Bitfield<T> operator |=(const T b) { return static_cast<T>(value = static_cast<T>(static_cast<unsigned int>(value) | static_cast<unsigned int>(b))); };
+    Bitfield<T> operator &=(const T b) { return static_cast<T>(value = static_cast<T>(static_cast<unsigned int>(value) & static_cast<unsigned int>(b))); };
+    Bitfield<T> operator ~() const { return static_cast<T>(~static_cast<unsigned int>(value)); };
 };
 
 // Enable bitwise operations on enum class

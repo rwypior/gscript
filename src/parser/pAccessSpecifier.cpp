@@ -1,6 +1,7 @@
 #include "parser/pAccessSpecifier.hpp"
 #include "parser/pWord.hpp"
 #include "compileException.hpp"
+#include "StringUtils.hpp"
 
 namespace gscript
 {
@@ -17,6 +18,14 @@ namespace gscript
 	ParseResult ParserAccessSpecifier::parse(StringIteratorRange itrange)
 	{
 		auto it = itrange.begin;
+
+		size_t newlines = skipWhitespaces(it, itrange.end);
+
+		if (it == itrange.end)
+		{
+			this->modifier |= MODIFIER_T::M_ACCESS_PUBLIC;
+			return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(itrange.begin, it));
+		}
 
 		bool anyGood = true;
 		while (anyGood)
@@ -77,7 +86,15 @@ namespace gscript
 			(this->modifier & MODIFIER_T::M_ACCESS_PRIVATE && this->modifier & MODIFIER_T::M_ACCESS_PROTECTED) ||
 			(this->modifier & MODIFIER_T::M_ACCESS_PROTECTED && this->modifier & MODIFIER_T::M_ACCESS_PUBLIC)
 			)
-			throw CompileException("Only one of PRIVATE, PROTECTED or PUBLIC modifiers may be used");
+			return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange, "Access specifiers \"private\", \"protected\" and \"public\" must not be mixed" });
+
+		if (
+			(this->modifier & MODIFIER_T::M_STATIC && this->modifier & MODIFIER_T::M_VIRTUAL)
+			)
+			return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange, "Access specifiers \"static\" and \"virtual\" must not be mixed" });
+
+		if (this->modifier == MODIFIER_T::M_NONE)
+			return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange, "Expected any of: public, private, protected, const, static, virtual; got \"" + getCharsUntilEol(it, itrange.end) + "\"" });
 
 		if (
 			!(this->modifier & MODIFIER_T::M_ACCESS_PUBLIC) &&

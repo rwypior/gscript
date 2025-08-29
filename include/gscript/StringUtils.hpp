@@ -87,6 +87,11 @@ namespace gscript
 		}
 		return res;
 	}
+
+	static inline std::string getCharsUntilEol(std::string::const_iterator& it, std::string::const_iterator end)
+	{
+		return getCharsUntil(it, end, '\n');
+	}
 }
 
 #endif

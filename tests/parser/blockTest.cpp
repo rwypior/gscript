@@ -19,14 +19,37 @@ TEST_CASE("ParserBlockSimple")
 
 TEST_CASE("ParserBlockOneLiner")
 {
+	{
+		std::string txt =
+			"a_statement;";
+
+		gscript::ParserBlock pBlock;
+		auto result = pBlock.parse(txt);
+
+		REQUIRE(result.isOk());
+	}
+
+	{
+		std::string txt =
+			"			    a_statement;		";
+
+		gscript::ParserBlock pBlock;
+		auto result = pBlock.parse(txt);
+
+		REQUIRE(result.isOk());
+	}
+}
+
+TEST_CASE("ParserBlockOneLinerNoSemicolon")
+{
 	std::string txt = 
-		"a_statement;"
+		"		a_statement"
 		;
 
 	gscript::ParserBlock pBlock;
 	auto result = pBlock.parse(txt);
 
-	REQUIRE(result.isOk());
+	REQUIRE(!result.isOk());
 }
 
 TEST_CASE("ParserBlockFailureNoSemicolon")

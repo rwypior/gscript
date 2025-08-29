@@ -19,7 +19,7 @@ namespace gscript
 
 		ParseResult arglistres = this->arglist.parse(StringIteratorRange(parentResult.result.end, itrange.end));
 		if (!arglistres.isOk())
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+			return arglistres;
 
 		auto begin = arglistres.result.end;
 
@@ -27,7 +27,7 @@ namespace gscript
 		if (bodyres.isOk())
 			begin = bodyres.result.end;
 		else
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+			return bodyres;
 
 		ParseResult elseres = this->pelse.parse(StringIteratorRange(begin, itrange.end));
 		if (elseres.isOk())

@@ -7,7 +7,7 @@ namespace gscript
 	const char ParserControlDirective::C_CONTROL = '#';
 
 	ParserControlDirective::ParserControlDirective(const std::string &directive)
-		:directive(directive)
+		: directive(directive)
 	{
 	}
 
@@ -24,6 +24,6 @@ namespace gscript
 			return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(parentResult.result.begin, directiveResult.result.end));
 		}
 
-		return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+		return directiveResult;
 	}
 }

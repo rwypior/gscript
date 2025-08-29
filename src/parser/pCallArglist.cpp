@@ -6,6 +6,9 @@
 #include "parser/pLiteral.hpp"
 #include "parser/pFuncCall.hpp"
 #include "parser/pStatement.hpp"
+#include "StringUtils.hpp"
+
+#include <sstream>
 
 namespace gscript
 {
@@ -21,6 +24,9 @@ namespace gscript
 
 	ParseResult ParserCallArglist::parse(StringIteratorRange itrange)
 	{
+		if (itrange.end - itrange.begin < 1)
+			return ParseResult(ParseResult::STATUS_T::S_FATAL, {itrange, "Expected argument list"});
+		
 		if (itrange.end - itrange.begin < 2)
 			return ParseResult(ParseResult::STATUS_T::S_FATAL, {itrange, "Argument list must contain opening and closing characters"});
 
@@ -46,7 +52,7 @@ namespace gscript
 				begin = pvar.result.end;
 			}
 			else
-				return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+				return pvar;
 
 			ParseResult pseparator = (ParserListSeparator(this->separator)).parse(StringIteratorRange(begin, itrange.end));
 
@@ -60,9 +66,9 @@ namespace gscript
 		} while (ok);
 
 		ParseResult end = (ParserArglistEnd(this->end)).parse(StringIteratorRange(begin, itrange.end));
-
+		
 		if (!end.isOk() || i < this->minCount)
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+			return ParseResult(ParseResult::STATUS_T::S_FATAL, end.details.withMessage((std::stringstream() << "Expected \"" << this->end << "\", got \"" << getCharsUntilEol(begin, itrange.end) << "\"").str()));
 
 		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(start.result.begin, end.result.end));
 	}

@@ -24,6 +24,16 @@ TEST_CASE("ParserNameSpecifierEmpty")
 	REQUIRE(!result.isOk());
 }
 
+TEST_CASE("ParserNameSpecifierSingleColon")
+{
+	std::string txt = ":";
+
+	gscript::ParserNameSpecifier pName;
+	auto result = pName.parse(txt);
+
+	REQUIRE(!result.isOk());
+}
+
 TEST_CASE("ParserNameSpecifierStartsWithSpaces")
 {
 	std::string txt = " name";
@@ -75,6 +85,12 @@ TEST_CASE("ParserNameSpecifierDisallowedCharacters")
 	std::string txt3 = "who!oops";
 	std::string txt4 = "almost:namespace";
 	std::string txt5 = "some(brackets)";
+	std::string txt6 = "some\"quotes\"";
+	std::string txt7 = "@";
+	std::string txt8 = "!";
+	std::string txt9 = "(";
+	std::string txt10 = ")";
+	std::string txt11 = "\"";
 
 	gscript::ParserNameSpecifier pName1;
 	auto result1 = pName1.parse(txt1);
@@ -99,6 +115,17 @@ TEST_CASE("ParserNameSpecifierDisallowedCharacters")
 	auto result5 = pName5.parse(txt5);
 	REQUIRE(result5.isOk());
 	REQUIRE(pName5.name == "some");
+
+	gscript::ParserNameSpecifier pName6;
+	auto result6 = pName6.parse(txt6);
+	REQUIRE(result6.isOk());
+	REQUIRE(pName6.name == "some");
+
+	REQUIRE(!gscript::ParserNameSpecifier().parse(txt7).isOk());
+	REQUIRE(!gscript::ParserNameSpecifier().parse(txt8).isOk());
+	REQUIRE(!gscript::ParserNameSpecifier().parse(txt9).isOk());
+	REQUIRE(!gscript::ParserNameSpecifier().parse(txt10).isOk());
+	REQUIRE(!gscript::ParserNameSpecifier().parse(txt11).isOk());
 }
 
 TEST_CASE("ParserNameSpecifierNamespaceAccessor")

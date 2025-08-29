@@ -1,33 +1,42 @@
-- Move ParserEntity::StringIteratorRange to separate file
-- Fix includes after refactoring
-- Add factory classes which will create runtime statements from parser statements
-- Create unit tests
+Framework stuff
+===============
+
 - Add serialization/deserialization classes which will enable quick loading pre-parsed scripts
 - Create unit tests for that
 - Remove that weird access control class from runtime and add it to parser
 
-======
+Functionality
+=============
 
-- RETURN statement
-- class member syntax:
-  - class.function()
-  - class.variable
-- operators
-- execution control
-  - if
-  - for
-  - while
-  - do ... while
-  - foreach
-  - break
-  - continue
-- arrays
-- creating class objects
-  - assign class object with CLASS type and store as variable
-  - call constructor upon object creation
-- access control
-  - private
-  - public
-  - protected
-- refactor
-- change returning raw pointers to shared_ptr
+for ... else
+Syntax would be:
+```
+	for (int i = 0; i < 5; i++)
+	{
+	}
+	else
+	{
+		// Something that runs if the loop doesn't run at least once
+	}
+```
+
+----------------------
+
+while ... else
+do ... while ... else
+Samething as for for ... else, but for while loops, same syntax
+
+----------------------
+
+events
+Make an universal event object, usage would be like in cppevents lib
+
+----------------------
+
+comments
+Yup, make comments work
+
+----------------------
+
+attributes
+Add an attribute syntax - something like [[nodiscard]] in C++

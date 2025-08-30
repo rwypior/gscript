@@ -14,13 +14,13 @@ namespace gscript
 	ParseResult ParserClass::parse(StringIteratorRange itrange)
 	{
 		ParseResult parentResult = ParserWord::parse(itrange, ParserClass::KW_CLASS);
-		if (parentResult.status != ParseResult::STATUS_T::S_OK)
+		if (parentResult.status != ParseResult::Status::Ok)
 			return parentResult;
 
 		ParseResult name = (ParserNameSpecifier()).parse(StringIteratorRange(parentResult.result.end + 1, itrange.end, itrange.getFile(), itrange.getLine()));
 
 		if (!name.isOk())
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+			return ParseResult(ParseResult::Status::Invalid, StringIteratorRange());
 
 		this->name = name.getWord();
 
@@ -79,10 +79,10 @@ namespace gscript
 
 		if (!blockEnd.isOk())
 			return ParseResult(
-				ParseResult::STATUS_T::S_FATAL, 
+				ParseResult::Status::Invalid,
 				blockEnd.details.withMessage("Expected one of: constructor, method, field; got \"" + getCharsUntil(begin, itrange.end, '\n') + "\"")
 			);
 
-		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(parentResult.result.begin, blockEnd.result.end));
+		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(parentResult.result.begin, blockEnd.result.end));
 	}
 }

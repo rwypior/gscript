@@ -13,7 +13,7 @@ namespace gscript
 	ParseResult ParserChar::parse(StringIteratorRange itrange, char c, bool ltrimWhitespaces)
 	{
 		if (itrange.end - itrange.begin < 1)
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, {itrange, (std::stringstream() << "Expected \"" << c << "\", got empty string").str() });
+			return ParseResult(ParseResult::Status::Invalid, {itrange, (std::stringstream() << "Expected \"" << c << "\", got empty string").str() });
 
 		size_t newlines = 0;
 		auto it = itrange.begin;
@@ -27,11 +27,11 @@ namespace gscript
 		}
 
 		if (it == itrange.end)
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, {itrange.shifted(newlines), (std::stringstream() << "Expected \"" << c << "\", got empty string").str()});
+			return ParseResult(ParseResult::Status::Invalid, {itrange.shifted(newlines), (std::stringstream() << "Expected \"" << c << "\", got empty string").str()});
 
 		if (*it == c)
-			return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(it, it + 1, itrange.getFile(), itrange.getLine()), nullptr, { newlines });
+			return ParseResult(ParseResult::Status::Ok, StringIteratorRange(it, it + 1, itrange.getFile(), itrange.getLine()), nullptr, { newlines });
 
-		return ParseResult(ParseResult::STATUS_T::S_FATAL, {itrange.shifted(newlines), (std::stringstream() << "Expected \"" << c << "\", got \"" << *it << "\"").str()});
+		return ParseResult(ParseResult::Status::Invalid, {itrange.shifted(newlines), (std::stringstream() << "Expected \"" << c << "\", got \"" << *it << "\"").str()});
 	}
 }

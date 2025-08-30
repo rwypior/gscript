@@ -7,13 +7,13 @@ namespace gscript
 	ParseResult ParserReturn::parse(StringIteratorRange itrange)
 	{
 		ParseResult parentResult = ParserWord::parse(itrange, ParserReturn::KW_RETURN);
-		if (parentResult.status != ParseResult::STATUS_T::S_OK)
+		if (!parentResult.isOk())
 			return parentResult;
 
 		ParseResult stmt = value.parse(StringIteratorRange(parentResult.result.end + 1, itrange.end));
 		if (!stmt.isOk())
-			return ParseResult(ParseResult::STATUS_T::S_FATAL);
+			return stmt;
 
-		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(parentResult.result.begin, stmt.result.end));
+		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(parentResult.result.begin, stmt.result.end));
 	}
 }

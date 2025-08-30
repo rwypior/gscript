@@ -14,7 +14,7 @@ namespace gscript
 	ParseResult ParserIf::parse(StringIteratorRange itrange)
 	{
 		ParseResult parentResult = ParserWord::parse(itrange, ParserIf::KW_IF);
-		if (parentResult.status != ParseResult::STATUS_T::S_OK)
+		if (parentResult.status != ParseResult::Status::Ok)
 			return parentResult;
 
 		ParseResult arglistres = this->arglist.parse(StringIteratorRange(parentResult.result.end, itrange.end));
@@ -33,6 +33,6 @@ namespace gscript
 		if (elseres.isOk())
 			begin = elseres.result.end;
 
-		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(parentResult.result.begin, begin));
+		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(parentResult.result.begin, begin));
 	}
 }

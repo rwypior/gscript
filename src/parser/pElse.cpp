@@ -10,7 +10,7 @@ namespace gscript
 	ParseResult ParserElse::parse(StringIteratorRange itrange)
 	{
 		ParseResult parentResult = ParserWord::parse(itrange, ParserElse::KW_ELSE);
-		if (parentResult.status != ParseResult::STATUS_T::S_OK)
+		if (parentResult.status != ParseResult::Status::Ok)
 			return parentResult;
 
 		auto begin = parentResult.result.end;
@@ -26,11 +26,11 @@ namespace gscript
 			ParseResult statementres = statement.parse(StringIteratorRange(begin, itrange.end));
 
 			if (!statementres.isOk())
-				return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+				return statementres;
 
 			begin = statementres.result.end;
 		}
 
-		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(parentResult.result.begin, begin));
+		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(parentResult.result.begin, begin));
 	}
 }

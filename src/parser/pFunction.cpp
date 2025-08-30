@@ -28,7 +28,7 @@ namespace gscript
 			ParserTypeSpecifier type = ParserTypeSpecifier();
 			ParseResult typeres = type.parse(itrange);
 			if (!typeres.isOk())
-				return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+				return typeres;
 
 			typeBegin = typeres.result.begin;
 			typeEnd = typeres.result.end + 1;
@@ -44,13 +44,13 @@ namespace gscript
 
 		ParseResult name = (ParserNameSpecifier()).parse(StringIteratorRange(typeEnd, itrange.end));
 		if (!name.isOk())
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+			return name;
 
 		this->name = name.getWord();
 
 		ParseResult arglist = this->arglist.parse(StringIteratorRange(name.result.end, itrange.end));
 		if (!arglist.isOk())
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+			return arglist;
 
 		ParseResult assign = (ParserOperatorAssign()).parse(StringIteratorRange(arglist.result.end, itrange.end));
 
@@ -62,7 +62,7 @@ namespace gscript
 			if (externResult.isOk())
 			{
 				this->externName = pExtern.name;
-				return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(typeBegin, externResult.result.end));
+				return ParseResult(ParseResult::Status::Ok, StringIteratorRange(typeBegin, externResult.result.end));
 			}
 
 			ParserAbstractSpecial pAbstract;
@@ -78,26 +78,26 @@ namespace gscript
 					throw CompileException("Only methods may be declared abstract");
 
 				//this->isabstract = true;
-				return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(typeBegin, abstractResult.result.end));
+				return ParseResult(ParseResult::Status::Ok, StringIteratorRange(typeBegin, abstractResult.result.end));
 			}
 
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+			return ParseResult(ParseResult::Status::Fatal, { itrange, "Expected extern declaration or abstract specifier" });
 		}
 		else
 		{
 			ParseResult begin = (ParserBlockStart()).parse(StringIteratorRange(arglist.result.end + 1, itrange.end));
 			if (!begin.isOk())
-				return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+				return begin.as(ParseResult::Status::Fatal);
 
 			ParseResult bodyres = this->body.parse(StringIteratorRange(begin.result.end, itrange.end));
 			if (!bodyres.isOk())
-				return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+				return bodyres.as(ParseResult::Status::Fatal);
 
 			ParseResult end = (ParserBlockEnd()).parse(StringIteratorRange(bodyres.result.end, itrange.end));
 			if (!end.isOk())
-				return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+				return end.as(ParseResult::Status::Fatal);
 
-			return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(typeBegin, end.result.end));
+			return ParseResult(ParseResult::Status::Ok, StringIteratorRange(typeBegin, end.result.end));
 		}
 	}
 }

@@ -50,6 +50,8 @@ namespace gscript
 				anyGood = true;
 				continue;
 			}
+			else if (pstatementres.isFatal())
+				return pstatementres;
 			COMMENT_SHIFT_E(pstatementres, endPosition);
 
 			ParserVarDeclaration pvar;
@@ -61,6 +63,8 @@ namespace gscript
 				anyGood = true;
 				continue;
 			}
+			else if (pvarres.isFatal())
+				return pvarres;
 			COMMENT_SHIFT_E(pvarres, endPosition);
 
 			ParserIf pif;
@@ -72,6 +76,8 @@ namespace gscript
 				anyGood = true;
 				continue;
 			}
+			else if (pifres.isFatal())
+				return pifres;
 			COMMENT_SHIFT_E(pifres, endPosition);
 
 			ParserWhile pwhile;
@@ -83,6 +89,8 @@ namespace gscript
 				anyGood = true;
 				continue;
 			}
+			else if (pwhileres.isFatal())
+				return pwhileres;
 			COMMENT_SHIFT_E(pwhileres, endPosition);
 
 			ParserFor pfor;
@@ -94,6 +102,8 @@ namespace gscript
 				anyGood = true;
 				continue;
 			}
+			else if (pforres.isFatal())
+				return pforres;
 			COMMENT_SHIFT_E(pforres, endPosition);
 
 			ParserReturn preturn;
@@ -105,24 +115,19 @@ namespace gscript
 				anyGood = true;
 				continue;
 			}
+			else if (preturnres.isFatal())
+				return preturnres;
 			COMMENT_SHIFT_E(preturnres, endPosition);
-
-			/*anyGood =
-				pvarres.isOk() ||
-				pstatementres.isOk() ||
-				preturnres.isOk() ||
-				pifres.isOk() ||
-				pwhileres.isOk();*/
 		} while (anyGood && (!this->maxEntries || ++processedEntries < this->maxEntries));
 
 		if (!anyGood && this->minEntries > 0)
 		{
 			if (this->maxEntries == 1)
-				return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange, "Expected statement" });
+				return ParseResult(ParseResult::Status::Fatal, { itrange, "Expected statement" });
 
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange, "Expected body block" });
+			return ParseResult(ParseResult::Status::Fatal, { itrange, "Expected body block" });
 		}
 
-		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(itrange.begin, endPosition));
+		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(itrange.begin, endPosition));
 	}
 }

@@ -24,7 +24,7 @@ namespace gscript
 		if (it == itrange.end)
 		{
 			this->modifier |= MODIFIER_T::M_ACCESS_PUBLIC;
-			return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(itrange.begin, it));
+			return ParseResult(ParseResult::Status::Ok, StringIteratorRange(itrange.begin, it));
 		}
 
 		bool anyGood = true;
@@ -86,15 +86,15 @@ namespace gscript
 			(this->modifier & MODIFIER_T::M_ACCESS_PRIVATE && this->modifier & MODIFIER_T::M_ACCESS_PROTECTED) ||
 			(this->modifier & MODIFIER_T::M_ACCESS_PROTECTED && this->modifier & MODIFIER_T::M_ACCESS_PUBLIC)
 			)
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange, "Access specifiers \"private\", \"protected\" and \"public\" must not be mixed" });
+			return ParseResult(ParseResult::Status::Fatal, { itrange, "Access specifiers \"private\", \"protected\" and \"public\" must not be mixed" });
 
 		if (
 			(this->modifier & MODIFIER_T::M_STATIC && this->modifier & MODIFIER_T::M_VIRTUAL)
 			)
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange, "Access specifiers \"static\" and \"virtual\" must not be mixed" });
+			return ParseResult(ParseResult::Status::Fatal, { itrange, "Access specifiers \"static\" and \"virtual\" must not be mixed" });
 
 		if (this->modifier == MODIFIER_T::M_NONE)
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange, "Expected any of: public, private, protected, const, static, virtual; got \"" + getCharsUntilEol(it, itrange.end) + "\"" });
+			return ParseResult(ParseResult::Status::Fatal, { itrange, "Expected any of: public, private, protected, const, static, virtual; got \"" + getCharsUntilEol(it, itrange.end) + "\"" });
 
 		if (
 			!(this->modifier & MODIFIER_T::M_ACCESS_PUBLIC) &&
@@ -103,7 +103,7 @@ namespace gscript
 			)
 			this->modifier |= MODIFIER_T::M_ACCESS_PUBLIC;
 
-		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(itrange.begin, it));
+		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(itrange.begin, it));
 	}
 
 	MODIFIER_T ParserAccessSpecifier::getModifier() const

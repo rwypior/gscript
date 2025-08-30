@@ -20,7 +20,7 @@ namespace gscript
 		COMMENT(itrange, itrange.begin, commentLength);
 
 		if (itrange.end - itrange.begin < 1)
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, COMMENT_RESULT(itrange, commentLength));
+			return ParseResult(ParseResult::Status::Invalid, COMMENT_RESULT(itrange, commentLength));
 
 		ParseResult arglistResult = this->arglist.parse(itrange);
 

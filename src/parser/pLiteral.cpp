@@ -1,6 +1,8 @@
 #include "parser/pLiteral.hpp"
 #include "StringUtils.hpp"
 
+#include <sstream>
+
 namespace gscript
 {
 	ParseResult ParserLiteral::parse(StringIteratorRange itrange)
@@ -29,7 +31,7 @@ namespace gscript
 		auto it = begin;
 
 		if (it == itrange.end)
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange.shifted(newlines), "Expected literal value, got empty string" });
+			return ParseResult(ParseResult::Status::Invalid, { itrange.shifted(newlines), "Expected literal value, got empty string" });
 
 		if (*begin == '"')
 		{
@@ -89,7 +91,7 @@ namespace gscript
 				else
 				{
 					if (std::isalpha(chr))
-						return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+						return ParseResult(ParseResult::Status::Invalid, { itrange.shifted(newlines), (std::stringstream() << "Invalid character \"" << chr << "\" in numeric literal").str()});
 				}
 
 				if (chr == '.')
@@ -103,14 +105,14 @@ namespace gscript
 			this->value.push_back(chr);
 
 			if (isChar && this->value.length() > 1)
-				return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+				return ParseResult(ParseResult::Status::Invalid, { itrange.shifted(newlines), "Character literals must be one character long" });
 		}
 
 		if (!cleanEnd)
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+			return ParseResult(ParseResult::Status::Invalid, { itrange.shifted(newlines), "Non-terminated literal sequence" });
 
 		if (!isString && this->value.empty())
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+			return ParseResult(ParseResult::Status::Invalid, { itrange.shifted(newlines), "Zero-length non-string literal sequence" });
 
 		if (isString)
 			this->type = VALUE_TYPE_T::VT_STRING;
@@ -129,6 +131,6 @@ namespace gscript
 				this->type = VALUE_TYPE_T::VT_INT;
 		}
 
-		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(begin, it));
+		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(begin, it));
 	}
 }

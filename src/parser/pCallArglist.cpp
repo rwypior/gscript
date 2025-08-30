@@ -25,19 +25,19 @@ namespace gscript
 	ParseResult ParserCallArglist::parse(StringIteratorRange itrange)
 	{
 		if (itrange.end - itrange.begin < 1)
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, {itrange, "Expected argument list"});
+			return ParseResult(ParseResult::Status::Invalid, {itrange, "Expected argument list"});
 		
 		if (itrange.end - itrange.begin < 2)
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, {itrange, "Argument list must contain opening and closing characters"});
+			return ParseResult(ParseResult::Status::Invalid, {itrange, "Argument list must contain opening and closing characters"});
 
 		ParseResult start = (ParserArglistStart(this->start)).parse(itrange);
 		if (!start.isOk())
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+			return ParseResult(ParseResult::Status::Invalid, StringIteratorRange());
 
 		ParserArglistEnd arglistEnd = ParserArglistEnd(this->end);
 		ParseResult emptyend = arglistEnd.parse(StringIteratorRange(start.result.end, itrange.end));
 		if (emptyend.isOk())
-			return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(start.result.begin, emptyend.result.end));
+			return ParseResult(ParseResult::Status::Ok, StringIteratorRange(start.result.begin, emptyend.result.end));
 
 		auto begin = start.result.end;
 		bool ok = true;
@@ -68,8 +68,8 @@ namespace gscript
 		ParseResult end = (ParserArglistEnd(this->end)).parse(StringIteratorRange(begin, itrange.end));
 		
 		if (!end.isOk() || i < this->minCount)
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, end.details.withMessage((std::stringstream() << "Expected \"" << this->end << "\", got \"" << getCharsUntilEol(begin, itrange.end) << "\"").str()));
+			return ParseResult(ParseResult::Status::Fatal, end.details.withMessage((std::stringstream() << "Expected \"" << this->end << "\", got \"" << getCharsUntilEol(begin, itrange.end) << "\"").str()));
 
-		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(start.result.begin, end.result.end));
+		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(start.result.begin, end.result.end));
 	}
 }

@@ -16,12 +16,12 @@ namespace gscript
 	ParseResult ParserWhile::parse(StringIteratorRange itrange)
 	{
 		ParseResult parentResult = ParserWord::parse(itrange, ParserWhile::KW_WHILE);
-		if (parentResult.status != ParseResult::STATUS_T::S_OK)
+		if (!parentResult.isOk())
 			return parentResult;
 
 		ParseResult arglistres = this->arglist.parse(StringIteratorRange(parentResult.result.end, itrange.end));
 		if (!arglistres.isOk())
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+			return arglistres.as(ParseResult::Status::Fatal);
 
 		auto begin = arglistres.result.end;
 
@@ -29,8 +29,8 @@ namespace gscript
 		if (bodyres.isOk())
 			begin = bodyres.result.end;
 		else
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+			return bodyres.as(ParseResult::Status::Fatal);
 
-		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(parentResult.result.begin, begin));
+		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(parentResult.result.begin, begin));
 	}
 }

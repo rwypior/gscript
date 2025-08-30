@@ -34,6 +34,6 @@ namespace gscript
 			this->arrayAccessor = new ParserArrayAccessor(arrayAccessor);
 		}
 
-		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(nameResult.result.begin, end));
+		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(nameResult.result.begin, end));
 	}
 }

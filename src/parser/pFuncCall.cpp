@@ -10,7 +10,7 @@ namespace gscript
 		ParserNameSpecifier nameSpecifier;
 		ParseResult name = nameSpecifier.parse(itrange);
 		if (!name.isOk())
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+			return name;
 
 		begin = name.result.begin;
 		auto nameEnd = name.result.end;
@@ -20,8 +20,8 @@ namespace gscript
 
 		ParseResult arglist = this->arglist.parse(StringIteratorRange(nameEnd, itrange.end));
 		if (!arglist.isOk())
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+			return arglist;
 
-		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(begin, arglist.result.end));
+		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(begin, arglist.result.end));
 	}
 }

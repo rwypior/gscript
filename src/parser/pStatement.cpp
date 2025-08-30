@@ -32,12 +32,14 @@ namespace gscript
 		COMMENT(itrange, begin, commentLength);
 
 		size_t newlines = 0;
-		//while (*begin == ' ')
 		while (begin != itrange.end && std::isspace(*begin))
 		{
 			newlines += isNewLine(*begin);
 			++begin;
 		}
+
+		if (itrange.end - begin < 1)
+			return ParseResult(ParseResult::Status::Invalid, { itrange, "Empty statement" });
 
 		// Check if starts with arglistStart
 		bool inArglist = false;
@@ -51,7 +53,6 @@ namespace gscript
 				inArglist = true;
 			}
 			else
-				//return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
 				return arglistStart;
 		}
 
@@ -85,7 +86,7 @@ namespace gscript
 				end = statementres.result.end;
 				this->components.push_back(std::make_shared<ParserStatement>(std::move(statement)));
 				if (!prevOperator)
-					return ParseResult(ParseResult::STATUS_T::S_FATAL, { statementres.result, "Expected operator, got statement" });
+					return ParseResult(ParseResult::Status::Fatal, { statementres.result, "Expected operator, got statement" });
 				prevOperator = false;
 
 				anyOk = true;
@@ -100,7 +101,7 @@ namespace gscript
 				end = pnewres.result.end;
 				this->components.push_back(std::make_shared<ParserNew>(std::move(pnew)));
 				if (!prevOperator)
-					return ParseResult(ParseResult::STATUS_T::S_FATAL, { pnewres.result, "Expected operator, got new" });
+					return ParseResult(ParseResult::Status::Fatal, { pnewres.result, "Expected operator, got new" });
 				prevOperator = false;
 
 				anyOk = true;
@@ -115,7 +116,7 @@ namespace gscript
 				end = funccallres.result.end;
 				this->components.push_back(std::make_shared<ParserFuncCall>(std::move(funccall)));
 				if (!prevOperator)
-					return ParseResult(ParseResult::STATUS_T::S_FATAL, { funccallres.result, "Expected operator, got function call" });
+					return ParseResult(ParseResult::Status::Fatal, { funccallres.result, "Expected operator, got function call" });
 				prevOperator = false;
 
 				anyOk = true;
@@ -130,7 +131,7 @@ namespace gscript
 				end = pvarres.result.end;
 				this->components.push_back(std::make_shared<ParserVar>(std::move(pvar)));
 				if (!prevOperator)
-					return ParseResult(ParseResult::STATUS_T::S_FATAL, { pvarres.result, "Expected operator, got variable" });
+					return ParseResult(ParseResult::Status::Fatal, { pvarres.result, "Expected operator, got variable" });
 				prevOperator = false;
 
 				anyOk = true;
@@ -145,7 +146,7 @@ namespace gscript
 				end = literalres.result.end;
 				this->components.push_back(std::make_shared<ParserLiteral>(std::move(literal)));
 				if (!prevOperator)
-					return ParseResult(ParseResult::STATUS_T::S_FATAL, { literalres.result, "Expected operator, got literal" });
+					return ParseResult(ParseResult::Status::Fatal, { literalres.result, "Expected operator, got literal" });
 				prevOperator = false;
 
 				anyOk = true;
@@ -160,7 +161,7 @@ namespace gscript
 				end = arrres.result.end;
 				this->components.push_back(std::make_shared<ParserArrayInitializer>(std::move(arr)));
 				if (!prevOperator)
-					return ParseResult(ParseResult::STATUS_T::S_FATAL, { arrres.result, "Expected operator, got array initializer" });
+					return ParseResult(ParseResult::Status::Fatal, { arrres.result, "Expected operator, got array initializer" });
 				prevOperator = false;
 
 				anyOk = true;
@@ -190,8 +191,7 @@ namespace gscript
 		{
 			ParseResult arglistEnd = (ParserArglistEnd()).parse(StringIteratorRange(end, itrange.end));
 			if (!arglistEnd.isOk())
-				//return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
-				return arglistEnd;
+				return arglistEnd.as(ParseResult::Status::Fatal);
 			end = arglistEnd.result.end;
 		}
 
@@ -200,15 +200,19 @@ namespace gscript
 		{
 			ParseResult statementEnd = (ParserEndStatement()).parse(StringIteratorRange(end, itrange.end));
 			if (!statementEnd.isOk())
-				//return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
-				return statementEnd;
+			{
+				if (this->components.empty())
+					return statementEnd;
+				else
+					return statementEnd.as(ParseResult::Status::Fatal); // Only fatal for non-empty statements
+			}
 			end = statementEnd.result.end;
 		}
 
 		if (!this->allowEmpty && this->components.empty())
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange, "Expected non-empty statement"});
+			return ParseResult(ParseResult::Status::Fatal, { itrange, "Expected non-empty statement" });
 
-		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(begin, end));
+		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(begin, end));
 	}
 
 	void ParserStatement::setAllowEmpty(bool allowEmpty)

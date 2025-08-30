@@ -55,6 +55,6 @@ namespace gscript
 			end = endstatement.result.end;
 		}
 
-		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(typeres.result.begin, end));
+		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(typeres.result.begin, end));
 	}
 }

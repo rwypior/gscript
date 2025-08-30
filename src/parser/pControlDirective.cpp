@@ -14,14 +14,14 @@ namespace gscript
 	ParseResult ParserControlDirective::parse(StringIteratorRange itrange)
 	{
 		ParseResult parentResult = ParserChar::parse(itrange, ParserControlDirective::C_CONTROL);
-		if (parentResult.status != ParseResult::STATUS_T::S_OK)
+		if (parentResult.status != ParseResult::Status::Ok)
 			return parentResult;
 
 		ParseResult directiveResult = ParserWord::parse(StringIteratorRange(parentResult.result.end, itrange.end), this->directive);
 
 		if (directiveResult.isOk())
 		{
-			return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(parentResult.result.begin, directiveResult.result.end));
+			return ParseResult(ParseResult::Status::Ok, StringIteratorRange(parentResult.result.begin, directiveResult.result.end));
 		}
 
 		return directiveResult;

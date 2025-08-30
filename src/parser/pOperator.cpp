@@ -1,5 +1,8 @@
 #include "parser/pOperator.hpp"
 #include "parser/pWord.hpp"
+#include "StringUtils.hpp"
+
+#include <sstream>
 
 namespace gscript
 {
@@ -82,6 +85,6 @@ namespace gscript
 		OP_PARSECHAIN_BLOCK(ParserOperatorLessThanOrEqual);
 		OP_PARSECHAIN_BLOCK(ParserOperatorLessThan);
 
-		return ParseResult(ParseResult::STATUS_T::S_FATAL);
+		return ParseResult(ParseResult::Status::Invalid, { itrange, (std::stringstream() << "Expected operator, got \"" << getCharsUntilEol(itrange.begin, itrange.end) ).str() });
 	}
 }

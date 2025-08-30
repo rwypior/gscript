@@ -28,6 +28,6 @@ namespace gscript
 			//return ParseResult(ParseResult::STATUS_T::S_FATAL);
 			return end;
 
-		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(begin.result.begin, end.result.end));
+		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(begin.result.begin, end.result.end));
 	}
 }

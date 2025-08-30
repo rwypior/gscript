@@ -13,9 +13,9 @@ namespace gscript
 			ParseResult resEnd = ParserWord::parseUntil(StringIteratorRange(res.result.end, itrange.end), ParserBlockComment::CHR_BLOCK_COMMENT_END);
 
 			if (resEnd.isOk())
-				return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(res.result.begin, resEnd.result.end));
+				return ParseResult(ParseResult::Status::Ok, StringIteratorRange(res.result.begin, resEnd.result.end));
 		}
 
-		return ParseResult(ParseResult::STATUS_T::S_FATAL);
+		return ParseResult(ParseResult::Status::Invalid);
 	}
 }

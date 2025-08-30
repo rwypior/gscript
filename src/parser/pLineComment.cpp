@@ -15,9 +15,9 @@ namespace gscript
 			if (nlRes.isOk())
 				end = nlRes.result.end;
 
-			return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(res.result.begin, end));
+			return ParseResult(ParseResult::Status::Ok, StringIteratorRange(res.result.begin, end));
 		}
 
-		return ParseResult(ParseResult::STATUS_T::S_FATAL);
+		return ParseResult(ParseResult::Status::Invalid);
 	}
 }

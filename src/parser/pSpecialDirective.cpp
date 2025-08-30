@@ -17,7 +17,7 @@ namespace gscript
 	ParseResult ParserSpecialDirective::parse(StringIteratorRange itrange)
 	{
 		ParseResult parentResult = ParserChar::parse(itrange, ParserSpecialDirective::C_CONTROL);
-		if (parentResult.status != ParseResult::STATUS_T::S_OK)
+		if (!parentResult.isOk())
 			return parentResult;
 
 		ParseResult directiveResult = ParserWord::parse(StringIteratorRange(parentResult.result.end, itrange.end), this->directive);
@@ -29,14 +29,14 @@ namespace gscript
 				ParseResult paramResult = ParserChar::parse(StringIteratorRange(directiveResult.result.end, itrange.end), ParserSpecialDirective::C_CONTROL_PARAM);
 
 				if (paramResult.isOk())
-					return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(parentResult.result.begin, paramResult.result.end));
+					return ParseResult(ParseResult::Status::Ok, StringIteratorRange(parentResult.result.begin, paramResult.result.end));
 				else
-					return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+					return paramResult;
 			}
 
-			return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(parentResult.result.begin, directiveResult.result.end));
+			return ParseResult(ParseResult::Status::Ok, StringIteratorRange(parentResult.result.begin, directiveResult.result.end));
 		}
 
-		return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+		return directiveResult;
 	}
 }

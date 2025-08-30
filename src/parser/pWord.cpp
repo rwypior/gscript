@@ -16,15 +16,15 @@ namespace gscript
 		size_t newlines = skipWhitespaces(it, itrange.end);
 
 		if (it == itrange.end)
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange.shifted(newlines), (std::stringstream() << "Expected \"" << word << "\", got empty statement").str()});
+			return ParseResult(ParseResult::Status::Invalid, { itrange.shifted(newlines), (std::stringstream() << "Expected \"" << word << "\", got empty statement").str()});
 
 		if (itrange.end - it < length)
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange.shifted(newlines), (std::stringstream() << "Expected \"" << word << "\", got \"" + getCharsUntilEol(it, itrange.end) + "\"").str()});
+			return ParseResult(ParseResult::Status::Invalid, { itrange.shifted(newlines), (std::stringstream() << "Expected \"" << word << "\", got \"" + getCharsUntilEol(it, itrange.end) + "\"").str()});
 
 		std::string buffer(length, '0');
 
 		if (std::isdigit(*it))
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange.shifted(newlines), "Expected alphanumeric word, got number" });
+			return ParseResult(ParseResult::Status::Invalid, { itrange.shifted(newlines), "Expected alphanumeric word, got number" });
 
 		int i = 0;
 		for (; it != itrange.end; ++it)
@@ -43,7 +43,7 @@ namespace gscript
 				if (!std::isalnum(next) && next != '_')
 					break;
 
-				return ParseResult(ParseResult::STATUS_T::S_FATAL, { itrange.shifted(newlines), "Expected \"" + word + "\"" });
+				return ParseResult(ParseResult::Status::Invalid, { itrange.shifted(newlines), "Expected \"" + word + "\"" });
 			}
 		}
 
@@ -51,10 +51,10 @@ namespace gscript
 		{
 			StringIteratorRange::ITERATOR_T foundBegin = it + 1 - length;
 
-			return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(foundBegin, it + 1), std::move(subResult));
+			return ParseResult(ParseResult::Status::Ok, StringIteratorRange(foundBegin, it + 1), std::move(subResult));
 		}
 
-		return ParseResult(ParseResult::STATUS_T::S_FATAL, {itrange.shifted(newlines), (std::stringstream() << "Expected \"" << word << "\", got \"" << buffer << "\"").str() });
+		return ParseResult(ParseResult::Status::Invalid, {itrange.shifted(newlines), (std::stringstream() << "Expected \"" << word << "\", got \"" << buffer << "\"").str() });
 	}
 
 	ParseResult ParserWord::parseUntil(StringIteratorRange itrange, const std::string &word, std::shared_ptr<ParserEntity>&& subResult, const std::string &allowed)
@@ -62,7 +62,7 @@ namespace gscript
 		int length = word.length();
 
 		if (itrange.end - itrange.begin < length + 1)
-			return ParseResult(ParseResult::STATUS_T::S_FATAL);
+			return ParseResult(ParseResult::Status::Invalid);
 
 		std::string buffer(length, '0');
 
@@ -78,7 +78,7 @@ namespace gscript
 			if (ok)
 			{
 				//return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(itrange.begin, it + 1), std::move(subResult));
-				return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(itrange.begin, it, itrange.getFile(), itrange.getLine() + newlines), std::move(subResult));
+				return ParseResult(ParseResult::Status::Ok, StringIteratorRange(itrange.begin, it, itrange.getFile(), itrange.getLine() + newlines), std::move(subResult));
 			}
 			else if (!allowed.empty())
 			{
@@ -86,11 +86,11 @@ namespace gscript
 				newlines += isNewLine(chr);
 
 				if (allowed.find(chr) == std::string::npos)
-					return ParseResult(ParseResult::STATUS_T::S_FATAL, {itrange.shifted(newlines), "Expected one of \"" + allowed + "\", got \"" + chr + "\""});
+					return ParseResult(ParseResult::Status::Invalid, {itrange.shifted(newlines), "Expected one of \"" + allowed + "\", got \"" + chr + "\""});
 			}
 		}
 
-		return ParseResult(ParseResult::STATUS_T::S_FATAL, {itrange.shifted(newlines), "Expected \"" + word + "\", got \"" + buffer + "\"" });
+		return ParseResult(ParseResult::Status::Invalid, {itrange.shifted(newlines), "Expected \"" + word + "\", got \"" + buffer + "\"" });
 	}
 
 	void ParserWord::copy(char *destination, StringIteratorRange itrange)

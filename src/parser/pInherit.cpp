@@ -2,12 +2,14 @@
 #include "parser/pNameSpecifier.hpp"
 #include "parser/pBlockStart.hpp"
 
+#include <sstream>
+
 namespace gscript
 {
 	ParseResult ParserInherit::parse(StringIteratorRange itrange)
 	{
 		if (itrange.end - itrange.begin < 1)
-			return ParseResult(ParseResult::STATUS_T::S_FATAL);
+			return ParseResult(ParseResult::Status::Invalid);
 
 		for (StringIteratorRange::ITERATOR_T it = itrange.begin; it != itrange.end; ++it)
 		{
@@ -18,10 +20,10 @@ namespace gscript
 
 				return nameResult;
 			}
-			else if (chr != ' ' || chr != '\n' || chr != '\t')
-				return ParseResult(ParseResult::STATUS_T::S_FATAL);
+			else if (!std::isspace(chr))
+				return ParseResult(ParseResult::Status::Invalid, { itrange, (std::stringstream() << "Expected \"" << ParserInherit::KW_INHERIT << "\" or whitespaces, got \"" << chr << "\"").str()});
 		}
 
-		return ParseResult(ParseResult::STATUS_T::S_FATAL);
+		return ParseResult(ParseResult::Status::Invalid);
 	}
 }

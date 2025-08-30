@@ -29,9 +29,9 @@ namespace gscript
 				end = refResult.result.end;
 			}
 
-			return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(nameResult.result.begin, end));
+			return ParseResult(ParseResult::Status::Ok, StringIteratorRange(nameResult.result.begin, end));
 		}
 
-		return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange(nameResult.result.begin, end));
+		return nameResult;
 	}
 }

@@ -32,13 +32,13 @@ namespace gscript
 			ParseResult nsResult = ParserWord::parse(StringIteratorRange(endPosition, itrange.end), ParserNamespace::KW_NAMESPACE);
 
 			if (!nsResult.isOk())
-				return ParseResult(ParseResult::STATUS_T::S_FATAL);
+				return nsResult;
 
 			ParserNameSpecifier nsName;
 			ParseResult nsNameResult = nsName.parse(StringIteratorRange(nsResult.result.end, itrange.end));
 
 			if (!nsNameResult.isOk())
-				return ParseResult(ParseResult::STATUS_T::S_FATAL);
+				return nsNameResult.as(ParseResult::Status::Fatal);
 
 			this->name = nsName.name;
 
@@ -51,7 +51,7 @@ namespace gscript
 			ParseResult enclosureResult = ParserChar::parse(StringIteratorRange(endPosition, itrange.end), ParserNamespace::KW_ENCLOSURE_BEGIN);
 
 			if (!enclosureResult.isOk())
-				return ParseResult(ParseResult::STATUS_T::S_FATAL);
+				return enclosureResult.as(ParseResult::Status::Fatal);
 
 			endPosition = enclosureResult.result.end;
 
@@ -138,12 +138,12 @@ namespace gscript
 			ParseResult enclosureResult = ParserChar::parse(StringIteratorRange(endPosition, itrange.end), ParserNamespace::KW_ENCLOSURE_END);
 
 			if (!enclosureResult.isOk())
-				return ParseResult(ParseResult::STATUS_T::S_FATAL);
+				return enclosureResult.as(ParseResult::Status::Fatal);
 
 			endPosition = enclosureResult.result.end;
 		}
 
-		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(beginPosition, endPosition));
+		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(beginPosition, endPosition));
 	}
 
 	bool ParserNamespace::findClass(const std::string &name, ParserClass &pClass)

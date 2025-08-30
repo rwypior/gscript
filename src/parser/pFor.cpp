@@ -14,12 +14,12 @@ namespace gscript
 	ParseResult ParserFor::parse(StringIteratorRange itrange)
 	{
 		ParseResult parentResult = ParserWord::parse(itrange, ParserFor::KW_FOR);
-		if (parentResult.status != ParseResult::STATUS_T::S_OK)
+		if (parentResult.status != ParseResult::Status::Ok)
 			return parentResult;
 
 		ParseResult arglistres = this->arglist.parse(StringIteratorRange(parentResult.result.end, itrange.end));
 		if (!arglistres.isOk())
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, { arglistres, "Expected argument list" });
+			return arglistres;
 
 		auto begin = arglistres.result.end;
 
@@ -27,8 +27,8 @@ namespace gscript
 		if (bodyres.isOk())
 			begin = bodyres.result.end;
 		else
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, { arglistres, "Expected body block" });
+			return bodyres;
 
-		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(parentResult.result.begin, begin));
+		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(parentResult.result.begin, begin));
 	}
 }

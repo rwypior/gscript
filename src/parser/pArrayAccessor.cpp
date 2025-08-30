@@ -25,12 +25,12 @@ namespace gscript
 		COMMENT(itrange, itrange.begin, commentLength);
 
 		if (itrange.end - itrange.begin < 1)
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, COMMENT_RESULT(itrange, commentLength));
+			return ParseResult(ParseResult::Status::Invalid, COMMENT_RESULT(itrange, commentLength));
 
 		ParseResult beginResult = ParserChar::parse(StringIteratorRange(itrange.begin, itrange.end), ParserArrayAccessor::KW_ARRAY_ACCESSOR_BEGIN);
 
 		if (!beginResult.isOk())
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange(beginResult.result.begin, beginResult.result.end));
+			return ParseResult(ParseResult::Status::Invalid, StringIteratorRange(beginResult.result.begin, beginResult.result.end));
 
 		auto end = beginResult.result.end;
 
@@ -60,14 +60,14 @@ namespace gscript
 				this->gotValue = true;
 			}
 			else if (this->indexType & IndexType::Required)
-				return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange(beginResult.result.begin, end));
+				return ParseResult(ParseResult::Status::Fatal, StringIteratorRange(beginResult.result.begin, end));
 		}
 
 		ParseResult endResult = ParserChar::parse(StringIteratorRange(end, itrange.end), ParserArrayAccessor::KW_ARRAY_ACCESSOR_END);
 
 		if (!endResult.isOk())
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange(endResult.result.begin, endResult.result.end));
+			return ParseResult(ParseResult::Status::Fatal, StringIteratorRange(endResult.result.begin, endResult.result.end));
 
-		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(beginResult.result.begin, endResult.result.end));
+		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(beginResult.result.begin, endResult.result.end));
 	}
 }

@@ -31,30 +31,31 @@ namespace gscript
 	class ParseResult
 	{
 	public:
-		enum STATUS_T
+		enum Status
 		{
-			S_VOID = 0,
-			S_OK = 1,
-			S_WARNING = 2,
-			S_FATAL = 3,
-			S_COMMENT = 16
+			Ok, // Parsing successed
+			Invalid, // Invalid syntax - not fatal - continue parsing
+			Fatal // Fatal parsing error - abort parsing
 		};
 
-		STATUS_T status = STATUS_T::S_VOID;
+		Status status = Status::Ok;
 		StringIteratorRange result;
 		std::shared_ptr<ParserEntity> subResult = nullptr;
 		ParseDetails details;
 
-		ParseResult(STATUS_T status = STATUS_T::S_VOID, const ParseDetails& details = {});
-		ParseResult(STATUS_T status, StringIteratorRange result, std::shared_ptr<ParserEntity> subResult = nullptr, const ParseDetails& details = {});
-		ParseResult(STATUS_T status, std::string::iterator begin, std::string::iterator end, const ParseDetails& details = {});
+		ParseResult(Status status = Status::Ok, const ParseDetails& details = {});
+		ParseResult(Status status, StringIteratorRange result, std::shared_ptr<ParserEntity> subResult = nullptr, const ParseDetails& details = {});
+		ParseResult(Status status, std::string::iterator begin, std::string::iterator end, const ParseDetails& details = {});
 		ParseResult(const ParseResult& b);
+
+		ParseResult as(Status status) const;
 
 		ParseResult operator=(const ParseResult& b);
 		std::string getWord() const;
 
 		bool isOk() const;
-		bool isComment() const;
+		bool isFatal() const;
+		//bool isComment() const;
 		unsigned int getLength() const;
 	};
 }

@@ -44,14 +44,14 @@ namespace gscript
 
 	// Result
 
-	ParseResult::ParseResult(STATUS_T status, const ParseDetails& details)
+	ParseResult::ParseResult(Status status, const ParseDetails& details)
 		: status(status)
 		, subResult(nullptr)
 		, details(details)
 	{
 	}
 
-	ParseResult::ParseResult(STATUS_T status, StringIteratorRange result, std::shared_ptr<ParserEntity> subResult, const ParseDetails& details)
+	ParseResult::ParseResult(Status status, StringIteratorRange result, std::shared_ptr<ParserEntity> subResult, const ParseDetails& details)
 		: status(status)
 		, result(result)
 		, subResult(subResult)
@@ -59,7 +59,7 @@ namespace gscript
 	{
 	}
 
-	ParseResult::ParseResult(STATUS_T status, std::string::iterator begin, std::string::iterator end, const ParseDetails& details)
+	ParseResult::ParseResult(Status status, std::string::iterator begin, std::string::iterator end, const ParseDetails& details)
 		: status(status)
 		, result(begin, end)
 		, details(details)
@@ -72,6 +72,11 @@ namespace gscript
 		, subResult(b.subResult)
 		, details(b.details)
 	{
+	}
+
+	ParseResult ParseResult::as(Status status) const
+	{
+		return ParseResult(status, this->result, this->subResult, this->details);
 	}
 
 	ParseResult ParseResult::operator=(const ParseResult& b)
@@ -90,13 +95,18 @@ namespace gscript
 
 	bool ParseResult::isOk() const
 	{
-		return this->status == STATUS_T::S_OK;
+		return this->status == Status::Ok;
 	}
 
-	bool ParseResult::isComment() const
+	bool ParseResult::isFatal() const
+	{
+		return this->status == Status::Fatal;
+	}
+
+	/*bool ParseResult::isComment() const
 	{
 		return this->status == STATUS_T::S_COMMENT;
-	}
+	}*/
 
 	unsigned int ParseResult::getLength() const
 	{

@@ -21,7 +21,7 @@ namespace gscript
 	{
 		ParseResult start = (ParserArglistStart(this->start)).parse(itrange);
 		if (!start.isOk())
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+			return start;
 
 		auto begin = start.result.end;
 
@@ -35,7 +35,7 @@ namespace gscript
 
 		ParseResult pseparator = (ParserListSeparator(this->separator)).parse(StringIteratorRange(begin, itrange.end));
 		if (!pseparator.isOk())
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+			return pseparator;
 
 		ParserStatement cond(true);
 		ParseResult pcondres = cond.parse(StringIteratorRange(pseparator.result.end, itrange.end));
@@ -47,7 +47,7 @@ namespace gscript
 
 		ParseResult pseparator2 = (ParserListSeparator(this->separator)).parse(StringIteratorRange(begin, itrange.end));
 		if (!pseparator2.isOk())
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+			return pseparator2;
 
 		ParserStatement progress(true);
 		ParseResult pprogressres = progress.parse(StringIteratorRange(pseparator2.result.end, itrange.end));
@@ -59,6 +59,6 @@ namespace gscript
 
 		ParseResult end = (ParserArglistEnd(this->end)).parse(StringIteratorRange(begin, itrange.end));
 
-		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(start.result.begin, end.result.end));
+		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(start.result.begin, end.result.end));
 	}
 }

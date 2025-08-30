@@ -50,6 +50,7 @@ TEST_CASE("ParserBlockOneLinerNoSemicolon")
 	auto result = pBlock.parse(txt);
 
 	REQUIRE(!result.isOk());
+	REQUIRE(result.details.message == "Expected \";\", got empty string");
 }
 
 TEST_CASE("ParserBlockFailureNoSemicolon")
@@ -64,7 +65,7 @@ TEST_CASE("ParserBlockFailureNoSemicolon")
 	auto result = pBlock.parse(txt);
 
 	REQUIRE(!result.isOk());
-	REQUIRE(result.details.message == "Expected \"}\", got \"a\"");
+	REQUIRE(result.details.message == "Expected \";\", got \"}\"");
 }
 
 TEST_CASE("ParserBlockFailureNoEnclosure")

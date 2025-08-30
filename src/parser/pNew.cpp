@@ -9,14 +9,14 @@ namespace gscript
 	{
 		ParseResult rnew = ParserWord::parse(itrange, ParserNew::KW_NEW);
 		if (!rnew.isOk())
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+			return rnew;
 
 		ParseResult rfcall = ParserFuncCall::parse(StringIteratorRange(rnew.result.end + 1, itrange.end));
 		if (!rfcall.isOk())
-			return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+			return rfcall;
 
 		this->constructorName = this->name;
 
-		return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(rnew.result.begin, rfcall.result.end));
+		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(rnew.result.begin, rfcall.result.end));
 	}
 }

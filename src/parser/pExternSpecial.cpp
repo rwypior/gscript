@@ -1,6 +1,7 @@
 #include "parser/pExternSpecial.hpp"
 
 #include <string>
+#include <sstream>
 
 namespace gscript
 {
@@ -34,8 +35,8 @@ namespace gscript
 		}
 
 		if (endGood)
-			return ParseResult(ParseResult::STATUS_T::S_OK, StringIteratorRange(controlResult.result.begin, ++it));
+			return ParseResult(ParseResult::Status::Ok, StringIteratorRange(controlResult.result.begin, ++it));
 
-		return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
+		return ParseResult(ParseResult::Status::Invalid, { itrange, "Expected symbol name followed by semicolon" });
 	}
 }

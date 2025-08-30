@@ -19,7 +19,7 @@ namespace gscript
 	{
 		ParseResult start = (ParserArglistStart(this->arglistStart)).parse(itrange);
 		if (!start.isOk())
-			return ParseResult(ParseResult::Status::Invalid, StringIteratorRange());
+			return start;
 
 		auto begin = start.result.end;
 		bool ok = true;
@@ -46,7 +46,7 @@ namespace gscript
 		ParseResult end = (ParserArglistEnd(this->arglistEnd)).parse(StringIteratorRange(begin, itrange.end));
 
 		if (!end.isOk())
-			return ParseResult(ParseResult::Status::Fatal, StringIteratorRange());
+			return end;
 
 		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(start.result.begin, end.result.end));
 	}

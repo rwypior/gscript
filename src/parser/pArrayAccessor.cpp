@@ -41,7 +41,7 @@ namespace gscript
 			if (this->indexType & IndexType::Statement)
 			{
 				this->statement.setAllowEmpty(!(this->indexType & IndexType::Required));
-				statementResult = this->statement.parse(StringIteratorRange(beginResult.result.end, itrange.end - 1));
+				statementResult = this->statement.parse(StringIteratorRange(beginResult.result.end, itrange.end));
 			}
 			else if (this->indexType & IndexType::Literal)
 			{

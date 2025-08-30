@@ -5,15 +5,9 @@
 namespace gscript
 {
 	ParserVar::ParserVar(const ParserVar &copy)
-		:ParserNameSpecifier(copy.name),
-		arrayAccessor(copy.arrayAccessor ? new ParserArrayAccessor(*copy.arrayAccessor) : NULL)
+		: ParserNameSpecifier(copy.name)
+		, arrayAccessor(copy.arrayAccessor ? std::make_unique<ParserArrayAccessor>(*copy.arrayAccessor) : nullptr)
 	{
-	}
-
-	ParserVar::~ParserVar()
-	{
-		if (this->arrayAccessor)
-			delete this->arrayAccessor;
 	}
 
 	ParseResult ParserVar::parse(StringIteratorRange itrange)
@@ -31,8 +25,10 @@ namespace gscript
 		{
 			end = arrayResult.result.end;
 
-			this->arrayAccessor = new ParserArrayAccessor(arrayAccessor);
+			this->arrayAccessor = std::make_unique<ParserArrayAccessor>(arrayAccessor);
 		}
+		else if (arrayResult.isFatal())
+			return arrayResult;
 
 		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(nameResult.result.begin, end));
 	}

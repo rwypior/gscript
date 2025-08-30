@@ -10,7 +10,7 @@ namespace gscript
 		if (!parentResult.isOk())
 			return parentResult;
 
-		ParseResult stmt = value.parse(StringIteratorRange(parentResult.result.end + 1, itrange.end));
+		ParseResult stmt = value.parse(StringIteratorRange(parentResult.result.end, itrange.end));
 		if (!stmt.isOk())
 			return stmt;
 

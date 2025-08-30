@@ -2,6 +2,7 @@
 #include "parser/pChar.hpp"
 
 #include <string>
+#include <sstream>
 
 namespace gscript
 {
@@ -70,6 +71,6 @@ namespace gscript
 		if (endGood)
 			return ParseResult(ParseResult::Status::Ok, StringIteratorRange(controlResult.result.begin, ++it));
 
-		return ParseResult(ParseResult::Status::Invalid, StringIteratorRange());
+		return ParseResult(ParseResult::Status::Invalid, { itrange, (std::stringstream() << "Missing import directive enclosure \"" << enclosureEnd << "\"").str() });
 	}
 }

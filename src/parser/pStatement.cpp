@@ -29,7 +29,6 @@ namespace gscript
 		auto end = itrange.begin;
 
 		unsigned int commentLength = 0;
-		COMMENT(itrange, begin, commentLength);
 
 		size_t newlines = 0;
 		while (begin != itrange.end && std::isspace(*begin))

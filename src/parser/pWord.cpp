@@ -52,15 +52,6 @@ namespace gscript
 
 			if (i == length)
 			{
-				/*if (allowSpaces && buffer == word)
-					break;*/
-
-				/*if (it + 1 == itrange.end)
-					break;
-				char next = *(it + 1);
-				if (!std::isalnum(next) && next != '_')
-					break;*/
-
 				if (pred(it, itrange.end, buffer, word))
 					break;
 

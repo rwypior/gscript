@@ -274,7 +274,7 @@ namespace gscript
 
 	std::unique_ptr<ScriptVarRead> Compiler::compileVarRead(ScriptScope* scope, const ParserVar& pVar)
 	{
-		if (ParserArrayAccessor* arr = pVar.arrayAccessor)
+		if (auto& arr = pVar.arrayAccessor)
 			return std::make_unique<ScriptArrayReadResolver>(*scope, this->compileStatement(scope, arr->statement), pVar.name);
 
 		return std::make_unique<ScriptVarReadResolver>(*scope, pVar.name);

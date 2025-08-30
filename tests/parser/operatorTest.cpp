@@ -36,6 +36,19 @@ TEST_CASE("ParserOperatorTriplePlus")
 	REQUIRE(pOper.getChar() == "++");
 }
 
+TEST_CASE("ParserOperatorMultipleOperators")
+{
+	// Things like this will fail in statement tests
+
+	std::string txt = "+ - /";
+
+	gscript::ParserOperator pOper;
+	auto result = pOper.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pOper.getChar() == "+");
+}
+
 TEST_CASE("ParserOperatorFailureNoOperator")
 {
 	std::string txt = "something";

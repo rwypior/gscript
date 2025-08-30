@@ -2,20 +2,20 @@
 #define _h_gscript_parser_var
 
 #include "pNameSpecifier.hpp"
+#include "pArrayAccessor.hpp"
 #include "IteratorRange.hpp"
+
+#include <memory>
 
 namespace gscript
 {
-	class ParserArrayAccessor;
-
 	class ParserVar : public ParserNameSpecifier
 	{
 	public:
-		ParserArrayAccessor *arrayAccessor = nullptr;
+		std::unique_ptr<ParserArrayAccessor> arrayAccessor = nullptr;
 
 		ParserVar() = default;
 		ParserVar(const ParserVar &copy);
-		~ParserVar();
 
 		virtual ParseResult parse(StringIteratorRange itrange) override;
 	};

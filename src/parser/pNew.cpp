@@ -11,7 +11,7 @@ namespace gscript
 		if (!rnew.isOk())
 			return rnew;
 
-		ParseResult rfcall = ParserFuncCall::parse(StringIteratorRange(rnew.result.end + 1, itrange.end));
+		ParseResult rfcall = ParserFuncCall::parse(StringIteratorRange(rnew.result.end, itrange.end));
 		if (!rfcall.isOk())
 			return rfcall;
 

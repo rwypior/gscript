@@ -48,14 +48,55 @@ TEST_CASE("ParserFuncCallMethod")
 	// Method calling is done through statements - first an object is needed, followed by
 	// member accessor, and finally function call
 
-	std::string txt = "object . some_function();";
+	{
+		std::string txt = "object . some_function();";
 
-	gscript::ParserStatement pFunc;
-	auto result = pFunc.parse(txt);
+		gscript::ParserStatement pFunc;
+		auto result = pFunc.parse(txt);
 
-	REQUIRE(result.isOk());
-	REQUIRE(pFunc.components.size() == 3);
-	REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pFunc.components.at(0))->name == "object");
-	REQUIRE(std::dynamic_pointer_cast<gscript::ParserOperatorMemberAccessor>(pFunc.components.at(1)));
-	REQUIRE(std::static_pointer_cast<gscript::ParserFuncCall>(pFunc.components.at(2))->name == "some_function");
+		REQUIRE(result.isOk());
+		REQUIRE(pFunc.components.size() == 3);
+		REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pFunc.components.at(0))->name == "object");
+		REQUIRE(std::dynamic_pointer_cast<gscript::ParserOperatorMemberAccessor>(pFunc.components.at(1)));
+		REQUIRE(std::static_pointer_cast<gscript::ParserFuncCall>(pFunc.components.at(2))->name == "some_function");
+	}
+
+	{
+		std::string txt = "object. some_function();";
+
+		gscript::ParserStatement pFunc;
+		auto result = pFunc.parse(txt);
+
+		REQUIRE(result.isOk());
+		REQUIRE(pFunc.components.size() == 3);
+		REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pFunc.components.at(0))->name == "object");
+		REQUIRE(std::dynamic_pointer_cast<gscript::ParserOperatorMemberAccessor>(pFunc.components.at(1)));
+		REQUIRE(std::static_pointer_cast<gscript::ParserFuncCall>(pFunc.components.at(2))->name == "some_function");
+	}
+
+	{
+		std::string txt = "object .some_function();";
+
+		gscript::ParserStatement pFunc;
+		auto result = pFunc.parse(txt);
+
+		REQUIRE(result.isOk());
+		REQUIRE(pFunc.components.size() == 3);
+		REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pFunc.components.at(0))->name == "object");
+		REQUIRE(std::dynamic_pointer_cast<gscript::ParserOperatorMemberAccessor>(pFunc.components.at(1)));
+		REQUIRE(std::static_pointer_cast<gscript::ParserFuncCall>(pFunc.components.at(2))->name == "some_function");
+	}
+
+	{
+		std::string txt = "object.some_function();";
+
+		gscript::ParserStatement pFunc;
+		auto result = pFunc.parse(txt);
+
+		REQUIRE(result.isOk());
+		REQUIRE(pFunc.components.size() == 3);
+		REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pFunc.components.at(0))->name == "object");
+		REQUIRE(std::dynamic_pointer_cast<gscript::ParserOperatorMemberAccessor>(pFunc.components.at(1)));
+		REQUIRE(std::static_pointer_cast<gscript::ParserFuncCall>(pFunc.components.at(2))->name == "some_function");
+	}
 }

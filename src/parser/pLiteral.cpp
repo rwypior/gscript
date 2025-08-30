@@ -46,6 +46,8 @@ namespace gscript
 			++it;
 		}
 
+		bool foundFloatMarker = false;
+
 		for (; it != itrange.end; ++it)
 		{
 			char chr = *it;
@@ -91,7 +93,15 @@ namespace gscript
 				else
 				{
 					if (std::isalpha(chr))
+					{
+						if ((chr == 'f' || chr == 'F') && !foundFloatMarker)
+						{
+							foundFloatMarker = true;
+							continue;
+						}
+
 						return ParseResult(ParseResult::Status::Invalid, { itrange.shifted(newlines), (std::stringstream() << "Invalid character \"" << chr << "\" in numeric literal").str()});
+					}
 				}
 
 				if (chr == '.')
@@ -114,6 +124,9 @@ namespace gscript
 		if (!isString && this->value.empty())
 			return ParseResult(ParseResult::Status::Invalid, { itrange.shifted(newlines), "Zero-length non-string literal sequence" });
 
+		if (!isString && trim_copy(this->value) == ".")
+			return ParseResult(ParseResult::Status::Invalid, { itrange.shifted(newlines), "Decimal separator must be adjacent to digits" });
+
 		if (isString)
 			this->type = VALUE_TYPE_T::VT_STRING;
 		else if (isChar)
@@ -124,7 +137,8 @@ namespace gscript
 			{
 				this->type = VALUE_TYPE_T::VT_DOUBLE;
 
-				if (this->value.back() == 'f' || this->value.back() == 'F')
+				//if (this->value.back() == 'f' || this->value.back() == 'F')
+				if (foundFloatMarker)
 					this->type = VALUE_TYPE_T::VT_FLOAT;
 			}
 			else

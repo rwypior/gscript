@@ -15,6 +15,11 @@ namespace gscript
 
 	const char *ParserAccessSpecifier::KW_M_VIRTUAL = "virtual";
 
+	ParserAccessSpecifier::ParserAccessSpecifier(MODIFIER_T defaultModifier)
+		: modifier(defaultModifier)
+	{
+	}
+
 	ParseResult ParserAccessSpecifier::parse(StringIteratorRange itrange)
 	{
 		auto it = itrange.begin;
@@ -22,10 +27,7 @@ namespace gscript
 		size_t newlines = skipWhitespaces(it, itrange.end);
 
 		if (it == itrange.end)
-		{
-			this->modifier |= MODIFIER_T::M_ACCESS_PUBLIC;
 			return ParseResult(ParseResult::Status::Ok, StringIteratorRange(itrange.begin, it));
-		}
 
 		bool anyGood = true;
 		while (anyGood)

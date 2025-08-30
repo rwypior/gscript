@@ -53,6 +53,34 @@ TEST_CASE("ParseUntil")
 	REQUIRE(result.result.end == txt.begin() + 6);
 }
 
+TEST_CASE("ParseUntilAtBegin")
+{
+	std::string txt = "wordblabla";
+	auto result = gscript::ParserWord::parseUntil(txt, "word");
+
+	REQUIRE(result.isOk());
+	REQUIRE(result.result.begin == txt.begin());
+	REQUIRE(result.result.end == txt.begin());
+}
+
+TEST_CASE("ParseUntilAtMiddle")
+{
+	std::string txt = "blawordbla";
+	auto result = gscript::ParserWord::parseUntil(txt, "word");
+
+	REQUIRE(result.isOk());
+	REQUIRE(result.result.begin == txt.begin());
+	REQUIRE(result.result.end == txt.begin() + 3);
+}
+
+TEST_CASE("ParseUntilFailure")
+{
+	std::string txt = "blablabla";
+	auto result = gscript::ParserWord::parseUntil(txt, "word");
+
+	REQUIRE(!result.isOk());
+}
+
 TEST_CASE("ParseWordUntilWithAllowed")
 {
 	{

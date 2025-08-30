@@ -24,6 +24,7 @@ namespace gscript
 		//std::string access;
 		MODIFIER_T modifier = MODIFIER_T::M_NONE;
 
+		ParserAccessSpecifier(MODIFIER_T defaultModifier = MODIFIER_T::M_NONE);
 		virtual ParseResult parse(StringIteratorRange itrange) override;
 
 		MODIFIER_T getModifier() const;

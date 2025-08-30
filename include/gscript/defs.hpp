@@ -20,20 +20,20 @@ namespace gscript
 
 	enum class MODIFIER_T
 	{
-		M_NONE = 0,
-		M_ACCESS_PUBLIC = 1,
-		M_ACCESS_PROTECTED = 2,
-		M_ACCESS_PRIVATE = 4,
-		M_CONST = 8,
-		M_STATIC = 16,
-		M_VIRTUAL = 32,
-		M_ABSTRACT = 64
+		M_NONE = 0x00,
+		M_ACCESS_PUBLIC = 0x01,
+		M_ACCESS_PROTECTED = 0x02,
+		M_ACCESS_PRIVATE = 0x04,
+		M_CONST = 0x08,
+		M_STATIC = 0x10,
+		M_VIRTUAL = 0x20,
+		M_ABSTRACT = 0x40
 	};
 
 	enum class CLASS_MODIFIER_T
 	{
-		CM_NONE = 0,
-		CM_ABSTRACT = 1
+		CM_NONE = 0x00,
+		CM_ABSTRACT = 0x01
 	};
 
 	enum class VALUE_TYPE_T
@@ -55,14 +55,14 @@ namespace gscript
 
 	enum class ENTITY_TYPE_T
 	{
-		ET_NONE = 0,
-		ET_ANY = 1,
-		ET_FUNC = 2,
-		ET_VAR = 4,
-		ET_CLASS = 8,
-		ET_NAMESPACE = 16,
-		ET_STATEMENT = 32,
-		ET_VARDECL = 64
+		ET_NONE = 0x00,
+		ET_ANY = 0x01,
+		ET_FUNC = 0x02,
+		ET_VAR = 0x04,
+		ET_CLASS = 0x08,
+		ET_NAMESPACE = 0x10,
+		ET_STATEMENT = 0x20,
+		ET_VARDECL = 0x40
 	};
 
 	enum class OPERATOR_TYPE_T
@@ -105,17 +105,17 @@ namespace gscript
 
 	enum class OPERATOR_LINK_T
 	{
-		OL_SINGLE = 0,
-		OL_LEFT = 1,
-		OL_RIGHT = 2,
+		OL_SINGLE = 0x00,
+		OL_LEFT = 0x01,
+		OL_RIGHT = 0x02,
 		OL_BOTH = OL_LEFT | OL_RIGHT
 	};
 
 	enum class NAMESPACE_TYPE_T
 	{
-		NT_MAIN = 1,
-		NT_NAMED = 2,
-		NT_ENCLOSED = 4,
+		NT_MAIN = 0x01,
+		NT_NAMED = 0x02,
+		NT_ENCLOSED = 0x04,
 		NT_REGULAR = NT_NAMED | NT_ENCLOSED
 	};
 

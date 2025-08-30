@@ -30,7 +30,7 @@ namespace gscript
 
 #define OP_PARSECHAIN_BLOCK(P_OP) { \
 	auto op = std::make_shared<P_OP>();\
-	ParseResult res = ParserWord::parse(itrange, op->opchar, op/*, true*/); \
+	ParseResult res = ParserWord::parseExact(itrange, op->opchar, op); \
 	if (res.isOk()) {\
 		this->opchar = op->getChar();\
 		return res;\
@@ -39,7 +39,7 @@ namespace gscript
 
 #define OP_SINGLE_PARSECHAIN_BLOCK(P_OP, POS) { \
 	auto op = std::make_shared<P_OP>(POS);\
-	ParseResult res = ParserWord::parse(itrange, op->opchar, op/*, true*/); \
+	ParseResult res = ParserWord::parseExact(itrange, op->opchar, op); \
 	if (res.isOk()) {\
 		this->opchar = op->getChar();\
 		return res;\
@@ -85,6 +85,6 @@ namespace gscript
 		OP_PARSECHAIN_BLOCK(ParserOperatorLessThanOrEqual);
 		OP_PARSECHAIN_BLOCK(ParserOperatorLessThan);
 
-		return ParseResult(ParseResult::Status::Invalid, { itrange, (std::stringstream() << "Expected operator, got \"" << getCharsUntilEol(itrange.begin, itrange.end) ).str() });
+		return ParseResult(ParseResult::Status::Invalid, { itrange, (std::stringstream() << "Expected operator, got \"" << getCharsUntilEol(itrange.begin, itrange.end) << "\"").str()});
 	}
 }

@@ -103,7 +103,7 @@ TEST_CASE("ParserAccessSpecifierRepeated")
 
 TEST_CASE("ParserAccessSpecifierEmpty")
 {
-	// Public is default
+	// Whatever is set in the constructor is the default
 
 	{
 		std::string txt = "";
@@ -112,13 +112,13 @@ TEST_CASE("ParserAccessSpecifierEmpty")
 		auto result = pAcc.parse(txt);
 
 		REQUIRE(result.isOk());
-		REQUIRE(pAcc.getModifier() == gscript::MODIFIER_T::M_ACCESS_PUBLIC);
+		REQUIRE(pAcc.getModifier() == gscript::MODIFIER_T::M_NONE);
 	}
 
 	{
 		std::string txt = "			";
 
-		gscript::ParserAccessSpecifier pAcc;
+		gscript::ParserAccessSpecifier pAcc(gscript::MODIFIER_T::M_ACCESS_PUBLIC);
 		auto result = pAcc.parse(txt);
 
 		REQUIRE(result.isOk());

@@ -14,6 +14,6 @@ namespace gscript
 		}
 
 		ParseResult func = ParserVarDeclaration::parse(StringIteratorRange(end, itrange.end));
-		return ParseResult(func.status, StringIteratorRange(itrange.begin, func.result.end));
+		return func;
 	}
 }

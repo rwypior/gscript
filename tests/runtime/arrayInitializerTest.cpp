@@ -10,7 +10,7 @@
 #include <vector>
 #include <memory>
 
-TEST_CASE_METHOD(GscriptTest, "Array initializer")
+TEST_CASE_METHOD(GscriptTest, "RuntimeArrayInitializer")
 {
 	auto literal42 = std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(42));
 	auto literal42vec = std::vector<std::unique_ptr<gscript::ScriptCallable>>();

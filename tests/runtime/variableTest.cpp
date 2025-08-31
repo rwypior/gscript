@@ -13,7 +13,7 @@
 #include <vector>
 #include <memory>
 
-TEST_CASE_METHOD(GscriptTest, "Variable declaration")
+TEST_CASE_METHOD(GscriptTest, "RuntimeVariableDeclaration")
 {
 	auto literal42 = std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(42));
 	auto literal42vec = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
@@ -31,7 +31,7 @@ TEST_CASE_METHOD(GscriptTest, "Variable declaration")
 	REQUIRE(sv.getValue()->as<gscript::ScriptIntValue>().getValue() == 42);
 }
 
-TEST_CASE_METHOD(GscriptTest, "Registering variables")
+TEST_CASE_METHOD(GscriptTest, "RuntimeVariableRegistering")
 {
 	auto literal42 = std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(42));
 	auto literal42vec = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
@@ -59,7 +59,7 @@ TEST_CASE_METHOD(GscriptTest, "Registering variables")
 	REQUIRE(myVariable1->getValue()->as<gscript::ScriptIntValue>().getValue() == 42);
 }
 
-TEST_CASE_METHOD(GscriptTest, "Modifying variables")
+TEST_CASE_METHOD(GscriptTest, "RuntimeVariableModifying")
 {
 	gscript::ScriptVariable sv("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(0), 0);
 

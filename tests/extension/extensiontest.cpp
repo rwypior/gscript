@@ -52,7 +52,7 @@ public:
 	}
 };
 
-TEST_CASE_METHOD(GscriptTest, "Sample extension")
+TEST_CASE_METHOD(GscriptTest, "ExtensionSampleExtension")
 {
 	auto ext = new SampleExtension();
 	script.extend(ext);

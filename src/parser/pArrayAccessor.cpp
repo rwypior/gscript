@@ -25,12 +25,12 @@ namespace gscript
 		COMMENT(itrange, itrange.begin, commentLength);
 
 		if (itrange.end - itrange.begin < 1)
-			return ParseResult(ParseResult::Status::Invalid, COMMENT_RESULT(itrange, commentLength));
+			return ParseResult(ParseResult::Status::Invalid, COMMENT_RESULT(itrange, commentLength), nullptr, { itrange, "Expected array accessor, got empty string" });
 
 		ParseResult beginResult = ParserChar::parse(StringIteratorRange(itrange.begin, itrange.end), ParserArrayAccessor::KW_ARRAY_ACCESSOR_BEGIN);
 
 		if (!beginResult.isOk())
-			return ParseResult(ParseResult::Status::Invalid, StringIteratorRange(beginResult.result.begin, beginResult.result.end));
+			return beginResult;
 
 		auto end = beginResult.result.end;
 
@@ -52,7 +52,7 @@ namespace gscript
 					this->staticIndex = std::stoi(lit.value);
 			}
 			else
-				assert(!"Array specifier' type must include either IndexType::Statement or IndexType::Literal");
+				assert(!"Array specifier's type must include either IndexType::Statement or IndexType::Literal");
 
 			if (statementResult.isOk())
 			{
@@ -60,13 +60,13 @@ namespace gscript
 				this->gotValue = true;
 			}
 			else if (this->indexType & IndexType::Required)
-				return ParseResult(ParseResult::Status::Fatal, StringIteratorRange(beginResult.result.begin, end));
+				return statementResult.as(ParseResult::Status::Fatal);
 		}
 
 		ParseResult endResult = ParserChar::parse(StringIteratorRange(end, itrange.end), ParserArrayAccessor::KW_ARRAY_ACCESSOR_END);
 
 		if (!endResult.isOk())
-			return ParseResult(ParseResult::Status::Fatal, StringIteratorRange(endResult.result.begin, endResult.result.end));
+			return endResult.as(ParseResult::Status::Fatal);
 
 		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(beginResult.result.begin, endResult.result.end));
 	}

@@ -27,6 +27,17 @@ TEST_CASE("ParserForWithBody")
 	REQUIRE(result.isOk());
 }
 
+TEST_CASE("ParserForSingleStatementBody")
+{
+	std::string txt = "for (int i; i < 10; i++) some_statement();";
+
+	gscript::ParserFor pfor;
+	auto result = pfor.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pfor.body.body.statements.size() == 1);
+}
+
 TEST_CASE("ParserForFailureNoArgList")
 {
 	std::string txt = "for";
@@ -45,4 +56,64 @@ TEST_CASE("ParserForFailureNoBody")
 	auto result = pfor.parse(txt);
 
 	REQUIRE(!result.isOk());
+}
+
+TEST_CASE("ParserForNoFirstParameter")
+{
+	std::string txt = "for (; i < 10; i++) {}";
+
+	gscript::ParserFor pfor;
+	auto result = pfor.parse(txt);
+
+	REQUIRE(result.isOk());
+}
+
+TEST_CASE("ParserForNoSecondParameter")
+{
+	std::string txt = "for (int i; ; i++) {}";
+
+	gscript::ParserFor pfor;
+	auto result = pfor.parse(txt);
+
+	REQUIRE(result.isOk());
+}
+
+TEST_CASE("ParserForNoThirdParameter")
+{
+	std::string txt = "for (int i; i < 10; ) {}";
+
+	gscript::ParserFor pfor;
+	auto result = pfor.parse(txt);
+
+	REQUIRE(result.isOk());
+}
+
+TEST_CASE("ParserForOnlyFirstParameter")
+{
+	std::string txt = "for (int i; ; ) {}";
+
+	gscript::ParserFor pfor;
+	auto result = pfor.parse(txt);
+
+	REQUIRE(result.isOk());
+}
+
+TEST_CASE("ParserForOnlySecondParameter")
+{
+	std::string txt = "for (; i < 10; ) {}";
+
+	gscript::ParserFor pfor;
+	auto result = pfor.parse(txt);
+
+	REQUIRE(result.isOk());
+}
+
+TEST_CASE("ParserForOnlyThirdParameter")
+{
+	std::string txt = "for (; ; i++) {}";
+
+	gscript::ParserFor pfor;
+	auto result = pfor.parse(txt);
+
+	REQUIRE(result.isOk());
 }

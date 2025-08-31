@@ -1,5 +1,6 @@
 #include "common.h"
 #include "gscript/parser/pVar.hpp"
+#include "gscript/parser/pLiteral.hpp"
 
 #include <catch2/catch_all.hpp>
 
@@ -16,8 +17,6 @@ TEST_CASE("ParserVarSimple")
 
 TEST_CASE("ParserVarArray")
 {
-	// TODO - array acessor is not really being used here - find out why, and fix or delete if necessary
-
 	std::string txt = "myvar[42]";
 
 	gscript::ParserVar pVar;
@@ -25,7 +24,7 @@ TEST_CASE("ParserVarArray")
 
 	REQUIRE(result.isOk());
 	REQUIRE(pVar.name == "myvar");
-	// REQUIRE(pVar.arrayAccessor->staticIndex == 42);
+	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pVar.arrayAccessor->statement.components.at(0))->value == "42");
 }
 
 TEST_CASE("ParserVarFailureEmptyString")
@@ -47,4 +46,16 @@ TEST_CASE("ParserVarFailureArrayNoEnclosure")
 	auto result = pVar.parse(txt);
 
 	REQUIRE(!result.isOk());
+	REQUIRE(result.details.message == "Empty statement"); // TODO - this needs better error message
+}
+
+TEST_CASE("ParserVarFailureArrayEmpty")
+{
+	std::string txt = "myvar[]";
+
+	gscript::ParserVar pVar;
+	auto result = pVar.parse(txt);
+
+	REQUIRE(!result.isOk());
+	REQUIRE(result.details.message == "Expected non-empty statement");
 }

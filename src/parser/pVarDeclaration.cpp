@@ -11,8 +11,8 @@
 namespace gscript
 {
 	ParserVarDeclaration::ParserVarDeclaration(bool sub)
-		:sub(sub),
-		value(true)
+		: sub(sub)
+		, value(true)
 	{
 	}
 

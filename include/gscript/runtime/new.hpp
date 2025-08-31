@@ -11,7 +11,7 @@ namespace gscript
 	class ScriptNew : public ScriptFuncCall
 	{
 	public:
-		ScriptNew(ScriptClass &sclass, std::vector<std::unique_ptr<ScriptStatement>>&& params);
+		ScriptNew(ScriptClass& sclass, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
 
 		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 

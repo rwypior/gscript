@@ -21,6 +21,7 @@ namespace gscript
 	class ParserFuncCall;
 	class ParserArrayInitializer;
 	class ParserIf;
+	class ParserElse;
 	class ParserWhile;
 	class ParserFor;
 	class ParserReturn;
@@ -68,6 +69,7 @@ namespace gscript
 
 		std::unique_ptr<ScriptVarDeclaration> compileVarDeclaration(ScriptScope* scope, const ParserVarDeclaration& pVar);
 		std::unique_ptr<ScriptIf> compileIf(ScriptScope* scope, const ParserIf& pIf);
+		std::unique_ptr<ScriptIf> compileElse(ScriptScope* scope, const ParserElse& pElse);
 		std::unique_ptr<ScriptWhile> compileWhile(ScriptScope* scope, const ParserWhile& pWhile);
 		std::unique_ptr<ScriptFor> compileFor(ScriptScope* scope, const ParserFor& pFor);
 		std::unique_ptr<ScriptReturn> compileReturn(ScriptScope* scope, const ParserReturn& pReturn);

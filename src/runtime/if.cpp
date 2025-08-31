@@ -1,14 +1,17 @@
 #include "runtime/if.hpp"
 #include "defs.hpp"
 
+#include <memory>
+
 namespace gscript
 {
 	const ScriptType *ScriptIf::returnType = new ScriptType(VALUE_TYPE_T::VT_NULL);
 
-	ScriptIf::ScriptIf(ScriptScope &scope, std::unique_ptr<ScriptStatement>&& condition, std::vector<std::shared_ptr<ScriptCallable>>&& statements)
+	ScriptIf::ScriptIf(ScriptScope &scope, std::unique_ptr<ScriptStatement>&& condition, std::unique_ptr<ScriptIf>&& selse, std::vector<std::shared_ptr<ScriptCallable>>&& statements)
 		: ScriptCallable(scope)
 		, ScriptExecutiveBlock(std::move(statements))
 		, condition(std::move(condition))
+		, selse(std::move(selse))
 	{
 	}
 

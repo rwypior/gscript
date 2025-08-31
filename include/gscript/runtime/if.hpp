@@ -19,7 +19,7 @@ namespace gscript
 	class ScriptIf : public ScriptExecutiveBlock, public ScriptCallable
 	{
 	public:
-		ScriptIf(ScriptScope& scope, std::unique_ptr<ScriptStatement>&& condition, std::vector<std::shared_ptr<ScriptCallable>>&& statements = {});
+		ScriptIf(ScriptScope& scope, std::unique_ptr<ScriptStatement>&& condition, std::unique_ptr<ScriptIf>&& selse = {}, std::vector<std::shared_ptr<ScriptCallable>>&& statements = {});
 
 		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 

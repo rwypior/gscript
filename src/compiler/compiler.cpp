@@ -14,6 +14,7 @@
 #include "parser/pArrayAccessor.hpp"
 #include "parser/pReturn.hpp"
 #include "parser/pIf.hpp"
+#include "parser/pElse.hpp"
 #include "parser/pWhile.hpp"
 #include "parser/pFor.hpp"
 #include "parser/pReturn.hpp"
@@ -366,7 +367,29 @@ namespace gscript
 		auto condition = this->compileStatement(scope, *pIf.arglist.parameters.front());
 		auto exeblock = this->compileExecutiveBlock(scope, pIf.body.body);
 
-		auto sif = std::make_unique<ScriptIf>(*scope, std::move(condition));
+		std::unique_ptr<ScriptIf> selse;
+		if (!pIf.pelse.body.body.statements.empty())
+			selse = this->compileElse(scope, pIf.pelse);
+
+		auto sif = std::make_unique<ScriptIf>(*scope, std::move(condition), std::move(selse));
+		sif->merge(std::move(exeblock));
+
+		return sif;
+	}
+
+	std::unique_ptr<ScriptIf> Compiler::compileElse(ScriptScope* scope, const ParserElse& pElse)
+	{
+		std::unique_ptr<ScriptStatement> condition;
+		std::unique_ptr<ScriptIf> selse;
+		if (pElse.pif)
+		{
+			condition = this->compileStatement(scope, *pElse.pif->arglist.parameters.front());
+			if (!pElse.pif->pelse.body.body.statements.empty())
+				selse = this->compileElse(scope, pElse.pif->pelse);
+		}
+
+		auto exeblock = this->compileExecutiveBlock(scope, pElse.body.body);
+		auto sif = std::make_unique<ScriptIf>(*scope, std::move(condition), std::move(selse));
 		sif->merge(std::move(exeblock));
 
 		return sif;
@@ -377,7 +400,6 @@ namespace gscript
 		auto condition = this->compileStatement(scope, *pWhile.arglist.parameters.front());
 		auto exeblock = this->compileExecutiveBlock(scope, pWhile.body.body);
 
-		ScriptWhile(*scope, std::move(condition));
 		auto swhile = std::make_unique<ScriptWhile>(*scope, std::move(condition));
 		swhile->merge(std::move(exeblock));
 

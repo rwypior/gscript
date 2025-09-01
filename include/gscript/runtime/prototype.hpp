@@ -1,6 +1,10 @@
 #ifndef _h_gscript_prototype
 #define _h_gscript_prototype
 
+#include "lib.hpp"
+
+#include <memory>
+
 namespace gscript
 {
 	class ScriptScope;
@@ -14,13 +18,11 @@ namespace gscript
 	// before it's good for execution
 
 	template<typename T>
-	class Prototype : public T
+	class Prototype
 	{
 	public:
-		using T::T;
-
 		virtual ~Prototype() = default;
-		virtual std::unique_ptr<T> setup(ScriptScope& scope) = 0;
+		virtual std::unique_ptr<T> setup() = 0;
 	};
 
 	// A prototype resolver is any script entity which may contain Prototypes

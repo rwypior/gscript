@@ -86,7 +86,8 @@ namespace gscript
 			}
 		}
 
-		else if (auto vread = dynamic_cast<ScriptArrayReadResolver*>(entry.get()))
+		// TODO check this
+		/*else if (auto vread = dynamic_cast<ScriptArrayReadResolver*>(entry.get()))
 		{
 			entry = vread->resolve(*scope, member);
 		}
@@ -94,7 +95,7 @@ namespace gscript
 		else if (auto vread = dynamic_cast<ScriptVarReadResolver*>(entry.get()))
 		{
 			entry = vread->resolve(*scope, member);
-		}
+		}*/
 
 		else if (auto oper = dynamic_cast<ScriptOperator*>(entry.get()))
 		{
@@ -109,7 +110,9 @@ namespace gscript
 
 				if (auto leftVar = std::dynamic_pointer_cast<ScriptVarRead>(oper->left))
 				{
-					if (const ScriptClassType *leftClass = dynamic_cast<const ScriptClassType*>(leftVar->var->orig()->getType()))
+					// TODO - check this
+					//if (const ScriptClassType *leftClass = dynamic_cast<const ScriptClassType*>(leftVar->var->orig()->getType()))
+					if (const ScriptClassType *leftClass = dynamic_cast<const ScriptClassType*>(leftVar->getType()))
 						resolvedScope = &leftClass->sclass;
 				}
 				else if (auto leftFunc = std::dynamic_pointer_cast<ScriptFuncCall>(oper->left))

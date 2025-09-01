@@ -24,7 +24,7 @@ namespace gscript
 			{
 				T_RESULT *res = new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue() + static_cast<T_RIGHT*>(right->run())->getValue());
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
-				vr->var->get()->setValue(res);
+				vr->get()->setValue(res);
 				return res;
 			}
 
@@ -39,7 +39,7 @@ namespace gscript
 			{
 				T_RESULT *res = new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue() - static_cast<T_RIGHT*>(right->run())->getValue());
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
-				vr->var->get()->setValue(res);
+				vr->get()->setValue(res);
 				return res;
 			}
 
@@ -54,7 +54,7 @@ namespace gscript
 			{
 				T_RESULT *res = new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue() * static_cast<T_RIGHT*>(right->run())->getValue());
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
-				vr->var->get()->setValue(res);
+				vr->get()->setValue(res);
 				return res;
 			}
 
@@ -69,7 +69,7 @@ namespace gscript
 			{
 				T_RESULT *res = new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue() / static_cast<T_RIGHT*>(right->run())->getValue());
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
-				vr->var->get()->setValue(res);
+				vr->get()->setValue(res);
 				return res;
 			}
 
@@ -114,7 +114,7 @@ namespace gscript
 			{
 				T_RESULT *res = new T_RESULT(static_cast<T_LEFT*>(right->run())->getValue() - 1);
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(right);
-				vr->var->get()->setValue(res);
+				vr->get()->setValue(res);
 				return res;
 			}
 
@@ -124,7 +124,7 @@ namespace gscript
 				T_RESULT *newVal = new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue() - 1);
 				T_RESULT *res = new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue());
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
-				vr->var->get()->setValue(newVal);
+				vr->get()->setValue(newVal);
 				return res;
 			}
 
@@ -133,7 +133,7 @@ namespace gscript
 			{
 				T_RESULT *res = new T_RESULT(static_cast<T_LEFT*>(right->run())->getValue() + 1);
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(right);
-				vr->var->get()->setValue(res);
+				vr->get()->setValue(res);
 				return res;
 			}
 
@@ -143,7 +143,7 @@ namespace gscript
 				T_RESULT *newVal = new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue() + 1);
 				T_RESULT *res = new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue());
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
-				vr->var->get()->setValue(newVal);
+				vr->get()->setValue(newVal);
 				return res;
 			}
 		}

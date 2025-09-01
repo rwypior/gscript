@@ -16,7 +16,7 @@ namespace gscript
 		friend class ScriptVariableResolv;
 
 	public:
-		SCRIPT_API ScriptVariable(const std::string &name, const ScriptType *type, ScriptValue *value, size_t internalPointer);
+		SCRIPT_API ScriptVariable(const std::string &name, const ScriptType *type, ScriptValue *value/*, size_t internalPointer*/);
 		SCRIPT_API ScriptVariable(const ScriptVariable& b);
 		virtual ~ScriptVariable() = default;
 
@@ -45,17 +45,17 @@ namespace gscript
 			return this->type;
 		}
 
-		size_t getInternalPointer() const
+		/*size_t getInternalPointer() const
 		{
 			return this->internalPointer;
-		}
+		}*/
 
 	protected:
 		const std::string name;
 		ScriptValue *value = nullptr;
 		const ScriptType *type = nullptr;
 
-		size_t internalPointer;
+		//size_t internalPointer;
 	};
 }
 

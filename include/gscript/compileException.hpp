@@ -11,17 +11,17 @@ namespace gscript
 	public:
 		CompileException(const std::string msg)
 			: std::exception()
-			, msg(std::string("Compilation error: ") + msg)
+			, msg(msg)
 		{
+		}
+
+		virtual const char *what() const
+		{
+			return this->msg.c_str();
 		}
 
 	protected:
 		std::string msg;
-
-		virtual const char *what() const throw()
-		{
-			return this->msg.c_str();
-		}
 	};
 }
 

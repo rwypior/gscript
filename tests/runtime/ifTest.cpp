@@ -16,10 +16,10 @@
 TEST_CASE_METHOD(GscriptTest, "RuntimeIfVariable")
 {
 	// Test variable
-	gscript::ScriptVariable testVariable("testVariable", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(42), 0);
+	auto& testVariable = globalNamespace.registerVariable("testVariable", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(42));
 
 	// Variable
-	gscript::ScriptVariable myVariable1("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(42), 0);
+	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(42));
 
 	// If condition
 	auto varread = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &testVariable);
@@ -69,10 +69,10 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfVariable")
 TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseVariable")
 {
 	// Test variable
-	gscript::ScriptVariable testVariable("testVariable", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(42), 0);
+	auto& testVariable = globalNamespace.registerVariable("testVariable", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(42));
 
 	// Variable
-	gscript::ScriptVariable myVariable1("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(42), 0);
+	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(42));
 
 	// If condition
 	auto varread = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &testVariable);
@@ -148,10 +148,10 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseVariable")
 TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseIfElseVariable")
 {
 	// Test variable
-	gscript::ScriptVariable testVariable("testVariable", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(42), 0);
+	auto& testVariable = globalNamespace.registerVariable("testVariable", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(42));
 
 	// Variable
-	gscript::ScriptVariable myVariable1("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(42), 0);
+	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(42));
 
 	// If condition
 	auto varread = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &testVariable);

@@ -27,7 +27,7 @@ namespace gscript
 
 	void ScriptClass::createThis()
 	{
-		this->registerVariable(std::make_unique<ScriptVariable>(ScriptClass::KW_THIS, new ScriptClassType(*this), nullptr, this->variables.size()));
+		this->registerVariable(std::make_unique<ScriptVariable>(ScriptClass::KW_THIS, new ScriptClassType(*this), nullptr));
 	}
 
 	void ScriptClass::makeAbstract()

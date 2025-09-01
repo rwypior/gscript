@@ -10,98 +10,33 @@
 
 namespace gscript
 {
-	ScriptScope::ScriptScope(ScriptScope *parentScope)
-		:parentScope(parentScope)
-	{ }
+	// Scope base
 
-	/*ScriptFunction &ScriptScope::registerFunction(const ParserFunction &c)
+	void ScriptScopeBase::registerFunction(std::unique_ptr<ScriptFunction>&& function)
 	{
-		PARAMS_T params;
-		for (
-			ParserArglist::ARGLIST_PARAMS_T::const_iterator it = c.arglist.parameters.begin();
-			it != c.arglist.parameters.end();
-			++it
-			)
-		{
-			params.emplace_back(ScriptType::create(it->type, *this), it->name);
-		}
-
-		this->functions.push_back(
-			new ScriptFunction(*this, c.name, ScriptType::create(c.returnTypeName, *this), params)
-		);
-		ScriptFunction &newfunc = *this->functions.back();
-
-		newfunc.parentScope = this;
-		newfunc.setup(c);
-
-		return newfunc;
+		this->getFunctions().push_back(std::move(function));
 	}
 
-	void ScriptScope::registerFunction(ScriptFunction *c)
+	ScriptVariable& ScriptScopeBase::registerVariable(const std::string &name, const ScriptType *type, ScriptValue *value)
 	{
-		c->parentScope = this;
-		this->functions.push_back(c);
+		return this->registerVariable(std::make_unique<ScriptVariable>(name, type, value));
 	}
 
-	ScriptFunction &ScriptScope::registerFunctionPrototype(const ParserFunction &c)
+	ScriptVariable& ScriptScopeBase::registerVariable(std::unique_ptr<ScriptVariable>&& variable)
 	{
-		PARAMS_T params;
-		for (
-			ParserArglist::ARGLIST_PARAMS_T::const_iterator it = c.arglist.parameters.begin();
-			it != c.arglist.parameters.end();
-			++it
-			)
-		{
-			params.emplace_back(ScriptType::create(it->type, *this), it->name);
-		}
-
-		if (c.externName.empty())
-			this->functions.push_back(
-				new ScriptFunction(*this, c.name, ScriptType::create(c.returnTypeName, *this), params)
-			);
-		else
-			this->functions.push_back(
-				new ScriptExternFunctionConnector(c.externName, *this, c.name, ScriptType::create(c.returnTypeName, *this), params)
-			);
-
-		ScriptFunction &newfunc = *this->functions.back();
-
-		newfunc.parentScope = this;
-
-		ScriptFunctionPrototype *proto = new ScriptFunctionPrototype(newfunc, c);
-		this->functionPrototypes.push_back(proto);
-
-		return newfunc;
+		auto& variables = this->getVariables();
+		variables.push_back(std::move(variable));
+		return *variables.back();
 	}
 
-	ScriptVariable &ScriptScope::registerVariable(const ParserVarDeclaration &pvar, ScriptValue *value)
+	ScriptFunction * ScriptScopeBase::findFunction(const std::string &name, const PARAMS_T params) const
 	{
-		return this->registerVariable(pvar.name, ScriptType::create(pvar.type, *this), value);
-	}*/
+		auto& functions = this->getFunctions();
 
-
-	void ScriptScope::registerFunction(std::unique_ptr<ScriptFunction>&& function)
-	{
-		this->functions.push_back(std::move(function));
-	}
-
-	ScriptVariable& ScriptScope::registerVariable(const std::string &name, const ScriptType *type, ScriptValue *value)
-	{
-		return this->registerVariable(std::make_unique<ScriptVariable>(name, type, nullptr, this->getVariables().size()));
-	}
-
-	ScriptVariable& ScriptScope::registerVariable(std::unique_ptr<ScriptVariable>&& variable)
-	{
-		this->variables.push_back(std::move(variable));
-		return *this->variables.back();
-	}
-
-	ScriptFunction *ScriptScope::findFunction(const std::string &name, const PARAMS_T params) const
-	{
-		auto it = std::find_if(this->functions.begin(), this->functions.end(), [&name, &params](const std::unique_ptr<ScriptFunction>& fnc) {
+		auto it = std::find_if(functions.begin(), functions.end(), [&name, &params](const std::unique_ptr<ScriptFunction>& fnc) {
 			return fnc->matches(name, params);
 		});
-		if (it != this->functions.end())
+		if (it != functions.end())
 			return it->get();
 
 		if (const ScriptClass* sc = dynamic_cast<const ScriptClass*>(this))
@@ -113,48 +48,61 @@ namespace gscript
 			}
 		}
 
-		if (this->parentScope)
-			return this->parentScope->findFunction(name, params);
+		if (auto parentScope = this->getParentScope())
+			return parentScope->findFunction(name, params);
 
 		return nullptr;
 	}
 
-	ScriptFunction *ScriptScope::getFunction(const std::string &name, const PARAMS_T params) const
+	ScriptFunction* ScriptScopeBase::getFunction(const std::string &name, const PARAMS_T params) const
 	{
 		if (ScriptFunction *f = this->findFunction(name, params))
 			return f;
 
-		throw CompileException("Function \"" + name + "\" could not be found");
+		return nullptr;
 	}
 
-	ScriptVariable *ScriptScope::findVariable(const std::string &name)
+	ScriptVariable* ScriptScopeBase::findVariable(const std::string &name)
 	{
-		auto it = std::find_if(this->variables.begin(), this->variables.end(), [&name](const std::unique_ptr<ScriptVariable>& v) {
+		auto& variables = this->getVariables();
+
+		auto it = std::find_if(variables.begin(), variables.end(), [&name](const std::unique_ptr<ScriptVariable>& v) {
 			return v->getName() == name;
 		});
-		if (it != this->variables.end())
+		if (it != variables.end())
 			return it->get();
 
-		if (this->parentScope)
-			this->parentScope->findVariable(name);
+		if (auto* parentScope = this->getParentScope())
+			return parentScope->findVariable(name);
 
 		return nullptr;
 	}
 
-	ScriptVariable *ScriptScope::getVariable(const std::string &name)
+	ScopedAddress ScriptScopeBase::findVariableAddr(const std::string& name)
+	{
+		auto& variables = this->getVariables();
+
+		auto it = std::find_if(variables.begin(), variables.end(), [&name](const std::unique_ptr<ScriptVariable>& v) {
+			return v->getName() == name;
+			});
+		if (it != variables.end())
+			return ScopedAddress(this, it - variables.begin());
+
+		if (auto* parentScope = this->getParentScope())
+			return parentScope->findVariableAddr(name);
+
+		return {};
+	}
+
+	ScriptVariable* ScriptScopeBase::getVariable(const std::string &name)
 	{
 		if (ScriptVariable *v = this->findVariable(name))
 			return v;
 
-		throw CompileException("Variable \"" + name + "\" could not be found");
+		return nullptr;
 	}
 
-	std::vector<std::unique_ptr<ScriptVariable>>& ScriptScope::getVariables()
-	{
-		return this->variables;
-	}
-
-	ScriptNamespace *ScriptScope::getClosestNamespace(bool includeSelf)
+	ScriptNamespace* ScriptScopeBase::getClosestNamespace(bool includeSelf)
 	{
 		if (ScriptNamespace* ns = dynamic_cast<ScriptNamespace*>(this))
 		{
@@ -162,20 +110,20 @@ namespace gscript
 				return ns;
 		}
 
-		if (this->parentScope)
+		if (auto* parentScope = this->getParentScope())
 		{
-			if (ScriptNamespace *ns = this->parentScope->getClosestNamespace(true))
+			if (ScriptNamespace *ns = parentScope->getClosestNamespace(true))
 				return ns;
 		}
 
 		return nullptr;
 	}
 
-	ScriptNamespace* ScriptScope::getGlobalNamespace()
+	ScriptNamespace* ScriptScopeBase::getGlobalNamespace()
 	{
-		if (this->parentScope)
+		if (auto* parentScope = this->getParentScope())
 		{
-			auto parentNamespace = this->parentScope->getGlobalNamespace();
+			auto parentNamespace = parentScope->getGlobalNamespace();
 			if (ScriptNamespace* ns = dynamic_cast<ScriptNamespace*>(parentNamespace))
 				return ns;
 		}
@@ -186,17 +134,7 @@ namespace gscript
 		return nullptr;
 	}
 
-	void ScriptScope::setParentScope(ScriptScope *scope)
-	{
-		this->parentScope = scope;
-	}
-
-	ScriptScope *ScriptScope::getParentScope() const
-	{
-		return this->parentScope;
-	}
-
-	bool ScriptScope::isAccessible(ScriptScope &targetScope, MODIFIER_T access)
+	bool ScriptScopeBase::isAccessible(ScriptScopeBase& targetScope, MODIFIER_T access)
 	{
 		if (access & MODIFIER_T::M_ACCESS_PUBLIC)
 			return true;
@@ -215,13 +153,40 @@ namespace gscript
 		return false;
 	}
 
-	/*ScriptClass *ScriptScope::findClass(const EntityPath &path)
+	// Scope
+
+	ScriptScope::ScriptScope(ScriptScope* parentScope)
+		: parentScope(parentScope)
 	{
-		EntityPath::scope_iterator it = path.createScopeIterator();
+	}
 
-		for (; it != path.getString().end(); ++it)
-		{
+	std::vector<std::unique_ptr<ScriptVariable>>& ScriptScope::getVariables()
+	{
+		return this->variables;
+	}
 
-		}
-	}*/
+	const std::vector<std::unique_ptr<ScriptVariable>>& ScriptScope::getVariables() const
+	{
+		return this->variables;
+	}
+
+	std::vector<std::unique_ptr<ScriptFunction>>& ScriptScope::getFunctions()
+	{
+		return this->functions;
+	}
+
+	const std::vector<std::unique_ptr<ScriptFunction>>& ScriptScope::getFunctions() const
+	{
+		return this->functions;
+	}
+
+	void ScriptScope::setParentScope(ScriptScopeBase* scope)
+	{
+		this->parentScope = scope;
+	}
+
+	ScriptScopeBase* ScriptScope::getParentScope() const
+	{
+		return this->parentScope;
+	}
 }

@@ -19,7 +19,7 @@
 TEST_CASE_METHOD(GscriptTest, "RuntimeNewSimple")
 {
 	// Variable
-	gscript::ScriptVariable myVariable1("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(1), 0);
+	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(1));
 
 	// Class
 	gscript::ScriptClass myClass(globalNamespace, "MyClass");

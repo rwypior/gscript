@@ -20,7 +20,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionSimple")
 	gscript::ScriptFunction myFunc(globalNamespace, "myfunc", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), {}, {});
 
 	// Function block
-	gscript::ScriptVariable myVariable1("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(1), 0);
+	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(1));
 
 	auto varreadMyVariable1 = std::make_unique<gscript::ScriptVarRead>(myFunc, &myVariable1);
 	auto mul = std::make_unique<gscript::ScriptOperatorMultiplyBy>(myFunc, gscript::OPERATOR_LINK_T::OL_BOTH);

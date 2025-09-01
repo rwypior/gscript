@@ -104,7 +104,7 @@ namespace gscript
 		//for (std::vector<ParserFieldDeclaration>::const_iterator it = pclass.fields.begin(); it != pclass.fields.end(); ++it)
 		for (auto& pf : pclass.fields)
 		{
-			ScriptVariable& svar = scope->registerVariable(std::make_unique<ScriptVariable>(pf.name, ScriptType::create(pf.type, *cl), nullptr, cl->getVariables().size()));
+			ScriptVariable& svar = scope->registerVariable(std::make_unique<ScriptVariable>(pf.name, ScriptType::create(pf.type, *cl), nullptr));
 			//ScriptVariable& svar = cl->registerVariable(pf.name, ScriptType::create(pf.type, *cl), NULL);
 			//ScriptVarDeclaration* svd = new ScriptVarDeclaration(*cl, svar, ScriptStatement(*cl, it->value));
 			ScriptVarDeclaration* svd = new ScriptVarDeclaration(*cl, svar, this->compileStatement(cl.get(), pf.value));
@@ -276,9 +276,19 @@ namespace gscript
 	std::unique_ptr<ScriptVarRead> Compiler::compileVarRead(ScriptScope* scope, const ParserVar& pVar)
 	{
 		if (auto& arr = pVar.arrayAccessor)
+			//return std::make_unique<ScriptArrayRead>(*scope, this->compileStatement(scope, arr->statement), pVar.name);
+			return std::make_unique<ScriptArrayRead>(*scope, nullptr, this->compileStatement(scope, arr->statement));
+
+		//ScriptArrayRead(*scope, nullptr, this->compileStatement(scope, arr->statement));
+
+		//return std::make_unique<ScriptVarRead>(*scope, pVar.name);
+		//return std::make_unique<ScriptVarRead>(*scope, nullptr);
+		return std::make_unique<ScriptVarRead>(*scope, scope->findVariable(pVar.name));
+
+		/*if (auto& arr = pVar.arrayAccessor)
 			return std::make_unique<ScriptArrayReadResolver>(*scope, this->compileStatement(scope, arr->statement), pVar.name);
 
-		return std::make_unique<ScriptVarReadResolver>(*scope, pVar.name);
+		return std::make_unique<ScriptVarReadResolver>(*scope, pVar.name);*/
 	}
 
 	std::unique_ptr<ScriptNew> Compiler::compileNewCall(ScriptScope* scope, const ParserNew& fcall)
@@ -357,7 +367,7 @@ namespace gscript
 
 	std::unique_ptr<ScriptVarDeclaration> Compiler::compileVarDeclaration(ScriptScope* scope, const ParserVarDeclaration& pVar)
 	{
-		auto& v = scope->registerVariable(std::make_unique<ScriptVariable>(pVar.name, ScriptType::create(pVar.type, *scope), nullptr, scope->getVariables().size()));
+		auto& v = scope->registerVariable(std::make_unique<ScriptVariable>(pVar.name, ScriptType::create(pVar.type, *scope), nullptr));
 		auto stmt = this->compileStatement(scope, pVar.value);
 		return std::make_unique<ScriptVarDeclaration>(*scope, v, std::move(stmt));
 	}

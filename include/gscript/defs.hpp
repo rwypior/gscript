@@ -4,6 +4,7 @@
 #include "bitfield.hpp"
 
 #include <vector>
+#include <limits>
 
 #define NOARG
 
@@ -17,6 +18,26 @@ namespace gscript
 	class ScriptArrayValue;
 	class ScriptNullValue;
 	class ScriptBoolValue;
+	class ScriptScopeBase;
+
+	static constexpr size_t NullAddr = std::numeric_limits<size_t>::max();
+
+	struct ScopedAddress
+	{
+		ScopedAddress(ScriptScopeBase* scope = nullptr, size_t addr = NullAddr)
+			: scope(scope)
+			, addr(addr)
+		{
+		}
+
+		ScriptScopeBase* scope;
+		size_t addr;
+
+		operator bool() const
+		{
+			return scope && addr != NullAddr;
+		}
+	};
 
 	enum class MODIFIER_T
 	{

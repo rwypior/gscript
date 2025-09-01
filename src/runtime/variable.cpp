@@ -7,11 +7,11 @@
 
 namespace gscript
 {
-	ScriptVariable::ScriptVariable(const std::string &name, const ScriptType *type, ScriptValue *value, size_t internalPointer)
+	ScriptVariable::ScriptVariable(const std::string &name, const ScriptType *type, ScriptValue *value/*, size_t internalPointer*/)
 		: name(name)
 		, value(value)
 		, type(type)
-		, internalPointer(internalPointer)
+		//, internalPointer(internalPointer)
 	{
 	}
 
@@ -19,7 +19,7 @@ namespace gscript
 		: name(b.name)
 		, value(b.value->clone())
 		, type(new ScriptType(*b.type))
-		, internalPointer(b.internalPointer)
+		//, internalPointer(b.internalPointer)
 	{
 	}
 

@@ -31,7 +31,7 @@ namespace gscript
 	{
 		//this->registerVariable(ScriptClass::KW_THIS, new ScriptClassType(static_cast<ScriptClass&>(func.getScope())), NULL);
 		//this->registerVariable(ScriptClass::KW_THIS, new ScriptClassType(sclass), NULL);
-		this->registerVariable(std::make_unique<ScriptVariable>(ScriptClass::KW_THIS, new ScriptClassType(sclass), nullptr, sclass.getVariables().size()));
+		this->registerVariable(std::make_unique<ScriptVariable>(ScriptClass::KW_THIS, new ScriptClassType(sclass), nullptr));
 	}
 
 	ScriptValue *ScriptMethod::instrun(ScriptClassInstance *instance, const CALLABLE_PARAMS_T &c)

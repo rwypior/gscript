@@ -8,7 +8,7 @@ namespace gscript
 {
 	class ScriptClass;
 
-	class ScriptClassInstance
+	class ScriptClassInstance : public ScriptScopeBase
 	{
 	public:
 		using VariableContainer = std::vector<std::unique_ptr<ScriptVariable>>;
@@ -17,7 +17,14 @@ namespace gscript
 		SCRIPT_API ScriptClassInstance(ScriptClass &sclass);
 
 		SCRIPT_API ScriptClass &getClass();
-		SCRIPT_API std::vector<std::unique_ptr<ScriptVariable>>& getVariables();
+
+		SCRIPT_API virtual std::vector<std::unique_ptr<ScriptFunction>>& getFunctions() override;
+		SCRIPT_API virtual const std::vector<std::unique_ptr<ScriptFunction>>& getFunctions() const;
+		SCRIPT_API virtual std::vector<std::unique_ptr<ScriptVariable>>& getVariables() override;
+		SCRIPT_API virtual const std::vector<std::unique_ptr<ScriptVariable>>& getVariables() const;
+
+		SCRIPT_API void setParentScope(ScriptScopeBase* scope) override;
+		SCRIPT_API ScriptScope* getParentScope() const override;
 
 	protected:
 		ScriptClass &sclass;

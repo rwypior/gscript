@@ -188,7 +188,7 @@ namespace gscript
 
 	ScriptValue *ScriptOperatorNegate::run(const CALLABLE_PARAMS_T &c)
 	{
-		return NULL;
+		return nullptr;
 	}
 
 	const int ScriptOperatorNegate::getPrecedence() const
@@ -220,10 +220,10 @@ namespace gscript
 
 		//this->varRead->var->setValue(rval);
 		//this->varRead->var->get()->setValue(rval);
-		auto x = this->varRead->var->get();
-		this->varRead->var->get()->getValue()->assign(*rval);
+		
+		this->varRead->get()->getValue()->assign(*rval);
 
-		return NULL;
+		return nullptr;
 	}
 
 	void ScriptOperatorAssign::setup()

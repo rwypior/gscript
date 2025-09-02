@@ -9,6 +9,7 @@ namespace gscript
 		: sclass(sclass)
 		//, variables(sclass.getVariables().begin(), sclass.getVariables().end())
 	{
+		this->variables.resize(sclass.getVariables().size());
 		std::transform(sclass.getVariables().begin(), sclass.getVariables().end(), this->variables.begin(), [](std::unique_ptr<ScriptVariable>& v) {
 			return std::make_unique<ScriptVariable>(*v);
 		});

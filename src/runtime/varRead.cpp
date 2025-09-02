@@ -6,7 +6,7 @@
 
 namespace gscript
 {
-	ScriptVarRead::ScriptVarRead(ScriptScope &scope)
+	ScriptVarRead::ScriptVarRead(ScriptScope& scope)
 		: ScriptCallable(scope)
 	{
 	}
@@ -79,7 +79,7 @@ namespace gscript
 
 	// ARRAY VAR READ
 
-	ScriptArrayRead::ScriptArrayRead(ScriptScope &scope, VariableAccessor accessor, std::unique_ptr<ScriptCallable> &&arrayAccessor)
+	ScriptArrayRead::ScriptArrayRead(ScriptScope& scope, VariableAccessor accessor, std::unique_ptr<ScriptCallable> &&arrayAccessor)
 		: ScriptVarRead(scope, accessor)
 		, arrayAccessor(std::move(arrayAccessor))
 	{
@@ -91,9 +91,14 @@ namespace gscript
 	{
 	}
 
+	ScriptArrayRead::ScriptArrayRead(ScriptScope& scope, const std::string& name, std::unique_ptr<ScriptCallable>&& arrayAccessor)
+		: ScriptVarRead(scope, name)
+		, arrayAccessor(std::move(arrayAccessor))
+	{
+	}
+
 	ScriptValue *ScriptArrayRead::run(const CALLABLE_PARAMS_T &c)
 	{
-		//ScriptArrayValue *arr = static_cast<ScriptArrayValue*>(this->var->getValue());
 		ScriptArrayValue *arr = static_cast<ScriptArrayValue*>(ScriptVarRead::run(c));
 		int index = static_cast<ScriptIntValue*>(this->arrayAccessor->run())->getValue();
 		return arr->getValue()[index];

@@ -16,13 +16,13 @@ namespace gscript
 	class ScriptCallable
 	{
 	public:
-		SCRIPT_API ScriptCallable(ScriptScope &scope);
+		SCRIPT_API ScriptCallable(ScriptScope& scope);
 
 		SCRIPT_API virtual const ScriptType *getType() const = 0;
 
 		SCRIPT_API virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) = 0;
 
-		SCRIPT_API ScriptScope &getScope();
+		SCRIPT_API ScriptScope& getScope();
 
 	protected:
 		ScriptScope& scope;

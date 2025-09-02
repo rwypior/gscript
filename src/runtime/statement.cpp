@@ -29,9 +29,12 @@ namespace gscript
 		: ScriptCallable(scope)
 	{
 		std::vector<std::shared_ptr<ScriptCallable>> sharedCallables;
-		sharedCallables.resize(callables.size());
+		sharedCallables.reserve(callables.size());
 
-		std::transform(callables.begin(), callables.end(), sharedCallables.begin(), [](std::unique_ptr<ScriptCallable>& c) { return std::move(c); });
+		for (auto& callable : callables)
+		{
+			sharedCallables.push_back(std::move(callable));
+		}
 
 		this->resolveOperations(sharedCallables.rbegin(), sharedCallables.rend(), this->callable);
 

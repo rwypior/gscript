@@ -1,22 +1,20 @@
 #include "common.h"
-#include "gscript/runtime/method.hpp"
-#include "gscript/runtime/new.hpp"
 #include "gscript/runtime/class.hpp"
+#include "gscript/runtime/new.hpp"
 #include "gscript/runtime/scriptValue.hpp"
 #include "gscript/runtime/literal.hpp"
 #include "gscript/runtime/variable.hpp"
 #include "gscript/runtime/varRead.hpp"
-#include "gscript/runtime/scriptValue.hpp"
+#include "gscript/runtime/varDeclaration.hpp"
 #include "gscript/runtime/callable.hpp"
 #include "gscript/runtime/operator.hpp"
-#include "gscript/runtime/return.hpp"
 
 #include <catch2/catch_all.hpp>
 
 #include <vector>
 #include <memory>
 
-TEST_CASE_METHOD(GscriptTest, "RuntimeNewSimple")
+TEST_CASE_METHOD(GscriptTest, "RuntimeClassNewTest")
 {
 	// Variable
 	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(1));
@@ -24,11 +22,10 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeNewSimple")
 	// Class
 	gscript::ScriptClass myClass(globalNamespace, "MyClass");
 
-	// Function
+	// Constructor
 	auto myConstructor = std::make_unique<gscript::ScriptMethod>(globalNamespace, "MyClass", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_VOID, globalNamespace));
 
-	// Function block
-
+	// Constructor block
 	auto varreadMyVariable1 = std::make_unique<gscript::ScriptVarRead>(*myConstructor, &myVariable1);
 	auto opadd = std::make_unique<gscript::ScriptOperatorAddTo>(*myConstructor, gscript::OPERATOR_LINK_T::OL_BOTH);
 	auto literal5 = std::make_unique<gscript::ScriptLiteral>(*myConstructor, std::make_unique<gscript::ScriptIntValue>(5));
@@ -52,4 +49,31 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeNewSimple")
 
 	newcall.run();
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 6);
+}
+
+TEST_CASE_METHOD(GscriptTest, "RuntimeClassVariableRead")
+{
+	// Class
+	auto& myClass = globalNamespace.registerClass(std::make_unique<gscript::ScriptClass>(globalNamespace, "MyClass"));
+	myClass.registerVariable("test", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, myClass), new gscript::ScriptIntValue(42));
+
+	// New
+	gscript::ScriptNew newcall(myClass);
+	auto myClassObject = newcall.run();
+
+	auto& myClassObjectVar = globalNamespace.registerVariable("myClassObject", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_CLASS, globalNamespace, "MyClass"), myClassObject);
+
+	// Variable read
+	auto varreadobject = std::make_unique<gscript::ScriptVarRead>(globalNamespace, "myClassObject");
+	auto memberaccess = std::make_unique<gscript::ScriptOperatorMemberAccessor>(globalNamespace, gscript::OPERATOR_LINK_T::OL_BOTH);
+	auto varreadtest = std::make_unique<gscript::ScriptVarRead>(myClass, "test");
+
+	auto stmtvectest = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
+	stmtvectest.push_back(std::move(varreadobject));
+	stmtvectest.push_back(std::move(memberaccess));
+	stmtvectest.push_back(std::move(varreadtest));
+	auto stmttest = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvectest));
+
+	auto resultsomething = stmttest->run();
+	REQUIRE(resultsomething->as<gscript::ScriptIntValue>().getValue() == 42);
 }

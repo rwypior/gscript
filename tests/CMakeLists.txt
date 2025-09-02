@@ -26,6 +26,7 @@ target_include_directories(gscriptTest PRIVATE ".")
 target_link_libraries(gscriptTest PRIVATE gscriptobj)
 target_link_libraries(gscriptTest PRIVATE Catch2::Catch2WithMain)
 
+add_subdirectory("compiler")
 add_subdirectory("extension")
 #add_subdirectory("integration")
 add_subdirectory("parser")

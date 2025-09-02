@@ -507,10 +507,10 @@ namespace gscript
 			return this->val;
 		}
 
-		/*virtual void setValue(scriptValue** val)
+		virtual void setValue(ScriptValue** val)
 		{
 			this->val = val;
-		}*/
+		}
 
 		virtual void assign(const ScriptValue & val) override
 		{

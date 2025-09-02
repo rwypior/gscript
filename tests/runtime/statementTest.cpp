@@ -5,7 +5,6 @@
 #include "gscript/runtime/literal.hpp"
 #include "gscript/runtime/variable.hpp"
 #include "gscript/runtime/varRead.hpp"
-#include "gscript/runtime/scriptValue.hpp"
 #include "gscript/runtime/callable.hpp"
 #include "gscript/runtime/operator.hpp"
 #include "gscript/runtime/return.hpp"

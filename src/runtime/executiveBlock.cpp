@@ -26,13 +26,18 @@ namespace gscript
 		return SCR_NULL;
 	}
 
-	SCRIPT_API void ScriptExecutiveBlock::merge(ScriptExecutiveBlock&& block)
+	void ScriptExecutiveBlock::merge(ScriptExecutiveBlock&& block)
 	{
 		this->statements.insert(this->statements.end(), std::make_move_iterator(block.statements.begin()), std::make_move_iterator(block.statements.end()));
 	}
 
-	SCRIPT_API void ScriptExecutiveBlock::merge(std::unique_ptr<ScriptExecutiveBlock>&& block)
+	void ScriptExecutiveBlock::merge(std::unique_ptr<ScriptExecutiveBlock>&& block)
 	{
 		this->merge(std::move(*block));
+	}
+
+	const std::vector<std::shared_ptr<ScriptCallable>>& ScriptExecutiveBlock::getStatements()
+	{
+		return this->statements;
 	}
 }

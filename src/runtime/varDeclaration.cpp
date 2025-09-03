@@ -11,43 +11,25 @@ namespace gscript
 
 	ScriptVarDeclaration::ScriptVarDeclaration(ScriptScope &scope, ScriptVariable &var, std::unique_ptr<ScriptStatement> &&statement)
 		: ScriptCallable(scope),
-		//var(var),
-		var(new DirectEntityLink<ScriptVariable&>(var)),
+		accessor(VariableAccessor::find(scope, var.getName())),
 		statement(std::move(statement))
 	{ }
 
-	ScriptVarDeclaration::ScriptVarDeclaration(ScriptScope &scope, EntityLink<ScriptVariable&> *link, std::unique_ptr<ScriptStatement> &&statement)
+	ScriptVarDeclaration::ScriptVarDeclaration(ScriptScope &scope, VariableAccessor accessor, std::unique_ptr<ScriptStatement> &&statement)
 		: ScriptCallable(scope),
-		//var(var),
-		var(link),
+		accessor(accessor),
 		statement(std::move(statement))
 	{
 	}
 
-	/*ScriptVarDeclaration::ScriptVarDeclaration(ScriptScope &scope, ParserVarDeclaration &pvardecl)
-		: ScriptCallable(scope),
-		var(new DirectEntityLink<ScriptVariable&>(scope.registerVariable(pvardecl, nullptr))),
-		statement(scope, pvardecl.value)
-	{ }*/
-
-	//void ScriptVarDeclaration::setup(ScriptScope& scope)
-	//{
-	//	//scope.registerVariable()
-	//}
-
 	void ScriptVarDeclaration::setInstance(ScriptClassInstance &instance)
 	{
-		static_cast<MemberEntityLink<ScriptVariable&, ScriptClassInstance::VariableContainer>*>(this->var)->container = &instance.getVariables();
+		this->accessor.setScope(&instance);
 	}
 
 	ScriptValue *ScriptVarDeclaration::run(const CALLABLE_PARAMS_T &params)
 	{
-		//this->var.setValue(this->statement.run()->clone());
-		
-		//this->scope.registerVariable(this->name, this->type.get(), this->statement->run());
-		this->var->get().init(this->statement->run());
-
-		//std::cout << "VarDeclaration(" << this->var->get().getName() << ", " << this->var->get().getValue() << ", " << this->var->get().getInternalPointer() << ")" << std::endl;
+		this->accessor.get()->init(this->statement->run());
 
 		return nullptr;
 	}
@@ -55,5 +37,37 @@ namespace gscript
 	const ScriptType *ScriptVarDeclaration::getType() const
 	{
 		return this->statement->getType();
+	}
+
+	// Field declaration
+
+	ScriptFieldDeclaration::ScriptFieldDeclaration(ScriptScope& scope, const std::string& name, const ScriptType* type, std::unique_ptr<ScriptStatement>&& statement)
+		: ScriptVarDeclaration(scope, {}, std::move(statement))
+		, name(name)
+		, type(type)
+	{
+	}
+
+	void ScriptFieldDeclaration::instantiate(ScriptScopeBase& instance)
+	{
+		auto& var = instance.registerVariable(std::make_unique<ScriptVariable>(this->name, this->type, nullptr));
+		this->accessor = VariableAccessor::find(instance, var.getName(), false);
+		//this->var = new DirectEntityLink<ScriptVariable&>(var);
+	}
+
+	// Prototype
+
+	ScriptVarDeclarationPrototype::ScriptVarDeclarationPrototype(ScriptScope& scope, const std::string& name, const ScriptType* type, std::unique_ptr<ScriptStatement>&& statement)
+		: ScriptCallablePrototype(scope)
+		, name(name)
+		, type(type)
+		, statement(std::move(statement))
+	{
+	}
+
+	std::unique_ptr<ScriptCallable> ScriptVarDeclarationPrototype::build()
+	{
+		// TODO
+		return nullptr;
 	}
 }

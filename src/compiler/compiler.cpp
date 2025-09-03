@@ -101,16 +101,10 @@ namespace gscript
 		//parentScope->classes.push_back(cl);
 		//cl->parentScope = parentScope;
 
-		//for (std::vector<ParserFieldDeclaration>::const_iterator it = pclass.fields.begin(); it != pclass.fields.end(); ++it)
 		for (auto& pf : pclass.fields)
 		{
-			ScriptVariable& svar = scope->registerVariable(std::make_unique<ScriptVariable>(pf.name, ScriptType::create(pf.type, *cl), nullptr));
-			//ScriptVariable& svar = cl->registerVariable(pf.name, ScriptType::create(pf.type, *cl), NULL);
-			//ScriptVarDeclaration* svd = new ScriptVarDeclaration(*cl, svar, ScriptStatement(*cl, it->value));
-			ScriptVarDeclaration* svd = new ScriptVarDeclaration(*cl, svar, this->compileStatement(cl.get(), pf.value));
-			cl->addVarDeclaration(svd);
-
-			//cl->registerVariable(it->name, ScriptType::create(it->type), NULL);
+			ScriptFieldDeclaration* field = new ScriptFieldDeclaration(*cl, pf.name, ScriptType::create(pf.type, *cl), this->compileStatement(cl.get(), pf.value));
+			cl->addFieldDeclaration(field);
 		}
 
 		for (auto& pmethod : pclass.methods)
@@ -281,6 +275,8 @@ namespace gscript
 
 		//ScriptArrayRead(*scope, nullptr, this->compileStatement(scope, arr->statement));
 
+		auto asdasd = scope->findVariable(pVar.name);
+
 		//return std::make_unique<ScriptVarRead>(*scope, pVar.name);
 		//return std::make_unique<ScriptVarRead>(*scope, nullptr);
 		return std::make_unique<ScriptVarRead>(*scope, scope->findVariable(pVar.name));
@@ -304,7 +300,7 @@ namespace gscript
 		return std::make_unique<ScriptNew>(*sclass, std::move(params->getParams()));
 	}
 
-	std::unique_ptr<ScriptFuncCall> Compiler::compileFuncCall(ScriptScope* scope, const ParserFuncCall& fcall)
+	std::unique_ptr<ScriptCallable> Compiler::compileFuncCall(ScriptScope* scope, const ParserFuncCall& fcall)
 	{
 		auto params = this->compileParameterContainer(scope, fcall.arglist);
 
@@ -340,7 +336,9 @@ namespace gscript
 		}
 
 		auto types = params->getParamTypes();
-		return std::make_unique<ScriptFuncCallResolver>(*usedScope, std::move(params->getParams()), usedName, types, fcall.name.isScoped());
+		//return std::make_unique<ScriptFuncCallResolver>(*usedScope, std::move(params->getParams()), usedName, types, fcall.name.isScoped());
+		return std::make_unique<ScriptFuncCallPrototype>(*usedScope, usedName, std::move(params->getParams()));
+		//return std::make_unique<ScriptFuncCallPrototype>(*usedScope, std::move(params->getParams()), usedName, types, fcall.name.isScoped());
 	}
 
 	std::unique_ptr<ScriptArrayInitializer> Compiler::compileArrayInitializer(ScriptScope* scope, const ParserArrayInitializer& initializer)

@@ -43,7 +43,7 @@ namespace gscript
 	public:
 		ScriptVarReadPrototype(ScriptScope& scope, const std::string& varname);
 
-		virtual std::unique_ptr<ScriptCallable> setup() override;
+		virtual std::unique_ptr<ScriptCallable> build() override;
 
 	private:
 		std::string varname;

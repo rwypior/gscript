@@ -17,6 +17,7 @@ namespace gscript
 	class ScriptStatement;
 	class ScriptNamespace;
 	class EntityPath;
+	class ScriptCallable;
 
 	class ScriptScopeBase
 	{
@@ -25,18 +26,23 @@ namespace gscript
 		ScriptScopeBase(const ScriptScopeBase& scope) = delete;
 		virtual ~ScriptScopeBase() = default;
 
-		SCRIPT_API virtual void registerFunction(std::unique_ptr<ScriptFunction>&& function);
+		SCRIPT_API virtual ScriptFunction& registerFunction(const std::string& name,
+			ScriptType* returnType,
+			const PARAMS_T& parameters = PARAMS_T(),
+			std::vector<std::shared_ptr<ScriptCallable>>&& statements = {});
+		SCRIPT_API virtual ScriptFunction& registerFunction(std::unique_ptr<ScriptFunction>&& function);
 
 		SCRIPT_API virtual ScriptVariable& registerVariable(const std::string& name, const ScriptType* type, ScriptValue* value);
 		SCRIPT_API virtual ScriptVariable& registerVariable(std::unique_ptr<ScriptVariable>&& variable);
 
 		SCRIPT_API virtual ScriptFunction* findFunction(const std::string& name, const PARAMS_T params) const;
+		SCRIPT_API virtual ScopedAddress findFunctionAddr(const std::string& name, const PARAMS_T params, bool searchParents = true);
 		SCRIPT_API virtual ScriptFunction* getFunction(const std::string& name, const PARAMS_T params) const;
 		SCRIPT_API virtual std::vector<std::unique_ptr<ScriptFunction>>& getFunctions() = 0;
 		SCRIPT_API virtual const std::vector<std::unique_ptr<ScriptFunction>>& getFunctions() const = 0;
 
 		SCRIPT_API virtual ScriptVariable* findVariable(const std::string& name);
-		SCRIPT_API virtual ScopedAddress findVariableAddr(const std::string& name);
+		SCRIPT_API virtual ScopedAddress findVariableAddr(const std::string& name, bool searchParents = true);
 		SCRIPT_API virtual ScriptVariable* getVariable(const std::string& name);
 		SCRIPT_API virtual std::vector<std::unique_ptr<ScriptVariable>>& getVariables() = 0;
 		SCRIPT_API virtual const std::vector<std::unique_ptr<ScriptVariable>>& getVariables() const = 0;
@@ -53,7 +59,7 @@ namespace gscript
 	class ScriptScope : public ScriptScopeBase
 	{
 	public:
-		SCRIPT_API ScriptScope(ScriptScope* parentScope);
+		SCRIPT_API ScriptScope(ScriptScopeBase* parentScope);
 		ScriptScope(const ScriptScope& scope) = delete;
 
 		SCRIPT_API virtual std::vector<std::unique_ptr<ScriptFunction>>& getFunctions() override;

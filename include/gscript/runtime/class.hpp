@@ -14,7 +14,7 @@ namespace gscript
 {
 	class ScriptMethod;
 	class ParserMethod;
-	class ScriptVarDeclaration;
+	class ScriptFieldDeclaration;
 	class ParserClass;
 	class ScriptClassPrototype;
 	class ScriptClassInstance;
@@ -24,10 +24,10 @@ namespace gscript
 	public:
 		static const char *KW_THIS;
 
-		typedef std::vector<ScriptVarDeclaration*> VAR_DECLARATION_CONTAINER;
+		//typedef std::vector<ScriptVarDeclaration*> VAR_DECLARATION_CONTAINER;
 
 	public:
-		SCRIPT_API ScriptClass(ScriptScope &scope, const std::string &name, ScriptClass *base = nullptr);
+		SCRIPT_API ScriptClass(ScriptScopeBase& scope, const std::string &name, ScriptClass *base = nullptr);
 
 		SCRIPT_API ScriptMethod *findMethod(const std::string &name, const PARAMS_T &params);
 		SCRIPT_API ScriptClass *getBase() const;
@@ -35,7 +35,7 @@ namespace gscript
 		SCRIPT_API bool isBaseOf(ScriptClass *base);
 
 		//SCRIPT_API virtual void registerMethodPrototype(const ParserMethod &m);
-		SCRIPT_API virtual void registerFunction(std::unique_ptr<ScriptFunction>&& f);
+		SCRIPT_API virtual ScriptFunction& registerFunction(std::unique_ptr<ScriptFunction>&& f);
 		//SCRIPT_API virtual ScriptFunction &registerFunction(const ParserFunction &c);
 
 		SCRIPT_API std::vector<ScriptMethod*> getAbstractMethods();
@@ -48,7 +48,7 @@ namespace gscript
 		SCRIPT_API ScriptClassInstance *instantiate(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T());
 
 		SCRIPT_API void initialize(ScriptClassInstance &instance);
-		SCRIPT_API void addVarDeclaration(ScriptVarDeclaration *svd);
+		SCRIPT_API void addFieldDeclaration(ScriptFieldDeclaration *svd);
 
 		SCRIPT_API const std::string &getName() const;
 
@@ -64,7 +64,8 @@ namespace gscript
 		ScriptClass* base = nullptr;
 		ScriptMethod* constructor = nullptr;
 
-		ScriptClass::VAR_DECLARATION_CONTAINER varDeclarations;
+		//ScriptClass::VAR_DECLARATION_CONTAINER varDeclarations;
+		std::vector<ScriptFieldDeclaration*> fieldDeclarations;
 
 		CLASS_MODIFIER_T modifier = CLASS_MODIFIER_T::CM_NONE;
 

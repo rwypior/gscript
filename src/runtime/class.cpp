@@ -13,7 +13,7 @@ namespace gscript
 {
 	const char *ScriptClass::KW_THIS = "this";
 
-	ScriptClass::ScriptClass(ScriptScope &scope, const std::string &name, ScriptClass *base)
+	ScriptClass::ScriptClass(ScriptScopeBase& scope, const std::string &name, ScriptClass *base)
 		: ScriptNamespace(&scope)
 		, name(name)
 		, base(base)
@@ -40,9 +40,18 @@ namespace gscript
 		return this->modifier & CLASS_MODIFIER_T::CM_ABSTRACT;
 	}
 
+	// TODO
+	// Script instance must have all it's fields in place upon creation
+
 	ScriptClassInstance *ScriptClass::instantiate(const CALLABLE_PARAMS_T &c)
 	{
 		ScriptClassInstance *inst = new ScriptClassInstance(*this);
+
+		for (auto& field : this->fieldDeclarations)
+		{
+			field->instantiate(*inst);
+		}
+
 		this->initialize(*inst);
 
 		if (ScriptMethod *constructor = this->getConstructor())
@@ -112,7 +121,7 @@ namespace gscript
 		throw CompileException("Only methods may be registered in class");
 	}*/
 
-	void ScriptClass::registerFunction(std::unique_ptr<ScriptFunction>&& f)
+	ScriptFunction& ScriptClass::registerFunction(std::unique_ptr<ScriptFunction>&& f)
 	{
 		if (ScriptMethod *method = dynamic_cast<ScriptMethod*>(f.get()))
 		{
@@ -121,9 +130,10 @@ namespace gscript
 			this->functions.push_back(std::move(f));
 
 			this->assignConstructor(*this->functions.back());
+			return *this->functions.back();
 		}
-		else
-			throw CompileException("Only methods may be registered in class");
+
+		throw CompileException("Only methods may be registered in class");
 	}
 
 	/*void ScriptClass::registerMethodPrototype(const ParserMethod &m)
@@ -164,14 +174,10 @@ namespace gscript
 		if (this->base)
 			this->base->initialize(instance);
 
-		for (
-			ScriptClass::VAR_DECLARATION_CONTAINER::const_iterator it = this->varDeclarations.begin();
-			it != this->varDeclarations.end();
-			++it
-			)
+		for (auto& field : this->fieldDeclarations)
 		{
-			(*it)->setInstance(instance);
-			(*it)->run();
+			field->setInstance(instance);
+			field->run();
 		}
 	}
 
@@ -195,9 +201,9 @@ namespace gscript
 		}
 	}
 
-	void ScriptClass::addVarDeclaration(ScriptVarDeclaration *svd)
+	void ScriptClass::addFieldDeclaration(ScriptFieldDeclaration *svd)
 	{
-		this->varDeclarations.push_back(svd);
+		this->fieldDeclarations.push_back(svd);
 	}
 
 	const std::string &ScriptClass::getName() const

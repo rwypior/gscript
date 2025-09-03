@@ -11,6 +11,7 @@
 
 namespace gscript
 {
+	class ScriptScopeBase;
 	class ScriptScope;
 	class ScriptVariable;
 
@@ -19,7 +20,7 @@ namespace gscript
 	public:
 
 		ScriptVarDeclaration(ScriptScope &scope, ScriptVariable &var, std::unique_ptr<ScriptStatement> &&statement);
-		ScriptVarDeclaration(ScriptScope &scope, EntityLink<ScriptVariable&> *link, std::unique_ptr<ScriptStatement> &&statement);
+		ScriptVarDeclaration(ScriptScope &scope, VariableAccessor accessor, std::unique_ptr<ScriptStatement> &&statement);
 		//ScriptVarDeclaration(ScriptScope &scope, ParserVarDeclaration &pvardecl);
 
 		//virtual void setup(ScriptScope& scope) override;
@@ -35,8 +36,35 @@ namespace gscript
 			return "VarDeclaration";
 		}
 
+	protected:
+		VariableAccessor accessor;
+		//EntityLink<ScriptVariable&> *var = nullptr;
+		std::unique_ptr<ScriptStatement> statement;
+	};
+
+	class ScriptFieldDeclaration : public ScriptVarDeclaration
+	{
+	public:
+		ScriptFieldDeclaration(ScriptScope& scope, const std::string& name, const ScriptType* type, std::unique_ptr<ScriptStatement>&& statement);
+
+		void instantiate(ScriptScopeBase& instance);
+
 	private:
-		EntityLink<ScriptVariable&> *var = nullptr;
+		std::string name;
+		const ScriptType* type;
+		std::unique_ptr<ScriptStatement> statement;
+	};
+
+	class ScriptVarDeclarationPrototype : public ScriptCallablePrototype
+	{
+	public:
+		ScriptVarDeclarationPrototype(ScriptScope& scope, const std::string& name, const ScriptType* type, std::unique_ptr<ScriptStatement>&& statement);
+
+		virtual std::unique_ptr<ScriptCallable> build() override;
+
+	private:
+		std::string name;
+		const ScriptType* type;
 		std::unique_ptr<ScriptStatement> statement;
 	};
 }

@@ -6,22 +6,25 @@
 
 namespace gscript
 {
-	/*ScriptFuncCall::ScriptFuncCall(ScriptScope &scope, ScriptFunction *func, const std::vector<ScriptStatement> &params)
-		:ScriptCallable(scope),
-		func(func),
-		params(params)
-	{
-	}*/
-
-	ScriptFuncCall::ScriptFuncCall(ScriptScope &scope, EntityLink<ScriptFunction*> *func, std::vector<std::unique_ptr<ScriptStatement>>&& params)
+	ScriptFuncCall::ScriptFuncCall(ScriptScope& scope, FunctionAccessor func, std::vector<std::unique_ptr<ScriptStatement>>&& params)
 		: ScriptCallable(scope)
-		, func(func)
+		, accessor(func)
+		, params(std::move(params))
+	{
+	}
+
+	ScriptFuncCall::ScriptFuncCall(ScriptScope& scope, ScriptFunction* func, std::vector<std::unique_ptr<ScriptStatement>>&& params)
+		: ScriptCallable(scope)
+		, accessor(func ? FunctionAccessor::find(scope, func->getName(), func->getParameters()) : FunctionAccessor())
 		, params(std::move(params))
 	{
 	}
 
 	ScriptValue *ScriptFuncCall::run(const CALLABLE_PARAMS_T &c)
 	{
+		if (!this->accessor)
+			return nullptr;
+
 		CALLABLE_PARAMS_T params;
 
 		for (auto& param : this->params)
@@ -30,66 +33,77 @@ namespace gscript
 			//params.push_back(it->run()->clone());
 		}
 
-		return this->func->get()->run(params);
+		return this->accessor.get()->run(params);
 	}
 
 	const ScriptType *ScriptFuncCall::getType() const
 	{
-		return this->func->get()->getType();
+		return this->accessor.getType();
 	}
 
 	void ScriptFuncCall::setInstance(ScriptClassValue *instance)
 	{
-		static_cast<VirtualEntityLink<ScriptFunction*>*>(this->func)->setInstance(instance->getValue());
-		static_cast<ScriptMethod*>(this->func->get())->setClassInstance(instance);
-		//this->func->get()->variables.front().setValue(instance);
+		this->accessor.setScope(instance->getValue());
+		if (this->accessor)
+			static_cast<ScriptMethod*>(this->accessor.get())->setClassInstance(instance);
+
+		/*static_cast<VirtualEntityLink<ScriptFunction*>*>(this->func)->setInstance(instance->getValue());
+		static_cast<ScriptMethod*>(this->func->get())->setClassInstance(instance);*/
 	}
 
-	// METHOD CALL
+	// Prototype
 
-	void ScriptMethodCall::setInstance(ScriptClassValue *instance)
+	ScriptFuncCallPrototype::ScriptFuncCallPrototype(ScriptScope& scope, const std::string& funcname, std::vector<std::unique_ptr<ScriptStatement>>&& params)
+		: ScriptCallablePrototype(scope)
+		, funcname(funcname)
+		, params(std::move(params))
 	{
-		this->func->get()->getVariables().front()->setValue(instance);
+	}
+
+	std::unique_ptr<ScriptCallable> ScriptFuncCallPrototype::build()
+	{
+		// TODO
+		return nullptr;
 	}
 
 	// RESOLVER
 
-	ScriptFuncCallResolver::ScriptFuncCallResolver(ScriptScope &originalScope, std::vector<std::unique_ptr<ScriptStatement>>&& params, const std::string &name, PARAMS_T paramTypes, bool staticCall)
-		: ScriptFuncCall(originalScope, nullptr, std::move(params))
-		, name(name)
-		, paramTypes(paramTypes)
-		, staticCall(staticCall)
-	{
-	}
+	//ScriptFuncCallResolver::ScriptFuncCallResolver(ScriptScope &originalScope, std::vector<std::unique_ptr<ScriptStatement>>&& params, const std::string &name, PARAMS_T paramTypes, bool staticCall)
+	//	: ScriptFuncCall(originalScope, nullptr, std::move(params))
+	//	, name(name)
+	//	, paramTypes(paramTypes)
+	//	, staticCall(staticCall)
+	//{
+	//}
 
-	std::unique_ptr<ScriptFuncCall> ScriptFuncCallResolver::resolve(const ScriptScope *scope)
-	{
-		if (this->staticCall)
-			scope = &this->scope;
+	//std::unique_ptr<ScriptFuncCall> ScriptFuncCallResolver::resolve(const ScriptScope *scope)
+	//{
+	//	if (this->staticCall)
+	//		scope = &this->scope;
 
-		ScriptFunction *fnc = scope->getFunction(this->name, this->paramTypes);
+	//	ScriptFunction *fnc = scope->getFunction(this->name, this->paramTypes);
 
-		if (this->staticCall)
-		{
-			if (ScriptMethod *m = dynamic_cast<ScriptMethod*>(fnc))
-				if (!m->isStatic())
-					throw CompileException("Function \"" + this->name + "\" was not called through object and is not static");
-		}
+	//	if (this->staticCall)
+	//	{
+	//		if (ScriptMethod *m = dynamic_cast<ScriptMethod*>(fnc))
+	//			if (!m->isStatic())
+	//				throw CompileException("Function \"" + this->name + "\" was not called through object and is not static");
+	//	}
 
-		//ScriptFuncCall *result = new ScriptFuncCall(this->scope, fnc, this->params);
+	//	//ScriptFuncCall *result = new ScriptFuncCall(this->scope, fnc, this->params);
 
-		bool isVirtual = false;
+	//	bool isVirtual = false;
 
-		if (ScriptMethod *method = dynamic_cast<ScriptMethod*>(fnc))
-		{
-			if (method->isVirtual())
-				isVirtual = true;
-		}
+	//	if (ScriptMethod *method = dynamic_cast<ScriptMethod*>(fnc))
+	//	{
+	//		if (method->isVirtual())
+	//			isVirtual = true;
+	//	}
 
-		ScriptFuncCall *result;
-		if (isVirtual)
-			return std::make_unique<ScriptFuncCall>(this->scope, new VirtualEntityLink<ScriptFunction*>(fnc), std::move(this->params));
+	//	ScriptFuncCall *result;
+	//	if (isVirtual)
+	//		return std::make_unique<ScriptFuncCall>(this->scope, new VirtualEntityLink<ScriptFunction*>(fnc), std::move(this->params));
 
-		return std::make_unique<ScriptFuncCall>(this->scope, new DirectEntityLink<ScriptFunction*>(fnc), std::move(this->params));
-	}
+	//	return std::make_unique<ScriptFuncCall>(this->scope, new DirectEntityLink<ScriptFunction*>(fnc), std::move(this->params));
+	//}
 }

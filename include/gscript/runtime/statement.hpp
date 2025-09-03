@@ -12,6 +12,7 @@ namespace gscript
 	class ScriptValue;
 	class ScriptOperator;
 	class ScriptCallable;
+	class ScriptMethod;
 
 	class ScriptStatement : public ScriptCallable
 	{
@@ -25,7 +26,8 @@ namespace gscript
 		SCRIPT_API ScriptStatement(ScriptScope &scope);
 		SCRIPT_API ScriptStatement(ScriptScope &scope, std::vector<std::unique_ptr<ScriptCallable>>&& callables);
 
-		SCRIPT_API virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T());
+		SCRIPT_API virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		SCRIPT_API virtual void setup() override;
 
 		SCRIPT_API virtual const ScriptType *getType() const override;
 
@@ -38,7 +40,8 @@ namespace gscript
 			unsigned int depth = 0
 		);
 
-		SCRIPT_API void assignReferences(std::shared_ptr<ScriptCallable>& entry, ScriptScope *scope, bool member);
+		SCRIPT_API void assertAccessibilityOf(ScriptMethod& method) const;
+		SCRIPT_API void assignReferences(std::shared_ptr<ScriptCallable>& entry, ScriptScopeBase* scope, bool member);
 		SCRIPT_API void setupOperator(std::shared_ptr<ScriptOperator> oper);
 	};
 }

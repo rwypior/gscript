@@ -6,7 +6,7 @@ namespace gscript
 {
 	// Print
 
-	ConsoleExtension::FuncPrint::FuncPrint(ScriptScope& scope, const std::string& name)
+	ConsoleExtension::FuncPrint::FuncPrint(ScriptScopeBase& scope, const std::string& name)
 		: ScriptMethod(
 			scope,
 			name,
@@ -31,7 +31,7 @@ namespace gscript
 
 	// Println
 
-	ConsoleExtension::FuncPrintLn::FuncPrintLn(ScriptScope& scope, const std::string& name)
+	ConsoleExtension::FuncPrintLn::FuncPrintLn(ScriptScopeBase& scope, const std::string& name)
 		:ScriptMethod(
 			scope,
 			name,
@@ -56,7 +56,7 @@ namespace gscript
 
 	// Readln
 
-	ConsoleExtension::FuncReadLn::FuncReadLn(ScriptScope& scope, const std::string& name)
+	ConsoleExtension::FuncReadLn::FuncReadLn(ScriptScopeBase& scope, const std::string& name)
 		:ScriptMethod(
 			scope,
 			name,
@@ -79,7 +79,7 @@ namespace gscript
 
 	// Console extension
 
-	ConsoleExtension::NamespaceConsole::NamespaceConsole(ScriptScope& scope, const std::string& name)
+	ConsoleExtension::NamespaceConsole::NamespaceConsole(ScriptScopeBase& scope, const std::string& name)
 		: ScriptNamespace(&scope, name)
 	{
 		this->registerFunction(std::make_unique<FuncPrint>(*this, "print"));

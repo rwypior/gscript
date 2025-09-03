@@ -13,7 +13,6 @@ namespace gscript
 			end = accessres.result.end;
 		}
 
-		ParseResult func = ParserFunction::parse(StringIteratorRange(end, itrange.end));
-		return ParseResult(func.status, StringIteratorRange(itrange.begin, func.result.end));
+		return ParserFunction::parse(StringIteratorRange(end, itrange.end));
 	}
 }

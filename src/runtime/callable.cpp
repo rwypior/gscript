@@ -2,12 +2,12 @@
 
 namespace gscript
 {
-	ScriptCallable::ScriptCallable(ScriptScope &scope)
+	ScriptCallable::ScriptCallable(ScriptScopeBase& scope)
 		: scope(scope)
 	{
 	}
 
-	ScriptScope &ScriptCallable::getScope()
+	ScriptScopeBase& ScriptCallable::getScope()
 	{
 		return this->scope;
 	}

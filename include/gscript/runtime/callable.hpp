@@ -16,24 +16,30 @@ namespace gscript
 	class ScriptCallable
 	{
 	public:
-		SCRIPT_API ScriptCallable(ScriptScope& scope);
+		SCRIPT_API ScriptCallable(ScriptScopeBase& scope);
 
 		SCRIPT_API virtual const ScriptType *getType() const = 0;
 
 		SCRIPT_API virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) = 0;
 
-		SCRIPT_API ScriptScope& getScope();
+		// Post-compilation stage - build prototypes, and do additional steps
+		SCRIPT_API virtual void setup() {};
+
+		SCRIPT_API ScriptScopeBase& getScope();
 
 	protected:
-		ScriptScope& scope;
+		ScriptScopeBase& scope;
 	};
 
+	// Partially created callable entity - not usable in raw form.
+	// In order to use - it must first be built into an actual object after compilation stage
+	// by calling build() function
 	class ScriptCallablePrototype : public ScriptCallable, public Prototype<ScriptCallable>
 	{
 	public:
 		using ScriptCallable::ScriptCallable;
 
-		SCRIPT_API virtual std::unique_ptr<ScriptCallable> setup() override = 0;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> build() override = 0;
 
 		SCRIPT_API virtual const ScriptType* getType() const
 		{

@@ -12,9 +12,18 @@ namespace gscript
 {
 	// Scope base
 
-	void ScriptScopeBase::registerFunction(std::unique_ptr<ScriptFunction>&& function)
+	ScriptFunction& ScriptScopeBase::registerFunction(const std::string& name,
+		ScriptType* returnType,
+		const PARAMS_T& parameters,
+		std::vector<std::shared_ptr<ScriptCallable>>&& statements)
+	{
+		return this->registerFunction(std::make_unique<ScriptFunction>(*this, name, returnType, parameters, std::move(statements)));
+	}
+
+	ScriptFunction& ScriptScopeBase::registerFunction(std::unique_ptr<ScriptFunction>&& function)
 	{
 		this->getFunctions().push_back(std::move(function));
+		return *this->getFunctions().back();
 	}
 
 	ScriptVariable& ScriptScopeBase::registerVariable(const std::string &name, const ScriptType *type, ScriptValue *value)
@@ -54,6 +63,34 @@ namespace gscript
 		return nullptr;
 	}
 
+	ScopedAddress ScriptScopeBase::findFunctionAddr(const std::string& name, const PARAMS_T params, bool searchParents)
+	{
+		auto& functions = this->getFunctions();
+
+		auto it = std::find_if(functions.begin(), functions.end(), [&name, &params](const std::unique_ptr<ScriptFunction>& fnc) {
+			return fnc->matches(name, params);
+		});
+		if (it != functions.end())
+			return ScopedAddress(this, it - functions.begin());
+
+		if (const ScriptClass* sc = dynamic_cast<const ScriptClass*>(this))
+		{
+			if (ScriptClass* base = sc->getBase())
+			{
+				if (ScopedAddress fnc = base->findFunctionAddr(name, params))
+					return fnc;
+			}
+		}
+
+		if (searchParents)
+		{
+			if (auto parentScope = this->getParentScope())
+				return parentScope->findFunction(name, params);
+		}
+
+		return nullptr;
+	}
+
 	ScriptFunction* ScriptScopeBase::getFunction(const std::string &name, const PARAMS_T params) const
 	{
 		if (ScriptFunction *f = this->findFunction(name, params))
@@ -78,7 +115,7 @@ namespace gscript
 		return nullptr;
 	}
 
-	ScopedAddress ScriptScopeBase::findVariableAddr(const std::string& name)
+	ScopedAddress ScriptScopeBase::findVariableAddr(const std::string& name, bool searchParents)
 	{
 		auto& variables = this->getVariables();
 
@@ -88,8 +125,11 @@ namespace gscript
 		if (it != variables.end())
 			return ScopedAddress(this, it - variables.begin());
 
-		if (auto* parentScope = this->getParentScope())
-			return parentScope->findVariableAddr(name);
+		if (searchParents)
+		{
+			if (auto* parentScope = this->getParentScope())
+				return parentScope->findVariableAddr(name);
+		}
 
 		return {};
 	}
@@ -155,7 +195,7 @@ namespace gscript
 
 	// Scope
 
-	ScriptScope::ScriptScope(ScriptScope* parentScope)
+	ScriptScope::ScriptScope(ScriptScopeBase* parentScope)
 		: parentScope(parentScope)
 	{
 	}

@@ -20,8 +20,8 @@ namespace gscript
 	{
 	public:
 		ScriptNamespace(const ScriptNamespace&) = delete;
-		SCRIPT_API ScriptNamespace(ScriptScope *parentScope = NULL);
-		SCRIPT_API ScriptNamespace(ScriptScope *parentScope, const std::string &name);
+		SCRIPT_API ScriptNamespace(ScriptScopeBase* parentScope = NULL);
+		SCRIPT_API ScriptNamespace(ScriptScopeBase* parentScope, const std::string &name);
 		
 		//SCRIPT_API ScriptClass &registerClassPrototype(const ParserClass &c);
 		//SCRIPT_API ScriptClass &registerClass(const ParserClass &c);

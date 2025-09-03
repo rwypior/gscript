@@ -7,7 +7,7 @@ namespace gscript
 	const ScriptType ScriptFuncToString::returnType = ScriptType(VALUE_TYPE_T::VT_STRING);
 
 	ScriptFuncToString::ScriptFuncToString(ScriptScope &scope, const std::string &name)
-		:ScriptFunction(scope, name, ScriptType::create(VALUE_TYPE_T::VT_STRING, this->scope), PARAMS_T(1, FunctionParameter(ScriptType::create(VALUE_TYPE_T::VT_INT, scope))))
+		: ScriptFunction(scope, name, ScriptType::create(VALUE_TYPE_T::VT_STRING, this->scope), PARAMS_T(1, FunctionParameter(ScriptType::create(VALUE_TYPE_T::VT_INT, scope))))
 	{
 
 	}

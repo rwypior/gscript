@@ -20,7 +20,7 @@ namespace gscript
 		//SCRIPT_API ScriptMethod(ScriptFunction &func, const BITFLAG_T access);
 
 		SCRIPT_API ScriptMethod(
-			ScriptScope &scope,
+			ScriptScopeBase& scope,
 			const std::string &name,
 			ScriptType *returnType,
 			const PARAMS_T &parameters = PARAMS_T(),

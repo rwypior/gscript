@@ -22,7 +22,7 @@ namespace gscript
 	public:
 		//SCRIPT_API ScriptFunction(const ScriptFunction& fnc);
 		SCRIPT_API ScriptFunction(
-			ScriptScope& scope, 
+			ScriptScopeBase& scope, 
 			const std::string& name, 
 			ScriptType* returnType, 
 			const PARAMS_T & parameters = PARAMS_T(),

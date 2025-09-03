@@ -6,12 +6,12 @@
 
 namespace gscript
 {
-	ScriptNamespace::ScriptNamespace(ScriptScope *parentScope)
+	ScriptNamespace::ScriptNamespace(ScriptScopeBase* parentScope)
 		: ScriptScope(parentScope)
 	{
 	}
 
-	ScriptNamespace::ScriptNamespace(ScriptScope *parentScope, const std::string &name)
+	ScriptNamespace::ScriptNamespace(ScriptScopeBase* parentScope, const std::string &name)
 		: ScriptScope(parentScope),
 		name(name)
 	{

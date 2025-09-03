@@ -20,21 +20,21 @@ namespace gscript
 		class ConstructorFile : public ScriptMethod, public ScriptExtension::ExtensionFunction
 		{
 		public:
-			ConstructorFile(ScriptScope& scope, const std::string& name);
+			ConstructorFile(ScriptScopeBase& scope, const std::string& name);
 			virtual ScriptValue* run(const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override;
 		};
 
 		class FuncReadAll : public ScriptMethod, public ScriptExtension::ExtensionFunction
 		{
 		public:
-			FuncReadAll(ScriptScope& scope, const std::string& name);
+			FuncReadAll(ScriptScopeBase& scope, const std::string& name);
 			virtual ScriptValue* run(const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override;
 		};
 
 		class FuncStaticExists : public ScriptMethod, public ScriptExtension::ExtensionFunction
 		{
 		public:
-			FuncStaticExists(ScriptScope& scope, const std::string& name);
+			FuncStaticExists(ScriptScopeBase& scope, const std::string& name);
 			virtual ScriptValue* run(const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override;
 		};
 
@@ -44,7 +44,7 @@ namespace gscript
 			friend class FuncReadAll;
 
 		public:
-			ClassFile(ScriptScope& scope, const std::string& name);
+			ClassFile(ScriptScopeBase& scope, const std::string& name);
 			~ClassFile();
 
 		protected:

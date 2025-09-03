@@ -7,7 +7,7 @@ namespace gscript
 {
 	ScriptNew::ScriptNew(ScriptClass &sclass, std::vector<std::unique_ptr<ScriptStatement>>&& params)
 		//:ScriptFuncCall(sclass, sclass.getConstructor(), params),
-		: ScriptFuncCall(sclass, new DirectEntityLink<ScriptFunction*>(sclass.getConstructor()), std::move(params))
+		: ScriptFuncCall(sclass, sclass.getConstructor(), std::move(params))
 		, sclass(sclass)
 	{
 		if (sclass.isAbstract())
@@ -21,11 +21,11 @@ namespace gscript
 
 		this->sclass.initialize(*classInstance);
 
-		if (this->func && this->func->get())
-		{
-			this->setInstance(val);
-			ScriptFuncCall::run(c);
-		}
+		/*if (this->func && this->func->get())
+		{*/
+		this->setInstance(val);
+		ScriptFuncCall::run(c);
+		//}
 
 		return val;
 	}

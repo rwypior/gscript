@@ -15,7 +15,7 @@ namespace gscript
 
 	ScriptMethod::ScriptMethod
 	(
-		ScriptScope &scope,
+		ScriptScopeBase& scope,
 		const std::string &name,
 		ScriptType *returnType,
 		const PARAMS_T &parameters,

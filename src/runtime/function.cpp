@@ -24,7 +24,7 @@ namespace gscript
 	{
 	}*/
 
-	ScriptFunction::ScriptFunction(ScriptScope &scope, const std::string &name, ScriptType *returnType, const PARAMS_T &parameters, std::vector<std::shared_ptr<ScriptCallable>>&& statements)
+	ScriptFunction::ScriptFunction(ScriptScopeBase &scope, const std::string &name, ScriptType *returnType, const PARAMS_T &parameters, std::vector<std::shared_ptr<ScriptCallable>>&& statements)
 		: ScriptCallable(scope)
 		, ScriptScope(&scope)
 		, ScriptExecutiveBlock(std::move(statements))

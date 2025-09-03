@@ -35,6 +35,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeClassNewTest")
 	stmtvecbody.push_back(std::move(literal5));
 	auto stmt1 = std::make_unique<gscript::ScriptStatement>(*myConstructor, std::move(stmtvecbody));
 	auto stmtvecbody1 = std::vector<std::shared_ptr<gscript::ScriptCallable>>();
+	stmt1->setup();
 	stmtvecbody1.push_back(std::move(stmt1));
 	auto eb = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbody1));
 
@@ -73,6 +74,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeClassVariableRead")
 	stmtvectest.push_back(std::move(memberaccess));
 	stmtvectest.push_back(std::move(varreadtest));
 	auto stmttest = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvectest));
+	stmttest->setup();
 
 	auto resultsomething = stmttest->run();
 	REQUIRE(resultsomething->as<gscript::ScriptIntValue>().getValue() == 42);

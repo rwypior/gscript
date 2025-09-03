@@ -47,6 +47,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeStatement")
 
 	// Statement
 	auto stmt1 = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecbody));
+	stmt1->setup();
 	auto result = stmt1->run();
 
 	REQUIRE(result->as<gscript::ScriptIntValue>().getValue() == 13581);
@@ -55,13 +56,14 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeStatement")
 TEST_CASE_METHOD(GscriptTest, "RuntimeStatementWithFuncCalls")
 {
 	// Function
-	gscript::ScriptFunction myFunc(globalNamespace, "myfunc", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), {}, {});
+	auto& myFunc = globalNamespace.registerFunction("myfunc", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), {}, {});
 
 	// Function block
 	auto literal42 = std::make_unique<gscript::ScriptLiteral>(myFunc, std::make_unique<gscript::ScriptIntValue>(42));
 	auto funcstmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	funcstmtvecbody.push_back(std::move(literal42));
 	auto funcstmt1 = std::make_unique<gscript::ScriptStatement>(myFunc, std::move(funcstmtvecbody));
+	funcstmt1->setup();
 
 	auto ret = std::make_unique<gscript::ScriptReturn>(myFunc, std::move(funcstmt1));
 
@@ -76,8 +78,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeStatementWithFuncCalls")
 		std::make_unique<gscript::ScriptVariable>("var2", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(42)));
 
 	// Func call
-	auto myfuncLink = gscript::DirectEntityLink<gscript::ScriptFunction*>(&myFunc);
-	auto funccall = std::make_unique<gscript::ScriptFuncCall>(globalNamespace, &myfuncLink);
+	auto funccall = std::make_unique<gscript::ScriptFuncCall>(globalNamespace, &myFunc);
 
 	// Statement body
 	auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
@@ -94,6 +95,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeStatementWithFuncCalls")
 
 	// Statement
 	auto stmt1 = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecbody));
+	stmt1->setup();
 	auto result = stmt1->run();
 
 	REQUIRE(result->as<gscript::ScriptIntValue>().getValue() == 126);

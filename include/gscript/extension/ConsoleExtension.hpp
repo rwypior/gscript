@@ -18,28 +18,28 @@ namespace gscript
 		class FuncPrint : public ScriptMethod
 		{
 		public:
-			FuncPrint(ScriptScope& scope, const std::string& name);
+			FuncPrint(ScriptScopeBase& scope, const std::string& name);
 			virtual ScriptValue* run(const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override;
 		};
 
 		class FuncPrintLn : public ScriptMethod
 		{
 		public:
-			FuncPrintLn(ScriptScope& scope, const std::string& name);
+			FuncPrintLn(ScriptScopeBase& scope, const std::string& name);
 			virtual ScriptValue* run(const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override;
 		};
 
 		class FuncReadLn : public ScriptMethod
 		{
 		public:
-			FuncReadLn(ScriptScope& scope, const std::string& name);
+			FuncReadLn(ScriptScopeBase& scope, const std::string& name);
 			virtual ScriptValue* run(const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override;
 		};
 
 		class NamespaceConsole : public ScriptNamespace
 		{
 		public:
-			NamespaceConsole(ScriptScope& scope, const std::string& name);
+			NamespaceConsole(ScriptScopeBase& scope, const std::string& name);
 		};
 
 		void run(Script& script);

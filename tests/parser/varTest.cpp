@@ -59,3 +59,16 @@ TEST_CASE("ParserVarFailureArrayEmpty")
 	REQUIRE(!result.isOk());
 	REQUIRE(result.details.message == "Expected non-empty statement");
 }
+
+TEST_CASE("ParserVarMemberAccess")
+{
+	// Variable found here is myobject - the rest of the path would be parsed by a statement
+
+	std::string txt = "myobject.anotherobject.myvar";
+
+	gscript::ParserVar pVar;
+	auto result = pVar.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pVar.name == "myobject");
+}

@@ -37,11 +37,6 @@ namespace gscript
 		}
 
 		this->resolveOperations(sharedCallables.rbegin(), sharedCallables.rend(), this->callable);
-
-		this->assignReferences(this->callable, &this->scope, false);
-
-		if (auto oper = std::dynamic_pointer_cast<ScriptOperator>(this->callable))
-			this->setupOperator(oper);
 	}
 
 	ScriptStatement::ScriptStatement(ScriptStatement&& stmt)
@@ -54,6 +49,13 @@ namespace gscript
 	{
 		ScriptValue *result = this->callable->run();
 		return result;
+	}
+
+	void ScriptStatement::setup()
+	{
+		this->assignReferences(this->callable, &this->scope, false);
+		if (auto oper = std::dynamic_pointer_cast<ScriptOperator>(this->callable))
+			this->setupOperator(oper);
 	}
 
 	const ScriptType *ScriptStatement::getType() const
@@ -75,18 +77,23 @@ namespace gscript
 		oper->setup();
 	}
 
-	void ScriptStatement::assignReferences(std::shared_ptr<ScriptCallable>& entry, ScriptScope *scope, bool member)
+	void ScriptStatement::assertAccessibilityOf(ScriptMethod& method) const
 	{
-		if (auto fcall = dynamic_cast<ScriptFuncCallResolver*>(entry.get()))
-		{
-			entry = fcall->resolve(scope);
-			auto fc = std::static_pointer_cast<ScriptFuncCall>(entry);
+		if (!method.isAccessible(this->scope, method.accessModifier))
+			throw CompileException("Access denied to \"" + method.getName() + "\" method");
+	}
 
-			if (ScriptMethod *method = dynamic_cast<ScriptMethod*>(fc->getFunc()))
-			{
-				if (!method->isAccessible(this->scope, method->accessModifier))
-					throw CompileException("Access denied to \"" + method->getName() + "\" method");
-			}
+	void ScriptStatement::assignReferences(std::shared_ptr<ScriptCallable>& entry, ScriptScopeBase* scope, bool member)
+	{
+		if (auto fcall = dynamic_cast<ScriptFuncCallPrototype*>(entry.get()))
+		{
+			entry = fcall->build();
+		}
+
+		if (auto fcall = dynamic_cast<ScriptFuncCall*>(entry.get()))
+		{
+			if (ScriptMethod* method = dynamic_cast<ScriptMethod*>(fcall->getFunc().get()))
+				assertAccessibilityOf(*method);
 		}
 
 		// TODO check this
@@ -104,7 +111,7 @@ namespace gscript
 		{
 			this->assignReferences(oper->left, scope, false);
 
-			ScriptScope *resolvedScope = scope;
+			ScriptScopeBase* resolvedScope = scope;
 
 			bool memberAccess = false;
 			if (ScriptOperatorMemberAccessor *operAccessor = dynamic_cast<ScriptOperatorMemberAccessor*>(oper))
@@ -120,9 +127,10 @@ namespace gscript
 				}
 				else if (auto leftFunc = std::dynamic_pointer_cast<ScriptFuncCall>(oper->left))
 				{
-					if (leftFunc->getFunc()->get()->getType()->getTypeDescriptor() == VALUE_TYPE_T::VT_CLASS)
+					auto type = leftFunc->getFunc().getType();
+					if (type->getTypeDescriptor() == VALUE_TYPE_T::VT_CLASS)
 					{
-						const ScriptClassType *leftClassType = static_cast<const ScriptClassType*>(leftFunc->getFunc()->get()->getType());
+						const ScriptClassType *leftClassType = static_cast<const ScriptClassType*>(type);
 						resolvedScope = &leftClassType->sclass;
 					}
 				}

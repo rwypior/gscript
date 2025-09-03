@@ -16,7 +16,7 @@ namespace gscript
 
 	// File constructor
 
-	IOExtension::ConstructorFile::ConstructorFile(ScriptScope& scope, const std::string& name)
+	IOExtension::ConstructorFile::ConstructorFile(ScriptScopeBase& scope, const std::string& name)
 		: ScriptMethod(
 			scope,
 			name,
@@ -46,7 +46,7 @@ namespace gscript
 
 	// Read all
 
-	IOExtension::FuncReadAll::FuncReadAll(ScriptScope& scope, const std::string& name)
+	IOExtension::FuncReadAll::FuncReadAll(ScriptScopeBase& scope, const std::string& name)
 		: ScriptMethod(
 			scope,
 			name,
@@ -81,7 +81,7 @@ namespace gscript
 
 	// File exists
 
-	IOExtension::FuncStaticExists::FuncStaticExists(ScriptScope& scope, const std::string& name)
+	IOExtension::FuncStaticExists::FuncStaticExists(ScriptScopeBase& scope, const std::string& name)
 		: ScriptMethod(
 			scope,
 			name,
@@ -108,7 +108,7 @@ namespace gscript
 
 	// Class file
 
-	IOExtension::ClassFile::ClassFile(ScriptScope& scope, const std::string& name)
+	IOExtension::ClassFile::ClassFile(ScriptScopeBase& scope, const std::string& name)
 		: ScriptClass(scope, name)
 	{
 		this->registerFunction(std::make_unique<ConstructorFile>(*this, "File"));

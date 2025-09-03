@@ -86,7 +86,7 @@ namespace gscript
 		throw new CompileException("Invalid type given");
 	}
 
-	ScriptType *ScriptType::create(TypeDescriptor type, ScriptScope &scope, const std::string &cname)
+	ScriptType *ScriptType::create(TypeDescriptor type, ScriptScopeBase& scope, const std::string &cname)
 	{
 		if (type.type == VALUE_TYPE_T::VT_CLASS)
 		{
@@ -108,7 +108,7 @@ namespace gscript
 		return new ScriptType(type.type);
 	}
 
-	ScriptType *ScriptType::create(const std::string &tname, ScriptScope &scope)
+	ScriptType *ScriptType::create(const std::string &tname, ScriptScopeBase& scope)
 	{
 		return ScriptType::create(translateType(tname), scope, tname);
 	}

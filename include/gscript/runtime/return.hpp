@@ -10,7 +10,7 @@ namespace gscript
 	{
 	public:
 
-		ScriptReturn(ScriptScope &scope, std::unique_ptr<ScriptStatement>&& statement);
+		ScriptReturn(ScriptScopeBase& scope, std::unique_ptr<ScriptStatement>&& statement);
 		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T());
 
 		virtual const ScriptType *getType() const override;

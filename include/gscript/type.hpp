@@ -59,8 +59,8 @@ namespace gscript
 
 		SCRIPT_API virtual bool matches(const ScriptVariable &var);
 
-		SCRIPT_API static ScriptType *create(TypeDescriptor type, ScriptScope &scope, const std::string &cname = "");
-		SCRIPT_API static ScriptType *create(const std::string &tname, ScriptScope &scope);
+		SCRIPT_API static ScriptType *create(TypeDescriptor type, ScriptScopeBase& scope, const std::string &cname = "");
+		SCRIPT_API static ScriptType *create(const std::string &tname, ScriptScopeBase& scope);
 
 		SCRIPT_API bool equals(const ScriptType &b) const;
 

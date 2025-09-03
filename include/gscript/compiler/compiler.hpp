@@ -27,6 +27,7 @@ namespace gscript
 	class ParserReturn;
 	//class ParserConditionalOperator;
 
+	class ScriptCallable;
 	class FunctionParameterContainer;
 	class ScriptScope;
 	class ScriptNamespace;
@@ -64,7 +65,8 @@ namespace gscript
 		std::unique_ptr<ScriptOperator> compileOperator(ScriptScope* scope, const ParserOperator& pOperator);
 		std::unique_ptr<ScriptVarRead> compileVarRead(ScriptScope* scope, const ParserVar& pVar);
 		std::unique_ptr<ScriptNew> compileNewCall(ScriptScope* scope, const ParserNew& fcall);
-		std::unique_ptr<ScriptFuncCall> compileFuncCall(ScriptScope* scope, const ParserFuncCall& fcall);
+		//std::unique_ptr<ScriptFuncCall> compileFuncCall(ScriptScope* scope, const ParserFuncCall& fcall);
+		std::unique_ptr<ScriptCallable> compileFuncCall(ScriptScope* scope, const ParserFuncCall& fcall);
 		std::unique_ptr<ScriptArrayInitializer> compileArrayInitializer(ScriptScope* scope, const ParserArrayInitializer& initializer);
 
 		std::unique_ptr<ScriptVarDeclaration> compileVarDeclaration(ScriptScope* scope, const ParserVarDeclaration& pVar);

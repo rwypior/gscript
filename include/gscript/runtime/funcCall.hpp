@@ -23,47 +23,56 @@ namespace gscript
 	{
 	public:
 		//ScriptFuncCall(ScriptScope &scope, ScriptFunction *func, const std::vector<ScriptStatement> &params);
-		ScriptFuncCall(ScriptScope& scope, EntityLink<ScriptFunction*>* func, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
+		//ScriptFuncCall(ScriptScope& scope, EntityLink<ScriptFunction*>* func, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
+		ScriptFuncCall(ScriptScope& scope, FunctionAccessor func, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
+		ScriptFuncCall(ScriptScope& scope, ScriptFunction* func, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
 
 		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 
 		virtual const ScriptType *getType() const override;
 		void setInstance(ScriptClassValue *instance);
 
-		EntityLink<ScriptFunction*>* getFunc()
+		FunctionAccessor& getFunc()
 		{
-			return this->func;
+			return this->accessor;
 		}
 
 	protected:
 		//ScriptFunction *func;
-		EntityLink<ScriptFunction*> *func = nullptr;
+		//EntityLink<ScriptFunction*> *func = nullptr;
+		FunctionAccessor accessor;
 
 		std::vector<std::unique_ptr<ScriptStatement>> params;
 	};
 
-	// METHOD CALL (to be removed?)
+	// Prototype
 
-	class ScriptMethodCall : public ScriptFuncCall
+	class ScriptFuncCallPrototype : public ScriptCallablePrototype
 	{
 	public:
-		void setInstance(ScriptClassValue *instance);
+		ScriptFuncCallPrototype(ScriptScope& scope, const std::string& funcname, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
+
+		virtual std::unique_ptr<ScriptCallable> build() override;
+
+	private:
+		std::string funcname;
+		std::vector<std::unique_ptr<ScriptStatement>> params;
 	};
 
-	// RESOLV
+	//// RESOLVER
 
-	class ScriptFuncCallResolver : public ScriptFuncCall
-	{
-	public:
-		ScriptFuncCallResolver(ScriptScope &originalScope, std::vector<std::unique_ptr<ScriptStatement>>&& params, const std::string &name, PARAMS_T paramTypes, bool staticCall);
+	//class ScriptFuncCallResolver : public ScriptFuncCall
+	//{
+	//public:
+	//	ScriptFuncCallResolver(ScriptScope &originalScope, std::vector<std::unique_ptr<ScriptStatement>>&& params, const std::string &name, PARAMS_T paramTypes, bool staticCall);
 
-		std::unique_ptr<ScriptFuncCall> resolve(const ScriptScope *scope);
+	//	std::unique_ptr<ScriptFuncCall> resolve(const ScriptScope *scope);
 
-	protected:
-		std::string name;
-		PARAMS_T paramTypes;
-		bool staticCall = false;
-	};
+	//protected:
+	//	std::string name;
+	//	PARAMS_T paramTypes;
+	//	bool staticCall = false;
+	//};
 }
 
 #endif

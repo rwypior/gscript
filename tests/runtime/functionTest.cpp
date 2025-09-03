@@ -29,6 +29,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionSimple")
 	stmtvecbody.push_back(std::move(mul));
 	stmtvecbody.push_back(std::move(literal5));
 	auto stmt1 = std::make_unique<gscript::ScriptStatement>(myFunc, std::move(stmtvecbody));
+	stmt1->setup();
 	auto stmtvecbody1 = std::vector<std::shared_ptr<gscript::ScriptCallable>>();
 	stmtvecbody1.push_back(std::move(stmt1));
 	auto eb = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbody1));
@@ -54,6 +55,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionReturn")
 	auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecbody.push_back(std::move(literal42));
 	auto stmt1 = std::make_unique<gscript::ScriptStatement>(myFunc, std::move(stmtvecbody));
+	stmt1->setup();
 
 	auto ret = std::make_unique<gscript::ScriptReturn>(myFunc, std::move(stmt1));
 

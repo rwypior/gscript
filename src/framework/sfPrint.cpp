@@ -11,7 +11,7 @@ namespace gscript
 {
 	const ScriptType ScriptFuncPrint::returnType = ScriptType(VALUE_TYPE_T::VT_NULL);
 
-	ScriptFuncPrint::ScriptFuncPrint(ScriptScope &scope, const std::string &name)
+	ScriptFuncPrint::ScriptFuncPrint(ScriptScopeBase& scope, const std::string &name)
 		: ScriptFunction(scope, name, ScriptType::create(VALUE_TYPE_T::VT_NULL, this->scope), PARAMS_T(1, FunctionParameter(ScriptType::create(VALUE_TYPE_T::VT_STRING, scope))))
 	{
 

@@ -72,7 +72,7 @@ namespace gscript
 	{
 	}
 
-	std::unique_ptr<ScriptCallable> ScriptVarReadPrototype::setup()
+	std::unique_ptr<ScriptCallable> ScriptVarReadPrototype::build()
 	{
 		return nullptr; // TODO
 	}

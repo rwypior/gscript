@@ -26,6 +26,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeWhile")
 	stmtvec.push_back(std::move(oplessthan));
 	stmtvec.push_back(std::move(literal10));
 	auto cond = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvec));
+	cond->setup();
 
 	// For block
 	auto varread2 = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &testVariable);
@@ -34,6 +35,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeWhile")
 	stmtvecbody.push_back(std::move(varread2));
 	stmtvecbody.push_back(std::move(incr));
 	auto stmt1 = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecbody));
+	stmt1->setup();
 	auto stmtvecbody1 = std::vector<std::shared_ptr<gscript::ScriptCallable>>();
 	stmtvecbody1.push_back(std::move(stmt1));
 	auto eb = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbody1));

@@ -13,7 +13,7 @@ namespace gscript
 	public:
 		std::unique_ptr<ScriptValue> val = nullptr;
 
-		ScriptLiteral(ScriptScope &scope, std::unique_ptr<ScriptValue> &&val = nullptr);
+		ScriptLiteral(ScriptScopeBase& scope, std::unique_ptr<ScriptValue> &&val = nullptr);
 		//ScriptLiteral(ScriptScope &scope, ParserLiteral pliteral);
 		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T());
 

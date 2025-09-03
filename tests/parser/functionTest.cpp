@@ -1,6 +1,8 @@
 #include "common.h"
 #include "gscript/parser/pFunction.hpp"
 #include "gscript/parser/pStatement.hpp"
+#include "gscript/parser/pReturn.hpp"
+#include "gscript/parser/pLiteral.hpp"
 
 #include <catch2/catch_all.hpp>
 
@@ -84,4 +86,23 @@ TEST_CASE("ParserFunctionFailureNoEnclosure")
 	REQUIRE(!result.isOk());
 	REQUIRE(result.details.message == "Expected \"}\", got empty string");
 	// TODO - need to fix line numbers in errors - line 4 or 5 maybe
+}
+
+TEST_CASE("ParserFunctionReturn")
+{
+	std::string txt =
+		"int myfunc() {\n"
+		"	return 42;\n"
+		"}"
+		;
+
+	gscript::ParserFunction pFunc;
+	auto result = pFunc.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pFunc.name == "myfunc");
+	REQUIRE(pFunc.returnTypeName == "int");
+
+	auto ret = std::static_pointer_cast<gscript::ParserReturn>(pFunc.body.statements.at(0));
+	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(ret->value.components.at(0))->value == "42");
 }

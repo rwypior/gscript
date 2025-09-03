@@ -54,3 +54,23 @@ TEST_CASE("ParserClassFailureWithStatement")
 	REQUIRE(result.details.line == 2);
 	REQUIRE(result.details.message == "Expected one of: constructor, method, field; got \"a_statement;\"");
 }
+
+TEST_CASE("ParserClassWithFunction")
+{
+	std::string txt =
+		"class MyClass {\n"
+		"	int fnc() {\n"
+		"		return 42;"
+		"	}\n"
+		"}"
+		;
+
+	gscript::ParserClass pClass;
+	auto result = pClass.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pClass.name == "MyClass");
+	REQUIRE(pClass.methods.size() == 1);
+	REQUIRE(pClass.methods.at(0).name == "fnc");
+	REQUIRE(pClass.methods.at(0).arglist.parameters.empty());
+}

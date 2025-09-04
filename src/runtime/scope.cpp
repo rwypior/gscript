@@ -38,7 +38,7 @@ namespace gscript
 		return *variables.back();
 	}
 
-	ScriptFunction * ScriptScopeBase::findFunction(const std::string &name, const PARAMS_T params) const
+	ScriptFunction* ScriptScopeBase::findFunction(const std::string &name, const PARAMS_T params) const
 	{
 		auto& functions = this->getFunctions();
 

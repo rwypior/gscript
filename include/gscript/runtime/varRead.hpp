@@ -65,6 +65,18 @@ namespace gscript
 		std::unique_ptr<ScriptCallable> arrayAccessor = nullptr;
 	};
 
+	class ScriptArrayReadPrototype : public ScriptCallablePrototype
+	{
+	public:
+		ScriptArrayReadPrototype(ScriptScope& scope, const std::string& varname, std::unique_ptr<ScriptCallable>&& arrayAccessor);
+
+		virtual std::unique_ptr<ScriptCallable> build() override;
+
+	private:
+		std::string varname;
+		std::unique_ptr<ScriptCallable> arrayAccessor;
+	};
+
 	//// RESOLVER
 
 	//class ScriptVarReadResolver : public ScriptVarRead

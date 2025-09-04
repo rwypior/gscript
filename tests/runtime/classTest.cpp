@@ -79,3 +79,47 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeClassVariableRead")
 	auto resultsomething = stmttest->run();
 	REQUIRE(resultsomething->as<gscript::ScriptIntValue>().getValue() == 42);
 }
+
+TEST_CASE_METHOD(GscriptTest, "RuntimeClassInheritance")
+{
+	// Variable
+	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(1));
+
+	// Base Class
+	gscript::ScriptClass base(globalNamespace, "Base");
+
+	// Class
+	gscript::ScriptClass myClass(globalNamespace, "MyClass", &base);
+
+	// Base function
+	auto base_fnc = std::make_unique<gscript::ScriptMethod>(globalNamespace, "fnc", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_VOID, globalNamespace));
+
+	// Constructor block
+	auto varreadMyVariable1 = std::make_unique<gscript::ScriptVarRead>(*base_fnc, &myVariable1);
+	auto opadd = std::make_unique<gscript::ScriptOperatorAddTo>(*base_fnc, gscript::OPERATOR_LINK_T::OL_BOTH);
+	auto literal5 = std::make_unique<gscript::ScriptLiteral>(*base_fnc, std::make_unique<gscript::ScriptIntValue>(5));
+	auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
+	stmtvecbody.push_back(std::move(varreadMyVariable1));
+	stmtvecbody.push_back(std::move(opadd));
+	stmtvecbody.push_back(std::move(literal5));
+	auto stmt1 = std::make_unique<gscript::ScriptStatement>(*base_fnc, std::move(stmtvecbody));
+	auto stmtvecbody1 = std::vector<std::shared_ptr<gscript::ScriptCallable>>();
+	stmt1->setup();
+	stmtvecbody1.push_back(std::move(stmt1));
+	auto eb = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbody1));
+
+	base_fnc->merge(std::move(eb));
+
+	base.registerFunction(std::move(base_fnc));
+
+	// New
+	gscript::ScriptNew newcall(myClass);
+
+	auto objval = static_cast<gscript::ScriptClassValue*>(newcall.run());
+	auto obj = objval->getValue();
+
+	auto foundfnc = obj->findFunction("fnc", {});
+
+	REQUIRE(foundfnc);
+	REQUIRE(foundfnc->getName() == "fnc");
+}

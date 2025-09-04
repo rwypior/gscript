@@ -64,12 +64,10 @@ namespace gscript
 
 	std::unique_ptr<ScriptCallable> ScriptFuncCallPrototype::build()
 	{
-		//ScriptScopeBase* scope = &this->scope;
 		ScriptScope* scope = static_cast<ScriptScope*>(&this->scope);
 
 		PARAMS_T params = extractParams(this->params);
 		auto result = std::make_unique<ScriptFuncCall>(*scope, FunctionAccessor::find(*scope, this->funcname, params));
-		//ScriptFuncCall(*scope, FunctionAccessor::find(*scope, this->funcname, params, false));
 
 		return result;
 	}

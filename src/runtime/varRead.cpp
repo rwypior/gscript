@@ -74,10 +74,14 @@ namespace gscript
 
 	std::unique_ptr<ScriptCallable> ScriptVarReadPrototype::build()
 	{
-		return nullptr; // TODO
+		ScriptScope* scope = static_cast<ScriptScope*>(&this->scope);
+
+		auto result = std::make_unique<ScriptVarRead>(*scope, VariableAccessor::find(*scope, this->varname));
+
+		return result;
 	}
 
-	// ARRAY VAR READ
+	// Array var read
 
 	ScriptArrayRead::ScriptArrayRead(ScriptScope& scope, VariableAccessor accessor, std::unique_ptr<ScriptCallable> &&arrayAccessor)
 		: ScriptVarRead(scope, accessor)
@@ -108,6 +112,24 @@ namespace gscript
 	{
 		return static_cast<const ScriptArrayType*>(this->accessor.getType())->subType;
 		//return static_cast<const ScriptArrayType*>(this->var->orig()->getType())->subType;
+	}
+
+	// Array var read prototype
+
+	ScriptArrayReadPrototype::ScriptArrayReadPrototype(ScriptScope& scope, const std::string& varname, std::unique_ptr<ScriptCallable>&& arrayAccessor)
+		: ScriptCallablePrototype(scope)
+		, varname(varname)
+		, arrayAccessor(std::move(arrayAccessor))
+	{
+	}
+
+	std::unique_ptr<ScriptCallable> ScriptArrayReadPrototype::build()
+	{
+		ScriptScope* scope = static_cast<ScriptScope*>(&this->scope);
+
+		auto result = std::make_unique<ScriptArrayRead>(*scope, VariableAccessor::find(*scope, this->varname), std::move(this->arrayAccessor));
+
+		return result;
 	}
 
 	//// RESOLVER

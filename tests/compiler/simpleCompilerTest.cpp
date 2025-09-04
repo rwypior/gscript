@@ -85,3 +85,38 @@ TEST_CASE_METHOD(GscriptTest, "CompilerClassVarRead")
 	REQUIRE(myvar->getName() == "myvar");
 	REQUIRE(myvar->getValue()->as<gscript::ScriptIntValue>().getValue() == 42);
 }
+
+TEST_CASE_METHOD(GscriptTest, "CompilerClassInheritance")
+{
+	std::string txt =
+		"class base {\n"
+		"	int fnc() {\n"
+		"		return 42;\n"
+		"	}\n"
+		"}\n"
+		"class myClass : base {\n"
+		"}"
+		;
+
+	gscript::ParserNamespace mainNamespace(gscript::NAMESPACE_TYPE_T::NT_MAIN);
+	mainNamespace.parse(gscript::StringIteratorRange(txt.begin(), txt.end(), "", 0));
+
+	gscript::Compiler compiler;
+
+	for (auto& cls : mainNamespace.classes)
+	{
+		globalNamespace.registerClass(compiler.compileClass(&globalNamespace, cls));
+	}
+
+	auto myClass = globalNamespace.findClass("myClass");
+	REQUIRE(myClass->getBase()->getName() == "base");
+	
+	auto myClassObject = myClass->instantiate();
+
+	REQUIRE(myClassObject);
+
+	auto fnc = myClassObject->findFunction("fnc", {});
+
+	REQUIRE(fnc);
+	REQUIRE(fnc->getName() == "fnc");
+}

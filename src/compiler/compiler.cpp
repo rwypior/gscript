@@ -5,6 +5,7 @@
 #include "parser/pBlockBody.hpp"
 #include "parser/pNamespace.hpp"
 #include "parser/pFunction.hpp"
+#include "parser/pMethod.hpp"
 #include "parser/pLiteral.hpp"
 #include "parser/pVar.hpp"
 #include "parser/pFuncCall.hpp"
@@ -109,9 +110,8 @@ namespace gscript
 
 		for (auto& pmethod : pclass.methods)
 		{
-			// TODO
-			//auto method = this->compileMethod(scope, *pmethod);
-			//cl->registerFunction(std::move(method));
+			auto method = this->compileMethod(scope, pmethod);
+			cl->registerFunction(std::move(method));
 		}
 
 		return cl;
@@ -125,9 +125,6 @@ namespace gscript
 			params.emplace_back(ScriptType::create(pp.type, *scope), pp.name);
 		}
 
-		// TODO - statements in executable block need scope, and this scope
-		// will be a function that is yet to be created
-
 		auto newfunc = std::make_unique<ScriptFunction>(*scope, pfunc.name, ScriptType::create(pfunc.returnTypeName, *scope), params);
 		newfunc->merge(std::move(this->compileExecutiveBlock(newfunc.get(), pfunc.body)));
 
@@ -136,7 +133,16 @@ namespace gscript
 
 	std::unique_ptr<ScriptMethod> Compiler::compileMethod(ScriptScope* scope, const ParserMethod& pfunc)
 	{
-		return nullptr;
+		PARAMS_T params;
+		for (auto& pp : pfunc.arglist.parameters)
+		{
+			params.emplace_back(ScriptType::create(pp.type, *scope), pp.name);
+		}
+
+		auto newfunc = std::make_unique<ScriptMethod>(*scope, pfunc.name, ScriptType::create(pfunc.returnTypeName, *scope), params, pfunc.accessSpecifier.getModifier());
+		newfunc->merge(std::move(this->compileExecutiveBlock(newfunc.get(), pfunc.body)));
+
+		return newfunc;
 	}
 
 	std::unique_ptr<ScriptValue> Compiler::compileValue(const ParserLiteral& pLiteral)
@@ -267,24 +273,12 @@ namespace gscript
 		return it->second(*scope, pOperator.getLinkage());
 	}
 
-	std::unique_ptr<ScriptVarRead> Compiler::compileVarRead(ScriptScope* scope, const ParserVar& pVar)
+	std::unique_ptr<ScriptCallable> Compiler::compileVarRead(ScriptScope* scope, const ParserVar& pVar)
 	{
 		if (auto& arr = pVar.arrayAccessor)
-			//return std::make_unique<ScriptArrayRead>(*scope, this->compileStatement(scope, arr->statement), pVar.name);
-			return std::make_unique<ScriptArrayRead>(*scope, nullptr, this->compileStatement(scope, arr->statement));
+			return std::make_unique<ScriptArrayReadPrototype>(*scope, pVar.name, this->compileStatement(scope, arr->statement));
 
-		//ScriptArrayRead(*scope, nullptr, this->compileStatement(scope, arr->statement));
-
-		auto asdasd = scope->findVariable(pVar.name);
-
-		//return std::make_unique<ScriptVarRead>(*scope, pVar.name);
-		//return std::make_unique<ScriptVarRead>(*scope, nullptr);
-		return std::make_unique<ScriptVarRead>(*scope, scope->findVariable(pVar.name));
-
-		/*if (auto& arr = pVar.arrayAccessor)
-			return std::make_unique<ScriptArrayReadResolver>(*scope, this->compileStatement(scope, arr->statement), pVar.name);
-
-		return std::make_unique<ScriptVarReadResolver>(*scope, pVar.name);*/
+		return std::make_unique<ScriptVarReadPrototype>(*scope, pVar.name);
 	}
 
 	std::unique_ptr<ScriptNew> Compiler::compileNewCall(ScriptScope* scope, const ParserNew& fcall)

@@ -36,7 +36,7 @@ namespace gscript
 		this->merge(std::move(*block));
 	}
 
-	const std::vector<std::shared_ptr<ScriptCallable>>& ScriptExecutiveBlock::getStatements()
+	std::vector<std::shared_ptr<ScriptCallable>>& ScriptExecutiveBlock::getStatements()
 	{
 		return this->statements;
 	}

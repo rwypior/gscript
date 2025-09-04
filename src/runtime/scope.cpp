@@ -85,7 +85,7 @@ namespace gscript
 		if (searchParents)
 		{
 			if (auto parentScope = this->getParentScope())
-				return parentScope->findFunction(name, params);
+				return parentScope->findFunctionAddr(name, params);
 		}
 
 		return nullptr;

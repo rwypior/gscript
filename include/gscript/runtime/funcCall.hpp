@@ -50,13 +50,18 @@ namespace gscript
 	class ScriptFuncCallPrototype : public ScriptCallablePrototype
 	{
 	public:
-		ScriptFuncCallPrototype(ScriptScope& scope, const std::string& funcname, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
+		ScriptFuncCallPrototype(ScriptScope& scope, const std::string& funcname, std::vector<std::unique_ptr<ScriptStatement>>&& params = {}, bool staticCall = false);
 
 		virtual std::unique_ptr<ScriptCallable> build() override;
+
+		const std::string& getName() const;
+		const std::vector<std::unique_ptr<ScriptStatement>>& getParams() const;
+		const bool isStaticCall() const;
 
 	private:
 		std::string funcname;
 		std::vector<std::unique_ptr<ScriptStatement>> params;
+		bool staticCall = false;
 	};
 
 	//// RESOLVER

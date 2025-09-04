@@ -336,8 +336,9 @@ namespace gscript
 		}
 
 		auto types = params->getParamTypes();
+		bool isStaticCall = fcall.name.isScoped();
 		//return std::make_unique<ScriptFuncCallResolver>(*usedScope, std::move(params->getParams()), usedName, types, fcall.name.isScoped());
-		return std::make_unique<ScriptFuncCallPrototype>(*usedScope, usedName, std::move(params->getParams()));
+		return std::make_unique<ScriptFuncCallPrototype>(*usedScope, usedName, std::move(params->getParams()), isStaticCall);
 		//return std::make_unique<ScriptFuncCallPrototype>(*usedScope, std::move(params->getParams()), usedName, types, fcall.name.isScoped());
 	}
 
@@ -431,5 +432,57 @@ namespace gscript
 	{
 		auto stmt = this->compileStatement(scope, pReturn.value);
 		return std::make_unique<ScriptReturn>(*scope, std::move(stmt));
+	}
+
+	// Finalize
+
+	void Compiler::finalize(ScriptNamespace& ns)
+	{
+		this->finalizeScope(ns);
+
+		for (auto& ns : ns.getNamespaces())
+		{
+			this->finalize(*ns);
+			this->finalizeScope(*ns);
+		}
+
+		for (auto& cls : ns.getClasses())
+		{
+			this->finalizeScope(*cls);
+		}
+	}
+
+	void Compiler::finalizeScope(ScriptScopeBase& scope)
+	{
+		for (auto& fnc : scope.getFunctions())
+		{
+			auto& stmts = fnc->getStatements();
+
+			for (auto it = stmts.begin(); it != stmts.end(); it++)
+			{
+				auto& stmt = *it;
+				
+			}
+
+			for (auto& stmt : fnc->getStatements())
+			{
+				this->finalizeCallable(stmt);
+			}
+		}
+	}
+
+	void Compiler::finalizeCallable(std::shared_ptr<ScriptCallable>& callable)
+	{
+		if (auto proto = std::dynamic_pointer_cast<ScriptCallablePrototype>(callable))
+		{
+			callable = proto->build();
+		}
+		else if (auto stmt = std::dynamic_pointer_cast<ScriptStatement>(callable))
+		{
+			if (auto proto = std::dynamic_pointer_cast<ScriptCallablePrototype>(stmt->callable))
+			{
+				stmt->callable = proto->build();
+			}
+		}
 	}
 }

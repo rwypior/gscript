@@ -2,6 +2,7 @@
 #include "runtime/function.hpp"
 #include "runtime/method.hpp"
 #include "defs.hpp"
+#include "util.hpp"
 #include "compileException.hpp"
 
 namespace gscript
@@ -53,17 +54,39 @@ namespace gscript
 
 	// Prototype
 
-	ScriptFuncCallPrototype::ScriptFuncCallPrototype(ScriptScope& scope, const std::string& funcname, std::vector<std::unique_ptr<ScriptStatement>>&& params)
+	ScriptFuncCallPrototype::ScriptFuncCallPrototype(ScriptScope& scope, const std::string& funcname, std::vector<std::unique_ptr<ScriptStatement>>&& params, bool staticCall)
 		: ScriptCallablePrototype(scope)
 		, funcname(funcname)
 		, params(std::move(params))
+		, staticCall(staticCall)
 	{
 	}
 
 	std::unique_ptr<ScriptCallable> ScriptFuncCallPrototype::build()
 	{
-		// TODO
-		return nullptr;
+		//ScriptScopeBase* scope = &this->scope;
+		ScriptScope* scope = static_cast<ScriptScope*>(&this->scope);
+
+		PARAMS_T params = extractParams(this->params);
+		auto result = std::make_unique<ScriptFuncCall>(*scope, FunctionAccessor::find(*scope, this->funcname, params));
+		//ScriptFuncCall(*scope, FunctionAccessor::find(*scope, this->funcname, params, false));
+
+		return result;
+	}
+
+	const std::string& ScriptFuncCallPrototype::getName() const
+	{
+		return this->funcname;
+	}
+
+	const std::vector<std::unique_ptr<ScriptStatement>>& ScriptFuncCallPrototype::getParams() const
+	{
+		return this->params;
+	}
+
+	const bool ScriptFuncCallPrototype::isStaticCall() const
+	{
+		return this->staticCall;
 	}
 
 	// RESOLVER

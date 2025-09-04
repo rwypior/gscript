@@ -25,7 +25,7 @@ namespace gscript
 		SCRIPT_API void merge(ScriptExecutiveBlock&& block);
 		SCRIPT_API void merge(std::unique_ptr<ScriptExecutiveBlock>&& block);
 
-		const std::vector<std::shared_ptr<ScriptCallable>> &getStatements();
+		std::vector<std::shared_ptr<ScriptCallable>> &getStatements();
 
 	protected:
 		std::vector<std::shared_ptr<ScriptCallable>> statements;

@@ -85,27 +85,16 @@ namespace gscript
 
 	void ScriptStatement::assignReferences(std::shared_ptr<ScriptCallable>& entry, ScriptScopeBase* scope, bool member)
 	{
-		if (auto fcall = dynamic_cast<ScriptFuncCallPrototype*>(entry.get()))
+		if (auto fcall = std::dynamic_pointer_cast<ScriptCallablePrototype>(entry))
 		{
 			entry = fcall->build();
 		}
 
-		if (auto fcall = dynamic_cast<ScriptFuncCall*>(entry.get()))
+		if (auto fcall = std::dynamic_pointer_cast<ScriptFuncCall>(entry))
 		{
 			if (ScriptMethod* method = dynamic_cast<ScriptMethod*>(fcall->getFunc().get()))
 				assertAccessibilityOf(*method);
 		}
-
-		// TODO check this
-		/*else if (auto vread = dynamic_cast<ScriptArrayReadResolver*>(entry.get()))
-		{
-			entry = vread->resolve(*scope, member);
-		}
-
-		else if (auto vread = dynamic_cast<ScriptVarReadResolver*>(entry.get()))
-		{
-			entry = vread->resolve(*scope, member);
-		}*/
 
 		else if (auto oper = dynamic_cast<ScriptOperator*>(entry.get()))
 		{

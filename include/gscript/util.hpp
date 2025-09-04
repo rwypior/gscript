@@ -2,9 +2,11 @@
 #define _h_gscript_util
 
 #include "lib.hpp"
+#include "defs.hpp"
 
 #include <tuple>
 #include <vector>
+#include <memory>
 
 namespace gscript
 {
@@ -12,6 +14,7 @@ namespace gscript
 	class ScriptArrayType;
 	class ScriptValue;
 	class ScriptArrayValue;
+	class ScriptStatement;
 
 	template <typename T>
 	class make_vector
@@ -96,6 +99,8 @@ namespace gscript
 			}
 		};
 	}
+
+	PARAMS_T extractParams(std::vector<std::unique_ptr<ScriptStatement>>& statements);
 }
 
 #endif

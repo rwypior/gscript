@@ -33,8 +33,10 @@ namespace gscript
 
 		SCRIPT_API ScriptClass *findClass(const std::string &name);
 		SCRIPT_API ScriptClass *findClassByInheritance(const std::string &name);
+		SCRIPT_API std::vector<std::unique_ptr<ScriptClass>>& getClasses();
 
 		SCRIPT_API ScriptNamespace *findNamespace(const std::string &name);
+		SCRIPT_API std::vector<std::unique_ptr<ScriptNamespace>>& getNamespaces();
 
 		SCRIPT_API const std::string &getName() const;
 

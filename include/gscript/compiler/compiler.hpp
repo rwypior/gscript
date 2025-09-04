@@ -28,8 +28,9 @@ namespace gscript
 	//class ParserConditionalOperator;
 
 	class ScriptCallable;
-	class FunctionParameterContainer;
+	class ScriptScopeBase;
 	class ScriptScope;
+	class FunctionParameterContainer;
 	class ScriptNamespace;
 	class ScriptClass;
 	class ScriptFunction;
@@ -76,6 +77,10 @@ namespace gscript
 		std::unique_ptr<ScriptFor> compileFor(ScriptScope* scope, const ParserFor& pFor);
 		std::unique_ptr<ScriptReturn> compileReturn(ScriptScope* scope, const ParserReturn& pReturn);
 		//std::unique_ptr<ScriptConditionalOperator> compileConditionalOperator(ScriptScope* scope, const ParserConditionalOperator& pReturn);
+
+		void finalize(ScriptNamespace& ns);
+		void finalizeScope(ScriptScopeBase& scope);
+		void finalizeCallable(std::shared_ptr<ScriptCallable>& callable);
 	};
 }
 

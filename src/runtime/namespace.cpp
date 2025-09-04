@@ -127,6 +127,11 @@ namespace gscript
 		return it->get();
 	}
 
+	std::vector<std::unique_ptr<ScriptClass>>& ScriptNamespace::getClasses()
+	{
+		return this->classes;
+	}
+
 	ScriptNamespace *ScriptNamespace::findNamespace(const std::string &name)
 	{
 		auto it = std::find_if(this->namespaces.begin(), this->namespaces.end(), [&name](const std::unique_ptr<ScriptNamespace>& ns) {
@@ -136,6 +141,11 @@ namespace gscript
 			return nullptr;
 
 		return it->get();
+	}
+
+	std::vector<std::unique_ptr<ScriptNamespace>>& ScriptNamespace::getNamespaces()
+	{
+		return this->namespaces;
 	}
 
 	void ScriptNamespace::resolveFunctions()

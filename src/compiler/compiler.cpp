@@ -36,6 +36,7 @@
 #include "runtime/while.hpp"
 #include "runtime/for.hpp"
 #include "runtime/return.hpp"
+#include "logger.hpp"
 
 #include "runtimeException.hpp"
 #include "compileException.hpp"
@@ -48,6 +49,8 @@ namespace gscript
 {
 	std::unique_ptr<FunctionParameterContainer> Compiler::compileParameterContainer(ScriptScope* scope, const ParserCallArglist& arglist)
 	{
+		gs_log("Compiling FunctionParameterContainer");
+
 		std::vector<std::unique_ptr<ScriptStatement>> statements;
 		statements.reserve(arglist.parameters.size());
 		for (auto& param : arglist.parameters)
@@ -59,6 +62,8 @@ namespace gscript
 
 	std::unique_ptr<ScriptNamespace> Compiler::compileNamespace(ScriptScope* scope, const ParserNamespace& entry)
 	{
+		gs_log("Compiling ScriptNamespace " << entry.name);
+
 		auto ns = std::make_unique<ScriptNamespace>(scope, entry.name);
 
 		for (auto& cls : entry.classes)
@@ -83,6 +88,8 @@ namespace gscript
 
 	std::unique_ptr<ScriptClass> Compiler::compileClass(ScriptNamespace* scope, const ParserClass& pclass)
 	{
+		gs_log("Compiling ScriptClass " << pclass.name);
+
 		const std::string& base = pclass.base;
 
 		// TODO - clients of this method must check if class already exists
@@ -119,6 +126,8 @@ namespace gscript
 
 	std::unique_ptr<ScriptFunction> Compiler::compileFunction(ScriptScope* scope, const ParserFunction& pfunc)
 	{
+		gs_log("Compiling ScriptFunction " << pfunc.name);
+
 		PARAMS_T params;
 		for (auto& pp : pfunc.arglist.parameters)
 		{
@@ -133,6 +142,8 @@ namespace gscript
 
 	std::unique_ptr<ScriptMethod> Compiler::compileMethod(ScriptScope* scope, const ParserMethod& pfunc)
 	{
+		gs_log("Compiling ScriptMethod " << pfunc.name);
+
 		PARAMS_T params;
 		for (auto& pp : pfunc.arglist.parameters)
 		{
@@ -147,6 +158,8 @@ namespace gscript
 
 	std::unique_ptr<ScriptValue> Compiler::compileValue(const ParserLiteral& pLiteral)
 	{
+		gs_log("Compiling ScriptValue " << pLiteral.value);
+
 		switch (pLiteral.type)
 		{
 		case VALUE_TYPE_T::VT_INT:
@@ -166,6 +179,8 @@ namespace gscript
 
 	std::unique_ptr<ScriptStatement> Compiler::compileStatement(ScriptScope* scope, const ParserStatement& pstatement)
 	{
+		gs_log("Compiling ScriptStatement " << pstatement.components.size() << " components");
+
 		std::vector<std::unique_ptr<ScriptCallable>> substatements;
 		substatements.reserve(pstatement.components.size());
 		int currentIndex = 0;
@@ -214,6 +229,8 @@ namespace gscript
 
 	std::unique_ptr<ScriptExecutiveBlock> Compiler::compileExecutiveBlock(ScriptScope* scope, const ParserBlockBody& pblock)
 	{
+		gs_log("Compiling ScriptExecutiveBlock with " << pblock.statements.size() << " statements");
+
 		std::vector<std::shared_ptr<ScriptCallable>> statements;
 
 		for (auto &ps : pblock.statements)
@@ -237,6 +254,8 @@ namespace gscript
 
 	std::unique_ptr<ScriptOperator> Compiler::compileOperator(ScriptScope* scope, const ParserOperator& pOperator)
 	{
+		gs_log("Compiling ScriptOperator " << pOperator.getChar());
+
 		std::unordered_map<OPERATOR_TYPE_T, std::function<std::unique_ptr<ScriptOperator>(ScriptScope&, OPERATOR_LINK_T)>> opmap = {
 			{ OPERATOR_TYPE_T::OT_MEMBER_ACCESSOR, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorMemberAccessor>(s, l); }},
 			{ OPERATOR_TYPE_T::OT_ADD, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorAdd>(s, l); }},
@@ -275,6 +294,8 @@ namespace gscript
 
 	std::unique_ptr<ScriptCallable> Compiler::compileVarRead(ScriptScope* scope, const ParserVar& pVar)
 	{
+		gs_log("Compiling ScriptVarRead " << pVar.name.getString());
+
 		if (auto& arr = pVar.arrayAccessor)
 			return std::make_unique<ScriptArrayReadPrototype>(*scope, pVar.name, this->compileStatement(scope, arr->statement));
 
@@ -283,6 +304,8 @@ namespace gscript
 
 	std::unique_ptr<ScriptNew> Compiler::compileNewCall(ScriptScope* scope, const ParserNew& fcall)
 	{
+		gs_log("Compiling ScriptNew " << fcall.name.getString());
+
 		auto params = this->compileParameterContainer(scope, fcall.arglist);
 
 		ScriptNamespace* ns = scope->getGlobalNamespace();
@@ -296,6 +319,8 @@ namespace gscript
 
 	std::unique_ptr<ScriptCallable> Compiler::compileFuncCall(ScriptScope* scope, const ParserFuncCall& fcall)
 	{
+		gs_log("Compiling ScriptFuncCall " << fcall.name.getString());
+
 		auto params = this->compileParameterContainer(scope, fcall.arglist);
 
 		ScriptScope* usedScope = scope;
@@ -338,6 +363,8 @@ namespace gscript
 
 	std::unique_ptr<ScriptArrayInitializer> Compiler::compileArrayInitializer(ScriptScope* scope, const ParserArrayInitializer& initializer)
 	{
+		gs_log("Compiling ScriptArrayInitializer with " << initializer.arglist.parameters.size() << " arguments");
+
 		const ScriptType* prevType = nullptr;
 		std::vector<std::unique_ptr<ScriptStatement>> statements;
 		
@@ -360,6 +387,8 @@ namespace gscript
 
 	std::unique_ptr<ScriptVarDeclaration> Compiler::compileVarDeclaration(ScriptScope* scope, const ParserVarDeclaration& pVar)
 	{
+		gs_log("Compiling ScriptVarDeclaration " << pVar.name);
+
 		auto& v = scope->registerVariable(std::make_unique<ScriptVariable>(pVar.name, ScriptType::create(pVar.type, *scope), nullptr));
 		auto stmt = this->compileStatement(scope, pVar.value);
 		return std::make_unique<ScriptVarDeclaration>(*scope, v, std::move(stmt));
@@ -367,6 +396,8 @@ namespace gscript
 
 	std::unique_ptr<ScriptIf> Compiler::compileIf(ScriptScope* scope, const ParserIf& pIf)
 	{
+		gs_log("Compiling ScriptIf");
+
 		auto condition = this->compileStatement(scope, *pIf.arglist.parameters.front());
 		auto exeblock = this->compileExecutiveBlock(scope, pIf.body.body);
 
@@ -382,6 +413,8 @@ namespace gscript
 
 	std::unique_ptr<ScriptIf> Compiler::compileElse(ScriptScope* scope, const ParserElse& pElse)
 	{
+		gs_log("Compiling ScriptElse");
+
 		std::unique_ptr<ScriptStatement> condition;
 		std::unique_ptr<ScriptIf> selse;
 		if (pElse.pif)
@@ -400,6 +433,8 @@ namespace gscript
 
 	std::unique_ptr<ScriptWhile> Compiler::compileWhile(ScriptScope* scope, const ParserWhile& pWhile)
 	{
+		gs_log("Compiling ScriptWhile");
+
 		auto condition = this->compileStatement(scope, *pWhile.arglist.parameters.front());
 		auto exeblock = this->compileExecutiveBlock(scope, pWhile.body.body);
 
@@ -411,6 +446,8 @@ namespace gscript
 
 	std::unique_ptr<ScriptFor> Compiler::compileFor(ScriptScope* scope, const ParserFor& pFor)
 	{
+		gs_log("Compiling ScriptFor");
+
 		auto vardecl = this->compileVarDeclaration(scope, pFor.arglist.varDecl);
 		auto condition = this->compileStatement(scope, pFor.arglist.condition);
 		auto progress = this->compileStatement(scope, pFor.arglist.progress);
@@ -424,6 +461,8 @@ namespace gscript
 
 	std::unique_ptr<ScriptReturn> Compiler::compileReturn(ScriptScope* scope, const ParserReturn& pReturn)
 	{
+		gs_log("Compiling ScriptReturn with " << pReturn.value.components.size() << " components");
+
 		auto stmt = this->compileStatement(scope, pReturn.value);
 		return std::make_unique<ScriptReturn>(*scope, std::move(stmt));
 	}
@@ -432,6 +471,8 @@ namespace gscript
 
 	void Compiler::finalize(ScriptNamespace& ns)
 	{
+		gs_log("Compiler - finalize");
+
 		this->finalizeScope(ns);
 
 		for (auto& ns : ns.getNamespaces())
@@ -452,12 +493,6 @@ namespace gscript
 		{
 			auto& stmts = fnc->getStatements();
 
-			for (auto it = stmts.begin(); it != stmts.end(); it++)
-			{
-				auto& stmt = *it;
-				
-			}
-
 			for (auto& stmt : fnc->getStatements())
 			{
 				this->finalizeCallable(stmt);
@@ -477,6 +512,42 @@ namespace gscript
 			{
 				stmt->callable = proto->build();
 			}
+			this->finalizeCallable(stmt->callable);
+		}
+		else if (auto ret = std::dynamic_pointer_cast<ScriptReturn>(callable))
+		{
+			this->finalizeCallable(ret->getStatement());
+		}
+		else if (auto oper = std::dynamic_pointer_cast<ScriptOperator>(callable))
+		{
+			this->finalizeCallable(oper->left);
+			this->finalizeCallable(oper->right);
+		}
+	}
+
+	void Compiler::finalizeCallable(std::unique_ptr<ScriptCallable>& callable)
+	{
+		if (auto proto = dynamic_cast<ScriptCallablePrototype*>(callable.get()))
+		{
+			callable = proto->build();
+			this->finalizeCallable(callable);
+		}
+		else if (auto stmt = dynamic_cast<ScriptStatement*>(callable.get()))
+		{
+			if (auto proto = std::dynamic_pointer_cast<ScriptCallablePrototype>(stmt->callable))
+			{
+				stmt->callable = proto->build();
+			}
+			this->finalizeCallable(stmt->callable);
+		}
+		else if (auto ret = dynamic_cast<ScriptReturn*>(callable.get()))
+		{
+			this->finalizeCallable(ret->getStatement());
+		}
+		else if (auto oper = dynamic_cast<ScriptOperator*>(callable.get()))
+		{
+			this->finalizeCallable(oper->left);
+			this->finalizeCallable(oper->right);
 		}
 	}
 }

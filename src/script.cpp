@@ -126,6 +126,8 @@ namespace gscript
 		this->mainScope->resolveFunctions();
 		this->mainScope->resolveClassMembers();
 
+		compiler.finalize(*this->mainScope);
+
 		return true;
 	}
 

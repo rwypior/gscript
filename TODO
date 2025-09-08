@@ -1,3 +1,8 @@
+Fixes
+=====
+
+- Fix virtual methods calling - the method is found, but in base class
+
 Framework stuff
 ===============
 

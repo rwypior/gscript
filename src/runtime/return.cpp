@@ -19,4 +19,9 @@ namespace gscript
 	{
 		return ScriptReturn::returnType;
 	}
+
+	std::unique_ptr<ScriptCallable>& ScriptReturn::getStatement()
+	{
+		return this->statement;
+	}
 }

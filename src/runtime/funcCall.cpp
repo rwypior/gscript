@@ -21,6 +21,13 @@ namespace gscript
 	{
 	}
 
+	ScriptFuncCall::ScriptFuncCall(ScriptScope& scope, const std::string& name, std::vector<std::unique_ptr<ScriptStatement>>&& params)
+		: ScriptCallable(scope)
+		, accessor(FunctionAccessor::find(scope, name, extractParams(params)))
+		, params(std::move(params))
+	{
+	}
+
 	ScriptValue *ScriptFuncCall::run(const CALLABLE_PARAMS_T &c)
 	{
 		if (!this->accessor)

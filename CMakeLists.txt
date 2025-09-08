@@ -21,6 +21,11 @@ else()
     target_compile_definitions(gscript PRIVATE BUILD_NOLIB)
 endif()
 
+target_compile_definitions(gscript
+    PRIVATE
+        $<$<CONFIG:Debug>:DEBUG>
+)
+
 target_include_directories (gscript PUBLIC 
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/gscript>"
     "$<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>"

@@ -12,6 +12,11 @@ add_executable(gscriptClient)
 set_property(TARGET gscriptClient PROPERTY CXX_STANDARD 17)
 set_target_properties(gscriptClient PROPERTIES OUTPUT_NAME "gscript")
 
+target_compile_definitions(gscriptClient
+    PRIVATE
+        $<$<CONFIG:Debug>:DEBUG>
+)
+
 add_dependencies(gscriptClient gscript)
 
 target_sources(gscriptClient PRIVATE "main.cpp")

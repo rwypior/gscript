@@ -15,6 +15,11 @@ target_sources(gscriptTest PRIVATE "common.h" "main.cpp")
 # We're compiling against obj files - don't use DLL macros
 target_compile_definitions(gscriptTest PRIVATE BUILD_NOLIB)
 
+target_compile_definitions(gscriptTest
+    PRIVATE
+        $<$<CONFIG:Debug>:DEBUG>
+)
+
 find_package(Catch2 3.6.0 REQUIRED)
 
 add_library(gscriptobj STATIC $<TARGET_OBJECTS:gscript>)

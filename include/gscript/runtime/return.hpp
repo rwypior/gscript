@@ -15,10 +15,12 @@ namespace gscript
 
 		virtual const ScriptType *getType() const override;
 
+		std::unique_ptr<ScriptCallable>& getStatement();
+
 	private:
 		static const ScriptType *returnType;
 
-		std::unique_ptr<ScriptStatement> statement;
+		std::unique_ptr<ScriptCallable> statement;
 	};
 }
 

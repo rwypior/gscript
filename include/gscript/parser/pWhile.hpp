@@ -16,7 +16,7 @@ namespace gscript
 
 		ParserWhile();
 		ParserWhile(const ParserWhile&) = delete;
-		ParserWhile(ParserWhile&& b)
+		ParserWhile(ParserWhile&& b) noexcept
 			: body(std::move(b.body))
 			, arglist(std::move(b.arglist))
 		{

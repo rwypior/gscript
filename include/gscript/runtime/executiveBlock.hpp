@@ -18,7 +18,7 @@ namespace gscript
 	{
 	public:
 		SCRIPT_API ScriptExecutiveBlock(std::vector<std::shared_ptr<ScriptCallable>>&& statements);
-		SCRIPT_API ScriptExecutiveBlock(ScriptExecutiveBlock&& exeblock);
+		SCRIPT_API ScriptExecutiveBlock(ScriptExecutiveBlock&& exeblock) noexcept;
 		virtual ~ScriptExecutiveBlock() = default;
 		SCRIPT_API ScriptValue* execute();
 

@@ -6,6 +6,7 @@
 #include "lib.hpp"
 
 #include <string>
+#include <vector>
 
 namespace gscript
 {
@@ -477,10 +478,19 @@ namespace gscript
 	class ScriptArrayValue : public ScriptValue
 	{
 	public:
-		ScriptArrayValue(const ScriptArrayType *type = nullptr, ScriptValue **val = nullptr)
+		ScriptArrayValue() = default;
+
+		ScriptArrayValue(const ScriptArrayType* type, const std::vector<ScriptValue*>& val = {})
 			: val(val)
 			, type(type)
-		{ }
+		{
+		}
+		
+		ScriptArrayValue(const ScriptArrayType* type, std::vector<ScriptValue*>&& val = {})
+			: val(std::move(val))
+			, type(type)
+		{
+		}
 
 		virtual size_t getSize() const override
 		{
@@ -499,17 +509,22 @@ namespace gscript
 
 		virtual ScriptBoolValue boolean() const override
 		{
-			return ScriptBoolValue(this->val);
+			return ScriptBoolValue(!this->val.empty());
 		}
 
-		virtual ScriptValue** getValue() const
+		virtual std::vector<ScriptValue*> getValue() const
 		{
 			return this->val;
 		}
 
-		virtual void setValue(ScriptValue** val)
+		virtual void setValue(std::vector<ScriptValue*>& val)
 		{
 			this->val = val;
+		}
+
+		virtual void setValue(std::vector<ScriptValue*>&& val)
+		{
+			this->val = std::move(val);
 		}
 
 		virtual void assign(const ScriptValue & val) override
@@ -518,7 +533,7 @@ namespace gscript
 		}
 
 	protected:
-		ScriptValue **val = nullptr;
+		std::vector<ScriptValue*> val;
 		const ScriptType* type = nullptr;
 	};
 

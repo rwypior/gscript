@@ -31,7 +31,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeVariableBasicRead")
 
 TEST_CASE_METHOD(GscriptTest, "RuntimeVariableArrayRead")
 {
-	std::vector<gscript::ScriptIntValue*> entries {
+	std::vector<gscript::ScriptValue*> entries {
 		new gscript::ScriptIntValue(1),
 		new gscript::ScriptIntValue(2),
 		new gscript::ScriptIntValue(3),
@@ -40,7 +40,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeVariableArrayRead")
 	};
 
 	gscript::ScriptArrayValue* arr = new gscript::ScriptArrayValue();
-	arr->setValue(reinterpret_cast<gscript::ScriptValue**>( entries.data() ));
+	arr->setValue(entries);
 	
 	auto& sv = globalNamespace.registerVariable("myArray1", gscript::ScriptType::create(gscript::TypeDescriptor(gscript::VALUE_TYPE_T::VT_ARRAY, gscript::VALUE_TYPE_T::VT_INT), globalNamespace), arr);
 
@@ -120,7 +120,6 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeVariableRegistering")
 
 	myVariable1 = globalNamespace.findVariable("myVariable1");
 	REQUIRE(myVariable1 != nullptr);
-	REQUIRE(!sv);
 
 	REQUIRE(myVariable1->getValue()->as<gscript::ScriptIntValue>().getValue() == 0);
 

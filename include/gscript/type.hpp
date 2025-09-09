@@ -15,27 +15,30 @@ namespace gscript
 
 	struct TypeDescriptor
 	{
-		VALUE_TYPE_T type;
+		VALUE_TYPE_T type = VALUE_TYPE_T::VT_VOID;
 		std::string name;
 		TypeDescriptor *subType = nullptr;
 
 		explicit TypeDescriptor(VALUE_TYPE_T type, const TypeDescriptor &subType, const std::string &name = "")
-			:type(type),
-			name(name),
-			subType(new TypeDescriptor(subType))
-		{}
+			: type(type)
+			, name(name)
+			, subType(new TypeDescriptor(subType))
+		{
+		}
 
 		TypeDescriptor(VALUE_TYPE_T type, const std::string &name = "")
-			:type(type),
-			name(name),
-			subType(NULL)
-		{}
+			: type(type)
+			, name(name)
+			, subType(NULL)
+		{
+		}
 
 		TypeDescriptor(const TypeDescriptor &copy)
-			:type(copy.type),
-			name(copy.name),
-			subType(copy.subType ? new TypeDescriptor(*copy.subType) : NULL)
-		{ }
+			:type(copy.type)
+			, name(copy.name)
+			, subType(copy.subType ? new TypeDescriptor(*copy.subType) : NULL)
+		{
+		}
 
 		TypeDescriptor() = default;
 

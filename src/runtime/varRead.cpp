@@ -72,11 +72,11 @@ namespace gscript
 	{
 	}
 
-	std::unique_ptr<ScriptCallable> ScriptVarReadPrototype::build()
+	std::unique_ptr<ScriptCallable> ScriptVarReadPrototype::build(ScriptScopeBase* scope)
 	{
-		ScriptScope* scope = static_cast<ScriptScope*>(&this->scope);
+		ScriptScope* usedScope = static_cast<ScriptScope*>(scope ? scope : &this->scope);
 
-		auto result = std::make_unique<ScriptVarRead>(*scope, VariableAccessor::find(*scope, this->varname));
+		auto result = std::make_unique<ScriptVarRead>(*usedScope, VariableAccessor::find(*usedScope, this->varname));
 
 		return result;
 	}
@@ -123,47 +123,12 @@ namespace gscript
 	{
 	}
 
-	std::unique_ptr<ScriptCallable> ScriptArrayReadPrototype::build()
+	std::unique_ptr<ScriptCallable> ScriptArrayReadPrototype::build(ScriptScopeBase* scope)
 	{
-		ScriptScope* scope = static_cast<ScriptScope*>(&this->scope);
+		ScriptScope* usedScope = static_cast<ScriptScope*>(scope ? scope : &this->scope);
 
-		auto result = std::make_unique<ScriptArrayRead>(*scope, VariableAccessor::find(*scope, this->varname), std::move(this->arrayAccessor));
+		auto result = std::make_unique<ScriptArrayRead>(*usedScope, VariableAccessor::find(*usedScope, this->varname), std::move(this->arrayAccessor));
 
 		return result;
 	}
-
-	//// RESOLVER
-
-	//ScriptVarReadResolver::ScriptVarReadResolver(ScriptScope &scope, const std::string &name)
-	//	: ScriptVarRead(scope)
-	//	, name(name)
-	//{
-	//}
-
-	//std::unique_ptr<ScriptVarRead> ScriptVarReadResolver::resolve(ScriptScope &scope, bool member)
-	//{
-	//	ScriptVariable *var = scope.getVariable(this->name);
-	//	//ScriptVarRead *result = new ScriptVarRead(this->scope, scope.getVariable(this->name));
-
-	//	std::unique_ptr<EntityLink<ScriptVariable*>> link = nullptr;
-	//	if (member)
-	//		link = std::make_unique<MemberEntityLink<ScriptVariable*, ScriptClassInstance::VariableContainer>>(nullptr, var->getInternalPointer(), var);
-	//	else
-	//		link = std::make_unique<DirectEntityLink<ScriptVariable*>>(var);
-
-	//	return std::make_unique<ScriptVarRead>(this->scope, std::move(link));
-	//}
-
-	//// ARRAY READ RESOLV
-
-	//ScriptArrayReadResolver::ScriptArrayReadResolver(ScriptScope &scope, std::unique_ptr<ScriptCallable> &&accessor, const std::string &name)
-	//	: ScriptVarReadResolver(scope, name)
-	//	, accessor(std::move(accessor))
-	//{
-	//}
-
-	//std::unique_ptr<ScriptVarRead> ScriptArrayReadResolver::resolve(ScriptScope &scope, bool member)
-	//{
-	//	return std::make_unique<ScriptArrayRead>(this->scope, scope.getVariable(this->name), std::move(this->accessor));
-	//}
 }

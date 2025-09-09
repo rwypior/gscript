@@ -45,8 +45,7 @@ namespace gscript
 
 	private:
 		ScriptArrayType *type = nullptr;
-		ScriptValue **v = nullptr;
-		size_t i = 0;
+		std::vector<ScriptValue*> v;
 	};
 
 	namespace hash_tuple

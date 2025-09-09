@@ -43,7 +43,7 @@ namespace gscript
 	public:
 		ScriptVarReadPrototype(ScriptScope& scope, const std::string& varname);
 
-		virtual std::unique_ptr<ScriptCallable> build() override;
+		virtual std::unique_ptr<ScriptCallable> build(ScriptScopeBase* scope = nullptr) override;
 
 	private:
 		std::string varname;
@@ -70,34 +70,12 @@ namespace gscript
 	public:
 		ScriptArrayReadPrototype(ScriptScope& scope, const std::string& varname, std::unique_ptr<ScriptCallable>&& arrayAccessor);
 
-		virtual std::unique_ptr<ScriptCallable> build() override;
+		virtual std::unique_ptr<ScriptCallable> build(ScriptScopeBase* scope = nullptr) override;
 
 	private:
 		std::string varname;
 		std::unique_ptr<ScriptCallable> arrayAccessor;
 	};
-
-	//// RESOLVER
-
-	//class ScriptVarReadResolver : public ScriptVarRead
-	//{
-	//public:
-	//	std::string name;
-	//	ScriptVarReadResolver(ScriptScope &scope, const std::string &name);
-
-	//	std::unique_ptr<ScriptVarRead> resolve(ScriptScope &scope, bool member);
-	//};
-
-	//class ScriptArrayReadResolver : public ScriptVarReadResolver
-	//{
-	//public:
-	//	ScriptArrayReadResolver(ScriptScope &scope, std::unique_ptr<ScriptCallable> &&accessor, const std::string &name);
-
-	//	std::unique_ptr<ScriptVarRead> resolve(ScriptScope &scope, bool member);
-
-	//protected:
-	//	std::unique_ptr<ScriptCallable> accessor = nullptr;
-	//};
 }
 
 #endif

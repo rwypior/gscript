@@ -21,7 +21,7 @@ namespace gscript
 		std::shared_ptr<ScriptCallable> callable = nullptr;
 
 		//SCRIPT_API ScriptStatement(ScriptScope &scope, const ParserStatement &pstatement);
-		SCRIPT_API ScriptStatement(ScriptStatement&& stmt);
+		SCRIPT_API ScriptStatement(ScriptStatement&& stmt) noexcept;
 		ScriptStatement(const ScriptStatement& stmt) = delete;
 		SCRIPT_API ScriptStatement(ScriptScope &scope);
 		SCRIPT_API ScriptStatement(ScriptScope &scope, std::vector<std::unique_ptr<ScriptCallable>>&& callables);

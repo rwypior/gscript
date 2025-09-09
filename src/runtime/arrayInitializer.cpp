@@ -12,15 +12,15 @@ namespace gscript
 
 	ScriptValue *ScriptArrayInitializer::run(const CALLABLE_PARAMS_T &c)
 	{
-		ScriptValue **v = new ScriptValue*[this->statements.size()];
+		std::vector<ScriptValue*> vec;
+		vec.reserve(this->statements.size());
 
-		size_t i = 0;
 		for (auto& stmt : this->statements)
 		{
-			v[i++] = stmt->run();
+			vec.push_back(stmt->run());
 		}
 
-		return new ScriptArrayValue(static_cast<const ScriptArrayType*>(this->getType()), v);
+		return new ScriptArrayValue(static_cast<const ScriptArrayType*>(this->getType()), std::move(vec));
 	}
 
 	const ScriptType *ScriptArrayInitializer::getType() const

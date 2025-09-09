@@ -6,14 +6,15 @@
 namespace gscript
 {
 	make_sarray::make_sarray(ScriptType *subType, size_t count)
-		:v(new ScriptValue*[count]),
-		type(new ScriptArrayType(subType))
-	{ }
+		: type(new ScriptArrayType(subType))
+	{
+		this->v.reserve(count);
+	}
 
 	make_sarray::make_sarray(ScriptType *subType, size_t count, char **argv)
-		: v(new ScriptValue*[count]),
-		type(new ScriptArrayType(subType))
+		: type(new ScriptArrayType(subType))
 	{
+		this->v.reserve(count);
 		for (size_t i = 0; i < count; ++i)
 		{
 			*this << new ScriptStringValue(argv[i]);
@@ -22,7 +23,7 @@ namespace gscript
 
 	make_sarray &make_sarray::operator<<(ScriptValue* val)
 	{
-		v[this->i++] = val;
+		this->v.push_back(val);
 		return *this;
 	}
 

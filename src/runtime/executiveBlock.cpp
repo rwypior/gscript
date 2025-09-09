@@ -8,7 +8,7 @@ namespace gscript
 	{
 	}
 
-	ScriptExecutiveBlock::ScriptExecutiveBlock(ScriptExecutiveBlock&& exeblock)
+	ScriptExecutiveBlock::ScriptExecutiveBlock(ScriptExecutiveBlock&& exeblock) noexcept
 		: statements(std::move(exeblock.statements))
 	{
 	}

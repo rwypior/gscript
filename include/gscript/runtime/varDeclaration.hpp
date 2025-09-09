@@ -60,7 +60,7 @@ namespace gscript
 	public:
 		ScriptVarDeclarationPrototype(ScriptScope& scope, const std::string& name, const ScriptType* type, std::unique_ptr<ScriptStatement>&& statement);
 
-		virtual std::unique_ptr<ScriptCallable> build() override;
+		virtual std::unique_ptr<ScriptCallable> build(ScriptScopeBase* scope = nullptr) override;
 
 	private:
 		std::string name;

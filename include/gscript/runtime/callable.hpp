@@ -39,7 +39,7 @@ namespace gscript
 	public:
 		using ScriptCallable::ScriptCallable;
 
-		SCRIPT_API virtual std::unique_ptr<ScriptCallable> build() override = 0;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> build(ScriptScopeBase* scope = nullptr) override = 0;
 
 		SCRIPT_API virtual const ScriptType* getType() const
 		{

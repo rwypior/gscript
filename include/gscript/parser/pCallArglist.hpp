@@ -37,7 +37,7 @@ namespace gscript
 			ENTITY_TYPE_T allowedEntities = ENTITY_TYPE_T::ET_STATEMENT
 		);
 		ParserCallArglist(const ParserCallArglist&) = delete;
-		ParserCallArglist(ParserCallArglist&& b)
+		ParserCallArglist(ParserCallArglist&& b) noexcept
 			: parameters(std::move(b.parameters))
 		{
 		}

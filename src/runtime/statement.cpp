@@ -39,7 +39,7 @@ namespace gscript
 		this->resolveOperations(sharedCallables.rbegin(), sharedCallables.rend(), this->callable);
 	}
 
-	ScriptStatement::ScriptStatement(ScriptStatement&& stmt)
+	ScriptStatement::ScriptStatement(ScriptStatement&& stmt) noexcept
 		: ScriptCallable(stmt.scope)
 		, callable(std::move(stmt.callable))
 	{

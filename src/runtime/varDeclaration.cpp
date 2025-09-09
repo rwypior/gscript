@@ -65,7 +65,7 @@ namespace gscript
 	{
 	}
 
-	std::unique_ptr<ScriptCallable> ScriptVarDeclarationPrototype::build()
+	std::unique_ptr<ScriptCallable> ScriptVarDeclarationPrototype::build(ScriptScopeBase* scope)
 	{
 		// TODO
 		return nullptr;

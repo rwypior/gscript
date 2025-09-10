@@ -74,7 +74,7 @@ namespace gscript
 		ScriptScope* usedScope = static_cast<ScriptScope*>(scope ? scope : &this->scope);
 
 		PARAMS_T params = extractParams(this->params);
-		auto result = std::make_unique<ScriptFuncCall>(*usedScope, FunctionAccessor::find(*usedScope, this->funcname, params));
+		auto result = std::make_unique<ScriptFuncCall>(*usedScope, FunctionAccessor::find(*usedScope, this->funcname, params), std::move(this->params));
 
 		return result;
 	}

@@ -29,7 +29,7 @@ namespace gscript
 	public:
 		SCRIPT_API ScriptClass(ScriptScopeBase& scope, const std::string &name, ScriptClass *base = nullptr);
 
-		SCRIPT_API ScriptMethod *findMethod(const std::string &name, const PARAMS_T &params);
+		SCRIPT_API ScriptMethod *findMethod(const std::string &name, const PARAMS_T &params, bool searchParents = true, bool searchBase = true);
 		SCRIPT_API ScriptClass *getBase() const;
 
 		SCRIPT_API bool isBaseOf(ScriptClass *base);

@@ -15,21 +15,21 @@ namespace gscript
 		statement(std::move(statement))
 	{ }
 
-	ScriptVarDeclaration::ScriptVarDeclaration(ScriptScope &scope, VariableAccessor accessor, std::unique_ptr<ScriptStatement> &&statement)
+	ScriptVarDeclaration::ScriptVarDeclaration(ScriptScope &scope, std::unique_ptr<VariableAccessor>&& accessor, std::unique_ptr<ScriptStatement> &&statement)
 		: ScriptCallable(scope),
-		accessor(accessor),
+		accessor(std::move(accessor)),
 		statement(std::move(statement))
 	{
 	}
 
 	void ScriptVarDeclaration::setInstance(ScriptClassInstance &instance)
 	{
-		this->accessor.setScope(&instance);
+		this->accessor->setScope(&instance);
 	}
 
 	ScriptValue *ScriptVarDeclaration::run(const CALLABLE_PARAMS_T &params)
 	{
-		this->accessor.get()->init(this->statement->run());
+		this->accessor->get()->init(this->statement->run());
 
 		return nullptr;
 	}

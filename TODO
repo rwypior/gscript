@@ -1,19 +1,16 @@
 Fixes
 =====
 
-- Fix virtual methods calling - the method is found, but in base class
 
 Framework stuff
 ===============
 
+- VariableAccessor and FunctionAccessor should be treated as prototypes and return real addresses after built
 - Add serialization/deserialization classes which will enable quick loading pre-parsed scripts
-- Create unit tests for that
-- Remove that weird access control class from runtime and add it to parser
+	- Create unit tests for that
 - Find and eliminate raw pointer usage
 	- ScriptCallable is returning raw pointer - it should return std::shared_ptr instead
 	- ScriptVariable is taking raw pointer as default value - it should take std::unique_ptr (?) instead
-- Create a mechanism that will resolve unlinked calls - eg. functions or statements that are compiled, but rely on other statements/etc. that are not compiled yet
-- The test 'ParseUntilAtBegin' takes too much time - take a look at it
 
 Functionality
 =============

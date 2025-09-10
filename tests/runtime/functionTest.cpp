@@ -74,3 +74,49 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionReturn")
 	result = myFunc.run();
 	REQUIRE(result->as<gscript::ScriptIntValue>().getValue() == 42);
 }
+
+TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionWithParams")
+{
+	// Function
+	gscript::ScriptFunction myFunc(
+		globalNamespace, 
+		"myfunc", 
+		gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), 
+		{ { gscript::ScriptType(gscript::VALUE_TYPE_T::VT_INT), "arg1" }},
+		{}
+	);
+
+	// Function block
+	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(1));
+
+	auto varreadMyVariable1 = std::make_unique<gscript::ScriptVarRead>(myFunc, &myVariable1);
+	auto assign = std::make_unique<gscript::ScriptOperatorAssign>(myFunc, gscript::OPERATOR_LINK_T::OL_BOTH);
+	auto varreadParam1 = std::make_unique<gscript::ScriptVarReadPrototype>(myFunc, "arg1");
+	auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
+	stmtvecbody.push_back(std::move(varreadMyVariable1));
+	stmtvecbody.push_back(std::move(assign));
+	stmtvecbody.push_back(std::move(varreadParam1));
+	auto stmt1 = std::make_unique<gscript::ScriptStatement>(myFunc, std::move(stmtvecbody));
+	stmt1->setup();
+	auto stmtvecbody1 = std::vector<std::shared_ptr<gscript::ScriptCallable>>();
+	stmtvecbody1.push_back(std::move(stmt1));
+	auto eb = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbody1));
+
+	myFunc.merge(std::move(eb));
+	myFunc.setup();
+
+	// Params
+
+	gscript::ScriptIntValue param42(42);
+	gscript::ScriptIntValue param1337(1337);
+
+	// Test
+
+	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 1);
+
+	myFunc.run({&param42});
+	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 42);
+
+	myFunc.run({&param1337});
+	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 1337);
+}

@@ -38,7 +38,9 @@ namespace gscript
 		return *variables.back();
 	}
 
-	ScriptFunction* ScriptScopeBase::findFunction(const std::string &name, const PARAMS_T params) const
+	// TODO - merge those two functions into one
+
+	ScriptFunction* ScriptScopeBase::findFunction(const std::string &name, const PARAMS_T params, bool searchParents, bool searchBase) const
 	{
 		auto& functions = this->getFunctions();
 
@@ -48,22 +50,28 @@ namespace gscript
 		if (it != functions.end())
 			return it->get();
 
-		if (const ScriptClass* sc = dynamic_cast<const ScriptClass*>(this))
+		if (searchBase)
 		{
-			if (ScriptClass* base = sc->getBase())
+			if (const ScriptClass* sc = dynamic_cast<const ScriptClass*>(this))
 			{
-				if (ScriptFunction* fnc = base->findFunction(name, params))
-					return fnc;
+				if (ScriptClass* base = sc->getBase())
+				{
+					if (ScriptFunction* fnc = base->findFunction(name, params))
+						return fnc;
+				}
 			}
 		}
 
-		if (auto parentScope = this->getParentScope())
-			return parentScope->findFunction(name, params);
+		if (searchParents)
+		{
+			if (auto parentScope = this->getParentScope())
+				return parentScope->findFunction(name, params);
+		}
 
 		return nullptr;
 	}
 
-	ScopedAddress ScriptScopeBase::findFunctionAddr(const std::string& name, const PARAMS_T params, bool searchParents)
+	ScopedAddress ScriptScopeBase::findFunctionAddr(const std::string& name, const PARAMS_T params, bool searchParents, bool searchBase)
 	{
 		auto& functions = this->getFunctions();
 
@@ -73,12 +81,15 @@ namespace gscript
 		if (it != functions.end())
 			return ScopedAddress(this, it - functions.begin());
 
-		if (const ScriptClass* sc = dynamic_cast<const ScriptClass*>(this))
+		if (searchBase)
 		{
-			if (ScriptClass* base = sc->getBase())
+			if (const ScriptClass* sc = dynamic_cast<const ScriptClass*>(this))
 			{
-				if (ScopedAddress fnc = base->findFunctionAddr(name, params))
-					return fnc;
+				if (ScriptClass* base = sc->getBase())
+				{
+					if (ScopedAddress fnc = base->findFunctionAddr(name, params))
+						return fnc;
+				}
 			}
 		}
 
@@ -91,9 +102,9 @@ namespace gscript
 		return nullptr;
 	}
 
-	ScriptFunction* ScriptScopeBase::getFunction(const std::string &name, const PARAMS_T params) const
+	ScriptFunction* ScriptScopeBase::getFunction(const std::string &name, const PARAMS_T params, bool searchParents, bool searchBase) const
 	{
-		if (ScriptFunction *f = this->findFunction(name, params))
+		if (ScriptFunction *f = this->findFunction(name, params, searchParents, searchBase))
 			return f;
 
 		return nullptr;

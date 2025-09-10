@@ -20,7 +20,7 @@ namespace gscript
 	public:
 
 		ScriptVarDeclaration(ScriptScope &scope, ScriptVariable &var, std::unique_ptr<ScriptStatement> &&statement);
-		ScriptVarDeclaration(ScriptScope &scope, VariableAccessor accessor, std::unique_ptr<ScriptStatement> &&statement);
+		ScriptVarDeclaration(ScriptScope &scope, std::unique_ptr<VariableAccessor>&& accessor, std::unique_ptr<ScriptStatement> &&statement);
 		//ScriptVarDeclaration(ScriptScope &scope, ParserVarDeclaration &pvardecl);
 
 		//virtual void setup(ScriptScope& scope) override;
@@ -37,7 +37,7 @@ namespace gscript
 		}
 
 	protected:
-		VariableAccessor accessor;
+		std::unique_ptr<VariableAccessor> accessor;
 		//EntityLink<ScriptVariable&> *var = nullptr;
 		std::unique_ptr<ScriptStatement> statement;
 	};

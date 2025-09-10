@@ -29,6 +29,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
 
 namespace gscript
 {
@@ -164,14 +165,22 @@ namespace gscript
 		if (ep->isAbstract())
 			throw CompileException(std::string("Cannot instatiate abstract class ") + ep->getName());
 
-		ScriptMethod *em = ep->findMethod("run", make_vector<FunctionParameter>() << ScriptType::create(VALUE_TYPE_T::VT_INT, *ep) << ScriptType::create(TypeDescriptor(VALUE_TYPE_T::VT_ARRAY, VALUE_TYPE_T::VT_STRING), *ep));
+		ScriptMethod *em = ep->findMethod(
+			"run", 
+			make_vector<FunctionParameter>() << ScriptType::create(VALUE_TYPE_T::VT_INT, *ep) << ScriptType::create(TypeDescriptor(VALUE_TYPE_T::VT_ARRAY, VALUE_TYPE_T::VT_STRING), *ep),
+			false, false
+		);
+
+		if (!em)
+			throw RuntimeException((std::stringstream() << "Class \"" << ep->getName() << "\" is required to provide \"run(int, string[])\" method").str());
 
 		DBG("Running the script");
 
-		ScriptClassInstance *inst = new ScriptClassInstance(*ep);
+		ScriptClassInstance* inst = ep->instantiate();
+		//ScriptClassInstance *inst = new ScriptClassInstance(*ep);
 
-		ep->initialize(*inst);
-		em->setClassInstance(inst);
+		//ep->initialize(*inst);
+		//em->setClassInstance(inst);
 
 		ScriptValue *returncode = em->run(make_vector<ScriptValue*>() << new ScriptIntValue(argc) << make_sarray(ScriptType::create(VALUE_TYPE_T::VT_STRING, *ep), argc, argv));
 

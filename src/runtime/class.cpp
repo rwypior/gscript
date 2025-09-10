@@ -60,9 +60,9 @@ namespace gscript
 		return inst;
 	}
 
-	ScriptMethod *ScriptClass::findMethod(const std::string &name, const PARAMS_T &params)
+	ScriptMethod *ScriptClass::findMethod(const std::string &name, const PARAMS_T &params, bool searchParents, bool searchBase)
 	{
-		return static_cast<ScriptMethod*>(this->getFunction(name, params));
+		return static_cast<ScriptMethod*>(this->getFunction(name, params, searchParents, searchBase));
 	}
 
 	std::vector<ScriptMethod*> ScriptClass::getAbstractMethods()

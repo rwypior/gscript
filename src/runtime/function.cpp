@@ -108,6 +108,32 @@ namespace gscript
 		return true;
 	}
 
+	FunctionParameter* ScriptFunction::findParam(const std::string& name)
+	{
+		auto& params = this->getParameters();
+
+		auto it = std::find_if(params.begin(), params.end(), [&name](const FunctionParameter& v) {
+			return v.getName() == name;
+			});
+		if (it != params.end())
+			return &*it;
+
+		return nullptr;
+	}
+
+	ScopedAddress ScriptFunction::findParamAddr(const std::string& name)
+	{
+		auto& params = this->getParameters();
+
+		auto it = std::find_if(params.begin(), params.end(), [&name](const FunctionParameter& v) {
+			return v.getName() == name;
+			});
+		if (it != params.end())
+			return ScopedAddress(this, it - params.begin());
+
+		return {};
+	}
+
 	void ScriptFunction::throwBadParameters(const std::string &text)
 	{
 		DBG(text);

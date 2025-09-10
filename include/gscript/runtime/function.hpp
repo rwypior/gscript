@@ -33,6 +33,8 @@ namespace gscript
 		SCRIPT_API virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		SCRIPT_API virtual PARAMS_T &getParameters();
 		SCRIPT_API virtual bool validateParams(const CALLABLE_PARAMS_T &c, bool throwException = true);
+		SCRIPT_API FunctionParameter* findParam(const std::string& name);
+		SCRIPT_API ScopedAddress findParamAddr(const std::string& name);
 		SCRIPT_API ScriptVariable *findVariable(const std::string &name) override;
 
 		SCRIPT_API bool matches(const std::string &name, const PARAMS_T &parameters);

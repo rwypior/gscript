@@ -35,9 +35,9 @@ namespace gscript
 		SCRIPT_API virtual ScriptVariable& registerVariable(const std::string& name, const ScriptType* type, ScriptValue* value);
 		SCRIPT_API virtual ScriptVariable& registerVariable(std::unique_ptr<ScriptVariable>&& variable);
 
-		SCRIPT_API virtual ScriptFunction* findFunction(const std::string& name, const PARAMS_T params) const;
-		SCRIPT_API virtual ScopedAddress findFunctionAddr(const std::string& name, const PARAMS_T params, bool searchParents = true);
-		SCRIPT_API virtual ScriptFunction* getFunction(const std::string& name, const PARAMS_T params) const;
+		SCRIPT_API virtual ScriptFunction* findFunction(const std::string& name, const PARAMS_T params, bool searchParents = true, bool searchBase = true) const;
+		SCRIPT_API virtual ScopedAddress findFunctionAddr(const std::string& name, const PARAMS_T params, bool searchParents = true, bool searchBase = true);
+		SCRIPT_API virtual ScriptFunction* getFunction(const std::string& name, const PARAMS_T params, bool searchParents = true, bool searchBase = true) const;
 		SCRIPT_API virtual std::vector<std::unique_ptr<ScriptFunction>>& getFunctions() = 0;
 		SCRIPT_API virtual const std::vector<std::unique_ptr<ScriptFunction>>& getFunctions() const = 0;
 

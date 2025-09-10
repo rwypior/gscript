@@ -11,9 +11,9 @@ namespace gscript
 	{
 	}
 
-	ScriptVarRead::ScriptVarRead(ScriptScope& scope, VariableAccessor accessor)
+	ScriptVarRead::ScriptVarRead(ScriptScope& scope, std::unique_ptr<VariableAccessor>&& accessor)
 		: ScriptCallable(scope)
-		, accessor(accessor)
+		, accessor(std::move(accessor))
 	{
 	}
 
@@ -43,24 +43,24 @@ namespace gscript
 
 	ScriptValue *ScriptVarRead::run(const CALLABLE_PARAMS_T &c)
 	{
-		return this->accessor.get()->getValue();
+		return this->accessor->get()->getValue();
 		//return this->var->get()->getValue();
 	}
 
 	ScriptVariable* ScriptVarRead::get()
 	{
-		return this->accessor.get();
+		return this->accessor->get();
 	}
 
 	const ScriptType *ScriptVarRead::getType() const
 	{
-		return this->accessor.getType();
+		return this->accessor->getType();
 		//return this->var->orig()->getType();
 	}
 
 	void ScriptVarRead::setScope(ScriptClassInstance *instance)
 	{	
-		this->accessor.setScope(instance);
+		this->accessor->setScope(instance);
 		//static_cast<MemberEntityLink<ScriptVariable*, ScriptClassInstance::VariableContainer>&>(*this->var).container = &instance->getVariables();
 	}
 
@@ -76,15 +76,32 @@ namespace gscript
 	{
 		ScriptScope* usedScope = static_cast<ScriptScope*>(scope ? scope : &this->scope);
 
-		auto result = std::make_unique<ScriptVarRead>(*usedScope, VariableAccessor::find(*usedScope, this->varname));
+		std::unique_ptr<ScriptVarRead> result;
+
+		try
+		{
+			result = std::make_unique<ScriptVarRead>(*usedScope, VariableAccessor::find(*usedScope, this->varname));
+		}
+		catch (...)
+		{
+			try
+			{
+				result = std::make_unique<ScriptVarRead>(*usedScope, ParameterAccessor::find(*usedScope, this->varname));
+			}
+			catch (...)
+			{
+				throw;
+			}
+		}
+		//auto result = std::make_unique<ScriptVarRead>(*usedScope, VariableAccessor::find(*usedScope, this->varname));
 
 		return result;
 	}
 
 	// Array var read
 
-	ScriptArrayRead::ScriptArrayRead(ScriptScope& scope, VariableAccessor accessor, std::unique_ptr<ScriptCallable> &&arrayAccessor)
-		: ScriptVarRead(scope, accessor)
+	ScriptArrayRead::ScriptArrayRead(ScriptScope& scope, std::unique_ptr<VariableAccessor>&& accessor, std::unique_ptr<ScriptCallable> &&arrayAccessor)
+		: ScriptVarRead(scope, std::move(accessor))
 		, arrayAccessor(std::move(arrayAccessor))
 	{
 	}
@@ -110,7 +127,7 @@ namespace gscript
 
 	const ScriptType *ScriptArrayRead::getType() const
 	{
-		return static_cast<const ScriptArrayType*>(this->accessor.getType())->subType;
+		return static_cast<const ScriptArrayType*>(this->accessor->getType())->subType;
 		//return static_cast<const ScriptArrayType*>(this->var->orig()->getType())->subType;
 	}
 

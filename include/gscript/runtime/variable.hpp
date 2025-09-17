@@ -13,49 +13,24 @@ namespace gscript
 
 	class ScriptVariable
 	{
-		friend class ScriptVariableResolv;
-
 	public:
-		SCRIPT_API ScriptVariable(const std::string &name, const ScriptType *type, ScriptValue *value/*, size_t internalPointer*/);
+		SCRIPT_API ScriptVariable(const std::string &name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptValue>&& value);
 		SCRIPT_API ScriptVariable(const ScriptVariable& b);
-		virtual ~ScriptVariable() = default;
+		SCRIPT_API virtual ~ScriptVariable() = default;
 
-		ScriptValue *getValue() const
-		{
-			return this->value;
-		}
+		SCRIPT_API void init(std::unique_ptr<ScriptValue>&& value);
 
-		void setValue(ScriptValue *value)
-		{
-			//if (this->value)
-				//delete this->value;
+		SCRIPT_API const std::unique_ptr<ScriptValue>& getValue() const;
+		SCRIPT_API void setValue(std::unique_ptr<ScriptValue>&& value);
+		SCRIPT_API void setValue(const std::unique_ptr<ScriptValue>& value);
 
-			this->value = value;
-		}
-
-		SCRIPT_API void init(ScriptValue *value);
-
-		const std::string &getName() const
-		{
-			return this->name;
-		}
-
-		const ScriptType *getType() const
-		{
-			return this->type;
-		}
-
-		/*size_t getInternalPointer() const
-		{
-			return this->internalPointer;
-		}*/
+		SCRIPT_API const std::string& getName() const;
+		SCRIPT_API const std::shared_ptr<ScriptType> getType() const;
 
 	protected:
 		const std::string name;
-		ScriptValue *value = nullptr;
-		const ScriptType *type = nullptr;
-
-		//size_t internalPointer;
+		std::unique_ptr<ScriptValue> value;
+		const std::shared_ptr<ScriptType> type;
 	};
 }
 

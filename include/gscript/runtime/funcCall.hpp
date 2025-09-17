@@ -28,10 +28,10 @@ namespace gscript
 		ScriptFuncCall(ScriptScope& scope, ScriptFunction* func, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
 		ScriptFuncCall(ScriptScope& scope, const std::string& name, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
 
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 
-		virtual const ScriptType *getType() const override;
-		void setInstance(ScriptClassValue *instance);
+		virtual const std::shared_ptr<ScriptType> getType() const override;
+		void setInstance(std::unique_ptr<ScriptValue>&& instance);
 
 		FunctionAccessor& getFunc()
 		{

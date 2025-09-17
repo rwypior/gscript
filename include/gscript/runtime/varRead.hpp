@@ -27,9 +27,9 @@ namespace gscript
 		//ScriptVarRead(ScriptScope &scope, ScriptVariable *var);
 		//ScriptVarRead(ScriptScope &scope, std::unique_ptr<EntityLink<ScriptVariable*>>&& link);
 
-		virtual const ScriptType *getType() const override;
+		virtual const std::shared_ptr<ScriptType> getType() const override;
 
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual ScriptVariable* get();
 
 		virtual void setScope(ScriptClassInstance *instance);
@@ -57,9 +57,9 @@ namespace gscript
 		ScriptArrayRead(ScriptScope &scope, std::unique_ptr<VariableAccessor>&& accessor, std::unique_ptr<ScriptCallable> &&arrayAccessor);
 		ScriptArrayRead(ScriptScope &scope, ScriptVariable *variable, std::unique_ptr<ScriptCallable> &&arrayAccessor);
 		ScriptArrayRead(ScriptScope &scope, const std::string& name, std::unique_ptr<ScriptCallable> &&arrayAccessor);
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 
-		virtual const ScriptType *getType() const override;
+		virtual const std::shared_ptr<ScriptType> getType() const override;
 
 	protected:
 		std::unique_ptr<ScriptCallable> arrayAccessor = nullptr;

@@ -4,19 +4,18 @@
 
 namespace gscript
 {
-	FunctionParameter::FunctionParameter(const ScriptType &type, const std::string &name, ScriptValue *val)
-		: ScriptVariable(name, new ScriptType(type), val)
+	FunctionParameter::FunctionParameter(const std::shared_ptr<ScriptType> type, const std::string &name, std::unique_ptr<ScriptValue>&& val)
+		: ScriptVariable(name, type, std::move(val))
 	{
 	}
 
-	FunctionParameter::FunctionParameter(const ScriptType &type, const std::string &name)
-		: ScriptVariable(name, new ScriptType(type), ScriptType::createEmptyValue(type.getTypeDescriptor()))
+	FunctionParameter::FunctionParameter(const std::shared_ptr<ScriptType> type, const std::string &name)
+		: ScriptVariable(name, type, ScriptType::createEmptyValue(type->getTypeDescriptor()))
 	{
 	}
 
-	FunctionParameter::FunctionParameter(const ScriptType *type, const std::string &name)
-		//: ScriptVariable(name, type, ScriptType::createEmptyValue(type->getTypeDescriptor()), 0)
-		: ScriptVariable(name, type, ScriptType::createEmptyValue(type->getAbsoluteTypeDescriptor(), type))
+	FunctionParameter::FunctionParameter(const std::shared_ptr<ScriptType> type, const std::shared_ptr<ScriptType> subtype, const std::string &name)
+		: ScriptVariable(name, type, ScriptType::createEmptyValue(type->getTypeDescriptor(), subtype))
 	{
 	}
 

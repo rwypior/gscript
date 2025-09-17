@@ -5,6 +5,7 @@
 
 #include <vector>
 #include <limits>
+#include <memory>
 
 #define NOARG
 
@@ -141,15 +142,19 @@ namespace gscript
 	};
 
 	typedef std::vector<FunctionParameter> PARAMS_T;
-	typedef std::vector<ScriptValue*> CALLABLE_PARAMS_T;
+	typedef std::vector<std::unique_ptr<ScriptValue>> CALLABLE_PARAMS_T;
 
-	extern const char *KW_NULL;
-	extern const char *KW_TRUE;
-	extern const char *KW_FALSE;
+	constexpr char keywordNull[] = "null";
+	constexpr char keywordTrue[] = "true";
+	constexpr char keywordFalse[] = "false";
 
-	extern ScriptNullValue* SCR_NULL;
+	const std::shared_ptr<ScriptNullValue> getNull();
+	const std::shared_ptr<ScriptBoolValue> getTrue();
+	const std::shared_ptr<ScriptBoolValue> getFalse();
+
+	/*extern ScriptNullValue* SCR_NULL;
 	extern ScriptBoolValue* SCR_TRUE;
-	extern ScriptBoolValue* SCR_FALSE;
+	extern ScriptBoolValue* SCR_FALSE;*/
 }
 
 DEFINE_BITFIELD(gscript::MODIFIER_T);

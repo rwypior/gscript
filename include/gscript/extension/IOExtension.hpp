@@ -21,21 +21,21 @@ namespace gscript
 		{
 		public:
 			ConstructorFile(ScriptScopeBase& scope, const std::string& name);
-			virtual ScriptValue* run(const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override;
+			virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override;
 		};
 
 		class FuncReadAll : public ScriptMethod, public ScriptExtension::ExtensionFunction
 		{
 		public:
 			FuncReadAll(ScriptScopeBase& scope, const std::string& name);
-			virtual ScriptValue* run(const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override;
+			virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override;
 		};
 
 		class FuncStaticExists : public ScriptMethod, public ScriptExtension::ExtensionFunction
 		{
 		public:
 			FuncStaticExists(ScriptScopeBase& scope, const std::string& name);
-			virtual ScriptValue* run(const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override;
+			virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override;
 		};
 
 		class ClassFile : public ScriptClass

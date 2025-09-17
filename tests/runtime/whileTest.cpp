@@ -15,7 +15,7 @@
 TEST_CASE_METHOD(GscriptTest, "RuntimeWhile")
 {
 	// Test variable
-	auto& testVariable = globalNamespace.registerVariable("testVariable", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(0));
+	auto& testVariable = globalNamespace.registerVariable("testVariable", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(0));
 
 	// While condition
 	auto varread = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &testVariable);

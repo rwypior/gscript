@@ -5,31 +5,29 @@
 #include "scriptValue.hpp"
 #include "statement.hpp"
 #include "entityLink.hpp"
-//#include "intermediary.hpp"
 
 #include <string>
+#include <memory>
 
 namespace gscript
 {
 	class ScriptScopeBase;
 	class ScriptScope;
 	class ScriptVariable;
+	class VariableAccessor;
 
-	class ScriptVarDeclaration : public ScriptCallable//, public Intermediary
+	class ScriptVarDeclaration : public ScriptCallable
 	{
 	public:
 
 		ScriptVarDeclaration(ScriptScope &scope, ScriptVariable &var, std::unique_ptr<ScriptStatement> &&statement);
 		ScriptVarDeclaration(ScriptScope &scope, std::unique_ptr<VariableAccessor>&& accessor, std::unique_ptr<ScriptStatement> &&statement);
-		//ScriptVarDeclaration(ScriptScope &scope, ParserVarDeclaration &pvardecl);
-
-		//virtual void setup(ScriptScope& scope) override;
 
 		void setInstance(ScriptClassInstance &instance);
 
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &p = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &p = CALLABLE_PARAMS_T()) override;
 
-		virtual const ScriptType *getType() const override;
+		virtual const std::shared_ptr<ScriptType> getType() const override;
 
 		std::string _name() const
 		{
@@ -38,33 +36,32 @@ namespace gscript
 
 	protected:
 		std::unique_ptr<VariableAccessor> accessor;
-		//EntityLink<ScriptVariable&> *var = nullptr;
 		std::unique_ptr<ScriptStatement> statement;
 	};
 
 	class ScriptFieldDeclaration : public ScriptVarDeclaration
 	{
 	public:
-		ScriptFieldDeclaration(ScriptScope& scope, const std::string& name, const ScriptType* type, std::unique_ptr<ScriptStatement>&& statement);
+		ScriptFieldDeclaration(ScriptScope& scope, const std::string& name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptStatement>&& statement);
 
 		void instantiate(ScriptScopeBase& instance);
 
 	private:
 		std::string name;
-		const ScriptType* type;
+		const std::shared_ptr<ScriptType> type;
 		std::unique_ptr<ScriptStatement> statement;
 	};
 
 	class ScriptVarDeclarationPrototype : public ScriptCallablePrototype
 	{
 	public:
-		ScriptVarDeclarationPrototype(ScriptScope& scope, const std::string& name, const ScriptType* type, std::unique_ptr<ScriptStatement>&& statement);
+		ScriptVarDeclarationPrototype(ScriptScope& scope, const std::string& name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptStatement>&& statement);
 
 		virtual std::unique_ptr<ScriptCallable> build(ScriptScopeBase* scope = nullptr) override;
 
 	private:
 		std::string name;
-		const ScriptType* type;
+		const std::shared_ptr<ScriptType> type;
 		std::unique_ptr<ScriptStatement> statement;
 	};
 }

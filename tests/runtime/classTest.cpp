@@ -1,5 +1,6 @@
 #include "common.h"
 #include "gscript/runtime/class.hpp"
+#include "gscript/runtime/classInstance.hpp"
 #include "gscript/runtime/new.hpp"
 #include "gscript/runtime/scriptValue.hpp"
 #include "gscript/runtime/literal.hpp"
@@ -18,7 +19,7 @@
 TEST_CASE_METHOD(GscriptTest, "RuntimeClassNewTest")
 {
 	// Variable
-	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(1));
+	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(1));
 
 	// Class
 	gscript::ScriptClass myClass(globalNamespace, "MyClass");
@@ -57,7 +58,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeClassVariableRead")
 {
 	// Class
 	auto& myClass = globalNamespace.registerClass(std::make_unique<gscript::ScriptClass>(globalNamespace, "MyClass"));
-	myClass.registerVariable("test", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, myClass), new gscript::ScriptIntValue(42));
+	myClass.registerVariable("test", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, myClass), std::make_unique<gscript::ScriptIntValue>(42));
 
 	// New
 	gscript::ScriptNew newcall(myClass);
@@ -84,7 +85,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeClassVariableRead")
 TEST_CASE_METHOD(GscriptTest, "RuntimeClassInheritance")
 {
 	// Variable
-	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(1));
+	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(1));
 
 	// Base Class
 	gscript::ScriptClass base(globalNamespace, "Base");
@@ -116,8 +117,9 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeClassInheritance")
 	// New
 	gscript::ScriptNew newcall(myClass);
 
-	auto objval = static_cast<gscript::ScriptClassValue*>(newcall.run());
-	auto obj = objval->getValue();
+	auto res = newcall.run();
+	auto objval = static_cast<gscript::ScriptClassValue*>(res->data());
+	auto& obj = objval->getValue();
 
 	auto foundfnc = obj->findFunction("fnc", {});
 
@@ -134,7 +136,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeClassInheritance")
 TEST_CASE_METHOD(GscriptTest, "RuntimeClassVirtualCall")
 {
 	// Variable
-	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(1));
+	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(1));
 
 	// Base Class
 	auto& base = globalNamespace.registerClass(std::make_unique<gscript::ScriptClass>(globalNamespace, "Base"));

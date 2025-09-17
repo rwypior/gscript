@@ -13,7 +13,7 @@ namespace gscript
 	{
 	}
 
-	ScriptValue* ScriptExecutiveBlock::execute()
+	std::unique_ptr<ScriptValue> ScriptExecutiveBlock::execute()
 	{
 		for (auto& stmt : this->statements)
 		{
@@ -23,7 +23,7 @@ namespace gscript
 			stmt->run();
 		}
 
-		return SCR_NULL;
+		return ScriptType::null();
 	}
 
 	void ScriptExecutiveBlock::merge(ScriptExecutiveBlock&& block)

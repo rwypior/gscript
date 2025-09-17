@@ -10,6 +10,7 @@
 #include "scope.hpp"
 
 #include <string>
+#include <memory>
 
 namespace gscript
 {
@@ -24,13 +25,12 @@ namespace gscript
 		SCRIPT_API ScriptFunction(
 			ScriptScopeBase& scope, 
 			const std::string& name, 
-			ScriptType* returnType, 
+			std::shared_ptr<ScriptType> returnType, 
 			const PARAMS_T & parameters = PARAMS_T(),
 			std::vector<std::shared_ptr<ScriptCallable>>&& statements = {}
 		);
-		SCRIPT_API ~ScriptFunction();
 
-		SCRIPT_API virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		SCRIPT_API virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		SCRIPT_API virtual PARAMS_T &getParameters();
 		SCRIPT_API virtual bool validateParams(const CALLABLE_PARAMS_T &c, bool throwException = true);
 		SCRIPT_API FunctionParameter* findParam(const std::string& name);
@@ -39,7 +39,7 @@ namespace gscript
 
 		SCRIPT_API bool matches(const std::string &name, const PARAMS_T &parameters);
 
-		SCRIPT_API virtual const ScriptType *getType() const override;
+		SCRIPT_API virtual const std::shared_ptr<ScriptType> getType() const override;
 		SCRIPT_API const std::string &getName() const;
 
 		SCRIPT_API size_t getInternalPointer() const
@@ -64,56 +64,9 @@ namespace gscript
 		void registerParameters(const CALLABLE_PARAMS_T& c);
 
 		const std::string name;
-		ScriptType* returnType = nullptr;
+		std::shared_ptr<ScriptType> returnType;
 		PARAMS_T parameters;
 	};
-
-	///
-	/// Used to hold place for function until all classes are registered
-	/// This is neccessary so all function and class names are registered
-	/// and visible.
-	///
-	
-	// TODO
-	/*class ScriptFunctionPrototype
-	{
-	public:
-		SCRIPT_API ScriptFunctionPrototype(ScriptFunction &target, const ParserFunction &pfunc);
-
-		SCRIPT_API void build();
-
-	protected:
-		ScriptFunction &target;
-		const ParserFunction &pfunc;
-	};*/
-
-	///
-	/// Used to represent functions created on host-side. Overrides setup
-	/// function to act like prototype, but without usage of parser entities.
-	///
-	//class ScriptExternFunction : public ScriptFunction
-	//{
-	//public:
-	//	using ScriptFunction::ScriptFunction;
-
-	//	SCRIPT_API virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override = 0;
-	//	virtual void setup() {};
-	//};
-
-	///
-	/// Used to map internal function representation to existing registered
-	/// external function. Works the same as ScriptExternMethod.
-	///
-	//class ScriptExternFunctionConnector : public ScriptFunction
-	//{
-	//public:
-	//	SCRIPT_API ScriptExternFunctionConnector(const std::string &externName, ScriptScope &scope, const std::string &name, ScriptType *returnType, const PARAMS_T &parameters = PARAMS_T());
-
-	//	SCRIPT_API virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
-
-	//protected:
-	//	ScriptExternFunction &target;
-	//};
 }
 
 #endif

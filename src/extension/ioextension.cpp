@@ -30,7 +30,7 @@ namespace gscript
 	{
 	}
 
-	ScriptValue* IOExtension::ConstructorFile::run(const CALLABLE_PARAMS_T& c)
+	std::unique_ptr<ScriptValue> IOExtension::ConstructorFile::run(const CALLABLE_PARAMS_T& c)
 	{
 		this->validateParams(c);
 
@@ -41,7 +41,7 @@ namespace gscript
 
 		static_cast<ClassFile&>(this->scope).str = std::fstream(path.getValue(), mode);
 
-		return SCR_NULL;
+		return ScriptType::null();
 	}
 
 	// Read all
@@ -59,13 +59,13 @@ namespace gscript
 	{
 	}
 
-	ScriptValue* IOExtension::FuncReadAll::run(const CALLABLE_PARAMS_T& c)
+	std::unique_ptr<ScriptValue> IOExtension::FuncReadAll::run(const CALLABLE_PARAMS_T& c)
 	{
 		this->validateParams(c);
 
 		std::fstream& file = static_cast<ClassFile&>(this->scope).str;
 
-		ScriptReferenceValue storage(c[0]);
+		ScriptReferenceValue storage(c.at(0).get());
 
 		file.seekg(0, std::ios_base::end);
 		std::streampos size = file.tellg();
@@ -76,7 +76,7 @@ namespace gscript
 
 		storage.put(new ScriptStringValue(result));
 
-		return new ScriptIntValue(size);
+		return std::make_unique<ScriptIntValue>(static_cast<int>(size));
 	}
 
 	// File exists
@@ -94,7 +94,7 @@ namespace gscript
 	{
 	}
 
-	ScriptValue* IOExtension::FuncStaticExists::run(const CALLABLE_PARAMS_T& c)
+	std::unique_ptr<ScriptValue> IOExtension::FuncStaticExists::run(const CALLABLE_PARAMS_T& c)
 	{
 		this->validateParams(c);
 
@@ -103,7 +103,7 @@ namespace gscript
 		struct stat buffer;
 		bool exists = stat(path.getValue().c_str(), &buffer) == 0;
 
-		return new ScriptBoolValue(exists);
+		return std::make_unique<ScriptBoolValue>(exists);
 	}
 
 	// Class file

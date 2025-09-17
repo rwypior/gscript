@@ -5,9 +5,17 @@
 
 namespace gscript
 {
+	ScriptClassInstance::ScriptClassInstance(const ScriptClassInstance& b)
+		: sclass(b.sclass)
+	{
+		for (auto& el : b.variables)
+		{
+			this->variables.push_back(std::make_unique<ScriptVariable>(*el));
+		}
+	}
+
 	ScriptClassInstance::ScriptClassInstance(ScriptClass &sclass)
 		: sclass(sclass)
-		//, variables(sclass.getVariables().begin(), sclass.getVariables().end())
 	{
 		this->variables.resize(sclass.getVariables().size());
 		std::transform(sclass.getVariables().begin(), sclass.getVariables().end(), this->variables.begin(), [](std::unique_ptr<ScriptVariable>& v) {

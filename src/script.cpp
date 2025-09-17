@@ -30,6 +30,8 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <vector>
+#include <memory>
 
 namespace gscript
 {
@@ -134,9 +136,9 @@ namespace gscript
 
 	void Script::init()
 	{
-		this->mainScope->registerVariable(KW_NULL, SCR_NULL->getType(), SCR_NULL);
-		this->mainScope->registerVariable(KW_TRUE, SCR_TRUE->getType(), SCR_TRUE);
-		this->mainScope->registerVariable(KW_FALSE, SCR_FALSE->getType(), SCR_FALSE);
+		this->mainScope->registerVariable(keywordNull, ScriptType::nulltype(), ScriptType::null());
+		this->mainScope->registerVariable(keywordTrue, ScriptType::booltype(), ScriptType::btrue());
+		this->mainScope->registerVariable(keywordFalse, ScriptType::booltype(), ScriptType::bfalse());
 
 		this->mainScope->registerFunction(std::make_unique<ScriptFuncToString>(*this->mainScope, "tostring"));
 
@@ -145,7 +147,10 @@ namespace gscript
 			*entrypoint,
 			"run",
 			ScriptType::create(VALUE_TYPE_T::VT_INT, *entrypoint),
-			make_vector<FunctionParameter>() << ScriptType(VALUE_TYPE_T::VT_INT) << ScriptType::create(TypeDescriptor(VALUE_TYPE_T::VT_ARRAY, VALUE_TYPE_T::VT_STRING), *entrypoint),
+			std::vector<FunctionParameter> {
+				std::make_shared<ScriptType>(VALUE_TYPE_T::VT_INT),
+				std::shared_ptr<ScriptType>(ScriptType::create(TypeDescriptor(VALUE_TYPE_T::VT_ARRAY, VALUE_TYPE_T::VT_STRING), *entrypoint))
+			},
 			MODIFIER_T::M_VIRTUAL | MODIFIER_T::M_ABSTRACT
 		));
 
@@ -167,7 +172,10 @@ namespace gscript
 
 		ScriptMethod *em = ep->findMethod(
 			"run", 
-			make_vector<FunctionParameter>() << ScriptType::create(VALUE_TYPE_T::VT_INT, *ep) << ScriptType::create(TypeDescriptor(VALUE_TYPE_T::VT_ARRAY, VALUE_TYPE_T::VT_STRING), *ep),
+			std::vector<FunctionParameter> {
+				std::shared_ptr<ScriptType>(ScriptType::create(VALUE_TYPE_T::VT_INT, *ep)),
+				std::shared_ptr<ScriptType>(ScriptType::create(TypeDescriptor(VALUE_TYPE_T::VT_ARRAY, VALUE_TYPE_T::VT_STRING), *ep))
+			},
 			false, false
 		);
 
@@ -176,17 +184,22 @@ namespace gscript
 
 		DBG("Running the script");
 
-		ScriptClassInstance* inst = ep->instantiate();
-		//ScriptClassInstance *inst = new ScriptClassInstance(*ep);
+		auto inst = ep->instantiate();
 
-		//ep->initialize(*inst);
-		//em->setClassInstance(inst);
+		std::vector<std::unique_ptr<ScriptValue>> params;
 
-		ScriptValue *returncode = em->run(make_vector<ScriptValue*>() << new ScriptIntValue(argc) << make_sarray(ScriptType::create(VALUE_TYPE_T::VT_STRING, *ep), argc, argv));
+		for (size_t i = 0; i < argc; i++)
+		{
+			params.push_back(std::make_unique<ScriptStringValue>(argv[i]));
+		}
 
-		delete inst;
+		std::vector<std::unique_ptr<ScriptValue>> paramvalues;
+		paramvalues.push_back(std::make_unique<ScriptIntValue>(argc));
+		paramvalues.push_back(std::make_unique<ScriptArrayValue>(std::move(params)));
 
-		return static_cast<ScriptIntValue*>(returncode)->getValue();
+		auto returncode = em->run(std::move(paramvalues));
+
+		return static_cast<ScriptIntValue*>(returncode.get())->getValue();
 	}
 
 	void Script::import(const std::string &path)

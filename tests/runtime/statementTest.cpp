@@ -18,11 +18,11 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeStatement")
 {
 	// Variables
 	auto& var1 = globalNamespace.registerVariable(
-		std::make_unique<gscript::ScriptVariable>("var1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(1)));
+		std::make_unique<gscript::ScriptVariable>("var1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(1)));
 	auto& var2 = globalNamespace.registerVariable(
-		std::make_unique<gscript::ScriptVariable>("var2", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(42)));
+		std::make_unique<gscript::ScriptVariable>("var2", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(42)));
 	auto& var3 = globalNamespace.registerVariable(
-		std::make_unique<gscript::ScriptVariable>("var3", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(1337)));
+		std::make_unique<gscript::ScriptVariable>("var3", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(1337)));
 
 	// Statement body
 	auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
@@ -75,7 +75,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeStatementWithFuncCalls")
 
 	// Variables
 	auto& var1 = globalNamespace.registerVariable(
-		std::make_unique<gscript::ScriptVariable>("var2", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(42)));
+		std::make_unique<gscript::ScriptVariable>("var2", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(42)));
 
 	// Func call
 	auto funccall = std::make_unique<gscript::ScriptFuncCall>(globalNamespace, &myFunc);

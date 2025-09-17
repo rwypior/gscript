@@ -4,20 +4,15 @@
 #include "defs.hpp"
 #include "compileException.hpp"
 
+#include <cassert>
+
 namespace gscript
 {
-	/*ScriptMethod::ScriptMethod(ScriptFunction &func, BITFLAG_T modifier)
-		: ScriptFunction(func)
-		, accessModifier(modifier)
-	{
-		this->createThis(static_cast<ScriptClass&>(func.getScope()));
-	}*/
-
 	ScriptMethod::ScriptMethod
 	(
 		ScriptScopeBase& scope,
 		const std::string &name,
-		ScriptType *returnType,
+		std::shared_ptr<ScriptType> returnType,
 		const PARAMS_T &parameters,
 		MODIFIER_T modifier
 	)
@@ -29,14 +24,12 @@ namespace gscript
 
 	void ScriptMethod::createThis(ScriptClass &sclass)
 	{
-		//this->registerVariable(ScriptClass::KW_THIS, new ScriptClassType(static_cast<ScriptClass&>(func.getScope())), NULL);
-		//this->registerVariable(ScriptClass::KW_THIS, new ScriptClassType(sclass), NULL);
-		this->registerVariable(std::make_unique<ScriptVariable>(ScriptClass::KW_THIS, new ScriptClassType(sclass), nullptr));
+		this->registerVariable(std::make_unique<ScriptVariable>(ScriptClass::keywordThis, std::make_unique<ScriptClassType>(sclass), nullptr));
 	}
 
-	ScriptValue *ScriptMethod::instrun(ScriptClassInstance *instance, const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptMethod::instrun(std::unique_ptr<ScriptReferenceValue>&& instance, const CALLABLE_PARAMS_T &c)
 	{
-		this->setClassInstance(instance);
+		this->setClassInstance(std::move(instance));
 		return this->run(c);
 	}
 
@@ -55,46 +48,19 @@ namespace gscript
 		return this->accessModifier & MODIFIER_T::M_ABSTRACT;
 	}
 
-	void ScriptMethod::setClassInstance(ScriptClassInstance *inst)
+	void ScriptMethod::setClassInstance(std::unique_ptr<ScriptClassInstance>&& inst)
 	{
-		this->variables.front()->setValue(new ScriptClassValue(inst));
+		this->variables.front()->setValue(std::make_unique<ScriptClassValue>(std::move(inst)));
 	}
 
-	void ScriptMethod::setClassInstance(ScriptClassValue *inst)
+	void ScriptMethod::setClassInstance(std::unique_ptr<ScriptValue>&& inst)
 	{
-		this->variables.front()->setValue(inst);
+		assert(inst->getType()->getUnderlyingTypeDescriptor() == VALUE_TYPE_T::VT_CLASS);
+		this->variables.front()->setValue(std::move(inst));
 	}
 
 	ScriptClassInstance *ScriptMethod::getClassInstance()
 	{
-		return static_cast<ScriptClassValue*>(this->variables.front()->getValue())->getValue();
+		return static_cast<ScriptClassValue*>(this->variables.front()->getValue().get())->getValue().get();
 	}
-
-	// PROTOTYPE
-
-	/*ScriptMethodPrototype::ScriptMethodPrototype(ScriptMethod &target, const ParserMethod &pmethod)
-		: ScriptFunctionPrototype(target, pmethod)
-	{
-	}*/
-
-	// EXTERN
-
-	//ScriptExternMethod::ScriptExternMethod
-	//(
-	//	const std::string &externName,
-	//	ScriptScope &scope,
-	//	const std::string &name,
-	//	ScriptType *returnType,
-	//	const PARAMS_T &parameters,
-	//	BITFLAG_T modifier
-	//)
-	//	: ScriptMethod(scope, name, returnType, parameters, modifier)
-	//	, target(scope.getExternFunction(externName))
-	//{
-	//}
-
-	//ScriptValue *ScriptExternMethod::run(const CALLABLE_PARAMS_T &c)
-	//{
-	//	return this->target.run(c);
-	//}
 }

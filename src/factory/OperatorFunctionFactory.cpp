@@ -14,136 +14,136 @@ namespace gscript
 		namespace Functions
 		{
 			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
-			ScriptValue *Add(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> Add(ScriptCallable *left, ScriptCallable *right)
 			{
-				return new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue() + static_cast<T_RIGHT*>(right->run())->getValue());
+				return std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() + static_cast<T_RIGHT*>(right->run()->data())->getValue());
 			}
 
 			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
-			ScriptValue *AddTo(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> AddTo(ScriptCallable *left, ScriptCallable *right)
 			{
-				T_RESULT *res = new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue() + static_cast<T_RIGHT*>(right->run())->getValue());
+				auto res = std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() + static_cast<T_RIGHT*>(right->run()->data())->getValue());
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
-				vr->get()->setValue(res);
+				vr->get()->setValue(res->clone());
 				return res;
 			}
 
 			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
-			ScriptValue *Subtract(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> Subtract(ScriptCallable *left, ScriptCallable *right)
 			{
-				return new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue() - static_cast<T_RIGHT*>(right->run())->getValue());
+				return std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() - static_cast<T_RIGHT*>(right->run()->data())->getValue());
 			}
 
 			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
-			ScriptValue *SubtractFrom(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> SubtractFrom(ScriptCallable *left, ScriptCallable *right)
 			{
-				T_RESULT *res = new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue() - static_cast<T_RIGHT*>(right->run())->getValue());
+				auto res = std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() - static_cast<T_RIGHT*>(right->run()->data())->getValue());
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
-				vr->get()->setValue(res);
+				vr->get()->setValue(res->clone());
 				return res;
 			}
 
 			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
-			ScriptValue *Multiply(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> Multiply(ScriptCallable *left, ScriptCallable *right)
 			{
-				return new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue() * static_cast<T_RIGHT*>(right->run())->getValue());
+				return std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() * static_cast<T_RIGHT*>(right->run()->data())->getValue());
 			}
 
 			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
-			ScriptValue *MultiplyBy(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> MultiplyBy(ScriptCallable *left, ScriptCallable *right)
 			{
-				T_RESULT *res = new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue() * static_cast<T_RIGHT*>(right->run())->getValue());
+				auto res = std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() * static_cast<T_RIGHT*>(right->run()->data())->getValue());
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
-				vr->get()->setValue(res);
+				vr->get()->setValue(res->clone());
 				return res;
 			}
 
 			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
-			ScriptValue *Divide(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> Divide(ScriptCallable *left, ScriptCallable *right)
 			{
-				return new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue() / static_cast<T_RIGHT*>(right->run())->getValue());
+				return std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() / static_cast<T_RIGHT*>(right->run()->data())->getValue());
 			}
 
 			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
-			ScriptValue *DivideBy(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> DivideBy(ScriptCallable *left, ScriptCallable *right)
 			{
-				T_RESULT *res = new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue() / static_cast<T_RIGHT*>(right->run())->getValue());
+				auto res = std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() / static_cast<T_RIGHT*>(right->run()->data())->getValue());
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
-				vr->get()->setValue(res);
+				vr->get()->setValue(res->clone());
 				return res;
 			}
 
 			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
-			ScriptValue *Equal(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> Equal(ScriptCallable *left, ScriptCallable *right)
 			{
-				return new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue() == static_cast<T_RIGHT*>(right->run())->getValue());
+				return std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() == static_cast<T_RIGHT*>(right->run()->data())->getValue());
 			}
 
 			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
-			ScriptValue *NotEqual(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> NotEqual(ScriptCallable *left, ScriptCallable *right)
 			{
-				return new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue() != static_cast<T_RIGHT*>(right->run())->getValue());
+				return std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() != static_cast<T_RIGHT*>(right->run().get())->getValue());
 			}
 
 			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
-			ScriptValue *GreaterThan(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> GreaterThan(ScriptCallable *left, ScriptCallable *right)
 			{
-				return new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue() > static_cast<T_RIGHT*>(right->run())->getValue());
+				return std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() > static_cast<T_RIGHT*>(right->run()->data())->getValue());
 			}
 
 			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
-			ScriptValue *GreaterOrEqualThan(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> GreaterOrEqualThan(ScriptCallable *left, ScriptCallable *right)
 			{
-				return new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue() >= static_cast<T_RIGHT*>(right->run())->getValue());
+				return std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() >= static_cast<T_RIGHT*>(right->run()->data())->getValue());
 			}
 
 			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
-			ScriptValue *LessThan(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> LessThan(ScriptCallable *left, ScriptCallable *right)
 			{
-				return new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue() < static_cast<T_RIGHT*>(right->run())->getValue());
+				return std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() < static_cast<T_RIGHT*>(right->run()->data())->getValue());
 			}
 
 			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
-			ScriptValue *LessOrEqualThan(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> LessOrEqualThan(ScriptCallable *left, ScriptCallable *right)
 			{
-				return new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue() <= static_cast<T_RIGHT*>(right->run())->getValue());
+				return std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() <= static_cast<T_RIGHT*>(right->run()->data())->getValue());
 			}
 
 			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
-			ScriptValue *PreDecrement(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> PreDecrement(ScriptCallable *left, ScriptCallable *right)
 			{
-				T_RESULT *res = new T_RESULT(static_cast<T_LEFT*>(right->run())->getValue() - 1);
+				auto res = std::make_unique<T_RESULT>(static_cast<T_LEFT*>(right->run()->data())->getValue() - 1);
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(right);
-				vr->get()->setValue(res);
+				vr->get()->setValue(res->clone());
 				return res;
 			}
 
 			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
-			ScriptValue *PostDecrement(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> PostDecrement(ScriptCallable *left, ScriptCallable *right)
 			{
-				T_RESULT *newVal = new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue() - 1);
-				T_RESULT *res = new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue());
+				auto newVal = std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() - 1);
+				auto res = std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue());
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
-				vr->get()->setValue(newVal);
+				vr->get()->setValue(newVal->clone());
 				return res;
 			}
 
 			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
-			ScriptValue *PreIncrement(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> PreIncrement(ScriptCallable *left, ScriptCallable *right)
 			{
-				T_RESULT *res = new T_RESULT(static_cast<T_LEFT*>(right->run())->getValue() + 1);
+				auto res = std::make_unique<T_RESULT>(static_cast<T_LEFT*>(right->run()->data())->getValue() + 1);
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(right);
-				vr->get()->setValue(res);
+				vr->get()->setValue(res->clone());
 				return res;
 			}
 
 			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
-			ScriptValue *PostIncrement(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> PostIncrement(ScriptCallable *left, ScriptCallable *right)
 			{
-				T_RESULT *newVal = new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue() + 1);
-				T_RESULT *res = new T_RESULT(static_cast<T_LEFT*>(left->run())->getValue());
+				auto newVal = std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() + 1);
+				auto res = std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue());
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
-				vr->get()->setValue(newVal);
+				vr->get()->setValue(newVal->clone());
 				return res;
 			}
 		}

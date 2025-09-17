@@ -8,11 +8,12 @@ namespace gscript
 		, statements(std::move(statements))
 		, type(statements.empty() ? ScriptType::create(VALUE_TYPE_T::VT_VOID, scope) : statements.front()->getType())
 	{
+		ScriptType::create(VALUE_TYPE_T::VT_VOID, scope);
 	}
 
-	ScriptValue *ScriptArrayInitializer::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptArrayInitializer::run(const CALLABLE_PARAMS_T &c)
 	{
-		std::vector<ScriptValue*> vec;
+		std::vector<std::unique_ptr<ScriptValue>> vec;
 		vec.reserve(this->statements.size());
 
 		for (auto& stmt : this->statements)
@@ -20,10 +21,10 @@ namespace gscript
 			vec.push_back(stmt->run());
 		}
 
-		return new ScriptArrayValue(static_cast<const ScriptArrayType*>(this->getType()), std::move(vec));
+		return std::make_unique<ScriptArrayValue>(this->getType(), std::move(vec));
 	}
 
-	const ScriptType *ScriptArrayInitializer::getType() const
+	const std::shared_ptr<ScriptType> ScriptArrayInitializer::getType() const
 	{
 		return this->type;
 	}

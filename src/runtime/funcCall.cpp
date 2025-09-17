@@ -1,6 +1,7 @@
 #include "runtime/funcCall.hpp"
 #include "runtime/function.hpp"
 #include "runtime/method.hpp"
+#include "runtime/classInstance.hpp"
 #include "defs.hpp"
 #include "util.hpp"
 #include "compileException.hpp"
@@ -28,35 +29,32 @@ namespace gscript
 	{
 	}
 
-	ScriptValue *ScriptFuncCall::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptFuncCall::run(const CALLABLE_PARAMS_T &c)
 	{
 		if (!this->accessor)
 			return nullptr;
 
-		CALLABLE_PARAMS_T params;
+		std::vector<std::unique_ptr<ScriptValue>> params;
 
 		for (auto& param : this->params)
 		{
 			params.push_back(param->run());
-			//params.push_back(it->run()->clone());
 		}
 
-		return this->accessor.get()->run(params);
+		return this->accessor.get()->run(std::move(params));
 	}
 
-	const ScriptType *ScriptFuncCall::getType() const
+	const std::shared_ptr<ScriptType> ScriptFuncCall::getType() const
 	{
 		return this->accessor.getType();
 	}
 
-	void ScriptFuncCall::setInstance(ScriptClassValue *instance)
+	void ScriptFuncCall::setInstance(std::unique_ptr<ScriptValue>&& instance)
 	{
-		this->accessor.setScope(instance->getValue());
+		auto sclassinst = static_cast<ScriptClassValue*>(instance->data())->getValue().get();
+		this->accessor.setScope(sclassinst);
 		if (this->accessor)
-			static_cast<ScriptMethod*>(this->accessor.get())->setClassInstance(instance);
-
-		/*static_cast<VirtualEntityLink<ScriptFunction*>*>(this->func)->setInstance(instance->getValue());
-		static_cast<ScriptMethod*>(this->func->get())->setClassInstance(instance);*/
+			static_cast<ScriptMethod*>(this->accessor.get())->setClassInstance(std::move(instance));
 	}
 
 	// Prototype

@@ -10,14 +10,14 @@ namespace gscript
 	{
 	}
 
-	ScriptValue *ScriptReturn::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptReturn::run(const CALLABLE_PARAMS_T &c)
 	{
 		return this->statement->run();
 	}
 
-	const ScriptType *ScriptReturn::getType() const
+	const std::shared_ptr<ScriptType> ScriptReturn::getType() const
 	{
-		return ScriptReturn::returnType;
+		return this->statement->getType();
 	}
 
 	std::unique_ptr<ScriptCallable>& ScriptReturn::getStatement()

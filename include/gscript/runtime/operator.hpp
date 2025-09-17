@@ -11,7 +11,6 @@
 
 namespace gscript
 {
-	class ParserOperator;
 	class ScriptVarRead;
 
 	class ScriptOperator : public ScriptCallable
@@ -25,9 +24,9 @@ namespace gscript
 
 		ScriptOperator(ScriptScope &scope, OPERATOR_LINK_T linkage = OPERATOR_LINK_T::OL_SINGLE);
 
-		virtual const ScriptType *getType() const override;
+		virtual const std::shared_ptr<ScriptType> getType() const override;
 
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override = 0;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override = 0;
 		virtual const int getPrecedence() const = 0;
 		virtual const OPERATOR_TYPE_T getOperatorType() const = 0;
 		virtual bool needFactory() const;
@@ -45,7 +44,7 @@ namespace gscript
 	{
 	public:
 		using ScriptOperator::ScriptOperator;
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OPERATOR_TYPE_T getOperatorType() const;
 		virtual bool needFactory() const override;
@@ -55,7 +54,7 @@ namespace gscript
 	{
 	public:
 		using ScriptOperator::ScriptOperator;
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OPERATOR_TYPE_T getOperatorType() const;
 	};
@@ -64,7 +63,7 @@ namespace gscript
 	{
 	public:
 		using ScriptOperator::ScriptOperator;
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OPERATOR_TYPE_T getOperatorType() const;
 		virtual bool needFactory() const override;
@@ -78,7 +77,7 @@ namespace gscript
 	{
 	public:
 		using ScriptOperator::ScriptOperator;
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OPERATOR_TYPE_T getOperatorType() const;
 	};
@@ -87,7 +86,7 @@ namespace gscript
 	{
 	public:
 		using ScriptOperator::ScriptOperator;
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OPERATOR_TYPE_T getOperatorType() const;
 	};
@@ -96,7 +95,7 @@ namespace gscript
 	{
 	public:
 		using ScriptOperator::ScriptOperator;
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OPERATOR_TYPE_T getOperatorType() const;
 	};
@@ -105,7 +104,7 @@ namespace gscript
 	{
 	public:
 		using ScriptOperator::ScriptOperator;
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OPERATOR_TYPE_T getOperatorType() const;
 	};
@@ -114,7 +113,7 @@ namespace gscript
 	{
 	public:
 		using ScriptOperator::ScriptOperator;
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OPERATOR_TYPE_T getOperatorType() const;
 	};
@@ -123,7 +122,7 @@ namespace gscript
 	{
 	public:
 		using ScriptOperator::ScriptOperator;
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OPERATOR_TYPE_T getOperatorType() const;
 	};
@@ -132,7 +131,7 @@ namespace gscript
 	{
 	public:
 		using ScriptOperator::ScriptOperator;
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OPERATOR_TYPE_T getOperatorType() const;
 	};
@@ -141,7 +140,7 @@ namespace gscript
 	{
 	public:
 		using ScriptOperator::ScriptOperator;
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OPERATOR_TYPE_T getOperatorType() const;
 	};
@@ -150,7 +149,7 @@ namespace gscript
 	{
 	public:
 		using ScriptOperator::ScriptOperator;
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OPERATOR_TYPE_T getOperatorType() const;
 	};
@@ -159,7 +158,7 @@ namespace gscript
 	{
 	public:
 		using ScriptOperator::ScriptOperator;
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OPERATOR_TYPE_T getOperatorType() const;
 	};
@@ -168,7 +167,7 @@ namespace gscript
 	{
 	public:
 		using ScriptOperator::ScriptOperator;
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OPERATOR_TYPE_T getOperatorType() const;
 	};
@@ -177,7 +176,7 @@ namespace gscript
 	{
 	public:
 		using ScriptOperator::ScriptOperator;
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OPERATOR_TYPE_T getOperatorType() const;
 	};
@@ -186,7 +185,7 @@ namespace gscript
 	{
 	public:
 		using ScriptOperator::ScriptOperator;
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OPERATOR_TYPE_T getOperatorType() const;
 	};
@@ -195,7 +194,7 @@ namespace gscript
 	{
 	public:
 		using ScriptOperator::ScriptOperator;
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OPERATOR_TYPE_T getOperatorType() const;
 	};
@@ -204,7 +203,7 @@ namespace gscript
 	{
 	public:
 		using ScriptOperator::ScriptOperator;
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OPERATOR_TYPE_T getOperatorType() const;
 	};
@@ -213,7 +212,7 @@ namespace gscript
 	{
 	public:
 		using ScriptOperator::ScriptOperator;
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OPERATOR_TYPE_T getOperatorType() const;
 		virtual bool needFactory() const override;
@@ -223,7 +222,7 @@ namespace gscript
 	{
 	public:
 		using ScriptOperator::ScriptOperator;
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OPERATOR_TYPE_T getOperatorType() const;
 		virtual bool needFactory() const override;
@@ -234,7 +233,7 @@ namespace gscript
 	{
 	public:
 		using ScriptOperator::ScriptOperator;
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OPERATOR_TYPE_T getOperatorType() const;
 		virtual bool needFactory() const override;

@@ -3,4 +3,4 @@ target_sources(gscript PRIVATE
 	"funcParam.cpp" "function.cpp"  "if.cpp" "literal.cpp" "method.cpp" "namespace.cpp" "new.cpp"
 	"operator.cpp" "return.cpp" "runnable.cpp" "scope.cpp" "scriptValue.cpp" "statement.cpp" "varDeclaration.cpp"
 	"variable.cpp" "varRead.cpp" "while.cpp"
- "executiveBlock.cpp")
+ "executiveBlock.cpp" "entityLink.cpp")

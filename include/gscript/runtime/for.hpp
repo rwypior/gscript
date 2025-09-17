@@ -8,6 +8,7 @@
 #include "scope.hpp"
 #include "runnable.hpp"
 #include "executiveBlock.hpp"
+#include "lib.hpp"
 
 namespace gscript
 {
@@ -16,7 +17,7 @@ namespace gscript
 	class ScriptFor : public ScriptExecutiveBlock, public ScriptCallable
 	{
 	public:
-		ScriptFor(
+		SCRIPT_API ScriptFor(
 			ScriptScope &scope, 
 			std::unique_ptr<ScriptVarDeclaration>&& vardecl, 
 			std::unique_ptr<ScriptStatement>&& condition, 
@@ -24,13 +25,11 @@ namespace gscript
 			std::vector<std::shared_ptr<ScriptCallable>>&& statements = {}
 		);
 
-		virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		SCRIPT_API virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 
-		virtual const ScriptType *getType() const override;
+		SCRIPT_API const std::shared_ptr<ScriptType> getType() const override;
 
 	private:
-		static const ScriptType *returnType;
-
 		std::unique_ptr<ScriptVarDeclaration> vardecl = nullptr;
 		std::unique_ptr<ScriptStatement> condition = nullptr;
 		std::unique_ptr<ScriptStatement> progress = nullptr;

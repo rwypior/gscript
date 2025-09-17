@@ -15,10 +15,10 @@
 TEST_CASE_METHOD(GscriptTest, "RuntimeIfVariable")
 {
 	// Test variable
-	auto& testVariable = globalNamespace.registerVariable("testVariable", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(42));
+	auto& testVariable = globalNamespace.registerVariable("testVariable", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(42));
 
 	// Variable
-	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(42));
+	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(42));
 
 	// If condition
 	auto varread = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &testVariable);
@@ -58,7 +58,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfVariable")
 	f.run();
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 62);
 
-	testVariable.setValue(new gscript::ScriptIntValue(1337));
+	testVariable.setValue(std::make_unique<gscript::ScriptIntValue>(1337));
 
 	f.run();
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 62);
@@ -70,10 +70,10 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfVariable")
 TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseVariable")
 {
 	// Test variable
-	auto& testVariable = globalNamespace.registerVariable("testVariable", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(42));
+	auto& testVariable = globalNamespace.registerVariable("testVariable", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(42));
 
 	// Variable
-	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(42));
+	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(42));
 
 	// If condition
 	auto varread = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &testVariable);
@@ -132,7 +132,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseVariable")
 	f.run();
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 62);
 
-	testVariable.setValue(new gscript::ScriptIntValue(1337));
+	testVariable.setValue(std::make_unique<gscript::ScriptIntValue>(1337));
 
 	f.run();
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 620);
@@ -140,7 +140,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseVariable")
 	f.run();
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 6200);
 
-	testVariable.setValue(new gscript::ScriptIntValue(42));
+	testVariable.setValue(std::make_unique<gscript::ScriptIntValue>(42));
 
 	f.run();
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 6210);
@@ -152,10 +152,10 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseVariable")
 TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseIfElseVariable")
 {
 	// Test variable
-	auto& testVariable = globalNamespace.registerVariable("testVariable", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(42));
+	auto& testVariable = globalNamespace.registerVariable("testVariable", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(42));
 
 	// Variable
-	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(42));
+	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(42));
 
 	// If condition
 	auto varread = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &testVariable);
@@ -244,7 +244,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseIfElseVariable")
 	f.run();
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 62);
 
-	testVariable.setValue(new gscript::ScriptIntValue(13));
+	testVariable.setValue(std::make_unique<gscript::ScriptIntValue>(13));
 
 	f.run();
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 620);
@@ -252,7 +252,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseIfElseVariable")
 	f.run();
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 6200);
 
-	testVariable.setValue(new gscript::ScriptIntValue(42));
+	testVariable.setValue(std::make_unique<gscript::ScriptIntValue>(42));
 
 	f.run();
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 6210);
@@ -260,7 +260,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseIfElseVariable")
 	f.run();
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 6220);
 
-	testVariable.setValue(new gscript::ScriptIntValue(1337));
+	testVariable.setValue(std::make_unique<gscript::ScriptIntValue>(1337));
 
 	f.run();
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 6215);

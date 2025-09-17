@@ -5,8 +5,6 @@
 
 namespace gscript
 {
-	const ScriptType *ScriptIf::returnType = new ScriptType(VALUE_TYPE_T::VT_NULL);
-
 	ScriptIf::ScriptIf(ScriptScope &scope, std::unique_ptr<ScriptStatement>&& condition, std::unique_ptr<ScriptIf>&& selse, std::vector<std::shared_ptr<ScriptCallable>>&& statements)
 		: ScriptCallable(scope)
 		, ScriptExecutiveBlock(std::move(statements))
@@ -15,18 +13,18 @@ namespace gscript
 	{
 	}
 
-	ScriptValue *ScriptIf::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptIf::run(const CALLABLE_PARAMS_T &c)
 	{
 		if (!this->condition || this->condition->run()->boolean().getValue())
 			return ScriptExecutiveBlock::execute();
 		else if (this->selse)
 			return this->selse->run();
 
-		return SCR_NULL;
+		return ScriptType::null();
 	}
 
-	const ScriptType *ScriptIf::getType() const
+	const std::shared_ptr<ScriptType> ScriptIf::getType() const
 	{
-		return ScriptIf::returnType;
+		return ScriptType::nulltype();
 	}
 }

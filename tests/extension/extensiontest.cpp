@@ -28,14 +28,14 @@ public:
 		{
 		}
 
-		virtual gscript::ScriptValue* run(const gscript::CALLABLE_PARAMS_T& c = {}) override
+		virtual std::unique_ptr<gscript::ScriptValue> run(const gscript::CALLABLE_PARAMS_T& c = {}) override
 		{
 			this->validateParams(c);
 
 			auto& a = static_cast<const gscript::ScriptIntValue&>(*c[0]);
 			auto& b = static_cast<const gscript::ScriptIntValue&>(*c[1]);
 
-			auto result = new gscript::ScriptIntValue(a.getValue() * b.getValue());
+			auto result = std::make_unique<gscript::ScriptIntValue>(a.getValue() * b.getValue());
 
 			return result;
 		}
@@ -64,9 +64,9 @@ TEST_CASE_METHOD(GscriptTest, "ExtensionSampleExtension")
 		gscript::FunctionParameter(gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace))
 	});
 
-	gscript::ScriptIntValue val42(42);
-	gscript::ScriptIntValue val1337(1337);
-	auto valvec = std::vector<gscript::ScriptValue*>{ &val42, &val1337 };
+	auto valvec = std::vector<std::unique_ptr<gscript::ScriptValue>>();
+	valvec.push_back(std::make_unique<gscript::ScriptIntValue>(42));
+	valvec.push_back(std::make_unique<gscript::ScriptIntValue>(1337));
 
 	auto retval = fnc->run(valvec);
 

@@ -17,10 +17,11 @@ namespace gscript
 	{
 	public:
 		SCRIPT_API ScriptCallable(ScriptScopeBase& scope);
+		SCRIPT_API ~ScriptCallable() = default;
 
-		SCRIPT_API virtual const ScriptType *getType() const = 0;
+		SCRIPT_API virtual const std::shared_ptr<ScriptType> getType() const = 0;
 
-		SCRIPT_API virtual ScriptValue *run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) = 0;
+		SCRIPT_API virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) = 0;
 
 		// Post-compilation stage - build prototypes, and do additional steps
 		SCRIPT_API virtual void setup() {};
@@ -41,12 +42,12 @@ namespace gscript
 
 		SCRIPT_API virtual std::unique_ptr<ScriptCallable> build(ScriptScopeBase* scope = nullptr) override = 0;
 
-		SCRIPT_API virtual const ScriptType* getType() const
+		SCRIPT_API virtual const std::shared_ptr<ScriptType> getType() const
 		{
 			throw RuntimeException("Attempted to call callable prototype");
 		}
 
-		SCRIPT_API virtual ScriptValue* run(const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override
+		SCRIPT_API virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override
 		{
 			throw RuntimeException("Attempted to call callable prototype");
 		}

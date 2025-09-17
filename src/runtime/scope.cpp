@@ -13,7 +13,7 @@ namespace gscript
 	// Scope base
 
 	ScriptFunction& ScriptScopeBase::registerFunction(const std::string& name,
-		ScriptType* returnType,
+		std::shared_ptr<ScriptType> returnType,
 		const PARAMS_T& parameters,
 		std::vector<std::shared_ptr<ScriptCallable>>&& statements)
 	{
@@ -26,9 +26,14 @@ namespace gscript
 		return *this->getFunctions().back();
 	}
 
-	ScriptVariable& ScriptScopeBase::registerVariable(const std::string &name, const ScriptType *type, ScriptValue *value)
+	ScriptVariable& ScriptScopeBase::registerVariable(const std::string& name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptValue>&& value)
 	{
-		return this->registerVariable(std::make_unique<ScriptVariable>(name, type, value));
+		return this->registerVariable(std::make_unique<ScriptVariable>(name, type, std::move(value)));
+	}
+
+	ScriptVariable& ScriptScopeBase::registerVariable(const std::string& name, const std::shared_ptr<ScriptType> type, const std::unique_ptr<ScriptValue>& value)
+	{
+		return this->registerVariable(std::make_unique<ScriptVariable>(name, type, value->clone()));
 	}
 
 	ScriptVariable& ScriptScopeBase::registerVariable(std::unique_ptr<ScriptVariable>&& variable)

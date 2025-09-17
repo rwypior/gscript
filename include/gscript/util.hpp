@@ -10,43 +10,7 @@
 
 namespace gscript
 {
-	class ScriptType;
-	class ScriptArrayType;
-	class ScriptValue;
-	class ScriptArrayValue;
 	class ScriptStatement;
-
-	template <typename T>
-	class make_vector
-	{
-	public:
-		make_vector<T>& operator<<(const T& val)
-		{
-			v.push_back(val);
-			return *this;
-		}
-
-		operator std::vector<T>() const
-		{
-			return v;
-		}
-
-	private:
-		std::vector<T> v;
-	};
-
-	class make_sarray
-	{
-	public:
-		SCRIPT_API make_sarray(ScriptType *subType, size_t count);
-		SCRIPT_API make_sarray(ScriptType *subType, size_t count, char **argv);
-		SCRIPT_API make_sarray& operator<<(ScriptValue* val);
-		SCRIPT_API operator ScriptArrayValue *() const;
-
-	private:
-		ScriptArrayType *type = nullptr;
-		std::vector<ScriptValue*> v;
-	};
 
 	namespace hash_tuple
 	{

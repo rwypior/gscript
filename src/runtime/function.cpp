@@ -24,7 +24,7 @@ namespace gscript
 	{
 	}*/
 
-	ScriptFunction::ScriptFunction(ScriptScopeBase &scope, const std::string &name, ScriptType *returnType, const PARAMS_T &parameters, std::vector<std::shared_ptr<ScriptCallable>>&& statements)
+	ScriptFunction::ScriptFunction(ScriptScopeBase &scope, const std::string &name, std::shared_ptr<ScriptType> returnType, const PARAMS_T &parameters, std::vector<std::shared_ptr<ScriptCallable>>&& statements)
 		: ScriptCallable(scope)
 		, ScriptScope(&scope)
 		, ScriptExecutiveBlock(std::move(statements))
@@ -34,11 +34,7 @@ namespace gscript
 	{
 	}
 
-	ScriptFunction::~ScriptFunction()
-	{
-	}
-
-	ScriptValue *ScriptFunction::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptFunction::run(const CALLABLE_PARAMS_T &c)
 	{
 		this->validateParams(c);
 		this->registerParameters(c);
@@ -66,13 +62,14 @@ namespace gscript
 		{
 			int idx = it - this->getParameters().begin();
 
-			ScriptValue *val = c[idx];
+			const std::unique_ptr<ScriptValue>& val = c[idx];
 			//it->setValue(val);
 			//it->setValue(val->clone());
 
-			if (it->getType()->getAbsoluteTypeDescriptor() == VALUE_TYPE_T::VT_REFERENCE)
+			if (it->getType()->getTypeDescriptor() == VALUE_TYPE_T::VT_REFERENCE)
 				//static_cast<ScriptReferenceValue&>(*it->getValue()).setValue(val);
-				static_cast<ScriptReferenceValue&>(*it->getValue()).retarget(val);
+				//static_cast<ScriptReferenceValue&>(*it->getValue()).retarget(val);
+				assert(!"NOT IMPLEMENTED"); // TODO - this needs to be fixed
 			else
 				it->setValue(val->clone());
 		}
@@ -178,7 +175,7 @@ namespace gscript
 		return true;
 	}
 
-	const ScriptType *ScriptFunction::getType() const
+	const std::shared_ptr<ScriptType> ScriptFunction::getType() const
 	{
 		return this->returnType;
 	}

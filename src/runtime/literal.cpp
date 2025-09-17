@@ -36,12 +36,12 @@ namespace gscript
 	//	}
 	//}
 
-	ScriptValue *ScriptLiteral::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptLiteral::run(const CALLABLE_PARAMS_T &c)
 	{
 		return this->val->clone();
 	}
 
-	const ScriptType *ScriptLiteral::getType() const
+	const std::shared_ptr<ScriptType> ScriptLiteral::getType() const
 	{
 		return this->val->getType();
 	}

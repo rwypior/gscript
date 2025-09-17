@@ -41,10 +41,13 @@ namespace gscript
 	{
 	}*/
 
-	ScriptValue *ScriptVarRead::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptVarRead::run(const CALLABLE_PARAMS_T &c)
 	{
-		return this->accessor->get()->getValue();
-		//return this->var->get()->getValue();
+		// TODO - check this for performance
+		// 1. Test if reference reads work correctly
+		auto& val = this->accessor->get()->getValue();
+		return std::make_unique<ScriptReferenceValue>(std::make_shared<ScriptReferenceType>(val->getType()), val.get());
+		//return this->accessor->get()->getValue()->clone();
 	}
 
 	ScriptVariable* ScriptVarRead::get()
@@ -52,7 +55,7 @@ namespace gscript
 		return this->accessor->get();
 	}
 
-	const ScriptType *ScriptVarRead::getType() const
+	const std::shared_ptr<ScriptType> ScriptVarRead::getType() const
 	{
 		return this->accessor->getType();
 		//return this->var->orig()->getType();
@@ -118,17 +121,18 @@ namespace gscript
 	{
 	}
 
-	ScriptValue *ScriptArrayRead::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptArrayRead::run(const CALLABLE_PARAMS_T &c)
 	{
-		ScriptArrayValue *arr = static_cast<ScriptArrayValue*>(ScriptVarRead::run(c));
-		int index = static_cast<ScriptIntValue*>(this->arrayAccessor->run())->getValue();
-		return arr->getValue()[index];
+		ScriptArrayValue *arr = static_cast<ScriptArrayValue*>(ScriptVarRead::run(c).get());
+		int index = static_cast<ScriptIntValue*>(this->arrayAccessor->run().get())->getValue();
+
+		// TODO - check this for performance - same as for VarRead
+		return arr->getValue()[index]->clone();
 	}
 
-	const ScriptType *ScriptArrayRead::getType() const
+	const std::shared_ptr<ScriptType> ScriptArrayRead::getType() const
 	{
-		return static_cast<const ScriptArrayType*>(this->accessor->getType())->subType;
-		//return static_cast<const ScriptArrayType*>(this->var->orig()->getType())->subType;
+		return std::static_pointer_cast<const ScriptArrayType>(this->accessor->getType())->getSubType();
 	}
 
 	// Array var read prototype

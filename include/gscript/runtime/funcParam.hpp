@@ -18,9 +18,9 @@ namespace gscript
 	class FunctionParameter : public ScriptVariable
 	{
 	public:
-		SCRIPT_API FunctionParameter(const ScriptType &type, const std::string &name, ScriptValue *val);
-		SCRIPT_API FunctionParameter(const ScriptType &type, const std::string &name = "");
-		SCRIPT_API FunctionParameter(const ScriptType *type, const std::string &name = "");
+		SCRIPT_API FunctionParameter(const std::shared_ptr<ScriptType> type, const std::string &name, std::unique_ptr<ScriptValue>&& val);
+		SCRIPT_API FunctionParameter(const std::shared_ptr<ScriptType> type, const std::string &name = "");
+		SCRIPT_API FunctionParameter(const std::shared_ptr<ScriptType> type, const std::shared_ptr<ScriptType> subtype, const std::string &name = "");
 	};
 
 	class FunctionParameterContainer

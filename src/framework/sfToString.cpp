@@ -9,17 +9,18 @@ namespace gscript
 	ScriptFuncToString::ScriptFuncToString(ScriptScope &scope, const std::string &name)
 		: ScriptFunction(scope, name, ScriptType::create(VALUE_TYPE_T::VT_STRING, this->scope), PARAMS_T(1, FunctionParameter(ScriptType::create(VALUE_TYPE_T::VT_INT, scope))))
 	{
-
+		PARAMS_T;
+		FunctionParameter;
 	}
 
-	ScriptValue *ScriptFuncToString::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptFuncToString::run(const CALLABLE_PARAMS_T &c)
 	{
 		this->validateParams(c);
 
 		const ScriptValue &val = *c[0];
 		const ScriptIntValue &sval = static_cast<const ScriptIntValue&>(val);
 
-		return new ScriptStringValue(std::to_string(sval.getValue()));
+		return std::make_unique<ScriptStringValue>(std::to_string(sval.getValue()));
 	}
 
 	const ScriptType &ScriptFuncToString::getType()

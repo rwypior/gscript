@@ -17,7 +17,7 @@ namespace gscript
 	{
 	}
 
-	ScriptValue* ConsoleExtension::FuncPrint::run(const CALLABLE_PARAMS_T& c)
+	std::unique_ptr<ScriptValue> ConsoleExtension::FuncPrint::run(const CALLABLE_PARAMS_T& c)
 	{
 		this->validateParams(c);
 
@@ -26,7 +26,7 @@ namespace gscript
 
 		std::cout << sval.getValue() << std::flush;
 
-		return SCR_NULL;
+		return ScriptType::null();
 	}
 
 	// Println
@@ -42,7 +42,7 @@ namespace gscript
 	{
 	}
 
-	ScriptValue* ConsoleExtension::FuncPrintLn::run(const CALLABLE_PARAMS_T& c)
+	std::unique_ptr<ScriptValue> ConsoleExtension::FuncPrintLn::run(const CALLABLE_PARAMS_T& c)
 	{
 		this->validateParams(c);
 
@@ -51,13 +51,13 @@ namespace gscript
 
 		std::cout << sval.getValue() << std::endl;
 
-		return SCR_NULL;
+		return ScriptType::null();
 	}
 
 	// Readln
 
 	ConsoleExtension::FuncReadLn::FuncReadLn(ScriptScopeBase& scope, const std::string& name)
-		:ScriptMethod(
+		: ScriptMethod(
 			scope,
 			name,
 			ScriptType::create(VALUE_TYPE_T::VT_STRING, this->scope),
@@ -67,14 +67,14 @@ namespace gscript
 	{
 	}
 
-	ScriptValue* ConsoleExtension::FuncReadLn::run(const CALLABLE_PARAMS_T& c)
+	std::unique_ptr<ScriptValue> ConsoleExtension::FuncReadLn::run(const CALLABLE_PARAMS_T& c)
 	{
 		this->validateParams(c);
 
 		std::string result;
 		std::cin >> result;
 
-		return new ScriptStringValue(result);
+		return std::make_unique<ScriptStringValue>(result);
 	}
 
 	// Console extension

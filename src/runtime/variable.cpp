@@ -7,11 +7,10 @@
 
 namespace gscript
 {
-	ScriptVariable::ScriptVariable(const std::string &name, const ScriptType *type, ScriptValue *value/*, size_t internalPointer*/)
+	ScriptVariable::ScriptVariable(const std::string &name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptValue>&& value)
 		: name(name)
-		, value(value)
+		, value(std::move(value))
 		, type(type)
-		//, internalPointer(internalPointer)
 	{
 	}
 
@@ -19,17 +18,39 @@ namespace gscript
 		: name(b.name)
 		, value(b.value->clone())
 		, type(new ScriptType(*b.type))
-		//, internalPointer(b.internalPointer)
 	{
 	}
 
-	void ScriptVariable::init(ScriptValue *value)
+	void ScriptVariable::init(std::unique_ptr<ScriptValue>&& value)
 	{
-		if (this->getType()->getAbsoluteTypeDescriptor() == VALUE_TYPE_T::VT_REFERENCE)
+		if (this->getType()->getTypeDescriptor() == VALUE_TYPE_T::VT_REFERENCE)
 			this->setValue(value);
 		else
-		{
 			this->setValue(value->getType() ? value->clone() : ScriptType::createEmptyValue(this->type->getTypeDescriptor(), this->type));
-		}
+	}
+
+	const std::unique_ptr<ScriptValue>& ScriptVariable::getValue() const
+	{
+		return this->value;
+	}
+
+	void ScriptVariable::setValue(std::unique_ptr<ScriptValue>&& value)
+	{
+		this->value = std::move(value);
+	}
+
+	void ScriptVariable::setValue(const std::unique_ptr<ScriptValue>& value)
+	{
+		this->value = value->clone();
+	}
+
+	const std::string& ScriptVariable::getName() const
+	{
+		return this->name;
+	}
+
+	const std::shared_ptr<ScriptType> ScriptVariable::getType() const
+	{
+		return this->type;
 	}
 }

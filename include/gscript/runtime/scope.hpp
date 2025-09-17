@@ -27,12 +27,13 @@ namespace gscript
 		virtual ~ScriptScopeBase() = default;
 
 		SCRIPT_API virtual ScriptFunction& registerFunction(const std::string& name,
-			ScriptType* returnType,
+			std::shared_ptr<ScriptType> returnType,
 			const PARAMS_T& parameters = PARAMS_T(),
 			std::vector<std::shared_ptr<ScriptCallable>>&& statements = {});
 		SCRIPT_API virtual ScriptFunction& registerFunction(std::unique_ptr<ScriptFunction>&& function);
 
-		SCRIPT_API virtual ScriptVariable& registerVariable(const std::string& name, const ScriptType* type, ScriptValue* value);
+		SCRIPT_API virtual ScriptVariable& registerVariable(const std::string& name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptValue>&& value);
+		SCRIPT_API virtual ScriptVariable& registerVariable(const std::string& name, const std::shared_ptr<ScriptType> type, const std::unique_ptr<ScriptValue>& value);
 		SCRIPT_API virtual ScriptVariable& registerVariable(std::unique_ptr<ScriptVariable>&& variable);
 
 		SCRIPT_API virtual ScriptFunction* findFunction(const std::string& name, const PARAMS_T params, bool searchParents = true, bool searchBase = true) const;

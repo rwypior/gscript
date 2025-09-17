@@ -56,7 +56,7 @@ namespace gscript
 	{
 	}
 
-	const ScriptType *ScriptOperator::getType() const
+	const std::shared_ptr<ScriptType> ScriptOperator::getType() const
 	{
 		return this->right ? this->right->getType() : this->left->getType();
 	}
@@ -76,21 +76,22 @@ namespace gscript
 
 
 
-	ScriptValue *ScriptOperatorMemberAccessor::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorMemberAccessor::run(const CALLABLE_PARAMS_T &c)
 	{
 		// 1. if this->right is scopedCall then provide it with classInstance from this->left
 		// 2. this->right must be scoped call - always
 
-		ScriptClassValue *scv = static_cast<ScriptClassValue*>(this->left->run());
+		auto leftres = this->left->run();
+		auto scv = static_cast<ScriptClassValue*>(leftres->data());
 
 		if (ScriptScopedCall *sc = dynamic_cast<ScriptScopedCall*>(this->right.get()))
 		{
-			sc->setScope(scv->getValue());
+			sc->setScope(scv->getValue().get());
 		}
 
 		if (ScriptFuncCall *fc = dynamic_cast<ScriptFuncCall*>(this->right.get()))
 		{
-			fc->setInstance(scv);
+			fc->setInstance(std::move(leftres));
 		}
 
 		return this->right->run(c);
@@ -113,10 +114,10 @@ namespace gscript
 
 
 
-	ScriptValue *ScriptOperatorConditionalNull::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorConditionalNull::run(const CALLABLE_PARAMS_T &c)
 	{
-		ScriptValue *v = this->left->run();
-		return v->boolean().getValue() ? v : this->right->run();
+		auto v = this->left->run();
+		return v->boolean().getValue() ? std::move(v) : this->right->run();
 	}
 
 	const int ScriptOperatorConditionalNull::getPrecedence() const
@@ -136,7 +137,7 @@ namespace gscript
 
 
 
-	ScriptValue *ScriptOperatorConditionalA::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorConditionalA::run(const CALLABLE_PARAMS_T &c)
 	{
 		return this->left->run();
 	}
@@ -158,7 +159,7 @@ namespace gscript
 
 
 
-	ScriptValue *ScriptOperatorConditionalB::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorConditionalB::run(const CALLABLE_PARAMS_T &c)
 	{
 		return this->left->run()->boolean().getValue() ? static_cast<ScriptOperatorConditionalA*>(this->left.get())->right->run() : this->right->run();
 	}
@@ -186,7 +187,7 @@ namespace gscript
 
 
 
-	ScriptValue *ScriptOperatorNegate::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorNegate::run(const CALLABLE_PARAMS_T &c)
 	{
 		return nullptr;
 	}
@@ -203,23 +204,12 @@ namespace gscript
 
 
 
-	ScriptValue *ScriptOperatorAssign::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorAssign::run(const CALLABLE_PARAMS_T &c)
 	{
-		/*ScriptVarRead *varRead = dynamic_cast<ScriptVarRead*>(this->left);
-
-		ScriptValue *rval = this->right->run();
-
-		varRead->var->setValue(rval);
-
-		return NULL;*/
-
 		if (ScriptOperatorMemberAccessor *memberAccessor = dynamic_cast<ScriptOperatorMemberAccessor*>(this->left.get()))
 			memberAccessor->run();
 
-		ScriptValue *rval = this->right->run();
-
-		//this->varRead->var->setValue(rval);
-		//this->varRead->var->get()->setValue(rval);
+		auto rval = this->right->run();
 		
 		this->varRead->get()->getValue()->assign(*rval);
 
@@ -256,7 +246,7 @@ namespace gscript
 
 
 
-	ScriptValue *ScriptOperatorEquals::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorEquals::run(const CALLABLE_PARAMS_T &c)
 	{
 		return this->operatorFunction(this->left.get(), this->right.get());
 	}
@@ -273,7 +263,7 @@ namespace gscript
 
 
 
-	ScriptValue *ScriptOperatorGreaterThan::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorGreaterThan::run(const CALLABLE_PARAMS_T &c)
 	{
 		return this->operatorFunction(this->left.get(), this->right.get());
 	}
@@ -290,7 +280,7 @@ namespace gscript
 
 
 
-	ScriptValue *ScriptOperatorGreaterThanOrEqual::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorGreaterThanOrEqual::run(const CALLABLE_PARAMS_T &c)
 	{
 		return this->operatorFunction(this->left.get(), this->right.get());
 	}
@@ -307,7 +297,7 @@ namespace gscript
 
 
 
-	ScriptValue *ScriptOperatorLessThan::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorLessThan::run(const CALLABLE_PARAMS_T &c)
 	{
 		return this->operatorFunction(this->left.get(), this->right.get());
 	}
@@ -324,7 +314,7 @@ namespace gscript
 
 
 
-	ScriptValue *ScriptOperatorLessThanOrEqual::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorLessThanOrEqual::run(const CALLABLE_PARAMS_T &c)
 	{
 		return this->operatorFunction(this->left.get(), this->right.get());
 	}
@@ -341,7 +331,7 @@ namespace gscript
 
 
 
-	ScriptValue *ScriptOperatorAdd::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorAdd::run(const CALLABLE_PARAMS_T &c)
 	{
 		return this->operatorFunction(this->left.get(), this->right.get());
 	}
@@ -358,7 +348,7 @@ namespace gscript
 
 
 
-	ScriptValue *ScriptOperatorAddTo::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorAddTo::run(const CALLABLE_PARAMS_T &c)
 	{
 		return this->operatorFunction(this->left.get(), this->right.get());
 	}
@@ -375,7 +365,7 @@ namespace gscript
 
 
 
-	ScriptValue *ScriptOperatorSubtract::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorSubtract::run(const CALLABLE_PARAMS_T &c)
 	{
 		return this->operatorFunction(this->left.get(), this->right.get());
 	}
@@ -392,7 +382,7 @@ namespace gscript
 
 
 
-	ScriptValue *ScriptOperatorSubtractFrom::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorSubtractFrom::run(const CALLABLE_PARAMS_T &c)
 	{
 		return this->operatorFunction(this->left.get(), this->right.get());
 	}
@@ -409,7 +399,7 @@ namespace gscript
 
 
 
-	ScriptValue *ScriptOperatorMultiply::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorMultiply::run(const CALLABLE_PARAMS_T &c)
 	{
 		return this->operatorFunction(this->left.get(), this->right.get());
 	}
@@ -426,7 +416,7 @@ namespace gscript
 
 
 
-	ScriptValue *ScriptOperatorMultiplyBy::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorMultiplyBy::run(const CALLABLE_PARAMS_T &c)
 	{
 		return this->operatorFunction(this->left.get(), this->right.get());
 	}
@@ -443,7 +433,7 @@ namespace gscript
 
 
 
-	ScriptValue *ScriptOperatorDivide::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorDivide::run(const CALLABLE_PARAMS_T &c)
 	{
 		return this->operatorFunction(this->left.get(), this->right.get());
 	}
@@ -460,7 +450,7 @@ namespace gscript
 
 
 
-	ScriptValue *ScriptOperatorDivideBy::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorDivideBy::run(const CALLABLE_PARAMS_T &c)
 	{
 		return this->operatorFunction(this->left.get(), this->right.get());
 	}
@@ -477,7 +467,7 @@ namespace gscript
 
 
 
-	ScriptValue *ScriptOperatorIncrement::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorIncrement::run(const CALLABLE_PARAMS_T &c)
 	{
 		return this->operatorFunction(this->left.get(), this->right.get());
 	}
@@ -494,7 +484,7 @@ namespace gscript
 
 
 
-	ScriptValue *ScriptOperatorDecrement::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorDecrement::run(const CALLABLE_PARAMS_T &c)
 	{
 		return this->operatorFunction(this->left.get(), this->right.get());
 	}

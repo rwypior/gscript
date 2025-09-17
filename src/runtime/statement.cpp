@@ -45,10 +45,9 @@ namespace gscript
 	{
 	}
 
-	ScriptValue *ScriptStatement::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptStatement::run(const CALLABLE_PARAMS_T &c)
 	{
-		ScriptValue *result = this->callable->run();
-		return result;
+		return this->callable->run();
 	}
 
 	void ScriptStatement::setup()
@@ -58,7 +57,7 @@ namespace gscript
 			this->setupOperator(oper);
 	}
 
-	const ScriptType *ScriptStatement::getType() const
+	const std::shared_ptr<ScriptType> ScriptStatement::getType() const
 	{
 		return this->callable->getType();
 	}
@@ -80,10 +79,10 @@ namespace gscript
 	void ScriptStatement::assertAccessibilityOf(ScriptMethod& method) const
 	{
 		if (!method.isAccessible(this->scope, method.accessModifier))
-			throw CompileException("Access denied to \"" + method.getName() + "\" method");
+			throw CompileException("Method \"" + method.getName() + "\" is inaccessible");
 	}
 
-	void ScriptStatement::assignReferences(std::shared_ptr<ScriptCallable>& entry, ScriptScopeBase* scope, bool member)
+	void ScriptStatement::assignReferences(std::shared_ptr<ScriptCallable>& entry, const ScriptScopeBase* scope, bool member)
 	{
 		if (auto fcall = std::dynamic_pointer_cast<ScriptCallablePrototype>(entry))
 		{
@@ -100,7 +99,7 @@ namespace gscript
 		{
 			this->assignReferences(oper->left, scope, false);
 
-			ScriptScopeBase* resolvedScope = scope;
+			const ScriptScopeBase* resolvedScope = scope;
 
 			bool memberAccess = false;
 			if (ScriptOperatorMemberAccessor *operAccessor = dynamic_cast<ScriptOperatorMemberAccessor*>(oper))
@@ -111,27 +110,27 @@ namespace gscript
 				{
 					// TODO - check this
 					//if (const ScriptClassType *leftClass = dynamic_cast<const ScriptClassType*>(leftVar->var->orig()->getType()))
-					if (const ScriptClassType *leftClass = dynamic_cast<const ScriptClassType*>(leftVar->getType()))
-						resolvedScope = &leftClass->sclass;
+					if (const auto leftClass = std::dynamic_pointer_cast<const ScriptClassType>(leftVar->getType()))
+						resolvedScope = &leftClass->getClass();
 				}
 				else if (auto leftFunc = std::dynamic_pointer_cast<ScriptFuncCall>(oper->left))
 				{
 					auto type = leftFunc->getFunc().getType();
 					if (type->getTypeDescriptor() == VALUE_TYPE_T::VT_CLASS)
 					{
-						const ScriptClassType *leftClassType = static_cast<const ScriptClassType*>(type);
-						resolvedScope = &leftClassType->sclass;
+						const auto leftClassType = std::static_pointer_cast<const ScriptClassType>(type);
+						resolvedScope = &leftClassType->getClass();
 					}
 				}
 				else if (auto leftMemb = std::dynamic_pointer_cast<ScriptOperatorMemberAccessor>(oper->left))
 				{
 					if (const auto leftMembVar = std::dynamic_pointer_cast<const ScriptVarRead>(leftMemb->right))
 					{
-						resolvedScope = &static_cast<const ScriptClassType*>(leftMembVar->getType())->sclass;
+						resolvedScope = &std::static_pointer_cast<const ScriptClassType>(leftMembVar->getType())->getClass();
 					}
 					else if (const auto leftMembFunc = std::dynamic_pointer_cast<const ScriptFuncCall>(leftMemb->right))
 					{
-						resolvedScope = &static_cast<const ScriptClassType*>(leftMembFunc->getType())->sclass;
+						resolvedScope = &std::static_pointer_cast<const ScriptClassType>(leftMembFunc->getType())->getClass();
 					}
 					else
 						throw CompileException("Casting member accessor on incompatible entity");

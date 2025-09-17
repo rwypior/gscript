@@ -9,15 +9,13 @@
 
 namespace gscript
 {
-	const ScriptType ScriptFuncPrint::returnType = ScriptType(VALUE_TYPE_T::VT_NULL);
-
 	ScriptFuncPrint::ScriptFuncPrint(ScriptScopeBase& scope, const std::string &name)
 		: ScriptFunction(scope, name, ScriptType::create(VALUE_TYPE_T::VT_NULL, this->scope), PARAMS_T(1, FunctionParameter(ScriptType::create(VALUE_TYPE_T::VT_STRING, scope))))
 	{
 
 	}
 
-	ScriptValue *ScriptFuncPrint::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptFuncPrint::run(const CALLABLE_PARAMS_T &c)
 	{
 		this->validateParams(c);
 
@@ -26,11 +24,11 @@ namespace gscript
 
 		std::cout << sval.getValue() << std::flush;
 
-		return SCR_NULL;
+		return ScriptType::null();
 	}
 
-	const ScriptType &ScriptFuncPrint::getType()
+	const std::shared_ptr<ScriptType> ScriptFuncPrint::getType() const
 	{
-		return ScriptFuncPrint::returnType;
+		return ScriptType::nulltype();
 	}
 }

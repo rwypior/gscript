@@ -111,8 +111,8 @@ namespace gscript
 
 		for (auto& pf : pclass.fields)
 		{
-			ScriptFieldDeclaration* field = new ScriptFieldDeclaration(*cl, pf.name, ScriptType::create(pf.type, *cl), this->compileStatement(cl.get(), pf.value));
-			cl->addFieldDeclaration(field);
+			auto field = std::make_unique<ScriptFieldDeclaration>(*cl, pf.name, ScriptType::create(pf.type, *cl), this->compileStatement(cl.get(), pf.value));
+			cl->addFieldDeclaration(std::move(field));
 		}
 
 		for (auto& pmethod : pclass.methods)
@@ -362,13 +362,13 @@ namespace gscript
 	{
 		gs_log("Compiling ScriptArrayInitializer with " << initializer.arglist.parameters.size() << " arguments");
 
-		const ScriptType* prevType = nullptr;
+		std::shared_ptr<ScriptType> prevType;
 		std::vector<std::unique_ptr<ScriptStatement>> statements;
 		
 		for (auto& param : initializer.arglist.parameters)
 		{
 			auto stmt = this->compileStatement(scope, *param);
-			const ScriptType* type = stmt->getType();
+			const auto type = stmt->getType();
 
 			if (prevType && !prevType->equals(*type))
 				throw CompileException("Mixed-type array not allowed");
@@ -522,7 +522,7 @@ namespace gscript
 			ScriptScopeBase* usedScope = scope;
 			if (auto memberacc = std::dynamic_pointer_cast<ScriptOperatorMemberAccessor>(oper))
 			{
-				auto& target = static_cast<const ScriptClassType*>(memberacc->left->getType())->sclass;
+				auto& target = std::static_pointer_cast<const ScriptClassType>(memberacc->left->getType())->getClass();
 				usedScope = &target;
 			}
 
@@ -556,7 +556,7 @@ namespace gscript
 			ScriptScopeBase* usedScope = scope;
 			if (auto memberacc = dynamic_cast<ScriptOperatorMemberAccessor*>(oper))
 			{
-				auto& target = static_cast<const ScriptClassType*>(memberacc->left->getType())->sclass;
+				auto& target = std::static_pointer_cast<const ScriptClassType>(memberacc->left->getType())->getClass();
 				usedScope = &target;
 			}
 

@@ -19,7 +19,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionSimple")
 	gscript::ScriptFunction myFunc(globalNamespace, "myfunc", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), {}, {});
 
 	// Function block
-	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(1));
+	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(1));
 
 	auto varreadMyVariable1 = std::make_unique<gscript::ScriptVarRead>(myFunc, &myVariable1);
 	auto mul = std::make_unique<gscript::ScriptOperatorMultiplyBy>(myFunc, gscript::OPERATOR_LINK_T::OL_BOTH);
@@ -81,13 +81,13 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionWithParams")
 	gscript::ScriptFunction myFunc(
 		globalNamespace, 
 		"myfunc", 
-		gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), 
-		{ { gscript::ScriptType(gscript::VALUE_TYPE_T::VT_INT), "arg1" }},
+		gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace),
+		{ { std::make_shared<gscript::ScriptType>(gscript::VALUE_TYPE_T::VT_INT), "arg1" }},
 		{}
 	);
 
 	// Function block
-	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(1));
+	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(1));
 
 	auto varreadMyVariable1 = std::make_unique<gscript::ScriptVarRead>(myFunc, &myVariable1);
 	auto assign = std::make_unique<gscript::ScriptOperatorAssign>(myFunc, gscript::OPERATOR_LINK_T::OL_BOTH);
@@ -105,18 +105,17 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionWithParams")
 	myFunc.merge(std::move(eb));
 	myFunc.setup();
 
-	// Params
-
-	gscript::ScriptIntValue param42(42);
-	gscript::ScriptIntValue param1337(1337);
-
 	// Test
 
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 1);
 
-	myFunc.run({&param42});
+	std::vector<std::unique_ptr<gscript::ScriptValue>> params1;
+	params1.push_back(std::make_unique<gscript::ScriptIntValue>(42));
+	myFunc.run(std::move(params1));
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 42);
 
-	myFunc.run({&param1337});
+	std::vector<std::unique_ptr<gscript::ScriptValue>> params2;
+	params2.push_back(std::make_unique<gscript::ScriptIntValue>(1337));
+	myFunc.run(std::move(params2));
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 1337);
 }

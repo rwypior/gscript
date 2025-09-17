@@ -5,6 +5,8 @@ Fixes
 Framework stuff
 ===============
 
+- Add tests for reference values
+- See if ScriptValue's getType() can return unique_ptr, or something else than shared_ptr
 - VariableAccessor and FunctionAccessor should be treated as prototypes and return real addresses after built
 - Add serialization/deserialization classes which will enable quick loading pre-parsed scripts
 	- Create unit tests for that

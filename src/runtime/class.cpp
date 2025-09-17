@@ -3,16 +3,14 @@
 #include "runtime/function.hpp"
 #include "runtime/namespace.hpp"
 #include "runtime/varDeclaration.hpp"
-#include "runtime/varDeclaration.hpp"
 #include "runtime/entityLink.hpp"
+#include "runtime/classInstance.hpp"
 
 #include "defs.hpp"
 #include "compileException.hpp"
 
 namespace gscript
 {
-	const char *ScriptClass::KW_THIS = "this";
-
 	ScriptClass::ScriptClass(ScriptScopeBase& scope, const std::string &name, ScriptClass *base)
 		: ScriptNamespace(&scope)
 		, name(name)
@@ -27,7 +25,7 @@ namespace gscript
 
 	void ScriptClass::createThis()
 	{
-		this->registerVariable(std::make_unique<ScriptVariable>(ScriptClass::KW_THIS, new ScriptClassType(*this), nullptr));
+		this->registerVariable(std::make_unique<ScriptVariable>(ScriptClass::keywordThis, std::make_shared<ScriptClassType>(*this), nullptr));
 	}
 
 	void ScriptClass::makeAbstract()
@@ -40,12 +38,9 @@ namespace gscript
 		return this->modifier & CLASS_MODIFIER_T::CM_ABSTRACT;
 	}
 
-	// TODO
-	// Script instance must have all it's fields in place upon creation
-
-	ScriptClassInstance *ScriptClass::instantiate(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptClassInstance> ScriptClass::instantiate(const CALLABLE_PARAMS_T &c)
 	{
-		ScriptClassInstance *inst = new ScriptClassInstance(*this);
+		auto inst = std::make_unique<ScriptClassInstance>(*this);
 
 		for (auto& field : this->fieldDeclarations)
 		{
@@ -54,8 +49,11 @@ namespace gscript
 
 		this->initialize(*inst);
 
-		if (ScriptMethod *constructor = this->getConstructor())
-			constructor->instrun(inst, c);
+		auto instval = std::make_unique<ScriptClassValue>(std::move(inst));
+
+		if (ScriptMethod* constructor = this->getConstructor())
+			constructor->instrun(ScriptReferenceValue::create(instval.get()), c);
+			//constructor->instrun(inst.get(), c);
 
 		return inst;
 	}
@@ -92,35 +90,6 @@ namespace gscript
 			this->constructor = static_cast<ScriptMethod*>(&f);
 	}
 
-	/*ScriptFunction &ScriptClass::registerFunction(const ParserFunction &c)
-	{
-		if (const ParserMethod *pmethod = dynamic_cast<const ParserMethod*>(&c))
-		{
-			PARAMS_T params;
-			for (
-				ParserArglist::ARGLIST_PARAMS_T::const_iterator it = c.arglist.parameters.begin();
-				it != c.arglist.parameters.end();
-				++it
-				)
-			{
-				params.emplace_back(ScriptType::create(it->type, *this), it->name);
-			}
-
-			this->functions.push_back(
-				new ScriptMethod(*this, c.name, ScriptType::create(c.returnTypeName, *this->parentScope), params, pmethod->accessSpecifier.getModifier())
-			);
-			ScriptMethod &newfunc = static_cast<ScriptMethod&>(*this->functions.back());
-			this->assignConstructor(newfunc);
-
-			newfunc.setParentScope(this);
-			newfunc.setup(c);
-
-			return newfunc;
-		}
-
-		throw CompileException("Only methods may be registered in class");
-	}*/
-
 	ScriptFunction& ScriptClass::registerFunction(std::unique_ptr<ScriptFunction>&& f)
 	{
 		if (ScriptMethod *method = dynamic_cast<ScriptMethod*>(f.get()))
@@ -135,39 +104,6 @@ namespace gscript
 
 		throw CompileException("Only methods may be registered in class");
 	}
-
-	/*void ScriptClass::registerMethodPrototype(const ParserMethod &m)
-	{
-		PARAMS_T params;
-		for (
-			ParserArglist::ARGLIST_PARAMS_T::const_iterator it = m.arglist.parameters.begin();
-			it != m.arglist.parameters.end();
-			++it
-			)
-		{
-			params.emplace_back(ScriptType::create(it->type, *this), it->name);
-		}
-
-		if (m.externName.empty())
-			this->functions.push_back(
-				new ScriptMethod(*this, m.name, ScriptType::create(m.returnTypeName, *this->parentScope), params, m.accessSpecifier.getModifier())
-			);
-		else
-			this->functions.push_back(
-				new ScriptExternMethod(m.externName, *this, m.name, ScriptType::create(m.returnTypeName, *this->parentScope), params, m.accessSpecifier.getModifier())
-			);
-
-		ScriptMethod &newfunc = static_cast<ScriptMethod&>(*this->functions.back());
-		this->assignConstructor(newfunc);
-
-		if (newfunc.isAbstract())
-			this->makeAbstract();
-
-		newfunc.setParentScope(this);
-
-		ScriptMethodPrototype *proto = new ScriptMethodPrototype(newfunc, m);
-		this->functionPrototypes.push_back(proto);
-	}*/
 
 	void ScriptClass::initialize(ScriptClassInstance &instance)
 	{
@@ -201,9 +137,9 @@ namespace gscript
 		}
 	}
 
-	void ScriptClass::addFieldDeclaration(ScriptFieldDeclaration *svd)
+	void ScriptClass::addFieldDeclaration(std::unique_ptr<ScriptFieldDeclaration>&& svd)
 	{
-		this->fieldDeclarations.push_back(svd);
+		this->fieldDeclarations.push_back(std::move(svd));
 	}
 
 	const std::string &ScriptClass::getName() const
@@ -230,58 +166,4 @@ namespace gscript
 
 		return baseCmp && this->name == b.name;
 	}
-
-	// CLASS RESOLV
-
-	//ScriptClassResolv::ScriptClassResolv(ScriptNamespace *snamespace, ParserClass *pClass)
-	//	:ScriptClass(*snamespace->getParentScope(), pClass->name, NULL),
-	//	pClass(pClass)
-	//{
-	//}
-
-	//ScriptClass *ScriptClassResolv::resolve()
-	//{
-	//	ScriptClass *cls = this->snamespace->findClass(this->name);
-	//	delete this;
-	//	return cls;
-	//}
-
-	// PROTOTYPE
-
-	//ScriptClassPrototype::ScriptClassPrototype(ScriptClass &target, const ParserClass &pClass)
-	//	:pClass(pClass),
-	//	target(target)
-	//{
-	//}
-
-	//void ScriptClassPrototype::build()
-	//{
-	//	const std::string &base = this->pClass.base;
-
-	//	ScriptClass *baseClass = NULL;
-
-	//	if (base.length() > 0)
-	//	{
-	//		baseClass = this->target.getClosestNamespace()->findClass(base);
-
-	//		if (!baseClass)
-	//			throw CompileException(std::string("Base class ") + base + " not found");
-	//	}
-
-	//	for (std::vector<ParserFieldDeclaration>::const_iterator it = this->pClass.fields.begin(); it != this->pClass.fields.end(); ++it)
-	//	{
-	//		ScriptVariable &svar = this->target.registerVariable(it->name, ScriptType::create(it->type, *this->target.getParentScope()), NULL);
-	//		//ScriptVarDeclaration *svd = new ScriptVarDeclaration(this->target, svar, ScriptStatement(this->target, it->value));
-	//		EntityLink<ScriptVariable&> *link = new MemberEntityLink<ScriptVariable&, ScriptClassInstance::INSTANCE_VARIABLES_CONTAINER_T>(nullptr, svar.getInternalPointer(), svar);
-	//		ScriptVarDeclaration *svd = new ScriptVarDeclaration(this->target, link, ScriptStatement(this->target, it->value));
-	//		this->target.addVarDeclaration(svd);
-	//	}
-
-	//	for (std::vector<ParserMethod>::const_iterator it = this->pClass.methods.begin(); it != this->pClass.methods.end(); ++it)
-	//	{
-	//		this->target.registerMethodPrototype(*it);
-	//	}
-
-	//	this->target.setup();
-	//}
 }

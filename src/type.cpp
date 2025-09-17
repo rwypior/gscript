@@ -4,6 +4,7 @@
 #include "runtime/scope.hpp"
 #include "runtime/namespace.hpp"
 #include "runtime/class.hpp"
+#include "runtime/classInstance.hpp"
 #include "runtime/variable.hpp"
 #include "parser/pReference.hpp"
 #include "parser/pArrayAccessor.hpp"
@@ -65,50 +66,79 @@ namespace gscript
 		return it->first;
 	}
 
-	ScriptValue *ScriptType::createEmptyValue(VALUE_TYPE_T type, const ScriptType *t)
+	std::unique_ptr<ScriptValue> ScriptType::createEmptyValue(VALUE_TYPE_T type, const std::shared_ptr<ScriptType> t)
 	{
 		switch (type)
 		{
-		case VALUE_TYPE_T::VT_BOOL: return new ScriptBoolValue();
-		case VALUE_TYPE_T::VT_BYTE: return new ScriptByteValue();
-		case VALUE_TYPE_T::VT_CHAR: return new ScriptCharValue();
-		case VALUE_TYPE_T::VT_INT: return new ScriptIntValue();
-		case VALUE_TYPE_T::VT_UNSIGNED_INT: return new ScriptUnsignedIntValue();
-		case VALUE_TYPE_T::VT_FLOAT: return new ScriptFloatValue();
-		case VALUE_TYPE_T::VT_DOUBLE: return new ScriptDoubleValue();
-		case VALUE_TYPE_T::VT_STRING: return new ScriptStringValue();
-		case VALUE_TYPE_T::VT_CLASS: return new ScriptClassValue(nullptr, static_cast<const ScriptClassType*>(t)->sclass);
-		case VALUE_TYPE_T::VT_ARRAY: return new ScriptArrayValue();
-		case VALUE_TYPE_T::VT_REFERENCE: return new ScriptReferenceValue(static_cast<const ScriptReferenceType*>(t));
-		case VALUE_TYPE_T::VT_NULL: return SCR_NULL;
+		case VALUE_TYPE_T::VT_BOOL: return std::make_unique<ScriptBoolValue>();
+		case VALUE_TYPE_T::VT_BYTE: return std::make_unique<ScriptByteValue>();
+		case VALUE_TYPE_T::VT_CHAR: return std::make_unique<ScriptCharValue>();
+		case VALUE_TYPE_T::VT_INT: return std::make_unique<ScriptIntValue>();
+		case VALUE_TYPE_T::VT_UNSIGNED_INT: return std::make_unique<ScriptUnsignedIntValue>();
+		case VALUE_TYPE_T::VT_FLOAT: return std::make_unique<ScriptFloatValue>();
+		case VALUE_TYPE_T::VT_DOUBLE: return std::make_unique<ScriptDoubleValue>();
+		case VALUE_TYPE_T::VT_STRING: return std::make_unique<ScriptStringValue>();
+		case VALUE_TYPE_T::VT_CLASS: return std::make_unique<ScriptClassValue>(nullptr, std::static_pointer_cast<ScriptClassType>(t)->getClass());
+		case VALUE_TYPE_T::VT_ARRAY: return std::make_unique<ScriptArrayValue>();
+		case VALUE_TYPE_T::VT_REFERENCE: return std::make_unique<ScriptReferenceValue>(std::static_pointer_cast<ScriptReferenceType>(t));
+		case VALUE_TYPE_T::VT_NULL: return ScriptType::null();
 		}
 
 		throw new CompileException("Invalid type given");
 	}
 
-	ScriptType *ScriptType::create(TypeDescriptor type, ScriptScopeBase& scope, const std::string &cname)
+	std::unique_ptr<ScriptNullValue> ScriptType::null()
+	{
+		return std::make_unique<ScriptNullValue>();
+	}
+
+	std::shared_ptr<ScriptType> ScriptType::nulltype()
+	{
+		return std::make_shared<ScriptType>(VALUE_TYPE_T::VT_NULL);
+	}
+
+	std::unique_ptr<ScriptBoolValue> ScriptType::btrue()
+	{
+		return std::make_unique<ScriptBoolValue>(true);
+	}
+
+	std::unique_ptr<ScriptBoolValue> ScriptType::bfalse()
+	{
+		return std::make_unique<ScriptBoolValue>(false);
+	}
+
+	std::shared_ptr<ScriptType> ScriptType::booltype()
+	{
+		return std::make_shared<ScriptType>(VALUE_TYPE_T::VT_BOOL);
+	}
+
+	std::unique_ptr<ScriptType> ScriptType::create(VALUE_TYPE_T valueType, ScriptScopeBase& scope, const std::string& cname)
+	{
+		return ScriptType::create(TypeDescriptor(valueType), scope, cname);
+	}
+
+	std::unique_ptr<ScriptType> ScriptType::create(TypeDescriptor type, ScriptScopeBase& scope, const std::string &cname)
 	{
 		if (type.type == VALUE_TYPE_T::VT_CLASS)
 		{
-			//if (ScriptClass *c = scope.getClosestNamespace(true)->findClass(cname))
 			if (ScriptClass *c = scope.getGlobalNamespace()->findClass(cname))
-				return new ScriptClassType(*c);
+				return std::make_unique<ScriptClassType>(*c);
 
 			throw CompileException(std::string("Class \"") + cname + "\" was not found");
 		}
 		else if (type.type == VALUE_TYPE_T::VT_ARRAY)
 		{
-			return new ScriptArrayType(ScriptType::create(type.subType->type, scope));
+			return std::make_unique<ScriptArrayType>(ScriptType::create(type.subType->type, scope));
 		}
 		else if (type.type == VALUE_TYPE_T::VT_REFERENCE)
 		{
-			return new ScriptReferenceType(ScriptType::create(type.subType->type, scope));
+			return std::make_unique<ScriptReferenceType>(ScriptType::create(type.subType->type, scope));
 		}
 
-		return new ScriptType(type.type);
+		return std::make_unique<ScriptType>(type.type);
 	}
 
-	ScriptType *ScriptType::create(const std::string &tname, ScriptScopeBase& scope)
+	std::unique_ptr<ScriptType> ScriptType::create(const std::string &tname, ScriptScopeBase& scope)
 	{
 		return ScriptType::create(translateType(tname), scope, tname);
 	}
@@ -120,12 +150,17 @@ namespace gscript
 	{
 	}
 
+	std::unique_ptr<ScriptType> ScriptType::clone() const
+	{
+		return std::make_unique<ScriptType>(this->type);
+	}
+
 	VALUE_TYPE_T ScriptType::getTypeDescriptor() const
 	{
 		return this->type;
 	}
 
-	VALUE_TYPE_T ScriptType::getAbsoluteTypeDescriptor() const
+	VALUE_TYPE_T ScriptType::getUnderlyingTypeDescriptor() const
 	{
 		return this->type;
 	}
@@ -140,15 +175,10 @@ namespace gscript
 		return *this == b;
 	}
 
-	bool ScriptType::operator ==(const ScriptType &b) const
+	bool ScriptType::operator==(const ScriptType &b) const
 	{
-		if (b.getAbsoluteTypeDescriptor() == VALUE_TYPE_T::VT_REFERENCE)
+		if (b.getTypeDescriptor() == VALUE_TYPE_T::VT_REFERENCE)
 			return static_cast<const ScriptReferenceType&>(b).operator==(*this);
-
-		/*if (this->getTypeDescriptor() == VALUE_TYPE_T::VT_CLASS || b.getTypeDescriptor() == VALUE_TYPE_T::VT_CLASS)
-		{
-
-		}*/
 
 		return this->type == b.type;
 	}
@@ -166,21 +196,20 @@ namespace gscript
 	{
 	}
 
+	std::unique_ptr<ScriptType> ScriptClassType::clone() const
+	{
+		return std::make_unique<ScriptClassType>(this->sclass);
+	}
+
 	bool ScriptClassType::matches(const ScriptVariable &variable)
 	{
 		if (variable.getValue()->getType()->getTypeDescriptor() != this->type)
 			return false;
 
-		const ScriptClassType *b = static_cast<const ScriptClassType*>(variable.getType());
+		const auto b = std::static_pointer_cast<const ScriptClassType>(variable.getType());
 
 		return this->sclass == b->sclass;
 	}
-
-	/*bool ScriptClassType::operator ==(const ScriptClassType &b) const
-	{
-		const ScriptClassType &classB = static_cast<const ScriptClassType&>(b);
-		return this->sclass == classB.sclass;
-	}*/
 
 	bool ScriptClassType::operator ==(const ScriptType &b) const
 	{
@@ -193,12 +222,22 @@ namespace gscript
 		return false;
 	}
 
+	ScriptClass& ScriptClassType::getClass() const
+	{
+		return this->sclass;
+	}
+
 	// ARRAY TYPE
 
-	ScriptArrayType::ScriptArrayType(const ScriptType *subType)
-		:ScriptType(VALUE_TYPE_T::VT_ARRAY),
-		subType(subType)
+	ScriptArrayType::ScriptArrayType(const std::shared_ptr<ScriptType> subType)
+		: ScriptType(VALUE_TYPE_T::VT_ARRAY)
+		, subType(subType)
 	{
+	}
+
+	std::unique_ptr<ScriptType> ScriptArrayType::clone() const
+	{
+		return std::make_unique<ScriptArrayType>(this->subType->clone());
 	}
 
 	bool ScriptArrayType::matches(const ScriptVariable &variable)
@@ -206,8 +245,8 @@ namespace gscript
 		if (variable.getValue()->getType()->getTypeDescriptor() != this->type)
 			return false;
 
-		const ScriptArrayType *b = static_cast<const ScriptArrayType*>(variable.getType());
-
+		const auto b = std::static_pointer_cast<const ScriptArrayType>(variable.getType());
+		
 		return this->subType == b->subType;
 	}
 
@@ -222,18 +261,27 @@ namespace gscript
 		return false;
 	}
 
-	/*bool ScriptArrayType::operator ==(const ScriptArrayType &b) const
+	const std::shared_ptr<ScriptType>& ScriptArrayType::getSubType() const
 	{
-		const ScriptArrayType &classB = static_cast<const ScriptArrayType&>(b);
-		return *this->subType == *classB.subType;
-	}*/
+		return this->subType;
+	}
+
+	VALUE_TYPE_T ScriptArrayType::getUnderlyingTypeDescriptor() const
+	{
+		return this->subType->getTypeDescriptor();
+	}
 
 	// REFERENCE TYPE
 
-	ScriptReferenceType::ScriptReferenceType(const ScriptType *subType)
-		:ScriptType(VALUE_TYPE_T::VT_REFERENCE),
-		subType(subType)
+	ScriptReferenceType::ScriptReferenceType(const std::shared_ptr<ScriptType> subType)
+		: ScriptType(VALUE_TYPE_T::VT_REFERENCE)
+		, subType(subType)
 	{
+	}
+
+	std::unique_ptr<ScriptType> ScriptReferenceType::clone() const
+	{
+		return std::make_unique<ScriptReferenceType>(this->subType->clone());
 	}
 
 	bool ScriptReferenceType::matches(const ScriptVariable &variable)
@@ -241,15 +289,10 @@ namespace gscript
 		if (variable.getValue()->getType()->getTypeDescriptor() != this->type)
 			return false;
 
-		const ScriptArrayType *b = static_cast<const ScriptArrayType*>(variable.getType());
+		const auto b = std::static_pointer_cast<const ScriptArrayType>(variable.getType());
 
-		return this->subType == b->subType;
+		return *this->subType == *b->getSubType();
 	}
-
-	/*bool ScriptReferenceType::operator ==(const ScriptReferenceType &b) const
-	{
-		return this->subType->getTypeDescriptor() == b.subType->getTypeDescriptor();
-	}*/
 
 	bool ScriptReferenceType::operator ==(const ScriptType &b) const
 	{
@@ -262,7 +305,7 @@ namespace gscript
 		return this->subType->getTypeDescriptor() == b.getTypeDescriptor();
 	}
 
-	VALUE_TYPE_T ScriptReferenceType::getTypeDescriptor() const
+	VALUE_TYPE_T ScriptReferenceType::getUnderlyingTypeDescriptor() const
 	{
 		return this->subType->getTypeDescriptor();
 	}

@@ -28,8 +28,9 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeArrayInitializer")
 
 	auto val = ai.run();
 
-	REQUIRE(val->getType()->getTypeDescriptor() == gscript::VALUE_TYPE_T::VT_INT);
-
-	auto arr = static_cast<gscript::ScriptArrayValue*>(val)->getValue();
-	REQUIRE(static_cast<gscript::ScriptIntValue*>(arr[0])->getValue() == 42);
+	REQUIRE(val->getType()->getTypeDescriptor() == gscript::VALUE_TYPE_T::VT_ARRAY);
+	REQUIRE(val->getType()->getUnderlyingTypeDescriptor() == gscript::VALUE_TYPE_T::VT_INT);
+	
+	auto& arr = static_cast<gscript::ScriptArrayValue*>(val->data())->getValue();
+	REQUIRE(arr[0]->as<gscript::ScriptIntValue>().getValue() == 42);
 }

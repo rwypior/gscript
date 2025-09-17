@@ -14,16 +14,16 @@ namespace gscript
 			throw CompileException(std::string("Cannot instatiate abstract class ") + sclass.getName());
 	}
 
-	ScriptValue *ScriptNew::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptNew::run(const CALLABLE_PARAMS_T &c)
 	{
-		ScriptClassInstance *classInstance = new ScriptClassInstance(this->sclass);
-		ScriptClassValue *val = new ScriptClassValue(classInstance);
-
+		auto classInstance = std::make_unique<ScriptClassInstance>(this->sclass);
 		this->sclass.initialize(*classInstance);
+
+		auto val = std::make_unique<ScriptClassValue>(std::move(classInstance));
 
 		/*if (this->func && this->func->get())
 		{*/
-		this->setInstance(val);
+		this->setInstance(ScriptReferenceValue::create(val.get()));
 		ScriptFuncCall::run(c);
 		//}
 

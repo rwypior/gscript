@@ -20,7 +20,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFor")
 	literal0vec.push_back(std::move(literal0));
 	auto stmtliteral = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(literal0vec));
 	stmtliteral->setup();
-	auto& sv = globalNamespace.registerVariable("i", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(0));
+	auto& sv = globalNamespace.registerVariable("i", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(0));
 	//gscript::ScriptVariable sv("i", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(0));
 	auto vardecl = std::make_unique<gscript::ScriptVarDeclaration>(globalNamespace, sv, std::move(stmtliteral));
 
@@ -45,7 +45,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFor")
 	progress->setup();
 
 	// For block
-	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(1));
+	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(1));
 	//gscript::ScriptVariable myVariable1("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), new gscript::ScriptIntValue(1));
 	auto varreadMyVariable1 = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &myVariable1);
 	auto mul = std::make_unique<gscript::ScriptOperatorAddTo>(globalNamespace, gscript::OPERATOR_LINK_T::OL_BOTH);

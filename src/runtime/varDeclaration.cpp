@@ -1,6 +1,7 @@
 #include "runtime/varDeclaration.hpp"
 #include "runtime/function.hpp"
 #include "runtime/scope.hpp"
+#include "runtime/classInstance.hpp"
 
 namespace gscript
 {
@@ -27,21 +28,21 @@ namespace gscript
 		this->accessor->setScope(&instance);
 	}
 
-	ScriptValue *ScriptVarDeclaration::run(const CALLABLE_PARAMS_T &params)
+	std::unique_ptr<ScriptValue> ScriptVarDeclaration::run(const CALLABLE_PARAMS_T &params)
 	{
 		this->accessor->get()->init(this->statement->run());
 
-		return nullptr;
+		return ScriptType::null();
 	}
 
-	const ScriptType *ScriptVarDeclaration::getType() const
+	const std::shared_ptr<ScriptType> ScriptVarDeclaration::getType() const
 	{
 		return this->statement->getType();
 	}
 
 	// Field declaration
 
-	ScriptFieldDeclaration::ScriptFieldDeclaration(ScriptScope& scope, const std::string& name, const ScriptType* type, std::unique_ptr<ScriptStatement>&& statement)
+	ScriptFieldDeclaration::ScriptFieldDeclaration(ScriptScope& scope, const std::string& name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptStatement>&& statement)
 		: ScriptVarDeclaration(scope, {}, std::move(statement))
 		, name(name)
 		, type(type)
@@ -57,7 +58,7 @@ namespace gscript
 
 	// Prototype
 
-	ScriptVarDeclarationPrototype::ScriptVarDeclarationPrototype(ScriptScope& scope, const std::string& name, const ScriptType* type, std::unique_ptr<ScriptStatement>&& statement)
+	ScriptVarDeclarationPrototype::ScriptVarDeclarationPrototype(ScriptScope& scope, const std::string& name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptStatement>&& statement)
 		: ScriptCallablePrototype(scope)
 		, name(name)
 		, type(type)

@@ -6,6 +6,8 @@
 #include "gscript/runtime/namespace.hpp"
 #include "gscript/runtime/statement.hpp"
 #include "gscript/runtime/funcCall.hpp"
+#include "gscript/runtime/class.hpp"
+#include "gscript/runtime/classInstance.hpp"
 #include "gscript/logger.hpp"
 
 #include <catch2/catch_all.hpp>

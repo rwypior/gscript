@@ -3,6 +3,7 @@
 
 #include "gscript/script.hpp"
 #include "gscript/runtime/scope.hpp"
+#include "gscript/runtime/namespace.hpp"
 
 class GscriptTest
 {

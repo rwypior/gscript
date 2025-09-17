@@ -13,7 +13,7 @@ namespace gscript
 
 	namespace OperatorFunctionFactory
 	{
-		typedef ScriptValue *(*OPERATOR_FUNCTION_T)(ScriptCallable *left, ScriptCallable *right);
+		typedef std::unique_ptr<ScriptValue>(*OPERATOR_FUNCTION_T)(ScriptCallable *left, ScriptCallable *right);
 		typedef std::tuple<VALUE_TYPE_T, VALUE_TYPE_T, OPERATOR_TYPE_T> FUNC_MAP_KEY_T;
 		typedef std::unordered_map<FUNC_MAP_KEY_T, OPERATOR_FUNCTION_T, hash_tuple::hash<FUNC_MAP_KEY_T> > FUNCMAP_T;
 

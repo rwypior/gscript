@@ -3,8 +3,6 @@
 
 namespace gscript
 {
-	const ScriptType *ScriptFor::returnType = new ScriptType(VALUE_TYPE_T::VT_NULL);
-
 	ScriptFor::ScriptFor(
 			ScriptScope &scope, 
 			std::unique_ptr<ScriptVarDeclaration>&& vardecl, 
@@ -20,7 +18,7 @@ namespace gscript
 	{
 	}
 
-	ScriptValue *ScriptFor::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptFor::run(const CALLABLE_PARAMS_T &c)
 	{
 		if (this->vardecl)
 			this->vardecl->run();
@@ -33,11 +31,11 @@ namespace gscript
 				this->progress->run();
 		}
 
-		return SCR_NULL;
+		return ScriptType::null();
 	}
 
-	const ScriptType *ScriptFor::getType() const
+	const std::shared_ptr<ScriptType> ScriptFor::getType() const
 	{
-		return ScriptFor::returnType;
+		return ScriptType::nulltype();
 	}
 }

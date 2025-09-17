@@ -123,7 +123,7 @@ namespace gscript
 
 	std::unique_ptr<ScriptValue> ScriptArrayRead::run(const CALLABLE_PARAMS_T &c)
 	{
-		ScriptArrayValue *arr = static_cast<ScriptArrayValue*>(ScriptVarRead::run(c).get());
+		ScriptArrayValue *arr = static_cast<ScriptArrayValue*>(ScriptVarRead::run(c)->data());
 		int index = static_cast<ScriptIntValue*>(this->arrayAccessor->run().get())->getValue();
 
 		// TODO - check this for performance - same as for VarRead

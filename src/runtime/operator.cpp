@@ -209,8 +209,7 @@ namespace gscript
 		if (ScriptOperatorMemberAccessor *memberAccessor = dynamic_cast<ScriptOperatorMemberAccessor*>(this->left.get()))
 			memberAccessor->run();
 
-		auto rval = this->right->run();
-		
+		auto rval = this->right->run();		
 		this->varRead->get()->getValue()->assign(*rval);
 
 		return nullptr;

@@ -34,6 +34,7 @@ namespace gscript
 		SCRIPT_API virtual ~ScriptValue() = default;
 
 		SCRIPT_API virtual ScriptValue* data() { return this; };
+		SCRIPT_API virtual const ScriptValue* data() const { return this; };
 
 		SCRIPT_API virtual void assign(const ScriptValue &val) = 0;
 		SCRIPT_API virtual size_t getSize() const = 0;
@@ -262,6 +263,7 @@ namespace gscript
 		SCRIPT_API static std::unique_ptr<ScriptReferenceValue> create(ScriptValue* v);
 
 		SCRIPT_API virtual ScriptValue* data() override { return this->val; };
+		SCRIPT_API virtual const ScriptValue* data() const override { return this->val; };
 
 		SCRIPT_API virtual size_t getSize() const override;
 		SCRIPT_API virtual const std::shared_ptr<ScriptType> getType() override;

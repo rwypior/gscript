@@ -92,10 +92,10 @@ namespace gscript
 		{
 			int idx = it - this->getParameters().begin();
 
-			const ScriptType &typeA = *it->getType();
-			const ScriptType &typeB = *c[idx]->getType();
+			auto typeA = it->getType();
+			auto typeB = c[idx]->getType();
 
-			if (typeA != typeB)
+			if (*typeA != *typeB)
 			{
 				this->throwBadParameters("Parameter type mismatch");
 				return false;

@@ -6,12 +6,12 @@ namespace gscript
 	// Bool
 
 	ScriptBoolValue::ScriptBoolValue(const ScriptBoolValue& b)
-		: val(val)
+		: val(b.val)
 	{
 	}
 
 	ScriptBoolValue::ScriptBoolValue(ScriptBoolValue&& b) noexcept
-		: val(std::move(val))
+		: val(std::move(b.val))
 	{
 	}
 
@@ -58,12 +58,12 @@ namespace gscript
 	// Char
 
 	ScriptCharValue::ScriptCharValue(const ScriptCharValue& b)
-		: val(val)
+		: val(b.val)
 	{
 	}
 
 	ScriptCharValue::ScriptCharValue(ScriptCharValue&& b) noexcept
-		: val(std::move(val))
+		: val(std::move(b.val))
 	{
 	}
 
@@ -110,12 +110,12 @@ namespace gscript
 	// Byte
 
 	ScriptByteValue::ScriptByteValue(const ScriptByteValue& b)
-		: val(val)
+		: val(b.val)
 	{
 	}
 
 	ScriptByteValue::ScriptByteValue(ScriptByteValue&& b) noexcept
-		: val(std::move(val))
+		: val(std::move(b.val))
 	{
 	}
 
@@ -208,13 +208,13 @@ namespace gscript
 
 	void ScriptIntValue::assign(const ScriptValue& val)
 	{
-		this->val = static_cast<const ScriptIntValue&>(val).val;
+		this->val = static_cast<const ScriptIntValue*>(val.data())->val;
 	}
 
 	// Unsigned int
 
 	ScriptUnsignedIntValue::ScriptUnsignedIntValue(const ScriptUnsignedIntValue& b)
-		: val(val)
+		: val(b.val)
 	{
 	}
 
@@ -265,12 +265,12 @@ namespace gscript
 	// Float
 
 	ScriptFloatValue::ScriptFloatValue(const ScriptFloatValue& b)
-		: val(val)
+		: val(b.val)
 	{
 	}
 
 	ScriptFloatValue::ScriptFloatValue(ScriptFloatValue&& b) noexcept
-		: val(std::move(val))
+		: val(std::move(b.val))
 	{
 	}
 
@@ -317,12 +317,12 @@ namespace gscript
 	// Double
 
 	ScriptDoubleValue::ScriptDoubleValue(const ScriptDoubleValue& b)
-		: val(val)
+		: val(b.val)
 	{
 	}
 
 	ScriptDoubleValue::ScriptDoubleValue(ScriptDoubleValue&& b) noexcept
-		: val(std::move(val))
+		: val(std::move(b.val))
 	{
 	}
 

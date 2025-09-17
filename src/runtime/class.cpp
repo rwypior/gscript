@@ -53,9 +53,8 @@ namespace gscript
 
 		if (ScriptMethod* constructor = this->getConstructor())
 			constructor->instrun(ScriptReferenceValue::create(instval.get()), c);
-			//constructor->instrun(inst.get(), c);
-
-		return inst;
+				
+		return std::move(instval->getValue());
 	}
 
 	ScriptMethod *ScriptClass::findMethod(const std::string &name, const PARAMS_T &params, bool searchParents, bool searchBase)

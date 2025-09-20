@@ -128,20 +128,20 @@ namespace gscript
 			return ParseResult(ParseResult::Status::Invalid, { itrange.shifted(newlines), "Decimal separator must be adjacent to digits" });
 
 		if (isString)
-			this->type = VALUE_TYPE_T::VT_STRING;
+			this->type = ValueType::String;
 		else if (isChar)
-			this->type = VALUE_TYPE_T::VT_CHAR;
+			this->type = ValueType::Char;
 		else
 		{
 			if (this->value.find_first_of('.') != std::string::npos)
 			{
-				this->type = VALUE_TYPE_T::VT_DOUBLE;
+				this->type = ValueType::Double;
 
 				if (foundFloatMarker)
-					this->type = VALUE_TYPE_T::VT_FLOAT;
+					this->type = ValueType::Float;
 			}
 			else
-				this->type = VALUE_TYPE_T::VT_INT;
+				this->type = ValueType::Int;
 		}
 
 		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(begin, it));

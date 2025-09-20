@@ -10,9 +10,9 @@ namespace gscript
 		: ScriptMethod(
 			scope,
 			name,
-			ScriptType::create(VALUE_TYPE_T::VT_VOID, this->scope),
-			PARAMS_T({ FunctionParameter(ScriptType::create(VALUE_TYPE_T::VT_STRING, scope)) }),
-			MODIFIER_T::M_STATIC
+			ScriptType::create(ValueType::Void, this->scope),
+			PARAMS_T({ FunctionParameter(ScriptType::create(ValueType::String, scope)) }),
+			Modifier::Static
 		)
 	{
 	}
@@ -35,9 +35,9 @@ namespace gscript
 		:ScriptMethod(
 			scope,
 			name,
-			ScriptType::create(VALUE_TYPE_T::VT_VOID, this->scope),
-			PARAMS_T({ FunctionParameter(ScriptType::create(VALUE_TYPE_T::VT_STRING, scope)) }),
-			MODIFIER_T::M_STATIC
+			ScriptType::create(ValueType::Void, this->scope),
+			PARAMS_T({ FunctionParameter(ScriptType::create(ValueType::String, scope)) }),
+			Modifier::Static
 		)
 	{
 	}
@@ -60,9 +60,9 @@ namespace gscript
 		: ScriptMethod(
 			scope,
 			name,
-			ScriptType::create(VALUE_TYPE_T::VT_STRING, this->scope),
+			ScriptType::create(ValueType::String, this->scope),
 			PARAMS_T(),
-			MODIFIER_T::M_STATIC
+			Modifier::Static
 		)
 	{
 	}

@@ -24,13 +24,13 @@ namespace gscript
 	}\
 }
 
-	ParserOperator::ParserOperator(const char *kw, OPERATOR_POSITION_T position)
+	ParserOperator::ParserOperator(const char *kw, OperatorPosition position)
 		:opchar(kw),
 		position(position)
 	{
 	}
 
-	ParserOperator::ParserOperator(OPERATOR_POSITION_T position)
+	ParserOperator::ParserOperator(OperatorPosition position)
 		: position(position)
 	{
 	}

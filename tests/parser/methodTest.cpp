@@ -14,7 +14,7 @@ TEST_CASE("ParserMethodSimple")
 	auto result = pMethod.parse(txt);
 
 	REQUIRE(result.isOk());
-	REQUIRE(pMethod.accessSpecifier.modifier == gscript::MODIFIER_T::M_NONE);
+	REQUIRE(pMethod.accessSpecifier.modifier == gscript::Modifier::None);
 }
 
 TEST_CASE("ParserMethodProtected")
@@ -28,7 +28,7 @@ TEST_CASE("ParserMethodProtected")
 	auto result = pMethod.parse(txt);
 
 	REQUIRE(result.isOk());
-	REQUIRE(pMethod.accessSpecifier.modifier == gscript::MODIFIER_T::M_ACCESS_PROTECTED);
+	REQUIRE(pMethod.accessSpecifier.modifier == gscript::Modifier::AccessProtected);
 }
 
 TEST_CASE("ParserMethodStaticProtected")
@@ -42,5 +42,5 @@ TEST_CASE("ParserMethodStaticProtected")
 	auto result = pMethod.parse(txt);
 
 	REQUIRE(result.isOk());
-	REQUIRE(pMethod.accessSpecifier.modifier & (gscript::MODIFIER_T::M_ACCESS_PROTECTED | gscript::MODIFIER_T::M_STATIC));
+	REQUIRE(pMethod.accessSpecifier.modifier & (gscript::Modifier::AccessProtected | gscript::Modifier::Static));
 }

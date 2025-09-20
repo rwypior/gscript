@@ -15,20 +15,20 @@ namespace gscript
 {
 	// TYPE FACTORY
 
-	std::unordered_map<std::string, VALUE_TYPE_T> ScriptType::typemap({
-		{ "bool", VALUE_TYPE_T::VT_BOOL },
-		{ "byte", VALUE_TYPE_T::VT_BYTE },
-		{ "char", VALUE_TYPE_T::VT_CHAR },
-		{ "int", VALUE_TYPE_T::VT_INT },
-		{ "unsigned int", VALUE_TYPE_T::VT_UNSIGNED_INT },
-		{ "float", VALUE_TYPE_T::VT_FLOAT },
-		{ "double", VALUE_TYPE_T::VT_DOUBLE },
-		{ "string", VALUE_TYPE_T::VT_STRING },
-		{ "class", VALUE_TYPE_T::VT_CLASS },
-		{ "array", VALUE_TYPE_T::VT_ARRAY },
-		{ "reference", VALUE_TYPE_T::VT_REFERENCE },
-		{ "null", VALUE_TYPE_T::VT_NULL },
-		{ "void", VALUE_TYPE_T::VT_NULL }
+	std::unordered_map<std::string, ValueType> ScriptType::typemap({
+		{ "bool", ValueType::Bool },
+		{ "byte", ValueType::Byte },
+		{ "char", ValueType::Char },
+		{ "int", ValueType::Int },
+		{ "unsigned int", ValueType::UnsignedInt },
+		{ "float", ValueType::Float },
+		{ "double", ValueType::Double },
+		{ "string", ValueType::String },
+		{ "class", ValueType::Class },
+		{ "array", ValueType::Array },
+		{ "reference", ValueType::Reference },
+		{ "null", ValueType::Null },
+		{ "void", ValueType::Void }
 	});
 
 	TypeDescriptor ScriptType::translateType(const std::string &name)
@@ -56,9 +56,9 @@ namespace gscript
 		return TypeDescriptor(typemap.at("class"), name);
 	}
 
-	std::string ScriptType::translateType(VALUE_TYPE_T t)
+	std::string ScriptType::translateType(ValueType t)
 	{
-		auto it = std::find_if(typemap.begin(), typemap.end(), [t](const std::pair<std::string, VALUE_TYPE_T>& p) {
+		auto it = std::find_if(typemap.begin(), typemap.end(), [t](const std::pair<std::string, ValueType>& p) {
 			return p.second == t;
 		});
 		if (it == typemap.end())
@@ -66,22 +66,22 @@ namespace gscript
 		return it->first;
 	}
 
-	std::unique_ptr<ScriptValue> ScriptType::createEmptyValue(VALUE_TYPE_T type, const std::shared_ptr<ScriptType> t)
+	std::unique_ptr<ScriptValue> ScriptType::createEmptyValue(ValueType type, const std::shared_ptr<ScriptType> t)
 	{
 		switch (type)
 		{
-		case VALUE_TYPE_T::VT_BOOL: return std::make_unique<ScriptBoolValue>();
-		case VALUE_TYPE_T::VT_BYTE: return std::make_unique<ScriptByteValue>();
-		case VALUE_TYPE_T::VT_CHAR: return std::make_unique<ScriptCharValue>();
-		case VALUE_TYPE_T::VT_INT: return std::make_unique<ScriptIntValue>();
-		case VALUE_TYPE_T::VT_UNSIGNED_INT: return std::make_unique<ScriptUnsignedIntValue>();
-		case VALUE_TYPE_T::VT_FLOAT: return std::make_unique<ScriptFloatValue>();
-		case VALUE_TYPE_T::VT_DOUBLE: return std::make_unique<ScriptDoubleValue>();
-		case VALUE_TYPE_T::VT_STRING: return std::make_unique<ScriptStringValue>();
-		case VALUE_TYPE_T::VT_CLASS: return std::make_unique<ScriptClassValue>(nullptr, std::static_pointer_cast<ScriptClassType>(t)->getClass());
-		case VALUE_TYPE_T::VT_ARRAY: return std::make_unique<ScriptArrayValue>();
-		case VALUE_TYPE_T::VT_REFERENCE: return std::make_unique<ScriptReferenceValue>(std::static_pointer_cast<ScriptReferenceType>(t));
-		case VALUE_TYPE_T::VT_NULL: return ScriptType::null();
+		case ValueType::Bool: return std::make_unique<ScriptBoolValue>();
+		case ValueType::Byte: return std::make_unique<ScriptByteValue>();
+		case ValueType::Char: return std::make_unique<ScriptCharValue>();
+		case ValueType::Int: return std::make_unique<ScriptIntValue>();
+		case ValueType::UnsignedInt: return std::make_unique<ScriptUnsignedIntValue>();
+		case ValueType::Float: return std::make_unique<ScriptFloatValue>();
+		case ValueType::Double: return std::make_unique<ScriptDoubleValue>();
+		case ValueType::String: return std::make_unique<ScriptStringValue>();
+		case ValueType::Class: return std::make_unique<ScriptClassValue>(nullptr, std::static_pointer_cast<ScriptClassType>(t)->getClass());
+		case ValueType::Array: return std::make_unique<ScriptArrayValue>();
+		case ValueType::Reference: return std::make_unique<ScriptReferenceValue>(std::static_pointer_cast<ScriptReferenceType>(t));
+		case ValueType::Null: return ScriptType::null();
 		}
 
 		throw new CompileException("Invalid type given");
@@ -94,7 +94,7 @@ namespace gscript
 
 	std::shared_ptr<ScriptType> ScriptType::nulltype()
 	{
-		return std::make_shared<ScriptType>(VALUE_TYPE_T::VT_NULL);
+		return std::make_shared<ScriptType>(ValueType::Null);
 	}
 
 	std::unique_ptr<ScriptBoolValue> ScriptType::btrue()
@@ -109,28 +109,28 @@ namespace gscript
 
 	std::shared_ptr<ScriptType> ScriptType::booltype()
 	{
-		return std::make_shared<ScriptType>(VALUE_TYPE_T::VT_BOOL);
+		return std::make_shared<ScriptType>(ValueType::Bool);
 	}
 
-	std::unique_ptr<ScriptType> ScriptType::create(VALUE_TYPE_T valueType, ScriptScopeBase& scope, const std::string& cname)
+	std::unique_ptr<ScriptType> ScriptType::create(ValueType valueType, ScriptScopeBase& scope, const std::string& cname)
 	{
 		return ScriptType::create(TypeDescriptor(valueType), scope, cname);
 	}
 
 	std::unique_ptr<ScriptType> ScriptType::create(TypeDescriptor type, ScriptScopeBase& scope, const std::string &cname)
 	{
-		if (type.type == VALUE_TYPE_T::VT_CLASS)
+		if (type.type == ValueType::Class)
 		{
 			if (ScriptClass *c = scope.getGlobalNamespace()->findClass(cname))
 				return std::make_unique<ScriptClassType>(*c);
 
 			throw CompileException(std::string("Class \"") + cname + "\" was not found");
 		}
-		else if (type.type == VALUE_TYPE_T::VT_ARRAY)
+		else if (type.type == ValueType::Array)
 		{
 			return std::make_unique<ScriptArrayType>(ScriptType::create(type.subType->type, scope));
 		}
-		else if (type.type == VALUE_TYPE_T::VT_REFERENCE)
+		else if (type.type == ValueType::Reference)
 		{
 			return std::make_unique<ScriptReferenceType>(ScriptType::create(type.subType->type, scope));
 		}
@@ -145,7 +145,7 @@ namespace gscript
 
 	// GENERAL TYPE
 
-	ScriptType::ScriptType(VALUE_TYPE_T type)
+	ScriptType::ScriptType(ValueType type)
 		:type(type)
 	{
 	}
@@ -155,12 +155,12 @@ namespace gscript
 		return std::make_unique<ScriptType>(this->type);
 	}
 
-	VALUE_TYPE_T ScriptType::getTypeDescriptor() const
+	ValueType ScriptType::getTypeDescriptor() const
 	{
 		return this->type;
 	}
 
-	VALUE_TYPE_T ScriptType::getUnderlyingTypeDescriptor() const
+	ValueType ScriptType::getUnderlyingTypeDescriptor() const
 	{
 		return this->type;
 	}
@@ -177,7 +177,7 @@ namespace gscript
 
 	bool ScriptType::operator==(const ScriptType &b) const
 	{
-		if (b.getTypeDescriptor() == VALUE_TYPE_T::VT_REFERENCE)
+		if (b.getTypeDescriptor() == ValueType::Reference)
 			return static_cast<const ScriptReferenceType&>(b).operator==(*this);
 
 		return this->type == b.type;
@@ -191,7 +191,7 @@ namespace gscript
 	// CLASS TYPE
 
 	ScriptClassType::ScriptClassType(ScriptClass &sclass)
-		:ScriptType(VALUE_TYPE_T::VT_CLASS),
+		:ScriptType(ValueType::Class),
 		sclass(sclass)
 	{
 	}
@@ -213,7 +213,7 @@ namespace gscript
 
 	bool ScriptClassType::operator ==(const ScriptType &b) const
 	{
-		if (b.getTypeDescriptor() == VALUE_TYPE_T::VT_CLASS)
+		if (b.getTypeDescriptor() == ValueType::Class)
 		{
 			const ScriptClassType &classB = static_cast<const ScriptClassType&>(b);
 			return this->sclass == classB.sclass;
@@ -230,7 +230,7 @@ namespace gscript
 	// ARRAY TYPE
 
 	ScriptArrayType::ScriptArrayType(const std::shared_ptr<ScriptType> subType)
-		: ScriptType(VALUE_TYPE_T::VT_ARRAY)
+		: ScriptType(ValueType::Array)
 		, subType(subType)
 	{
 	}
@@ -252,7 +252,7 @@ namespace gscript
 
 	bool ScriptArrayType::operator ==(const ScriptType &b) const
 	{
-		if (b.getTypeDescriptor() == VALUE_TYPE_T::VT_ARRAY)
+		if (b.getTypeDescriptor() == ValueType::Array)
 		{
 			const ScriptArrayType &classB = static_cast<const ScriptArrayType&>(b);
 			return *this->subType == *classB.subType;
@@ -266,7 +266,7 @@ namespace gscript
 		return this->subType;
 	}
 
-	VALUE_TYPE_T ScriptArrayType::getUnderlyingTypeDescriptor() const
+	ValueType ScriptArrayType::getUnderlyingTypeDescriptor() const
 	{
 		return this->subType->getTypeDescriptor();
 	}
@@ -274,7 +274,7 @@ namespace gscript
 	// REFERENCE TYPE
 
 	ScriptReferenceType::ScriptReferenceType(const std::shared_ptr<ScriptType> subType)
-		: ScriptType(VALUE_TYPE_T::VT_REFERENCE)
+		: ScriptType(ValueType::Reference)
 		, subType(subType)
 	{
 	}
@@ -296,7 +296,7 @@ namespace gscript
 
 	bool ScriptReferenceType::operator ==(const ScriptType &b) const
 	{
-		if (b.getTypeDescriptor() == VALUE_TYPE_T::VT_REFERENCE)
+		if (b.getTypeDescriptor() == ValueType::Reference)
 		{
 			const ScriptReferenceType &classB = static_cast<const ScriptReferenceType&>(b);
 			return *this->subType == *classB.subType;
@@ -305,7 +305,7 @@ namespace gscript
 		return this->subType->getTypeDescriptor() == b.getTypeDescriptor();
 	}
 
-	VALUE_TYPE_T ScriptReferenceType::getUnderlyingTypeDescriptor() const
+	ValueType ScriptReferenceType::getUnderlyingTypeDescriptor() const
 	{
 		return this->subType->getTypeDescriptor();
 	}

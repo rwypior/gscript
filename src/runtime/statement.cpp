@@ -116,7 +116,7 @@ namespace gscript
 				else if (auto leftFunc = std::dynamic_pointer_cast<ScriptFuncCall>(oper->left))
 				{
 					auto type = leftFunc->getFunc().getType();
-					if (type->getTypeDescriptor() == VALUE_TYPE_T::VT_CLASS)
+					if (type->getTypeDescriptor() == ValueType::Class)
 					{
 						const auto leftClassType = std::static_pointer_cast<const ScriptClassType>(type);
 						resolvedScope = &leftClassType->getClass();
@@ -187,10 +187,10 @@ namespace gscript
 
 		std::shared_ptr<ScriptCallable> subResult = nullptr;
 		
-		if (static_cast<int>(oper->linkage) & static_cast<int>(OPERATOR_LINK_T::OL_LEFT))
+		if (static_cast<int>(oper->linkage) & static_cast<int>(OperatorLinkage::Left))
 			oper->left = *(operatorIt + 1);
 
-		if (static_cast<int>(oper->linkage) & static_cast<int>(OPERATOR_LINK_T::OL_RIGHT))
+		if (static_cast<int>(oper->linkage) & static_cast<int>(OperatorLinkage::Right))
 			oper->right = *(operatorIt - 1);
 
 		while (true)
@@ -210,17 +210,17 @@ namespace gscript
 				{
 					if (subResult)
 					{
-						if (static_cast<int>(oper->linkage) & static_cast<int>(OPERATOR_LINK_T::OL_RIGHT))
+						if (static_cast<int>(oper->linkage) & static_cast<int>(OperatorLinkage::Right))
 							oper->right = subResult;
 						subResult = NULL;
 					}
 					else
 					{
-						if (static_cast<int>(oper->linkage) & static_cast<int>(OPERATOR_LINK_T::OL_RIGHT))
+						if (static_cast<int>(oper->linkage) & static_cast<int>(OperatorLinkage::Right))
 							oper->right = *(operatorIt - 1);
 					}
 
-					if (static_cast<int>(prevOper->linkage) & static_cast<int>(OPERATOR_LINK_T::OL_LEFT))
+					if (static_cast<int>(prevOper->linkage) & static_cast<int>(OperatorLinkage::Left))
 						prevOper->left = oper;
 
 					prevOper = oper;
@@ -230,19 +230,19 @@ namespace gscript
 				{
 					if (depth > 0)
 					{
-						if (static_cast<int>(prevOper->linkage) & static_cast<int>(OPERATOR_LINK_T::OL_LEFT))
+						if (static_cast<int>(prevOper->linkage) & static_cast<int>(OperatorLinkage::Left))
 							prevOper->left = *(operatorIt - 1);
 
-						result = firstOper->linkage == OPERATOR_LINK_T::OL_BOTH ? firstOper : oper;
+						result = firstOper->linkage == OperatorLinkage::Both ? firstOper : oper;
 
 						return operatorIt - begin;
 					}
 					else
 					{
-						if (static_cast<int>(oper->linkage) & static_cast<int>(OPERATOR_LINK_T::OL_RIGHT))
+						if (static_cast<int>(oper->linkage) & static_cast<int>(OperatorLinkage::Right))
 							oper->right = prevOper;
 
-						if (static_cast<int>(prevOper->linkage) & static_cast<int>(OPERATOR_LINK_T::OL_LEFT))
+						if (static_cast<int>(prevOper->linkage) & static_cast<int>(OperatorLinkage::Left))
 							prevOper->left = *(operatorIt - 1);
 
 						resultOper = oper;
@@ -266,14 +266,14 @@ namespace gscript
 			{
 				if (subResult)
 				{
-					if (static_cast<int>(prevOper->linkage) & static_cast<int>(OPERATOR_LINK_T::OL_LEFT))
+					if (static_cast<int>(prevOper->linkage) & static_cast<int>(OperatorLinkage::Left))
 						prevOper->left = subResult;
 
 					subResult = NULL;
 				}
 				else if (prevOper != *operatorIt)
 				{
-					if (static_cast<int>(prevOper->linkage) & static_cast<int>(OPERATOR_LINK_T::OL_LEFT))
+					if (static_cast<int>(prevOper->linkage) & static_cast<int>(OperatorLinkage::Left))
 						prevOper->left = *operatorIt;
 				}
 

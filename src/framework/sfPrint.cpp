@@ -10,7 +10,7 @@
 namespace gscript
 {
 	ScriptFuncPrint::ScriptFuncPrint(ScriptScopeBase& scope, const std::string &name)
-		: ScriptFunction(scope, name, ScriptType::create(VALUE_TYPE_T::VT_NULL, this->scope), PARAMS_T(1, FunctionParameter(ScriptType::create(VALUE_TYPE_T::VT_STRING, scope))))
+		: ScriptFunction(scope, name, ScriptType::create(ValueType::Null, this->scope), PARAMS_T(1, FunctionParameter(ScriptType::create(ValueType::String, scope))))
 	{
 
 	}

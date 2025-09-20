@@ -12,13 +12,12 @@
 
 namespace gscript
 {
-	ParserCallArglist::ParserCallArglist(const int maxCount, const int minCount, const char separator, char start, char end, ENTITY_TYPE_T allowedEntities)
+	ParserCallArglist::ParserCallArglist(const int maxCount, const int minCount, const char separator, char start, char end)
 		: maxCount(maxCount)
 		, minCount(minCount)
 		, separator(separator)
 		, start(start)
 		, end(end)
-		, allowedEntities(allowedEntities)
 	{
 	}
 

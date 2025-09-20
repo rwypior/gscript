@@ -18,8 +18,6 @@ namespace gscript
 		std::unique_ptr<ScriptCallable>& getStatement();
 
 	private:
-		static const ScriptType *returnType;
-
 		std::unique_ptr<ScriptCallable> statement;
 	};
 }

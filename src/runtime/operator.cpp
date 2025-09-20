@@ -10,37 +10,37 @@
 
 namespace gscript
 {
-	std::unordered_map<OPERATOR_TYPE_T, std::string> ScriptOperator::opmap = {
-		{ OPERATOR_TYPE_T::OT_INVALID, "Invalid" },
-		{ OPERATOR_TYPE_T::OT_MEMBER_ACCESSOR, "Member accessor" },
-		{ OPERATOR_TYPE_T::OT_ADD, "Add" },
-		{ OPERATOR_TYPE_T::OT_ADD_TO, "Add to" },
-		{ OPERATOR_TYPE_T::OT_SUBTRACT, "Subtract" },
-		{ OPERATOR_TYPE_T::OT_SUBTRACT_FROM, "Subtract from" },
-		{ OPERATOR_TYPE_T::OT_MULTIPLY, "Multiply" },
-		{ OPERATOR_TYPE_T::OT_MULTIPLY_BY, "Multiply by" },
-		{ OPERATOR_TYPE_T::OT_DIVIDE, "Divide" },
-		{ OPERATOR_TYPE_T::OT_DIVIDE_BY, " Divide by" },
-		{ OPERATOR_TYPE_T::OT_EQUALS , "Equals" },
-		{ OPERATOR_TYPE_T::OT_NOT_EQUALS , "Not equals" },
-		{ OPERATOR_TYPE_T::OT_GREATER_THAN , "Greater than" },
-		{ OPERATOR_TYPE_T::OT_GREATER_THAN_OR_EQUAL , "Greater than or equal" },
-		{ OPERATOR_TYPE_T::OT_LESSER_THAN , "Less than" },
-		{ OPERATOR_TYPE_T::OT_LESSER_THAN_OR_EQUAL , "Less than or equal" },
-		{ OPERATOR_TYPE_T::OT_ASSIGN , "Assign" },
-		{ OPERATOR_TYPE_T::OT_NEGATE , "Negate" },
-		{ OPERATOR_TYPE_T::OT_INCREMENT , "Increment" },
-		{ OPERATOR_TYPE_T::OT_PRE_INCREMENT , "Pre increment" },
-		{ OPERATOR_TYPE_T::OT_POST_INCREMENT , "Post increment" },
-		{ OPERATOR_TYPE_T::OT_DECREMENT , "Decrement" },
-		{ OPERATOR_TYPE_T::OT_PRE_DECREMENT , "Pre decrement" },
-		{ OPERATOR_TYPE_T::OT_POST_DECREMENT , "Post decrement" },
-		{ OPERATOR_TYPE_T::OT_CONDITIONAL_IF , "Conditional if" },
-		{ OPERATOR_TYPE_T::OT_CONDITIONAL_ELSE , "Conditional else" },
-		{ OPERATOR_TYPE_T::OT_CONDITIONAL_NULL, "Conditional null" }
+	std::unordered_map<OperatorType, std::string> ScriptOperator::opmap = {
+		{ OperatorType::Invalid, "Invalid" },
+		{ OperatorType::MemberAccessor, "Member accessor" },
+		{ OperatorType::Add, "Add" },
+		{ OperatorType::AddTo, "Add to" },
+		{ OperatorType::Subtract, "Subtract" },
+		{ OperatorType::SubtractFrom, "Subtract from" },
+		{ OperatorType::Multiply, "Multiply" },
+		{ OperatorType::MultiplyBy, "Multiply by" },
+		{ OperatorType::Divide, "Divide" },
+		{ OperatorType::DivideBy, " Divide by" },
+		{ OperatorType::Equals , "Equals" },
+		{ OperatorType::NotEquals, "Not equals" },
+		{ OperatorType::GreaterThan, "Greater than" },
+		{ OperatorType::GreaterThanOrEqual, "Greater than or equal" },
+		{ OperatorType::LesserThan, "Less than" },
+		{ OperatorType::LesserThanOrEqual, "Less than or equal" },
+		{ OperatorType::Assign, "Assign" },
+		{ OperatorType::Negate, "Negate" },
+		{ OperatorType::Increment, "Increment" },
+		{ OperatorType::PreIncrement, "Pre increment" },
+		{ OperatorType::PostIncrement, "Post increment" },
+		{ OperatorType::Decrement, "Decrement" },
+		{ OperatorType::PreDecrement, "Pre decrement" },
+		{ OperatorType::PostDecrement, "Post decrement" },
+		{ OperatorType::ConditionalIf, "Conditional if" },
+		{ OperatorType::ConditionalElse, "Conditional else" },
+		{ OperatorType::ConditionalNull, "Conditional null" }
 	};
 
-	std::string ScriptOperator::translateOperator(OPERATOR_TYPE_T t)
+	std::string ScriptOperator::translateOperator(OperatorType t)
 	{
 		auto it = opmap.find(t);
 		if (it == opmap.end())
@@ -48,7 +48,7 @@ namespace gscript
 		return it->second;
 	}
 
-	ScriptOperator::ScriptOperator(ScriptScope &scope, OPERATOR_LINK_T linkage)
+	ScriptOperator::ScriptOperator(ScriptScope &scope, OperatorLinkage linkage)
 		: ScriptCallable(scope)
 		, linkage(linkage)
 	{
@@ -61,8 +61,8 @@ namespace gscript
 
 	void ScriptOperator::assignOperatorFunction()
 	{
-		VALUE_TYPE_T typeLeft = this->left ? this->left->getType()->getTypeDescriptor() : VALUE_TYPE_T::VT_VOID;
-		VALUE_TYPE_T typeRight = this->right ? this->right->getType()->getTypeDescriptor() : VALUE_TYPE_T::VT_VOID;
+		ValueType typeLeft = this->left ? this->left->getType()->getTypeDescriptor() : ValueType::Void;
+		ValueType typeRight = this->right ? this->right->getType()->getTypeDescriptor() : ValueType::Void;
 
 		this->operatorFunction = OperatorFunctionFactory::getFunction(typeLeft, typeRight, this->getOperatorType());
 	}
@@ -100,9 +100,9 @@ namespace gscript
 		return 2;
 	}
 
-	const OPERATOR_TYPE_T ScriptOperatorMemberAccessor::getOperatorType() const
+	const OperatorType ScriptOperatorMemberAccessor::getOperatorType() const
 	{
-		return OPERATOR_TYPE_T::OT_MEMBER_ACCESSOR;
+		return OperatorType::MemberAccessor;
 	}
 
 	bool ScriptOperatorMemberAccessor::needFactory() const
@@ -123,9 +123,9 @@ namespace gscript
 		return 16;
 	}
 
-	const OPERATOR_TYPE_T ScriptOperatorConditionalNull::getOperatorType() const
+	const OperatorType ScriptOperatorConditionalNull::getOperatorType() const
 	{
-		return OPERATOR_TYPE_T::OT_CONDITIONAL_NULL;
+		return OperatorType::ConditionalNull;
 	}
 
 	bool ScriptOperatorConditionalNull::needFactory() const
@@ -145,9 +145,9 @@ namespace gscript
 		return 16;
 	}
 
-	const OPERATOR_TYPE_T ScriptOperatorConditionalA::getOperatorType() const
+	const OperatorType ScriptOperatorConditionalA::getOperatorType() const
 	{
-		return OPERATOR_TYPE_T::OT_CONDITIONAL_IF;
+		return OperatorType::ConditionalIf;
 	}
 
 	bool ScriptOperatorConditionalA::needFactory() const
@@ -167,9 +167,9 @@ namespace gscript
 		return 16;
 	}
 
-	const OPERATOR_TYPE_T ScriptOperatorConditionalB::getOperatorType() const
+	const OperatorType ScriptOperatorConditionalB::getOperatorType() const
 	{
-		return OPERATOR_TYPE_T::OT_CONDITIONAL_ELSE;
+		return OperatorType::ConditionalElse;
 	}
 
 	bool ScriptOperatorConditionalB::needFactory() const
@@ -195,9 +195,9 @@ namespace gscript
 		return 3;
 	}
 
-	const OPERATOR_TYPE_T ScriptOperatorNegate::getOperatorType() const
+	const OperatorType ScriptOperatorNegate::getOperatorType() const
 	{
-		return OPERATOR_TYPE_T::OT_NEGATE;
+		return OperatorType::Negate;
 	}
 
 
@@ -231,9 +231,9 @@ namespace gscript
 		return 16;
 	}
 
-	const OPERATOR_TYPE_T ScriptOperatorAssign::getOperatorType() const
+	const OperatorType ScriptOperatorAssign::getOperatorType() const
 	{
-		return OPERATOR_TYPE_T::OT_ASSIGN;
+		return OperatorType::Assign;
 	}
 
 	bool ScriptOperatorAssign::needFactory() const
@@ -253,9 +253,9 @@ namespace gscript
 		return 10;
 	}
 
-	const OPERATOR_TYPE_T ScriptOperatorEquals::getOperatorType() const
+	const OperatorType ScriptOperatorEquals::getOperatorType() const
 	{
-		return OPERATOR_TYPE_T::OT_EQUALS;
+		return OperatorType::Equals;
 	}
 
 
@@ -270,9 +270,9 @@ namespace gscript
 		return 9;
 	}
 
-	const OPERATOR_TYPE_T ScriptOperatorGreaterThan::getOperatorType() const
+	const OperatorType ScriptOperatorGreaterThan::getOperatorType() const
 	{
-		return OPERATOR_TYPE_T::OT_GREATER_THAN;
+		return OperatorType::GreaterThan;
 	}
 
 
@@ -287,9 +287,9 @@ namespace gscript
 		return 9;
 	}
 
-	const OPERATOR_TYPE_T ScriptOperatorGreaterThanOrEqual::getOperatorType() const
+	const OperatorType ScriptOperatorGreaterThanOrEqual::getOperatorType() const
 	{
-		return OPERATOR_TYPE_T::OT_GREATER_THAN_OR_EQUAL;
+		return OperatorType::GreaterThanOrEqual;
 	}
 
 
@@ -304,9 +304,9 @@ namespace gscript
 		return 9;
 	}
 
-	const OPERATOR_TYPE_T ScriptOperatorLessThan::getOperatorType() const
+	const OperatorType ScriptOperatorLessThan::getOperatorType() const
 	{
-		return OPERATOR_TYPE_T::OT_LESSER_THAN;
+		return OperatorType::LesserThan;
 	}
 
 
@@ -321,9 +321,9 @@ namespace gscript
 		return 9;
 	}
 
-	const OPERATOR_TYPE_T ScriptOperatorLessThanOrEqual::getOperatorType() const
+	const OperatorType ScriptOperatorLessThanOrEqual::getOperatorType() const
 	{
-		return OPERATOR_TYPE_T::OT_LESSER_THAN_OR_EQUAL;
+		return OperatorType::LesserThanOrEqual;
 	}
 
 
@@ -338,9 +338,9 @@ namespace gscript
 		return 6;
 	}
 
-	const OPERATOR_TYPE_T ScriptOperatorAdd::getOperatorType() const
+	const OperatorType ScriptOperatorAdd::getOperatorType() const
 	{
-		return OPERATOR_TYPE_T::OT_ADD;
+		return OperatorType::Add;
 	}
 
 
@@ -355,9 +355,9 @@ namespace gscript
 		return 16;
 	}
 
-	const OPERATOR_TYPE_T ScriptOperatorAddTo::getOperatorType() const
+	const OperatorType ScriptOperatorAddTo::getOperatorType() const
 	{
-		return OPERATOR_TYPE_T::OT_ADD_TO;
+		return OperatorType::AddTo;
 	}
 
 
@@ -372,9 +372,9 @@ namespace gscript
 		return 6;
 	}
 
-	const OPERATOR_TYPE_T ScriptOperatorSubtract::getOperatorType() const
+	const OperatorType ScriptOperatorSubtract::getOperatorType() const
 	{
-		return OPERATOR_TYPE_T::OT_SUBTRACT;
+		return OperatorType::Subtract;
 	}
 
 
@@ -389,9 +389,9 @@ namespace gscript
 		return 16;
 	}
 
-	const OPERATOR_TYPE_T ScriptOperatorSubtractFrom::getOperatorType() const
+	const OperatorType ScriptOperatorSubtractFrom::getOperatorType() const
 	{
-		return OPERATOR_TYPE_T::OT_SUBTRACT_FROM;
+		return OperatorType::SubtractFrom;
 	}
 
 
@@ -406,9 +406,9 @@ namespace gscript
 		return 5;
 	}
 
-	const OPERATOR_TYPE_T ScriptOperatorMultiply::getOperatorType() const
+	const OperatorType ScriptOperatorMultiply::getOperatorType() const
 	{
-		return OPERATOR_TYPE_T::OT_MULTIPLY;
+		return OperatorType::Multiply;
 	}
 
 
@@ -423,9 +423,9 @@ namespace gscript
 		return 16;
 	}
 
-	const OPERATOR_TYPE_T ScriptOperatorMultiplyBy::getOperatorType() const
+	const OperatorType ScriptOperatorMultiplyBy::getOperatorType() const
 	{
-		return OPERATOR_TYPE_T::OT_MULTIPLY_BY;
+		return OperatorType::MultiplyBy;
 	}
 
 
@@ -440,9 +440,9 @@ namespace gscript
 		return 5;
 	}
 
-	const OPERATOR_TYPE_T ScriptOperatorDivide::getOperatorType() const
+	const OperatorType ScriptOperatorDivide::getOperatorType() const
 	{
-		return OPERATOR_TYPE_T::OT_DIVIDE;
+		return OperatorType::Divide;
 	}
 
 
@@ -457,9 +457,9 @@ namespace gscript
 		return 16;
 	}
 
-	const OPERATOR_TYPE_T ScriptOperatorDivideBy::getOperatorType() const
+	const OperatorType ScriptOperatorDivideBy::getOperatorType() const
 	{
-		return OPERATOR_TYPE_T::OT_DIVIDE_BY;
+		return OperatorType::DivideBy;
 	}
 
 
@@ -474,9 +474,9 @@ namespace gscript
 		return 2;
 	}
 
-	const OPERATOR_TYPE_T ScriptOperatorIncrement::getOperatorType() const
+	const OperatorType ScriptOperatorIncrement::getOperatorType() const
 	{
-		return this->left ? OPERATOR_TYPE_T::OT_POST_INCREMENT : OPERATOR_TYPE_T::OT_PRE_INCREMENT;
+		return this->left ? OperatorType::PostIncrement : OperatorType::PreIncrement;
 	}
 
 
@@ -491,8 +491,8 @@ namespace gscript
 		return 2;
 	}
 
-	const OPERATOR_TYPE_T ScriptOperatorDecrement::getOperatorType() const
+	const OperatorType ScriptOperatorDecrement::getOperatorType() const
 	{
-		return this->left ? OPERATOR_TYPE_T::OT_POST_DECREMENT : OPERATOR_TYPE_T::OT_PRE_DECREMENT;
+		return this->left ? OperatorType::PostDecrement : OperatorType::PreDecrement;
 	}
 }

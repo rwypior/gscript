@@ -2,8 +2,6 @@
 
 namespace gscript
 {
-	const ScriptType *ScriptReturn::returnType = new ScriptType(VALUE_TYPE_T::VT_NULL);
-
 	ScriptReturn::ScriptReturn(ScriptScopeBase& scope, std::unique_ptr<ScriptStatement>&& statement)
 		: ScriptCallable(scope)
 		, statement(std::move(statement))

@@ -17,18 +17,18 @@ namespace gscript
 
 	struct TypeDescriptor
 	{
-		VALUE_TYPE_T type = VALUE_TYPE_T::VT_VOID;
+		ValueType type = ValueType::Void;
 		std::string name;
 		TypeDescriptor *subType = nullptr;
 
-		explicit TypeDescriptor(VALUE_TYPE_T type, const TypeDescriptor &subType, const std::string &name = "")
+		explicit TypeDescriptor(ValueType type, const TypeDescriptor &subType, const std::string &name = "")
 			: type(type)
 			, name(name)
 			, subType(new TypeDescriptor(subType))
 		{
 		}
 
-		TypeDescriptor(VALUE_TYPE_T type, const std::string &name = "")
+		TypeDescriptor(ValueType type, const std::string &name = "")
 			: type(type)
 			, name(name)
 			, subType(NULL)
@@ -54,11 +54,11 @@ namespace gscript
 	class ScriptType
 	{
 	public:
-		static std::unordered_map<std::string, VALUE_TYPE_T> typemap;
+		static std::unordered_map<std::string, ValueType> typemap;
 
 		static TypeDescriptor translateType(const std::string &name);
-		static std::string translateType(VALUE_TYPE_T t);
-		static std::unique_ptr<ScriptValue> createEmptyValue(VALUE_TYPE_T type, const std::shared_ptr<ScriptType> t = nullptr);
+		static std::string translateType(ValueType t);
+		static std::unique_ptr<ScriptValue> createEmptyValue(ValueType type, const std::shared_ptr<ScriptType> t = nullptr);
 
 		// Utility function to create null value
 		static std::unique_ptr<ScriptNullValue> null();
@@ -73,13 +73,13 @@ namespace gscript
 		// Utility function to create boolean type
 		static std::shared_ptr<ScriptType> booltype();
 
-		SCRIPT_API explicit ScriptType(VALUE_TYPE_T type);
+		SCRIPT_API explicit ScriptType(ValueType type);
 
 		SCRIPT_API virtual std::unique_ptr<ScriptType> clone() const;
 
 		SCRIPT_API virtual bool matches(const ScriptVariable &var);
 
-		SCRIPT_API static std::unique_ptr<ScriptType> create(VALUE_TYPE_T valueType, ScriptScopeBase& scope, const std::string &cname = "");
+		SCRIPT_API static std::unique_ptr<ScriptType> create(ValueType valueType, ScriptScopeBase& scope, const std::string &cname = "");
 		SCRIPT_API static std::unique_ptr<ScriptType> create(TypeDescriptor type, ScriptScopeBase& scope, const std::string &cname = "");
 		SCRIPT_API static std::unique_ptr<ScriptType> create(const std::string &tname, ScriptScopeBase& scope);
 
@@ -88,11 +88,11 @@ namespace gscript
 		SCRIPT_API virtual bool operator ==(const ScriptType &b) const;
 		SCRIPT_API virtual bool operator !=(const ScriptType &b) const;
 
-		SCRIPT_API virtual VALUE_TYPE_T getTypeDescriptor() const;
-		SCRIPT_API virtual VALUE_TYPE_T getUnderlyingTypeDescriptor() const;
+		SCRIPT_API virtual ValueType getTypeDescriptor() const;
+		SCRIPT_API virtual ValueType getUnderlyingTypeDescriptor() const;
 
 	protected:
-		VALUE_TYPE_T type;
+		ValueType type;
 	};
 
 	class ScriptClassType : public ScriptType
@@ -124,7 +124,7 @@ namespace gscript
 		SCRIPT_API virtual bool operator==(const ScriptType &b) const override;
 
 		SCRIPT_API const std::shared_ptr<ScriptType>& getSubType() const;
-		SCRIPT_API virtual VALUE_TYPE_T getUnderlyingTypeDescriptor() const override;
+		SCRIPT_API virtual ValueType getUnderlyingTypeDescriptor() const override;
 
 	protected:
 		const std::shared_ptr<ScriptType> subType;
@@ -141,7 +141,7 @@ namespace gscript
 
 		SCRIPT_API virtual bool operator ==(const ScriptType &b) const override;
 
-		SCRIPT_API virtual VALUE_TYPE_T getUnderlyingTypeDescriptor() const override;
+		SCRIPT_API virtual ValueType getUnderlyingTypeDescriptor() const override;
 
 	protected:
 		const std::shared_ptr<ScriptType> subType;

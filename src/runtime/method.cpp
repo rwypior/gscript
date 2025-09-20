@@ -14,7 +14,7 @@ namespace gscript
 		const std::string &name,
 		std::shared_ptr<ScriptType> returnType,
 		const PARAMS_T &parameters,
-		MODIFIER_T modifier
+		Modifier modifier
 	)
 		: ScriptFunction(scope, name, returnType, parameters)
 		, accessModifier(modifier)
@@ -35,17 +35,17 @@ namespace gscript
 
 	bool ScriptMethod::isStatic() const
 	{
-		return this->accessModifier & MODIFIER_T::M_STATIC;
+		return this->accessModifier & Modifier::Static;
 	}
 
 	bool ScriptMethod::isVirtual() const
 	{
-		return this->accessModifier & MODIFIER_T::M_VIRTUAL;
+		return this->accessModifier & Modifier::Virtual;
 	}
 
 	bool ScriptMethod::isAbstract() const
 	{
-		return this->accessModifier & MODIFIER_T::M_ABSTRACT;
+		return this->accessModifier & Modifier::Abstract;
 	}
 
 	void ScriptMethod::setClassInstance(std::unique_ptr<ScriptClassInstance>&& inst)
@@ -55,7 +55,7 @@ namespace gscript
 
 	void ScriptMethod::setClassInstance(std::unique_ptr<ScriptValue>&& inst)
 	{
-		assert(inst->getType()->getUnderlyingTypeDescriptor() == VALUE_TYPE_T::VT_CLASS);
+		assert(inst->getType()->getUnderlyingTypeDescriptor() == ValueType::Class);
 		this->variables.front()->setValue(std::move(inst));
 	}
 

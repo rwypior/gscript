@@ -14,14 +14,14 @@ namespace gscript
 	class ScriptMethod : public ScriptFunction
 	{
 	public:
-		const MODIFIER_T accessModifier = MODIFIER_T::M_NONE;
+		const Modifier accessModifier = Modifier::None;
 
 		SCRIPT_API ScriptMethod(
 			ScriptScopeBase& scope,
 			const std::string &name,
 			std::shared_ptr<ScriptType> returnType,
 			const PARAMS_T &parameters = PARAMS_T(),
-			MODIFIER_T modifier = MODIFIER_T::M_NONE
+			Modifier modifier = Modifier::None
 		);
 		
 		SCRIPT_API bool isStatic() const;

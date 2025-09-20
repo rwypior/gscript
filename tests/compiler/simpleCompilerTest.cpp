@@ -22,7 +22,7 @@ TEST_CASE_METHOD(GscriptTest, "CompilerFuncCall")
 		"}"
 		;
 
-	gscript::ParserNamespace mainNamespace(gscript::NAMESPACE_TYPE_T::NT_MAIN);
+	gscript::ParserNamespace mainNamespace(gscript::NamespaceType::Main);
 	mainNamespace.parse(gscript::StringIteratorRange(txt.begin(), txt.end(), "", 0));
 
 	gscript::Compiler compiler;
@@ -67,7 +67,7 @@ TEST_CASE_METHOD(GscriptTest, "CompilerClassVarRead")
 		"}"
 		;
 
-	gscript::ParserNamespace mainNamespace(gscript::NAMESPACE_TYPE_T::NT_MAIN);
+	gscript::ParserNamespace mainNamespace(gscript::NamespaceType::Main);
 	mainNamespace.parse(gscript::StringIteratorRange(txt.begin(), txt.end(), "", 0));
 
 	gscript::Compiler compiler;
@@ -101,7 +101,7 @@ TEST_CASE_METHOD(GscriptTest, "CompilerClassInheritance")
 		"}"
 		;
 
-	gscript::ParserNamespace mainNamespace(gscript::NAMESPACE_TYPE_T::NT_MAIN);
+	gscript::ParserNamespace mainNamespace(gscript::NamespaceType::Main);
 	mainNamespace.parse(gscript::StringIteratorRange(txt.begin(), txt.end(), "", 0));
 
 	gscript::Compiler compiler;
@@ -138,7 +138,7 @@ TEST_CASE_METHOD(GscriptTest, "CompilerObjectCall")
 		"}"
 		;
 
-	gscript::ParserNamespace mainNamespace(gscript::NAMESPACE_TYPE_T::NT_MAIN);
+	gscript::ParserNamespace mainNamespace(gscript::NamespaceType::Main);
 	mainNamespace.parse(gscript::StringIteratorRange(txt.begin(), txt.end(), "", 0));
 
 	gscript::Compiler compiler;
@@ -182,7 +182,7 @@ TEST_CASE_METHOD(GscriptTest, "CompilerVirtualCall")
 		"}"
 		;
 
-	gscript::ParserNamespace mainNamespace(gscript::NAMESPACE_TYPE_T::NT_MAIN);
+	gscript::ParserNamespace mainNamespace(gscript::NamespaceType::Main);
 	mainNamespace.parse(gscript::StringIteratorRange(txt.begin(), txt.end(), "", 0));
 
 	gscript::Compiler compiler;

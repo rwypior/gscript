@@ -11,7 +11,7 @@ TEST_CASE("ParserAccessSpecifierPublic")
 	auto result = pAcc.parse(txt);
 
 	REQUIRE(result.isOk());
-	REQUIRE(pAcc.getModifier() == gscript::MODIFIER_T::M_ACCESS_PUBLIC);
+	REQUIRE(pAcc.getModifier() == gscript::Modifier::AccessPublic);
 }
 
 TEST_CASE("ParserAccessSpecifierPrivate")
@@ -22,7 +22,7 @@ TEST_CASE("ParserAccessSpecifierPrivate")
 	auto result = pAcc.parse(txt);
 
 	REQUIRE(result.isOk());
-	REQUIRE(pAcc.getModifier() == gscript::MODIFIER_T::M_ACCESS_PRIVATE);
+	REQUIRE(pAcc.getModifier() == gscript::Modifier::AccessPrivate);
 }
 
 TEST_CASE("ParserAccessSpecifierProtected")
@@ -33,7 +33,7 @@ TEST_CASE("ParserAccessSpecifierProtected")
 	auto result = pAcc.parse(txt);
 
 	REQUIRE(result.isOk());
-	REQUIRE(pAcc.getModifier() == gscript::MODIFIER_T::M_ACCESS_PROTECTED);
+	REQUIRE(pAcc.getModifier() == gscript::Modifier::AccessProtected);
 }
 
 TEST_CASE("ParserAccessSpecifierConst")
@@ -44,7 +44,7 @@ TEST_CASE("ParserAccessSpecifierConst")
 	auto result = pAcc.parse(txt);
 
 	REQUIRE(result.isOk());
-	REQUIRE(pAcc.getModifier() & (gscript::MODIFIER_T::M_ACCESS_PUBLIC | gscript::MODIFIER_T::M_CONST));
+	REQUIRE(pAcc.getModifier() & (gscript::Modifier::AccessPublic | gscript::Modifier::Const));
 }
 
 TEST_CASE("ParserAccessSpecifierStatic")
@@ -55,7 +55,7 @@ TEST_CASE("ParserAccessSpecifierStatic")
 	auto result = pAcc.parse(txt);
 
 	REQUIRE(result.isOk());
-	REQUIRE(pAcc.getModifier() == (gscript::MODIFIER_T::M_ACCESS_PUBLIC | gscript::MODIFIER_T::M_STATIC));
+	REQUIRE(pAcc.getModifier() == (gscript::Modifier::AccessPublic | gscript::Modifier::Static));
 }
 
 TEST_CASE("ParserAccessSpecifierVirtual")
@@ -66,7 +66,7 @@ TEST_CASE("ParserAccessSpecifierVirtual")
 	auto result = pAcc.parse(txt);
 
 	REQUIRE(result.isOk());
-	REQUIRE(pAcc.getModifier() == (gscript::MODIFIER_T::M_ACCESS_PUBLIC | gscript::MODIFIER_T::M_VIRTUAL));
+	REQUIRE(pAcc.getModifier() == (gscript::Modifier::AccessPublic | gscript::Modifier::Virtual));
 }
 
 TEST_CASE("ParserAccessSpecifierUnknown")
@@ -87,7 +87,7 @@ TEST_CASE("ParserAccessSpecifierMixed")
 	auto result = pAcc.parse(txt);
 
 	REQUIRE(result.isOk());
-	REQUIRE(pAcc.getModifier() & (gscript::MODIFIER_T::M_ACCESS_PUBLIC | gscript::MODIFIER_T::M_STATIC));
+	REQUIRE(pAcc.getModifier() & (gscript::Modifier::AccessPublic | gscript::Modifier::Static));
 }
 
 TEST_CASE("ParserAccessSpecifierRepeated")
@@ -98,7 +98,7 @@ TEST_CASE("ParserAccessSpecifierRepeated")
 	auto result = pAcc.parse(txt);
 
 	REQUIRE(result.isOk());
-	REQUIRE(pAcc.getModifier() & Bitfield(gscript::MODIFIER_T::M_ACCESS_PUBLIC));
+	REQUIRE(pAcc.getModifier() & Bitfield(gscript::Modifier::AccessPublic));
 }
 
 TEST_CASE("ParserAccessSpecifierEmpty")
@@ -112,16 +112,16 @@ TEST_CASE("ParserAccessSpecifierEmpty")
 		auto result = pAcc.parse(txt);
 
 		REQUIRE(result.isOk());
-		REQUIRE(pAcc.getModifier() == gscript::MODIFIER_T::M_NONE);
+		REQUIRE(pAcc.getModifier() == gscript::Modifier::None);
 	}
 
 	{
 		std::string txt = "			";
 
-		gscript::ParserAccessSpecifier pAcc(gscript::MODIFIER_T::M_ACCESS_PUBLIC);
+		gscript::ParserAccessSpecifier pAcc(gscript::Modifier::AccessPublic);
 		auto result = pAcc.parse(txt);
 
 		REQUIRE(result.isOk());
-		REQUIRE(pAcc.getModifier() == gscript::MODIFIER_T::M_ACCESS_PUBLIC);
+		REQUIRE(pAcc.getModifier() == gscript::Modifier::AccessPublic);
 	}
 }

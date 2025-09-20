@@ -15,11 +15,11 @@
 TEST_CASE_METHOD(GscriptTest, "RuntimeWhile")
 {
 	// Test variable
-	auto& testVariable = globalNamespace.registerVariable("testVariable", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(0));
+	auto& testVariable = globalNamespace.registerVariable("testVariable", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), std::make_unique<gscript::ScriptIntValue>(0));
 
 	// While condition
 	auto varread = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &testVariable);
-	auto oplessthan = std::make_unique<gscript::ScriptOperatorLessThan>(globalNamespace, gscript::OPERATOR_LINK_T::OL_BOTH);
+	auto oplessthan = std::make_unique<gscript::ScriptOperatorLessThan>(globalNamespace, gscript::OperatorLinkage::Both);
 	auto literal10 = std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(10));
 	auto stmtvec = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvec.push_back(std::move(varread));
@@ -30,7 +30,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeWhile")
 
 	// For block
 	auto varread2 = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &testVariable);
-	auto incr = std::make_unique<gscript::ScriptOperatorIncrement>(globalNamespace, gscript::OPERATOR_LINK_T::OL_LEFT);
+	auto incr = std::make_unique<gscript::ScriptOperatorIncrement>(globalNamespace, gscript::OperatorLinkage::Left);
 	auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecbody.push_back(std::move(varread2));
 	stmtvecbody.push_back(std::move(incr));

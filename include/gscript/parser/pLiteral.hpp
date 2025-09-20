@@ -12,7 +12,7 @@ namespace gscript
 	class ParserLiteral : public ParserEntity
 	{
 	public:
-		VALUE_TYPE_T type = VALUE_TYPE_T::VT_VOID;
+		ValueType type = ValueType::Void;
 		std::string value;
 
 		virtual ParseResult parse(StringIteratorRange itrange) override;

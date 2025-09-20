@@ -156,22 +156,38 @@ namespace gscript
 		return newfunc;
 	}
 
+	bool parseBool(const std::string& value)
+	{
+		if (value == "true")
+			return true;
+		else if (value == "false")
+			return false;
+
+		return std::stoi(value);
+	}
+
 	std::unique_ptr<ScriptValue> Compiler::compileValue(const ParserLiteral& pLiteral)
 	{
 		gs_log("Compiling ScriptValue " << pLiteral.value);
 
 		switch (pLiteral.type)
 		{
-		case VALUE_TYPE_T::VT_INT:
-			return std::make_unique<ScriptIntValue>(std::stoi(pLiteral.value));
-		case VALUE_TYPE_T::VT_STRING:
-			return std::make_unique<ScriptStringValue>(pLiteral.value);
-		case VALUE_TYPE_T::VT_FLOAT:
-			return std::make_unique<ScriptFloatValue>(std::stof(pLiteral.value));
-		case VALUE_TYPE_T::VT_DOUBLE:
-			return std::make_unique<ScriptDoubleValue>(std::stod(pLiteral.value));
-		case VALUE_TYPE_T::VT_CHAR:
+		case ValueType::Bool:
+			return std::make_unique<ScriptBoolValue>(parseBool(pLiteral.value));
+		case ValueType::Char:
 			return std::make_unique<ScriptCharValue>(pLiteral.value[0]);
+		case ValueType::Byte:
+			return std::make_unique<ScriptByteValue>(static_cast<unsigned char>(std::stoul(pLiteral.value)));
+		case ValueType::Int:
+			return std::make_unique<ScriptIntValue>(std::stoi(pLiteral.value));
+		case ValueType::UnsignedInt:
+			return std::make_unique<ScriptUnsignedIntValue>(static_cast<unsigned int>(std::stoul(pLiteral.value)));
+		case ValueType::Float:
+			return std::make_unique<ScriptFloatValue>(std::stof(pLiteral.value));
+		case ValueType::Double:
+			return std::make_unique<ScriptDoubleValue>(std::stod(pLiteral.value));
+		case ValueType::String:
+			return std::make_unique<ScriptStringValue>(pLiteral.value);
 		}
 
 		throw RuntimeException(std::string("Unknown type ID ") + std::to_string(static_cast<size_t>(pLiteral.type)));
@@ -255,33 +271,33 @@ namespace gscript
 	{
 		gs_log("Compiling ScriptOperator " << pOperator.getChar());
 
-		std::unordered_map<OPERATOR_TYPE_T, std::function<std::unique_ptr<ScriptOperator>(ScriptScope&, OPERATOR_LINK_T)>> opmap = {
-			{ OPERATOR_TYPE_T::OT_MEMBER_ACCESSOR, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorMemberAccessor>(s, l); }},
-			{ OPERATOR_TYPE_T::OT_ADD, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorAdd>(s, l); }},
-			{ OPERATOR_TYPE_T::OT_ADD_TO, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorAddTo>(s, l); }},
-			{ OPERATOR_TYPE_T::OT_SUBTRACT, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorSubtract>(s, l); }},
-			{ OPERATOR_TYPE_T::OT_SUBTRACT_FROM, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorSubtractFrom>(s, l); }},
-			{ OPERATOR_TYPE_T::OT_MULTIPLY, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorMultiply>(s, l); }},
-			{ OPERATOR_TYPE_T::OT_MULTIPLY_BY, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorMultiplyBy>(s, l); }},
-			{ OPERATOR_TYPE_T::OT_DIVIDE, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorDivide>(s, l); }},
-			{ OPERATOR_TYPE_T::OT_DIVIDE_BY, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorDivideBy>(s, l); }},
-			{ OPERATOR_TYPE_T::OT_EQUALS, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorEquals>(s, l); }},
-			{ OPERATOR_TYPE_T::OT_NOT_EQUALS, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorEquals>(s, l); }}, // TODO - missing operator for not equals?
-			{ OPERATOR_TYPE_T::OT_GREATER_THAN, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorGreaterThan>(s, l); }},
-			{ OPERATOR_TYPE_T::OT_GREATER_THAN_OR_EQUAL, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorGreaterThanOrEqual>(s, l); }},
-			{ OPERATOR_TYPE_T::OT_LESSER_THAN, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorLessThan>(s, l); }},
-			{ OPERATOR_TYPE_T::OT_LESSER_THAN_OR_EQUAL, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorLessThanOrEqual>(s, l); }},
-			{ OPERATOR_TYPE_T::OT_ASSIGN, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorAssign>(s, l); }},
-			{ OPERATOR_TYPE_T::OT_NEGATE, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorNegate>(s, l); }},
-			{ OPERATOR_TYPE_T::OT_INCREMENT, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorIncrement>(s, l); }},
-			{ OPERATOR_TYPE_T::OT_PRE_INCREMENT, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorIncrement>(s, l); }},
-			{ OPERATOR_TYPE_T::OT_POST_INCREMENT, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorIncrement>(s, l); }},
-			{ OPERATOR_TYPE_T::OT_DECREMENT, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorDecrement>(s, l); }},
-			{ OPERATOR_TYPE_T::OT_PRE_DECREMENT, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorDecrement>(s, l); }},
-			{ OPERATOR_TYPE_T::OT_POST_DECREMENT, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorDecrement>(s, l); }},
-			{ OPERATOR_TYPE_T::OT_CONDITIONAL_IF, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorConditionalA>(s, l); }},
-			{ OPERATOR_TYPE_T::OT_CONDITIONAL_ELSE, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorConditionalB>(s, l); }},
-			{ OPERATOR_TYPE_T::OT_CONDITIONAL_NULL, [](ScriptScope& s, OPERATOR_LINK_T l) { return std::make_unique<ScriptOperatorConditionalNull>(s, l); }}
+		std::unordered_map<OperatorType, std::function<std::unique_ptr<ScriptOperator>(ScriptScope&, OperatorLinkage)>> opmap = {
+			{ OperatorType::MemberAccessor, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorMemberAccessor>(s, l); }},
+			{ OperatorType::Add, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorAdd>(s, l); }},
+			{ OperatorType::AddTo, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorAddTo>(s, l); }},
+			{ OperatorType::Subtract, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorSubtract>(s, l); }},
+			{ OperatorType::SubtractFrom, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorSubtractFrom>(s, l); }},
+			{ OperatorType::Multiply, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorMultiply>(s, l); }},
+			{ OperatorType::MultiplyBy, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorMultiplyBy>(s, l); }},
+			{ OperatorType::Divide, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorDivide>(s, l); }},
+			{ OperatorType::DivideBy, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorDivideBy>(s, l); }},
+			{ OperatorType::Equals, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorEquals>(s, l); }},
+			{ OperatorType::NotEquals, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorEquals>(s, l); }}, // TODO - missing operator for not equals?
+			{ OperatorType::GreaterThan, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorGreaterThan>(s, l); }},
+			{ OperatorType::GreaterThanOrEqual, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorGreaterThanOrEqual>(s, l); }},
+			{ OperatorType::LesserThan, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorLessThan>(s, l); }},
+			{ OperatorType::LesserThanOrEqual, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorLessThanOrEqual>(s, l); }},
+			{ OperatorType::Assign, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorAssign>(s, l); }},
+			{ OperatorType::Negate, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorNegate>(s, l); }},
+			{ OperatorType::Increment, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorIncrement>(s, l); }},
+			{ OperatorType::PreIncrement, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorIncrement>(s, l); }},
+			{ OperatorType::PostIncrement, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorIncrement>(s, l); }},
+			{ OperatorType::Decrement, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorDecrement>(s, l); }},
+			{ OperatorType::PreDecrement, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorDecrement>(s, l); }},
+			{ OperatorType::PostDecrement, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorDecrement>(s, l); }},
+			{ OperatorType::ConditionalIf, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorConditionalA>(s, l); }},
+			{ OperatorType::ConditionalElse, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorConditionalB>(s, l); }},
+			{ OperatorType::ConditionalNull, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorConditionalNull>(s, l); }}
 		};
 
 		auto it = opmap.find(pOperator.getType());
@@ -377,7 +393,7 @@ namespace gscript
 			statements.push_back(std::move(stmt));
 		}
 
-		auto type = new ScriptArrayType(prevType ? prevType : ScriptType::create(VALUE_TYPE_T::VT_NULL, *scope));
+		auto type = new ScriptArrayType(prevType ? prevType : ScriptType::create(ValueType::Null, *scope));
 
 		return std::make_unique<ScriptArrayInitializer>(*scope, std::move(statements));
 	}

@@ -63,7 +63,7 @@ namespace gscript
 
 		std::vector<std::unique_ptr<ScriptFieldDeclaration>> fieldDeclarations;
 
-		CLASS_MODIFIER_T modifier = CLASS_MODIFIER_T::CM_NONE;
+		ClassModifier modifier = ClassModifier::None;
 
 		SCRIPT_API void assignConstructor(ScriptFunction& f);
 		SCRIPT_API void createThis();

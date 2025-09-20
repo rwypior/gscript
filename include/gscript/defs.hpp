@@ -40,105 +40,93 @@ namespace gscript
 		}
 	};
 
-	enum class MODIFIER_T
+	enum class Modifier
 	{
-		M_NONE = 0x00,
-		M_ACCESS_PUBLIC = 0x01,
-		M_ACCESS_PROTECTED = 0x02,
-		M_ACCESS_PRIVATE = 0x04,
-		M_CONST = 0x08,
-		M_STATIC = 0x10,
-		M_VIRTUAL = 0x20,
-		M_ABSTRACT = 0x40
+		None = 0x00,
+		AccessPublic = 0x01,
+		AccessProtected = 0x02,
+		AccessPrivate = 0x04,
+		Const = 0x08,
+		Static = 0x10,
+		Virtual = 0x20,
+		Abstract = 0x40
 	};
 
-	enum class CLASS_MODIFIER_T
+	enum class ClassModifier
 	{
-		CM_NONE = 0x00,
-		CM_ABSTRACT = 0x01
+		None = 0x00,
+		Abstract = 0x01
 	};
 
-	enum class VALUE_TYPE_T
+	enum class ValueType
 	{
-		VT_BOOL,
-		VT_BYTE,
-		VT_CHAR,
-		VT_INT,
-		VT_UNSIGNED_INT,
-		VT_FLOAT,
-		VT_DOUBLE,
-		VT_STRING,
-		VT_CLASS,
-		VT_ARRAY,
-		VT_REFERENCE,
-		VT_NULL,
-		VT_VOID
+		Bool,
+		Byte,
+		Char,
+		Int,
+		UnsignedInt,
+		Float,
+		Double,
+		String,
+		Class,
+		Array,
+		Reference,
+		Null,
+		Void
 	};
 
-	enum class ENTITY_TYPE_T
+	enum class OperatorType
 	{
-		ET_NONE = 0x00,
-		ET_ANY = 0x01,
-		ET_FUNC = 0x02,
-		ET_VAR = 0x04,
-		ET_CLASS = 0x08,
-		ET_NAMESPACE = 0x10,
-		ET_STATEMENT = 0x20,
-		ET_VARDECL = 0x40
+		Invalid = 0,
+		MemberAccessor = 1,
+		Add = 2,
+		AddTo = 3,
+		Subtract = 4,
+		SubtractFrom = 5,
+		Multiply = 6,
+		MultiplyBy = 7,
+		Divide = 8,
+		DivideBy = 9,
+		Equals = 10,
+		NotEquals = 11,
+		GreaterThan = 12,
+		GreaterThanOrEqual = 13,
+		LesserThan = 14,
+		LesserThanOrEqual = 15,
+		Assign = 16,
+		Negate = 17,
+		Increment = 18,
+		PreIncrement = 19,
+		PostIncrement = 20,
+		Decrement = 21,
+		PreDecrement = 22,
+		PostDecrement = 23,
+		ConditionalIf = 24,
+		ConditionalElse = 25,
+		ConditionalNull = 26
 	};
 
-	enum class OPERATOR_TYPE_T
+	enum class OperatorPosition
 	{
-		OT_INVALID = 0,
-		OT_MEMBER_ACCESSOR = 1,
-		OT_ADD = 2,
-		OT_ADD_TO = 3,
-		OT_SUBTRACT = 4,
-		OT_SUBTRACT_FROM = 5,
-		OT_MULTIPLY = 6,
-		OT_MULTIPLY_BY = 7,
-		OT_DIVIDE = 8,
-		OT_DIVIDE_BY = 9,
-		OT_EQUALS = 10,
-		OT_NOT_EQUALS = 11,
-		OT_GREATER_THAN = 12,
-		OT_GREATER_THAN_OR_EQUAL = 13,
-		OT_LESSER_THAN = 14,
-		OT_LESSER_THAN_OR_EQUAL = 15,
-		OT_ASSIGN = 16,
-		OT_NEGATE = 17,
-		OT_INCREMENT = 18,
-		OT_PRE_INCREMENT = 19,
-		OT_POST_INCREMENT = 20,
-		OT_DECREMENT = 21,
-		OT_PRE_DECREMENT = 22,
-		OT_POST_DECREMENT = 23,
-		OT_CONDITIONAL_IF = 24,
-		OT_CONDITIONAL_ELSE = 25,
-		OT_CONDITIONAL_NULL = 26
+		Irrelevant = 0,
+		Left = 1,
+		Right = 2
 	};
 
-	enum class OPERATOR_POSITION_T
+	enum class OperatorLinkage
 	{
-		OP_IRRELEVANT = 0,
-		OP_LEFT = 1,
-		OP_RIGHT = 2
+		Single = 0x00,
+		Left = 0x01,
+		Right = 0x02,
+		Both = Left | Right
 	};
 
-	enum class OPERATOR_LINK_T
+	enum class NamespaceType
 	{
-		OL_SINGLE = 0x00,
-		OL_LEFT = 0x01,
-		OL_RIGHT = 0x02,
-		OL_BOTH = OL_LEFT | OL_RIGHT
-	};
-
-	enum class NAMESPACE_TYPE_T
-	{
-		NT_MAIN = 0x01,
-		NT_NAMED = 0x02,
-		NT_ENCLOSED = 0x04,
-		NT_REGULAR = NT_NAMED | NT_ENCLOSED
+		Main = 0x01,
+		Named = 0x02,
+		Enclosed = 0x04,
+		Regular = Named | Enclosed
 	};
 
 	typedef std::vector<FunctionParameter> PARAMS_T;
@@ -151,17 +139,12 @@ namespace gscript
 	const std::shared_ptr<ScriptNullValue> getNull();
 	const std::shared_ptr<ScriptBoolValue> getTrue();
 	const std::shared_ptr<ScriptBoolValue> getFalse();
-
-	/*extern ScriptNullValue* SCR_NULL;
-	extern ScriptBoolValue* SCR_TRUE;
-	extern ScriptBoolValue* SCR_FALSE;*/
 }
 
-DEFINE_BITFIELD(gscript::MODIFIER_T);
-DEFINE_BITFIELD(gscript::CLASS_MODIFIER_T);
-DEFINE_BITFIELD(gscript::ENTITY_TYPE_T);
-DEFINE_BITFIELD(gscript::OPERATOR_POSITION_T);
-DEFINE_BITFIELD(gscript::OPERATOR_LINK_T);
-DEFINE_BITFIELD(gscript::NAMESPACE_TYPE_T);
+DEFINE_BITFIELD(gscript::Modifier);
+DEFINE_BITFIELD(gscript::ClassModifier);
+DEFINE_BITFIELD(gscript::OperatorPosition);
+DEFINE_BITFIELD(gscript::OperatorLinkage);
+DEFINE_BITFIELD(gscript::NamespaceType);
 
 #endif

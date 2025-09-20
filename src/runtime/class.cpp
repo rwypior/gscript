@@ -30,12 +30,12 @@ namespace gscript
 
 	void ScriptClass::makeAbstract()
 	{
-		this->modifier |= CLASS_MODIFIER_T::CM_ABSTRACT;
+		this->modifier |= ClassModifier::Abstract;
 	}
 
 	bool ScriptClass::isAbstract()
 	{
-		return this->modifier & CLASS_MODIFIER_T::CM_ABSTRACT;
+		return this->modifier & ClassModifier::Abstract;
 	}
 
 	std::unique_ptr<ScriptClassInstance> ScriptClass::instantiate(const CALLABLE_PARAMS_T &c)

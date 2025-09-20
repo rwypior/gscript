@@ -6,9 +6,9 @@ namespace gscript
 	ScriptArrayInitializer::ScriptArrayInitializer(ScriptScope& scope, std::vector<std::unique_ptr<ScriptStatement>>&& statements)
 		: ScriptCallable(scope)
 		, statements(std::move(statements))
-		, type(statements.empty() ? ScriptType::create(VALUE_TYPE_T::VT_VOID, scope) : statements.front()->getType())
+		, type(statements.empty() ? ScriptType::create(ValueType::Void, scope) : statements.front()->getType())
 	{
-		ScriptType::create(VALUE_TYPE_T::VT_VOID, scope);
+		ScriptType::create(ValueType::Void, scope);
 	}
 
 	std::unique_ptr<ScriptValue> ScriptArrayInitializer::run(const CALLABLE_PARAMS_T &c)

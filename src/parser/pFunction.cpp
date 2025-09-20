@@ -39,7 +39,7 @@ namespace gscript
 		else
 		{
 			this->returnTypeName = "";
-			this->returnTypeClassifier = VALUE_TYPE_T::VT_CLASS;
+			this->returnTypeClassifier = ValueType::Class;
 		}
 
 		ParseResult name = (ParserNameSpecifier()).parse(StringIteratorRange(typeEnd, itrange.end));
@@ -71,7 +71,7 @@ namespace gscript
 			if (abstractResult.isOk())
 			{
 				if (ParserMethod *method = dynamic_cast<ParserMethod*>(this))
-					method->accessSpecifier.modifier |= MODIFIER_T::M_ABSTRACT;
+					method->accessSpecifier.modifier |= Modifier::Abstract;
 				else
 					throw CompileException("Only methods may be declared abstract");
 

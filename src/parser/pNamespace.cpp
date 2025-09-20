@@ -13,7 +13,7 @@
 
 namespace gscript
 {
-	ParserNamespace::ParserNamespace(NAMESPACE_TYPE_T type)
+	ParserNamespace::ParserNamespace(NamespaceType type)
 		: type(type)
 	{
 	}
@@ -23,7 +23,7 @@ namespace gscript
 		auto beginPosition = itrange.end;
 		auto endPosition = itrange.begin;
 
-		if (this->type & NAMESPACE_TYPE_T::NT_NAMED)
+		if (this->type & NamespaceType::Named)
 		{
 			ParseResult nsResult = ParserWord::parse(StringIteratorRange(endPosition, itrange.end), ParserNamespace::keywordNamespace);
 
@@ -42,7 +42,7 @@ namespace gscript
 			endPosition = nsNameResult.result.end;
 		}
 
-		if (this->type & NAMESPACE_TYPE_T::NT_ENCLOSED)
+		if (this->type & NamespaceType::Enclosed)
 		{
 			ParseResult enclosureResult = ParserChar::parse(StringIteratorRange(endPosition, itrange.end), ParserNamespace::keycharEnclosureBegin);
 
@@ -62,7 +62,7 @@ namespace gscript
 			anyGood = false;
 			StringIteratorRange range(endPosition, itrange.end);
 
-			if (this->type & NAMESPACE_TYPE_T::NT_MAIN)
+			if (this->type & NamespaceType::Main)
 			{
 				ParserImportDirective pdimport;
 				ParseResult pdimportres = pdimport.parse(range);
@@ -86,7 +86,7 @@ namespace gscript
 				}
 			}
 
-			ParserNamespace pnamespace(NAMESPACE_TYPE_T::NT_REGULAR);
+			ParserNamespace pnamespace(NamespaceType::Regular);
 			ParseResult pnamespaceres = pnamespace.parse(range);
 			if (pnamespaceres.isOk())
 			{
@@ -129,7 +129,7 @@ namespace gscript
 			}
 		} while ((endPosition < itrange.end) && anyGood);
 
-		if (this->type & NAMESPACE_TYPE_T::NT_ENCLOSED)
+		if (this->type & NamespaceType::Enclosed)
 		{
 			ParseResult enclosureResult = ParserChar::parse(StringIteratorRange(endPosition, itrange.end), ParserNamespace::keycharEnclosureEnd);
 

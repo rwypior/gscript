@@ -26,7 +26,7 @@ namespace gscript
 		typedef std::deque<ParserEntity*> ENTITY_CONTAINER_T;
 		typedef std::vector<std::string> IMPORT_CONTAINER_T;
 
-		NAMESPACE_TYPE_T type;
+		NamespaceType type;
 		std::string name;
 
 		NAMESPACE_CONTAINER_T namespaces;
@@ -35,7 +35,7 @@ namespace gscript
 		IMPORT_CONTAINER_T imports;
 		IMPORT_CONTAINER_T extensions;
 
-		ParserNamespace(NAMESPACE_TYPE_T type = NAMESPACE_TYPE_T::NT_REGULAR);
+		ParserNamespace(NamespaceType type = NamespaceType::Regular);
 
 		virtual ParseResult parse(StringIteratorRange itrange) override;
 

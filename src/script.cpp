@@ -87,7 +87,7 @@ namespace gscript
 
 		Compiler compiler;
 
-		ParserNamespace mainNamespace(NAMESPACE_TYPE_T::NT_MAIN);
+		ParserNamespace mainNamespace(NamespaceType::Main);
 		mainNamespace.parse(StringIteratorRange(source.begin(), source.end(), this->path, 0));
 
 		for (auto& ex : mainNamespace.extensions)
@@ -146,12 +146,12 @@ namespace gscript
 		entrypoint->registerFunction(std::make_unique<ScriptMethod>(
 			*entrypoint,
 			"run",
-			ScriptType::create(VALUE_TYPE_T::VT_INT, *entrypoint),
+			ScriptType::create(ValueType::Int, *entrypoint),
 			std::vector<FunctionParameter> {
-				std::make_shared<ScriptType>(VALUE_TYPE_T::VT_INT),
-				std::shared_ptr<ScriptType>(ScriptType::create(TypeDescriptor(VALUE_TYPE_T::VT_ARRAY, VALUE_TYPE_T::VT_STRING), *entrypoint))
+				std::make_shared<ScriptType>(ValueType::Int),
+				std::shared_ptr<ScriptType>(ScriptType::create(TypeDescriptor(ValueType::Array, ValueType::String), *entrypoint))
 			},
-			MODIFIER_T::M_VIRTUAL | MODIFIER_T::M_ABSTRACT
+			Modifier::Virtual | Modifier::Abstract
 		));
 
 		this->mainScope->registerClass(std::move(entrypoint));
@@ -165,16 +165,14 @@ namespace gscript
 		if (!ep)
 			throw RuntimeException("Entrypoint class not found. A class extending \"entrypoint\" must be implemented");
 
-		//ep->initialize();
-
 		if (ep->isAbstract())
 			throw CompileException(std::string("Cannot instatiate abstract class ") + ep->getName());
 
 		ScriptMethod *em = ep->findMethod(
 			"run", 
 			std::vector<FunctionParameter> {
-				std::shared_ptr<ScriptType>(ScriptType::create(VALUE_TYPE_T::VT_INT, *ep)),
-				std::shared_ptr<ScriptType>(ScriptType::create(TypeDescriptor(VALUE_TYPE_T::VT_ARRAY, VALUE_TYPE_T::VT_STRING), *ep))
+				std::shared_ptr<ScriptType>(ScriptType::create(ValueType::Int, *ep)),
+				std::shared_ptr<ScriptType>(ScriptType::create(TypeDescriptor(ValueType::Array, ValueType::String), *ep))
 			},
 			false, false
 		);

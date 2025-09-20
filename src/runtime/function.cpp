@@ -59,7 +59,7 @@ namespace gscript
 			//it->setValue(val);
 			//it->setValue(val->clone());
 
-			if (it->getType()->getTypeDescriptor() == VALUE_TYPE_T::VT_REFERENCE)
+			if (it->getType()->getTypeDescriptor() == ValueType::Reference)
 				//static_cast<ScriptReferenceValue&>(*it->getValue()).setValue(val);
 				//static_cast<ScriptReferenceValue&>(*it->getValue()).retarget(val);
 				assert(!"NOT IMPLEMENTED"); // TODO - this needs to be fixed

@@ -23,7 +23,7 @@ namespace gscript
 
 	void ScriptVariable::init(std::unique_ptr<ScriptValue>&& value)
 	{
-		if (this->getType()->getTypeDescriptor() == VALUE_TYPE_T::VT_REFERENCE)
+		if (this->getType()->getTypeDescriptor() == ValueType::Reference)
 			this->setValue(value);
 		else
 			this->setValue(value->getType() ? value->clone() : ScriptType::createEmptyValue(this->type->getTypeDescriptor(), this->type));

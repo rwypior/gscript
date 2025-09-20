@@ -18,30 +18,30 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeStatement")
 {
 	// Variables
 	auto& var1 = globalNamespace.registerVariable(
-		std::make_unique<gscript::ScriptVariable>("var1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(1)));
+		std::make_unique<gscript::ScriptVariable>("var1", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), std::make_unique<gscript::ScriptIntValue>(1)));
 	auto& var2 = globalNamespace.registerVariable(
-		std::make_unique<gscript::ScriptVariable>("var2", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(42)));
+		std::make_unique<gscript::ScriptVariable>("var2", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), std::make_unique<gscript::ScriptIntValue>(42)));
 	auto& var3 = globalNamespace.registerVariable(
-		std::make_unique<gscript::ScriptVariable>("var3", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(1337)));
+		std::make_unique<gscript::ScriptVariable>("var3", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), std::make_unique<gscript::ScriptIntValue>(1337)));
 
 	// Statement body
 	auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	// var1
 	stmtvecbody.push_back(std::make_unique<gscript::ScriptVarRead>(globalNamespace, &var1));
 	// add
-	stmtvecbody.push_back(std::make_unique<gscript::ScriptOperatorAdd>(globalNamespace, gscript::OPERATOR_LINK_T::OL_BOTH));
+	stmtvecbody.push_back(std::make_unique<gscript::ScriptOperatorAdd>(globalNamespace, gscript::OperatorLinkage::Both));
 	// var2
 	stmtvecbody.push_back(std::make_unique<gscript::ScriptVarRead>(globalNamespace, &var2));
 	// multiply
-	stmtvecbody.push_back(std::make_unique<gscript::ScriptOperatorMultiply>(globalNamespace, gscript::OPERATOR_LINK_T::OL_BOTH));
+	stmtvecbody.push_back(std::make_unique<gscript::ScriptOperatorMultiply>(globalNamespace, gscript::OperatorLinkage::Both));
 	// 5
 	stmtvecbody.push_back(std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(5)));
 	// add
-	stmtvecbody.push_back(std::make_unique<gscript::ScriptOperatorAdd>(globalNamespace, gscript::OPERATOR_LINK_T::OL_BOTH));
+	stmtvecbody.push_back(std::make_unique<gscript::ScriptOperatorAdd>(globalNamespace, gscript::OperatorLinkage::Both));
 	// var2
 	stmtvecbody.push_back(std::make_unique<gscript::ScriptVarRead>(globalNamespace, &var3));
 	// multiply
-	stmtvecbody.push_back(std::make_unique<gscript::ScriptOperatorMultiply>(globalNamespace, gscript::OPERATOR_LINK_T::OL_BOTH));
+	stmtvecbody.push_back(std::make_unique<gscript::ScriptOperatorMultiply>(globalNamespace, gscript::OperatorLinkage::Both));
 	// 10
 	stmtvecbody.push_back(std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(10)));
 
@@ -56,7 +56,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeStatement")
 TEST_CASE_METHOD(GscriptTest, "RuntimeStatementWithFuncCalls")
 {
 	// Function
-	auto& myFunc = globalNamespace.registerFunction("myfunc", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), {}, {});
+	auto& myFunc = globalNamespace.registerFunction("myfunc", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), {}, {});
 
 	// Function block
 	auto literal42 = std::make_unique<gscript::ScriptLiteral>(myFunc, std::make_unique<gscript::ScriptIntValue>(42));
@@ -75,7 +75,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeStatementWithFuncCalls")
 
 	// Variables
 	auto& var1 = globalNamespace.registerVariable(
-		std::make_unique<gscript::ScriptVariable>("var2", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(42)));
+		std::make_unique<gscript::ScriptVariable>("var2", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), std::make_unique<gscript::ScriptIntValue>(42)));
 
 	// Func call
 	auto funccall = std::make_unique<gscript::ScriptFuncCall>(globalNamespace, &myFunc);
@@ -85,11 +85,11 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeStatementWithFuncCalls")
 	// var1
 	stmtvecbody.push_back(std::make_unique<gscript::ScriptVarRead>(globalNamespace, &var1));
 	// add
-	stmtvecbody.push_back(std::make_unique<gscript::ScriptOperatorAdd>(globalNamespace, gscript::OPERATOR_LINK_T::OL_BOTH));
+	stmtvecbody.push_back(std::make_unique<gscript::ScriptOperatorAdd>(globalNamespace, gscript::OperatorLinkage::Both));
 	// func call
 	stmtvecbody.push_back(std::move(funccall));
 	// multiply
-	stmtvecbody.push_back(std::make_unique<gscript::ScriptOperatorMultiply>(globalNamespace, gscript::OPERATOR_LINK_T::OL_BOTH));
+	stmtvecbody.push_back(std::make_unique<gscript::ScriptOperatorMultiply>(globalNamespace, gscript::OperatorLinkage::Both));
 	// 2
 	stmtvecbody.push_back(std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(2)));
 

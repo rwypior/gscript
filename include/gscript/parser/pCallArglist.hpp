@@ -24,8 +24,6 @@ namespace gscript
 		char start = 0;
 		char end = 0;
 
-		ENTITY_TYPE_T allowedEntities = ENTITY_TYPE_T::ET_NONE;
-
 		std::vector<std::unique_ptr<ParserStatement>> parameters;
 
 		ParserCallArglist(
@@ -33,8 +31,7 @@ namespace gscript
 			const int minCount = 0,
 			const char separator = ',',
 			char start = ParserArglistStart::keycharArglistStart,
-			char end = ParserArglistEnd::keycharArglistEnd,
-			ENTITY_TYPE_T allowedEntities = ENTITY_TYPE_T::ET_STATEMENT
+			char end = ParserArglistEnd::keycharArglistEnd
 		);
 		ParserCallArglist(const ParserCallArglist&) = delete;
 		ParserCallArglist(ParserCallArglist&& b) noexcept

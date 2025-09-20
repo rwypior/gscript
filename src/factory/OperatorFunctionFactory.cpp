@@ -237,64 +237,64 @@ namespace gscript
 		// Factory
 
 		template<typename L, typename R>
-		OPERATOR_FUNCTION_T getFunction(OPERATOR_TYPE_T func)
+		OperatorFunction getFunction(OperatorType func)
 		{
 			switch (func)
 			{
-			case OPERATOR_TYPE_T::OT_ADD: return &Functions::Add<L, R>;
-			case OPERATOR_TYPE_T::OT_ADD_TO: return &Functions::AddTo<L, R>;
-			case OPERATOR_TYPE_T::OT_SUBTRACT: return &Functions::Subtract<L, R>;
-			case OPERATOR_TYPE_T::OT_SUBTRACT_FROM: return &Functions::SubtractFrom<L, R>;
-			case OPERATOR_TYPE_T::OT_MULTIPLY: return &Functions::Multiply<L, R>;
-			case OPERATOR_TYPE_T::OT_MULTIPLY_BY: return &Functions::MultiplyBy<L, R>;
-			case OPERATOR_TYPE_T::OT_DIVIDE: return &Functions::Divide<L, R>;
-			case OPERATOR_TYPE_T::OT_DIVIDE_BY: return &Functions::DivideBy<L, R>;
+			case OperatorType::Add: return &Functions::Add<L, R>;
+			case OperatorType::AddTo: return &Functions::AddTo<L, R>;
+			case OperatorType::Subtract: return &Functions::Subtract<L, R>;
+			case OperatorType::SubtractFrom: return &Functions::SubtractFrom<L, R>;
+			case OperatorType::Multiply: return &Functions::Multiply<L, R>;
+			case OperatorType::MultiplyBy: return &Functions::MultiplyBy<L, R>;
+			case OperatorType::Divide: return &Functions::Divide<L, R>;
+			case OperatorType::DivideBy: return &Functions::DivideBy<L, R>;
 
-			case OPERATOR_TYPE_T::OT_PRE_DECREMENT: return &Functions::PreDecrement<R>;
-			case OPERATOR_TYPE_T::OT_POST_DECREMENT: return &Functions::PostDecrement<L>;
-			case OPERATOR_TYPE_T::OT_PRE_INCREMENT: return &Functions::PreIncrement<R>;
-			case OPERATOR_TYPE_T::OT_POST_INCREMENT: return &Functions::PostIncrement<L>;
+			case OperatorType::PreDecrement: return &Functions::PreDecrement<R>;
+			case OperatorType::PostDecrement: return &Functions::PostDecrement<L>;
+			case OperatorType::PreIncrement: return &Functions::PreIncrement<R>;
+			case OperatorType::PostIncrement: return &Functions::PostIncrement<L>;
 
-			case OPERATOR_TYPE_T::OT_EQUALS: return &Functions::Equal<L, R>;
-			case OPERATOR_TYPE_T::OT_GREATER_THAN: return &Functions::GreaterThan<L, R>;
-			case OPERATOR_TYPE_T::OT_GREATER_THAN_OR_EQUAL: return &Functions::GreaterOrEqualThan<L, R>;
-			case OPERATOR_TYPE_T::OT_LESSER_THAN: return &Functions::LessThan<L, R>;
-			case OPERATOR_TYPE_T::OT_LESSER_THAN_OR_EQUAL: return &Functions::LessOrEqualThan<L, R>;
+			case OperatorType::Equals: return &Functions::Equal<L, R>;
+			case OperatorType::GreaterThan: return &Functions::GreaterThan<L, R>;
+			case OperatorType::GreaterThanOrEqual: return &Functions::GreaterOrEqualThan<L, R>;
+			case OperatorType::LesserThan: return &Functions::LessThan<L, R>;
+			case OperatorType::LesserThanOrEqual: return &Functions::LessOrEqualThan<L, R>;
 			}
 
 			return nullptr;
 		}
 
 		template<typename T>
-		OPERATOR_FUNCTION_T getFunction(VALUE_TYPE_T right, OPERATOR_TYPE_T func)
+		OperatorFunction getFunction(ValueType right, OperatorType func)
 		{
 			switch (right)
 			{
-			case VALUE_TYPE_T::VT_BOOL: return getFunction<T, ScriptBoolValue>(func);
-			case VALUE_TYPE_T::VT_CHAR: return getFunction<T, ScriptCharValue>(func);
-			case VALUE_TYPE_T::VT_BYTE: return getFunction<T, ScriptByteValue>(func);
-			case VALUE_TYPE_T::VT_INT: return getFunction <T, ScriptIntValue> (func);
-			case VALUE_TYPE_T::VT_UNSIGNED_INT: return getFunction<T, ScriptUnsignedIntValue>(func);
-			case VALUE_TYPE_T::VT_FLOAT: return getFunction<T, ScriptFloatValue>(func);
-			case VALUE_TYPE_T::VT_DOUBLE: return getFunction<T, ScriptDoubleValue>(func);
-			case VALUE_TYPE_T::VT_VOID: return getFunction<T, ScriptNullValue>(func);
+			case ValueType::Bool: return getFunction<T, ScriptBoolValue>(func);
+			case ValueType::Char: return getFunction<T, ScriptCharValue>(func);
+			case ValueType::Byte: return getFunction<T, ScriptByteValue>(func);
+			case ValueType::Int: return getFunction <T, ScriptIntValue> (func);
+			case ValueType::UnsignedInt: return getFunction<T, ScriptUnsignedIntValue>(func);
+			case ValueType::Float: return getFunction<T, ScriptFloatValue>(func);
+			case ValueType::Double: return getFunction<T, ScriptDoubleValue>(func);
+			case ValueType::Void: return getFunction<T, ScriptNullValue>(func);
 			}
 
 			return nullptr;
 		}
 
-		OPERATOR_FUNCTION_T getFunction(VALUE_TYPE_T left, VALUE_TYPE_T right, OPERATOR_TYPE_T func)
+		OperatorFunction getFunction(ValueType left, ValueType right, OperatorType func)
 		{
 			switch (left)
 			{
-			case VALUE_TYPE_T::VT_BOOL: return getFunction<ScriptBoolValue>(right, func);
-			case VALUE_TYPE_T::VT_CHAR: return getFunction<ScriptCharValue>(right, func);
-			case VALUE_TYPE_T::VT_BYTE: return getFunction<ScriptByteValue>(right, func);
-			case VALUE_TYPE_T::VT_INT: return getFunction<ScriptIntValue>(right, func);
-			case VALUE_TYPE_T::VT_UNSIGNED_INT: return getFunction<ScriptUnsignedIntValue>(right, func);
-			case VALUE_TYPE_T::VT_FLOAT: return getFunction<ScriptFloatValue>(right, func);
-			case VALUE_TYPE_T::VT_DOUBLE: return getFunction<ScriptDoubleValue>(right, func);
-			case VALUE_TYPE_T::VT_VOID: return getFunction<ScriptNullValue>(right, func);
+			case ValueType::Bool: return getFunction<ScriptBoolValue>(right, func);
+			case ValueType::Char: return getFunction<ScriptCharValue>(right, func);
+			case ValueType::Byte: return getFunction<ScriptByteValue>(right, func);
+			case ValueType::Int: return getFunction<ScriptIntValue>(right, func);
+			case ValueType::UnsignedInt: return getFunction<ScriptUnsignedIntValue>(right, func);
+			case ValueType::Float: return getFunction<ScriptFloatValue>(right, func);
+			case ValueType::Double: return getFunction<ScriptDoubleValue>(right, func);
+			case ValueType::Void: return getFunction<ScriptNullValue>(right, func);
 			}
 
 			return nullptr;

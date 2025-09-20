@@ -19,10 +19,10 @@ public:
 			: ScriptFunction(
 				scope,
 				name,
-				gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, this->scope),
+				gscript::ScriptType::create(gscript::ValueType::Int, this->scope),
 				gscript::PARAMS_T({
-					gscript::FunctionParameter(gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, scope)),
-					gscript::FunctionParameter(gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, scope))
+					gscript::FunctionParameter(gscript::ScriptType::create(gscript::ValueType::Int, scope)),
+					gscript::FunctionParameter(gscript::ScriptType::create(gscript::ValueType::Int, scope))
 				})
 			)
 		{
@@ -60,8 +60,8 @@ TEST_CASE_METHOD(GscriptTest, "ExtensionSampleExtension")
 	ext->load(script);
 
 	auto fnc = globalNamespace.findFunction("func_multiply", {
-		gscript::FunctionParameter(gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace)),
-		gscript::FunctionParameter(gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace))
+		gscript::FunctionParameter(gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace)),
+		gscript::FunctionParameter(gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace))
 	});
 
 	auto valvec = std::vector<std::unique_ptr<gscript::ScriptValue>>();

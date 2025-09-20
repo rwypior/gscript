@@ -54,7 +54,7 @@ namespace gscript
 		SCRIPT_API virtual void setParentScope(ScriptScopeBase* scope) = 0;
 		SCRIPT_API virtual ScriptScopeBase* getParentScope() const = 0;
 
-		SCRIPT_API bool isAccessible(ScriptScopeBase& targetScope, MODIFIER_T access);
+		SCRIPT_API bool isAccessible(ScriptScopeBase& targetScope, Modifier access);
 	};
 
 	class ScriptScope : public ScriptScopeBase

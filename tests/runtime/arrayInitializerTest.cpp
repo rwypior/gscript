@@ -24,12 +24,12 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeArrayInitializer")
 	gscript::ScriptArrayInitializer ai(globalNamespace, std::move(stmtvec));
 
 	// Array's type is the underlying element type
-	REQUIRE(ai.getType()->getTypeDescriptor() == gscript::VALUE_TYPE_T::VT_INT);
+	REQUIRE(ai.getType()->getTypeDescriptor() == gscript::ValueType::Int);
 
 	auto val = ai.run();
 
-	REQUIRE(val->getType()->getTypeDescriptor() == gscript::VALUE_TYPE_T::VT_ARRAY);
-	REQUIRE(val->getType()->getUnderlyingTypeDescriptor() == gscript::VALUE_TYPE_T::VT_INT);
+	REQUIRE(val->getType()->getTypeDescriptor() == gscript::ValueType::Array);
+	REQUIRE(val->getType()->getUnderlyingTypeDescriptor() == gscript::ValueType::Int);
 	
 	auto& arr = static_cast<gscript::ScriptArrayValue*>(val->data())->getValue();
 	REQUIRE(arr[0]->as<gscript::ScriptIntValue>().getValue() == 42);

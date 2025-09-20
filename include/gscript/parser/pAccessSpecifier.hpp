@@ -18,12 +18,12 @@ namespace gscript
 		static constexpr char keywordStatic[] = "static";
 		static constexpr char keywordVirtual[] = "virtual";
 
-		MODIFIER_T modifier = MODIFIER_T::M_NONE;
+		Modifier modifier = Modifier::None;
 
-		ParserAccessSpecifier(MODIFIER_T defaultModifier = MODIFIER_T::M_NONE);
+		ParserAccessSpecifier(Modifier defaultModifier = Modifier::None);
 		virtual ParseResult parse(StringIteratorRange itrange) override;
 
-		MODIFIER_T getModifier() const;
+		Modifier getModifier() const;
 	};
 }
 

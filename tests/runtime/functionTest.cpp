@@ -16,13 +16,13 @@
 TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionSimple")
 {
 	// Function
-	gscript::ScriptFunction myFunc(globalNamespace, "myfunc", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), {}, {});
+	gscript::ScriptFunction myFunc(globalNamespace, "myfunc", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), {}, {});
 
 	// Function block
-	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(1));
+	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), std::make_unique<gscript::ScriptIntValue>(1));
 
 	auto varreadMyVariable1 = std::make_unique<gscript::ScriptVarRead>(myFunc, &myVariable1);
-	auto mul = std::make_unique<gscript::ScriptOperatorMultiplyBy>(myFunc, gscript::OPERATOR_LINK_T::OL_BOTH);
+	auto mul = std::make_unique<gscript::ScriptOperatorMultiplyBy>(myFunc, gscript::OperatorLinkage::Both);
 	auto literal5 = std::make_unique<gscript::ScriptLiteral>(myFunc, std::make_unique<gscript::ScriptIntValue>(5));
 	auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecbody.push_back(std::move(varreadMyVariable1));
@@ -48,7 +48,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionSimple")
 TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionReturn")
 {
 	// Function
-	gscript::ScriptFunction myFunc(globalNamespace, "myfunc", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), {}, {});
+	gscript::ScriptFunction myFunc(globalNamespace, "myfunc", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), {}, {});
 
 	// Function block
 	auto literal42 = std::make_unique<gscript::ScriptLiteral>(myFunc, std::make_unique<gscript::ScriptIntValue>(42));
@@ -81,16 +81,16 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionWithParams")
 	gscript::ScriptFunction myFunc(
 		globalNamespace, 
 		"myfunc", 
-		gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace),
-		{ { std::make_shared<gscript::ScriptType>(gscript::VALUE_TYPE_T::VT_INT), "arg1" }},
+		gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace),
+		{ { std::make_shared<gscript::ScriptType>(gscript::ValueType::Int), "arg1" }},
 		{}
 	);
 
 	// Function block
-	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(1));
+	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), std::make_unique<gscript::ScriptIntValue>(1));
 
 	auto varreadMyVariable1 = std::make_unique<gscript::ScriptVarRead>(myFunc, &myVariable1);
-	auto assign = std::make_unique<gscript::ScriptOperatorAssign>(myFunc, gscript::OPERATOR_LINK_T::OL_BOTH);
+	auto assign = std::make_unique<gscript::ScriptOperatorAssign>(myFunc, gscript::OperatorLinkage::Both);
 	auto varreadParam1 = std::make_unique<gscript::ScriptVarReadPrototype>(myFunc, "arg1");
 	auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecbody.push_back(std::move(varreadMyVariable1));

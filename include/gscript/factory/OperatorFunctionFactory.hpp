@@ -4,22 +4,15 @@
 #include "defs.hpp"
 #include "util.hpp"
 
-#include <unordered_map>
-#include <tuple>
-
 namespace gscript
 {
 	class ScriptCallable;
 
 	namespace OperatorFunctionFactory
 	{
-		typedef std::unique_ptr<ScriptValue>(*OPERATOR_FUNCTION_T)(ScriptCallable *left, ScriptCallable *right);
-		typedef std::tuple<VALUE_TYPE_T, VALUE_TYPE_T, OPERATOR_TYPE_T> FUNC_MAP_KEY_T;
-		typedef std::unordered_map<FUNC_MAP_KEY_T, OPERATOR_FUNCTION_T, hash_tuple::hash<FUNC_MAP_KEY_T> > FUNCMAP_T;
+		typedef std::unique_ptr<ScriptValue>(*OperatorFunction)(ScriptCallable *left, ScriptCallable *right);
 
-		extern FUNCMAP_T funcmap;
-
-		OPERATOR_FUNCTION_T getFunction(VALUE_TYPE_T left, VALUE_TYPE_T right, OPERATOR_TYPE_T oper);
+		OperatorFunction getFunction(ValueType left, ValueType right, OperatorType oper);
 	};
 }
 

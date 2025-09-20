@@ -12,7 +12,7 @@ TEST_CASE("ParserLiteralInt")
 
 	REQUIRE(result.isOk());
 	REQUIRE(pLit.value == "42");
-	REQUIRE(pLit.type == gscript::VALUE_TYPE_T::VT_INT);
+	REQUIRE(pLit.type == gscript::ValueType::Int);
 }
 
 TEST_CASE("ParserLiteralDouble")
@@ -24,7 +24,7 @@ TEST_CASE("ParserLiteralDouble")
 
 	REQUIRE(result.isOk());
 	REQUIRE(pLit.value == "13.37");
-	REQUIRE(pLit.type == gscript::VALUE_TYPE_T::VT_DOUBLE);
+	REQUIRE(pLit.type == gscript::ValueType::Double);
 }
 
 TEST_CASE("ParserLiteralFloat")
@@ -37,7 +37,7 @@ TEST_CASE("ParserLiteralFloat")
 
 		REQUIRE(result.isOk());
 		REQUIRE(pLit.value == "13.37");
-		REQUIRE(pLit.type == gscript::VALUE_TYPE_T::VT_FLOAT);
+		REQUIRE(pLit.type == gscript::ValueType::Float);
 	}
 
 	{
@@ -48,7 +48,7 @@ TEST_CASE("ParserLiteralFloat")
 
 		REQUIRE(result.isOk());
 		REQUIRE(pLit.value == "13.37");
-		REQUIRE(pLit.type == gscript::VALUE_TYPE_T::VT_FLOAT);
+		REQUIRE(pLit.type == gscript::ValueType::Float);
 	}
 }
 
@@ -83,7 +83,7 @@ TEST_CASE("ParserLiteralString")
 
 	REQUIRE(result.isOk());
 	REQUIRE(pLit.value == "something");
-	REQUIRE(pLit.type == gscript::VALUE_TYPE_T::VT_STRING);
+	REQUIRE(pLit.type == gscript::ValueType::String);
 }
 
 TEST_CASE("ParserLiteralDecimalSeparatorNoDigits")

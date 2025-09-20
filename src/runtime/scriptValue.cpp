@@ -27,7 +27,7 @@ namespace gscript
 
 	const std::shared_ptr<ScriptType> ScriptBoolValue::getType()
 	{
-		return std::make_unique<ScriptType>(VALUE_TYPE_T::VT_BOOL);
+		return std::make_unique<ScriptType>(ValueType::Bool);
 	}
 
 	std::unique_ptr<ScriptValue> ScriptBoolValue::clone() const
@@ -79,7 +79,7 @@ namespace gscript
 
 	const std::shared_ptr<ScriptType> ScriptCharValue::getType()
 	{
-		return std::make_unique<ScriptType>(VALUE_TYPE_T::VT_CHAR);
+		return std::make_unique<ScriptType>(ValueType::Char);
 	}
 
 	std::unique_ptr<ScriptValue> ScriptCharValue::clone() const
@@ -131,7 +131,7 @@ namespace gscript
 
 	const std::shared_ptr<ScriptType> ScriptByteValue::getType()
 	{
-		return std::make_unique<ScriptType>(VALUE_TYPE_T::VT_BYTE);
+		return std::make_unique<ScriptType>(ValueType::Byte);
 	}
 
 	std::unique_ptr<ScriptValue> ScriptByteValue::clone() const
@@ -183,7 +183,7 @@ namespace gscript
 
 	const std::shared_ptr<ScriptType> ScriptIntValue::getType()
 	{
-		return std::make_unique<ScriptType>(VALUE_TYPE_T::VT_INT);
+		return std::make_unique<ScriptType>(ValueType::Int);
 	}
 
 	std::unique_ptr<ScriptValue> ScriptIntValue::clone() const
@@ -234,7 +234,7 @@ namespace gscript
 
 	const std::shared_ptr<ScriptType> ScriptUnsignedIntValue::getType()
 	{
-		return std::make_unique<ScriptType>(VALUE_TYPE_T::VT_UNSIGNED_INT);
+		return std::make_unique<ScriptType>(ValueType::UnsignedInt);
 	}
 
 	std::unique_ptr<ScriptValue> ScriptUnsignedIntValue::clone() const
@@ -286,7 +286,7 @@ namespace gscript
 
 	const std::shared_ptr<ScriptType> ScriptFloatValue::getType()
 	{
-		return std::make_unique<ScriptType>(VALUE_TYPE_T::VT_FLOAT);
+		return std::make_unique<ScriptType>(ValueType::Float);
 	}
 
 	std::unique_ptr<ScriptValue> ScriptFloatValue::clone() const
@@ -338,7 +338,7 @@ namespace gscript
 
 	const std::shared_ptr<ScriptType> ScriptDoubleValue::getType()
 	{
-		return std::make_unique<ScriptType>(VALUE_TYPE_T::VT_DOUBLE);
+		return std::make_unique<ScriptType>(ValueType::Double);
 	}
 
 	std::unique_ptr<ScriptValue> ScriptDoubleValue::clone() const
@@ -390,7 +390,7 @@ namespace gscript
 
 	const std::shared_ptr<ScriptType> ScriptStringValue::getType()
 	{
-		return std::make_unique<ScriptType>(VALUE_TYPE_T::VT_STRING);
+		return std::make_unique<ScriptType>(ValueType::String);
 	}
 
 	std::unique_ptr<ScriptValue> ScriptStringValue::clone() const

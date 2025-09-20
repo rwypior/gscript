@@ -15,7 +15,7 @@ TEST_CASE("ParserFieldDeclarationSimple")
 	REQUIRE(result.isOk());
 	REQUIRE(pField.name == "somefield");
 	REQUIRE(pField.type == "type");
-	REQUIRE(pField.accessSpecifier.getModifier() == gscript::MODIFIER_T::M_NONE);
+	REQUIRE(pField.accessSpecifier.getModifier() == gscript::Modifier::None);
 }
 
 TEST_CASE("ParserFieldDeclarationPrivate")
@@ -28,7 +28,7 @@ TEST_CASE("ParserFieldDeclarationPrivate")
 	REQUIRE(result.isOk());
 	REQUIRE(pField.name == "somefield");
 	REQUIRE(pField.type == "type");
-	REQUIRE(pField.accessSpecifier.getModifier() & Bitfield(gscript::MODIFIER_T::M_ACCESS_PRIVATE));
+	REQUIRE(pField.accessSpecifier.getModifier() & Bitfield(gscript::Modifier::AccessPrivate));
 }
 
 TEST_CASE("ParserFieldDeclarationWithValue")
@@ -42,7 +42,7 @@ TEST_CASE("ParserFieldDeclarationWithValue")
 	REQUIRE(pField.name == "somefield");
 	REQUIRE(pField.type == "type");
 	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pField.value.components.at(0))->value == "42");
-	REQUIRE(pField.accessSpecifier.getModifier() == gscript::MODIFIER_T::M_NONE);
+	REQUIRE(pField.accessSpecifier.getModifier() == gscript::Modifier::None);
 }
 
 TEST_CASE("ParserFieldDeclarationWithStatement")
@@ -56,7 +56,7 @@ TEST_CASE("ParserFieldDeclarationWithStatement")
 	REQUIRE(pField.name == "somefield");
 	REQUIRE(pField.type == "type");
 	REQUIRE(std::static_pointer_cast<gscript::ParserFuncCall>(pField.value.components.at(0))->name == "somefunc");
-	REQUIRE(pField.accessSpecifier.getModifier() == gscript::MODIFIER_T::M_NONE);
+	REQUIRE(pField.accessSpecifier.getModifier() == gscript::Modifier::None);
 }
 
 TEST_CASE("ParserFieldDeclarationFailureSingleWord")

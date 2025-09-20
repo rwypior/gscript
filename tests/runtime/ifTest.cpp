@@ -15,14 +15,14 @@
 TEST_CASE_METHOD(GscriptTest, "RuntimeIfVariable")
 {
 	// Test variable
-	auto& testVariable = globalNamespace.registerVariable("testVariable", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(42));
+	auto& testVariable = globalNamespace.registerVariable("testVariable", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), std::make_unique<gscript::ScriptIntValue>(42));
 
 	// Variable
-	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(42));
+	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), std::make_unique<gscript::ScriptIntValue>(42));
 
 	// If condition
 	auto varread = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &testVariable);
-	auto opeq = std::make_unique<gscript::ScriptOperatorEquals>(globalNamespace, gscript::OPERATOR_LINK_T::OL_BOTH);
+	auto opeq = std::make_unique<gscript::ScriptOperatorEquals>(globalNamespace, gscript::OperatorLinkage::Both);
 	auto literal42 = std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(42));
 	auto stmtvec = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvec.push_back(std::move(varread));
@@ -33,7 +33,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfVariable")
 
 	// If block
 	auto varreadMyVariable1 = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &myVariable1);
-	auto opadd = std::make_unique<gscript::ScriptOperatorAddTo>(globalNamespace, gscript::OPERATOR_LINK_T::OL_BOTH);
+	auto opadd = std::make_unique<gscript::ScriptOperatorAddTo>(globalNamespace, gscript::OperatorLinkage::Both);
 	auto literal10 = std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(10));
 
 	auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
@@ -70,14 +70,14 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfVariable")
 TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseVariable")
 {
 	// Test variable
-	auto& testVariable = globalNamespace.registerVariable("testVariable", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(42));
+	auto& testVariable = globalNamespace.registerVariable("testVariable", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), std::make_unique<gscript::ScriptIntValue>(42));
 
 	// Variable
-	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(42));
+	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), std::make_unique<gscript::ScriptIntValue>(42));
 
 	// If condition
 	auto varread = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &testVariable);
-	auto opeq = std::make_unique<gscript::ScriptOperatorEquals>(globalNamespace, gscript::OPERATOR_LINK_T::OL_BOTH);
+	auto opeq = std::make_unique<gscript::ScriptOperatorEquals>(globalNamespace, gscript::OperatorLinkage::Both);
 	auto literal42 = std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(42));
 	auto stmtvec = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvec.push_back(std::move(varread));
@@ -88,7 +88,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseVariable")
 
 	// If block
 	auto varreadMyVariable1 = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &myVariable1);
-	auto opadd = std::make_unique<gscript::ScriptOperatorAddTo>(globalNamespace, gscript::OPERATOR_LINK_T::OL_BOTH);
+	auto opadd = std::make_unique<gscript::ScriptOperatorAddTo>(globalNamespace, gscript::OperatorLinkage::Both);
 	auto literal10 = std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(10));
 
 	auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
@@ -103,7 +103,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseVariable")
 
 	// Else block
 	auto varreadMyVariable1else = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &myVariable1);
-	auto opmulelse = std::make_unique<gscript::ScriptOperatorMultiplyBy>(globalNamespace, gscript::OPERATOR_LINK_T::OL_BOTH);
+	auto opmulelse = std::make_unique<gscript::ScriptOperatorMultiplyBy>(globalNamespace, gscript::OperatorLinkage::Both);
 	auto literal10else = std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(10));
 
 	auto stmtvecbodyelse = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
@@ -152,14 +152,14 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseVariable")
 TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseIfElseVariable")
 {
 	// Test variable
-	auto& testVariable = globalNamespace.registerVariable("testVariable", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(42));
+	auto& testVariable = globalNamespace.registerVariable("testVariable", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), std::make_unique<gscript::ScriptIntValue>(42));
 
 	// Variable
-	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::VALUE_TYPE_T::VT_INT, globalNamespace), std::make_unique<gscript::ScriptIntValue>(42));
+	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), std::make_unique<gscript::ScriptIntValue>(42));
 
 	// If condition
 	auto varread = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &testVariable);
-	auto opeq = std::make_unique<gscript::ScriptOperatorEquals>(globalNamespace, gscript::OPERATOR_LINK_T::OL_BOTH);
+	auto opeq = std::make_unique<gscript::ScriptOperatorEquals>(globalNamespace, gscript::OperatorLinkage::Both);
 	auto literal42 = std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(42));
 	auto stmtvec = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvec.push_back(std::move(varread));
@@ -170,7 +170,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseIfElseVariable")
 
 	// If block
 	auto varreadMyVariable1 = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &myVariable1);
-	auto opadd = std::make_unique<gscript::ScriptOperatorAddTo>(globalNamespace, gscript::OPERATOR_LINK_T::OL_BOTH);
+	auto opadd = std::make_unique<gscript::ScriptOperatorAddTo>(globalNamespace, gscript::OperatorLinkage::Both);
 	auto literal10 = std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(10));
 
 	auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
@@ -185,7 +185,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseIfElseVariable")
 
 	// Else block
 	auto varreadMyVariable1else = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &myVariable1);
-	auto opmulelse = std::make_unique<gscript::ScriptOperatorMultiplyBy>(globalNamespace, gscript::OPERATOR_LINK_T::OL_BOTH);
+	auto opmulelse = std::make_unique<gscript::ScriptOperatorMultiplyBy>(globalNamespace, gscript::OperatorLinkage::Both);
 	auto literal10else = std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(10));
 
 	auto stmtvecbodyelse = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
@@ -204,7 +204,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseIfElseVariable")
 
 	// Else if condition
 	auto varreadelseif = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &testVariable);
-	auto opeqelseif = std::make_unique<gscript::ScriptOperatorEquals>(globalNamespace, gscript::OPERATOR_LINK_T::OL_BOTH);
+	auto opeqelseif = std::make_unique<gscript::ScriptOperatorEquals>(globalNamespace, gscript::OperatorLinkage::Both);
 	auto literal1337elseif = std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(1337));
 	auto stmtvecelseif = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecelseif.push_back(std::move(varreadelseif));
@@ -215,7 +215,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseIfElseVariable")
 
 	// Else if block
 	auto varreadMyVariable1elseif = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &myVariable1);
-	auto opsubtractelseif = std::make_unique<gscript::ScriptOperatorSubtractFrom>(globalNamespace, gscript::OPERATOR_LINK_T::OL_BOTH);
+	auto opsubtractelseif = std::make_unique<gscript::ScriptOperatorSubtractFrom>(globalNamespace, gscript::OperatorLinkage::Both);
 	auto literal10elseif = std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(5));
 
 	auto stmtvecbodyelseif = std::vector<std::unique_ptr<gscript::ScriptCallable>>();

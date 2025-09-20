@@ -169,7 +169,7 @@ namespace gscript
 				continue;
 			}
 
-			OPERATOR_POSITION_T pos = (isBegin || prevOperator) ? OPERATOR_POSITION_T::OP_RIGHT : OPERATOR_POSITION_T::OP_LEFT;
+			OperatorPosition pos = (isBegin || prevOperator) ? OperatorPosition::Right : OperatorPosition::Left;
 
 			ParserOperator oper(pos);
 			ParseResult operres = oper.parse(StringIteratorRange(end, itrange.end));

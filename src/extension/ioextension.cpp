@@ -20,12 +20,12 @@ namespace gscript
 		: ScriptMethod(
 			scope,
 			name,
-			ScriptType::create(VALUE_TYPE_T::VT_VOID, this->scope),
+			ScriptType::create(ValueType::Void, this->scope),
 			PARAMS_T({
-				FunctionParameter(ScriptType::create(VALUE_TYPE_T::VT_STRING, scope)),
-				FunctionParameter(ScriptType::create(VALUE_TYPE_T::VT_STRING, scope))
+				FunctionParameter(ScriptType::create(ValueType::String, scope)),
+				FunctionParameter(ScriptType::create(ValueType::String, scope))
 			}),
-			MODIFIER_T::M_ACCESS_PUBLIC
+			Modifier::AccessPublic
 		)
 	{
 	}
@@ -50,11 +50,11 @@ namespace gscript
 		: ScriptMethod(
 			scope,
 			name,
-			ScriptType::create(VALUE_TYPE_T::VT_INT, this->scope),
+			ScriptType::create(ValueType::Int, this->scope),
 			PARAMS_T({
-				FunctionParameter(ScriptType::create(TypeDescriptor(VALUE_TYPE_T::VT_REFERENCE, VALUE_TYPE_T::VT_STRING), scope))
+				FunctionParameter(ScriptType::create(TypeDescriptor(ValueType::Reference, ValueType::String), scope))
 			}),
-			MODIFIER_T::M_ACCESS_PUBLIC
+			Modifier::AccessPublic
 		)
 	{
 	}
@@ -85,11 +85,11 @@ namespace gscript
 		: ScriptMethod(
 			scope,
 			name,
-			ScriptType::create(VALUE_TYPE_T::VT_BOOL, this->scope),
+			ScriptType::create(ValueType::Bool, this->scope),
 			PARAMS_T({
-				FunctionParameter(ScriptType::create(TypeDescriptor(VALUE_TYPE_T::VT_STRING), scope))
+				FunctionParameter(ScriptType::create(TypeDescriptor(ValueType::String), scope))
 			}),
-			MODIFIER_T::M_ACCESS_PUBLIC | MODIFIER_T::M_STATIC
+			Modifier::AccessPublic | Modifier::Static
 		)
 	{
 	}

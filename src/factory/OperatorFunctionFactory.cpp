@@ -11,178 +11,293 @@ namespace gscript
 {
 	namespace OperatorFunctionFactory
 	{
+		// Type converters
+
+		template<typename>
+		struct OperatorReturnType;
+
+		template<>
+		struct OperatorReturnType<bool>
+		{
+			using type = ScriptBoolValue;
+		};
+
+		template<>
+		struct OperatorReturnType<char>
+		{
+			using type = ScriptCharValue;
+		};
+
+		template<>
+		struct OperatorReturnType<unsigned char>
+		{
+			using type = ScriptByteValue;
+		};
+
+		template<>
+		struct OperatorReturnType<int>
+		{
+			using type = ScriptIntValue;
+		};
+
+		template<>
+		struct OperatorReturnType<unsigned int>
+		{
+			using type = ScriptUnsignedIntValue;
+		};
+
+		template<>
+		struct OperatorReturnType<float>
+		{
+			using type = ScriptFloatValue;
+		};
+
+		template<>
+		struct OperatorReturnType<double>
+		{
+			using type = ScriptDoubleValue;
+		};
+
+		template<>
+		struct OperatorReturnType<std::string>
+		{
+			using type = ScriptStringValue;
+		};
+		
+		template<>
+		struct OperatorReturnType<ScriptNull>
+		{
+			using type = ScriptNullValue;
+		};
+
+		// Functions
+
 		namespace Functions
 		{
-			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
+#pragma warning(push)
+#pragma warning(disable: 4804 4805)
+
+			template<typename T_LEFT, typename T_RIGHT>
 			std::unique_ptr<ScriptValue> Add(ScriptCallable *left, ScriptCallable *right)
 			{
-				return std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() + static_cast<T_RIGHT*>(right->run()->data())->getValue());
+				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() + static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				return std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 			}
 
-			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
+			template<typename T_LEFT, typename T_RIGHT>
 			std::unique_ptr<ScriptValue> AddTo(ScriptCallable *left, ScriptCallable *right)
 			{
-				auto res = std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() + static_cast<T_RIGHT*>(right->run()->data())->getValue());
+				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() + static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				auto res = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
 				vr->get()->setValue(res->clone());
 				return res;
 			}
 
-			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
+			template<typename T_LEFT, typename T_RIGHT>
 			std::unique_ptr<ScriptValue> Subtract(ScriptCallable *left, ScriptCallable *right)
 			{
-				return std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() - static_cast<T_RIGHT*>(right->run()->data())->getValue());
+				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() - static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				return std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 			}
 
-			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
+			template<typename T_LEFT, typename T_RIGHT>
 			std::unique_ptr<ScriptValue> SubtractFrom(ScriptCallable *left, ScriptCallable *right)
 			{
-				auto res = std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() - static_cast<T_RIGHT*>(right->run()->data())->getValue());
+				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() - static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				auto res = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
 				vr->get()->setValue(res->clone());
 				return res;
 			}
 
-			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
+			template<typename T_LEFT, typename T_RIGHT>
 			std::unique_ptr<ScriptValue> Multiply(ScriptCallable *left, ScriptCallable *right)
 			{
-				return std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() * static_cast<T_RIGHT*>(right->run()->data())->getValue());
+				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() * static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				return std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 			}
 
-			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
+			template<typename T_LEFT, typename T_RIGHT>
 			std::unique_ptr<ScriptValue> MultiplyBy(ScriptCallable *left, ScriptCallable *right)
 			{
-				auto res = std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() * static_cast<T_RIGHT*>(right->run()->data())->getValue());
+				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() * static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				auto res = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
 				vr->get()->setValue(res->clone());
 				return res;
 			}
 
-			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
+			template<typename T_LEFT, typename T_RIGHT>
 			std::unique_ptr<ScriptValue> Divide(ScriptCallable *left, ScriptCallable *right)
 			{
-				return std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() / static_cast<T_RIGHT*>(right->run()->data())->getValue());
+				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() / static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				return std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 			}
 
-			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
+			template<typename T_LEFT, typename T_RIGHT>
 			std::unique_ptr<ScriptValue> DivideBy(ScriptCallable *left, ScriptCallable *right)
 			{
-				auto res = std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() / static_cast<T_RIGHT*>(right->run()->data())->getValue());
+				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() / static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				auto res = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
 				vr->get()->setValue(res->clone());
 				return res;
 			}
 
-			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
+			template<typename T_LEFT, typename T_RIGHT>
 			std::unique_ptr<ScriptValue> Equal(ScriptCallable *left, ScriptCallable *right)
 			{
-				return std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() == static_cast<T_RIGHT*>(right->run()->data())->getValue());
+				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() == static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				return std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 			}
 
-			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
+			template<typename T_LEFT, typename T_RIGHT>
 			std::unique_ptr<ScriptValue> NotEqual(ScriptCallable *left, ScriptCallable *right)
 			{
-				return std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() != static_cast<T_RIGHT*>(right->run().get())->getValue());
+				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() != static_cast<T_RIGHT*>(right->run().get())->getValue();
+				return std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 			}
 
-			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
+			template<typename T_LEFT, typename T_RIGHT>
 			std::unique_ptr<ScriptValue> GreaterThan(ScriptCallable *left, ScriptCallable *right)
 			{
-				return std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() > static_cast<T_RIGHT*>(right->run()->data())->getValue());
+				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() > static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				return std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 			}
 
-			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
+			template<typename T_LEFT, typename T_RIGHT>
 			std::unique_ptr<ScriptValue> GreaterOrEqualThan(ScriptCallable *left, ScriptCallable *right)
 			{
-				return std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() >= static_cast<T_RIGHT*>(right->run()->data())->getValue());
+				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() >= static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				return std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 			}
 
-			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
+			template<typename T_LEFT, typename T_RIGHT>
 			std::unique_ptr<ScriptValue> LessThan(ScriptCallable *left, ScriptCallable *right)
 			{
-				return std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() < static_cast<T_RIGHT*>(right->run()->data())->getValue());
+				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() < static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				return std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 			}
 
-			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
+			template<typename T_LEFT, typename T_RIGHT>
 			std::unique_ptr<ScriptValue> LessOrEqualThan(ScriptCallable *left, ScriptCallable *right)
 			{
-				return std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() <= static_cast<T_RIGHT*>(right->run()->data())->getValue());
+				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() <= static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				return std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 			}
 
-			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
-			std::unique_ptr<ScriptValue> PreDecrement(ScriptCallable *left, ScriptCallable *right)
+			template<typename T_RIGHT>
+			std::unique_ptr<ScriptValue> PreDecrement(ScriptCallable*, ScriptCallable *right)
 			{
-				auto res = std::make_unique<T_RESULT>(static_cast<T_LEFT*>(right->run()->data())->getValue() - 1);
+				auto val = static_cast<T_RIGHT*>(right->run()->data())->getValue() - 1;
+				auto res = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(right);
 				vr->get()->setValue(res->clone());
 				return res;
 			}
 
-			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
-			std::unique_ptr<ScriptValue> PostDecrement(ScriptCallable *left, ScriptCallable *right)
+			template<typename T_LEFT>
+			std::unique_ptr<ScriptValue> PostDecrement(ScriptCallable *left, ScriptCallable*)
 			{
-				auto newVal = std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() - 1);
-				auto res = std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue());
+				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() - 1;
+				auto newVal = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
+				//auto res = std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue());
+				auto res = left->run()->data()->clone(); // TODO - make it so that only one run() is performed
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
-				vr->get()->setValue(newVal->clone());
+				vr->get()->setValue(std::move(newVal));
 				return res;
 			}
 
-			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
-			std::unique_ptr<ScriptValue> PreIncrement(ScriptCallable *left, ScriptCallable *right)
+			template<typename T_RIGHT>
+			std::unique_ptr<ScriptValue> PreIncrement(ScriptCallable*, ScriptCallable *right)
 			{
-				auto res = std::make_unique<T_RESULT>(static_cast<T_LEFT*>(right->run()->data())->getValue() + 1);
+				auto val = static_cast<T_RIGHT*>(right->run()->data())->getValue() + 1;
+				auto res = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(right);
 				vr->get()->setValue(res->clone());
 				return res;
 			}
 
-			template<typename T_LEFT, typename T_RIGHT, typename T_RESULT>
-			std::unique_ptr<ScriptValue> PostIncrement(ScriptCallable *left, ScriptCallable *right)
+			template<typename T_LEFT>
+			std::unique_ptr<ScriptValue> PostIncrement(ScriptCallable *left, ScriptCallable*)
 			{
-				auto newVal = std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue() + 1);
-				auto res = std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue());
+				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() + 1;
+				auto newVal = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
+				//auto res = std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue());
+				auto res = left->run()->data()->clone(); // TODO - make it so that only one run() is performed
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
-				vr->get()->setValue(newVal->clone());
+				vr->get()->setValue(std::move(newVal));
 				return res;
 			}
+
+#pragma warning(pop)
 		}
 
-		FUNCMAP_T funcmap = FUNCMAP_T({
-			{ std::make_tuple(VALUE_TYPE_T::VT_INT, VALUE_TYPE_T::VT_INT, OPERATOR_TYPE_T::OT_ADD), &Functions::Add<ScriptIntValue, ScriptIntValue, ScriptIntValue> },
-			{ std::make_tuple(VALUE_TYPE_T::VT_INT, VALUE_TYPE_T::VT_INT, OPERATOR_TYPE_T::OT_ADD_TO), &Functions::AddTo<ScriptIntValue, ScriptIntValue, ScriptIntValue> },
-			{ std::make_tuple(VALUE_TYPE_T::VT_INT, VALUE_TYPE_T::VT_INT, OPERATOR_TYPE_T::OT_SUBTRACT), &Functions::Subtract<ScriptIntValue, ScriptIntValue, ScriptIntValue> },
-			{ std::make_tuple(VALUE_TYPE_T::VT_INT, VALUE_TYPE_T::VT_INT, OPERATOR_TYPE_T::OT_SUBTRACT_FROM), &Functions::SubtractFrom<ScriptIntValue, ScriptIntValue, ScriptIntValue> },
-			{ std::make_tuple(VALUE_TYPE_T::VT_INT, VALUE_TYPE_T::VT_INT, OPERATOR_TYPE_T::OT_MULTIPLY), &Functions::Multiply<ScriptIntValue, ScriptIntValue, ScriptIntValue> },
-			{ std::make_tuple(VALUE_TYPE_T::VT_INT, VALUE_TYPE_T::VT_INT, OPERATOR_TYPE_T::OT_MULTIPLY_BY), &Functions::MultiplyBy<ScriptIntValue, ScriptIntValue, ScriptIntValue> },
-			{ std::make_tuple(VALUE_TYPE_T::VT_INT, VALUE_TYPE_T::VT_INT, OPERATOR_TYPE_T::OT_DIVIDE), &Functions::Divide<ScriptIntValue, ScriptIntValue, ScriptDoubleValue> },
-			{ std::make_tuple(VALUE_TYPE_T::VT_INT, VALUE_TYPE_T::VT_INT, OPERATOR_TYPE_T::OT_DIVIDE_BY), &Functions::DivideBy<ScriptIntValue, ScriptIntValue, ScriptDoubleValue> },
+		// Factory
 
-			{ std::make_tuple(VALUE_TYPE_T::VT_VOID, VALUE_TYPE_T::VT_INT, OPERATOR_TYPE_T::OT_PRE_DECREMENT), &Functions::PreDecrement<ScriptIntValue, ScriptIntValue, ScriptIntValue> },
-			{ std::make_tuple(VALUE_TYPE_T::VT_INT, VALUE_TYPE_T::VT_VOID, OPERATOR_TYPE_T::OT_POST_DECREMENT), &Functions::PostDecrement<ScriptIntValue, ScriptIntValue, ScriptIntValue> },
-			{ std::make_tuple(VALUE_TYPE_T::VT_VOID, VALUE_TYPE_T::VT_INT, OPERATOR_TYPE_T::OT_PRE_INCREMENT), &Functions::PreIncrement<ScriptIntValue, ScriptIntValue, ScriptIntValue> },
-			{ std::make_tuple(VALUE_TYPE_T::VT_INT, VALUE_TYPE_T::VT_VOID, OPERATOR_TYPE_T::OT_POST_INCREMENT), &Functions::PostIncrement<ScriptIntValue, ScriptIntValue, ScriptIntValue> },
-
-			{ std::make_tuple(VALUE_TYPE_T::VT_INT, VALUE_TYPE_T::VT_INT, OPERATOR_TYPE_T::OT_EQUALS), &Functions::Equal<ScriptIntValue, ScriptIntValue, ScriptBoolValue> },
-			{ std::make_tuple(VALUE_TYPE_T::VT_INT, VALUE_TYPE_T::VT_INT, OPERATOR_TYPE_T::OT_NOT_EQUALS), &Functions::NotEqual<ScriptIntValue, ScriptIntValue, ScriptBoolValue> },
-			{ std::make_tuple(VALUE_TYPE_T::VT_INT, VALUE_TYPE_T::VT_INT, OPERATOR_TYPE_T::OT_GREATER_THAN), &Functions::GreaterThan<ScriptIntValue, ScriptIntValue, ScriptBoolValue> },
-			{ std::make_tuple(VALUE_TYPE_T::VT_INT, VALUE_TYPE_T::VT_INT, OPERATOR_TYPE_T::OT_GREATER_THAN_OR_EQUAL), &Functions::GreaterOrEqualThan<ScriptIntValue, ScriptIntValue, ScriptBoolValue> },
-			{ std::make_tuple(VALUE_TYPE_T::VT_INT, VALUE_TYPE_T::VT_INT, OPERATOR_TYPE_T::OT_LESSER_THAN), &Functions::LessThan<ScriptIntValue, ScriptIntValue, ScriptBoolValue> },
-			{ std::make_tuple(VALUE_TYPE_T::VT_INT, VALUE_TYPE_T::VT_INT, OPERATOR_TYPE_T::OT_LESSER_THAN_OR_EQUAL), &Functions::LessOrEqualThan<ScriptIntValue, ScriptIntValue, ScriptBoolValue> },
-
-			{ std::make_tuple(VALUE_TYPE_T::VT_STRING, VALUE_TYPE_T::VT_STRING, OPERATOR_TYPE_T::OT_ADD), &Functions::Add<ScriptStringValue, ScriptStringValue, ScriptStringValue> },
-			});
-
-		OPERATOR_FUNCTION_T OperatorFunctionFactory::getFunction(VALUE_TYPE_T left, VALUE_TYPE_T right, OPERATOR_TYPE_T oper)
+		template<typename L, typename R>
+		OPERATOR_FUNCTION_T getFunction(OPERATOR_TYPE_T func)
 		{
-			FUNCMAP_T::const_iterator it = funcmap.find(std::make_tuple(left, right, oper));
-			
-			if (it == funcmap.end())
-				throw CompileException(std::string(
-					"Could not resolve the operator \"") + ScriptOperator::translateOperator(oper) +
-					"\" for types \"" + ScriptType::translateType(left) + "\" and \"" + ScriptType::translateType(right) + "\"");
+			switch (func)
+			{
+			case OPERATOR_TYPE_T::OT_ADD: return &Functions::Add<L, R>;
+			case OPERATOR_TYPE_T::OT_ADD_TO: return &Functions::AddTo<L, R>;
+			case OPERATOR_TYPE_T::OT_SUBTRACT: return &Functions::Subtract<L, R>;
+			case OPERATOR_TYPE_T::OT_SUBTRACT_FROM: return &Functions::SubtractFrom<L, R>;
+			case OPERATOR_TYPE_T::OT_MULTIPLY: return &Functions::Multiply<L, R>;
+			case OPERATOR_TYPE_T::OT_MULTIPLY_BY: return &Functions::MultiplyBy<L, R>;
+			case OPERATOR_TYPE_T::OT_DIVIDE: return &Functions::Divide<L, R>;
+			case OPERATOR_TYPE_T::OT_DIVIDE_BY: return &Functions::DivideBy<L, R>;
 
-			return it->second;
+			case OPERATOR_TYPE_T::OT_PRE_DECREMENT: return &Functions::PreDecrement<R>;
+			case OPERATOR_TYPE_T::OT_POST_DECREMENT: return &Functions::PostDecrement<L>;
+			case OPERATOR_TYPE_T::OT_PRE_INCREMENT: return &Functions::PreIncrement<R>;
+			case OPERATOR_TYPE_T::OT_POST_INCREMENT: return &Functions::PostIncrement<L>;
+
+			case OPERATOR_TYPE_T::OT_EQUALS: return &Functions::Equal<L, R>;
+			case OPERATOR_TYPE_T::OT_GREATER_THAN: return &Functions::GreaterThan<L, R>;
+			case OPERATOR_TYPE_T::OT_GREATER_THAN_OR_EQUAL: return &Functions::GreaterOrEqualThan<L, R>;
+			case OPERATOR_TYPE_T::OT_LESSER_THAN: return &Functions::LessThan<L, R>;
+			case OPERATOR_TYPE_T::OT_LESSER_THAN_OR_EQUAL: return &Functions::LessOrEqualThan<L, R>;
+			}
+
+			return nullptr;
+		}
+
+		template<typename T>
+		OPERATOR_FUNCTION_T getFunction(VALUE_TYPE_T right, OPERATOR_TYPE_T func)
+		{
+			switch (right)
+			{
+			case VALUE_TYPE_T::VT_BOOL: return getFunction<T, ScriptBoolValue>(func);
+			case VALUE_TYPE_T::VT_CHAR: return getFunction<T, ScriptCharValue>(func);
+			case VALUE_TYPE_T::VT_BYTE: return getFunction<T, ScriptByteValue>(func);
+			case VALUE_TYPE_T::VT_INT: return getFunction <T, ScriptIntValue> (func);
+			case VALUE_TYPE_T::VT_UNSIGNED_INT: return getFunction<T, ScriptUnsignedIntValue>(func);
+			case VALUE_TYPE_T::VT_FLOAT: return getFunction<T, ScriptFloatValue>(func);
+			case VALUE_TYPE_T::VT_DOUBLE: return getFunction<T, ScriptDoubleValue>(func);
+			case VALUE_TYPE_T::VT_VOID: return getFunction<T, ScriptNullValue>(func);
+			}
+
+			return nullptr;
+		}
+
+		OPERATOR_FUNCTION_T getFunction(VALUE_TYPE_T left, VALUE_TYPE_T right, OPERATOR_TYPE_T func)
+		{
+			switch (left)
+			{
+			case VALUE_TYPE_T::VT_BOOL: return getFunction<ScriptBoolValue>(right, func);
+			case VALUE_TYPE_T::VT_CHAR: return getFunction<ScriptCharValue>(right, func);
+			case VALUE_TYPE_T::VT_BYTE: return getFunction<ScriptByteValue>(right, func);
+			case VALUE_TYPE_T::VT_INT: return getFunction<ScriptIntValue>(right, func);
+			case VALUE_TYPE_T::VT_UNSIGNED_INT: return getFunction<ScriptUnsignedIntValue>(right, func);
+			case VALUE_TYPE_T::VT_FLOAT: return getFunction<ScriptFloatValue>(right, func);
+			case VALUE_TYPE_T::VT_DOUBLE: return getFunction<ScriptDoubleValue>(right, func);
+			case VALUE_TYPE_T::VT_VOID: return getFunction<ScriptNullValue>(right, func);
+			}
+
+			return nullptr;
 		}
 	}
 }

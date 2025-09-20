@@ -18,6 +18,9 @@ namespace gscript
 	class Script
 	{
 	public:
+		constexpr static char entryPointClass[] = "EntryPoint";
+
+	public:
 		SCRIPT_API Script();
 		SCRIPT_API Script(const std::string &path);
 		SCRIPT_API Script(const std::string &path, std::shared_ptr<ScriptNamespace> mainScope);

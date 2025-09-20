@@ -697,4 +697,9 @@ namespace gscript
 	{
 		return ScriptBoolValue(false);
 	}
+
+	ScriptNull ScriptNullValue::getValue() const
+	{
+		return {};
+	}
 }

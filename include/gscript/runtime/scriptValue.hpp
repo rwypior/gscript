@@ -28,6 +28,11 @@ namespace gscript
 	class ScriptClass;
 	class ScriptBoolValue;
 
+	struct ScriptNull
+	{
+		operator int() const { return {}; }
+	};
+
 	class ScriptValue
 	{
 	public:
@@ -294,6 +299,7 @@ namespace gscript
 		SCRIPT_API virtual std::unique_ptr<ScriptValue> clone() const override;
 		SCRIPT_API virtual void assign(const ScriptValue&) override;
 		SCRIPT_API virtual ScriptBoolValue boolean() const override;
+		SCRIPT_API virtual ScriptNull getValue() const;
 	};
 }
 

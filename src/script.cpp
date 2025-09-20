@@ -142,7 +142,7 @@ namespace gscript
 
 		this->mainScope->registerFunction(std::make_unique<ScriptFuncToString>(*this->mainScope, "tostring"));
 
-		auto entrypoint = std::make_unique<ScriptClass>(*this->mainScope, "entrypoint", nullptr);
+		auto entrypoint = std::make_unique<ScriptClass>(*this->mainScope, entryPointClass, nullptr);
 		entrypoint->registerFunction(std::make_unique<ScriptMethod>(
 			*entrypoint,
 			"run",
@@ -161,7 +161,7 @@ namespace gscript
 	{
 		DBG("Preparing to run the script");
 
-		ScriptClass *ep = this->mainScope->findClassByInheritance("entrypoint");
+		ScriptClass *ep = this->mainScope->findClassByInheritance(entryPointClass);
 		if (!ep)
 			throw RuntimeException("Entrypoint class not found. A class extending \"entrypoint\" must be implemented");
 

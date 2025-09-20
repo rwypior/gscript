@@ -9,7 +9,7 @@ namespace gscript
 	class ParserLineComment : public ParserEntity
 	{
 	public:
-		const char *CHR_LINE_COMMENT = "//";
+		static constexpr char keywordLineComment[] = "//";
 
 		virtual ParseResult parse(StringIteratorRange itrange) override;
 	};

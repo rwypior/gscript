@@ -6,7 +6,7 @@ namespace gscript
 {
 	ParseResult ParserReturn::parse(StringIteratorRange itrange)
 	{
-		ParseResult parentResult = ParserWord::parse(itrange, ParserReturn::KW_RETURN);
+		ParseResult parentResult = ParserWord::parse(itrange, ParserReturn::keywordReturn);
 		if (!parentResult.isOk())
 			return parentResult;
 

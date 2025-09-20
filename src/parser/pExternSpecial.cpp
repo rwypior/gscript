@@ -5,11 +5,9 @@
 
 namespace gscript
 {
-	const char *ParserExternSpecial::DIRECTIVE_EXTERN = "extern";
-
 	ParserExternSpecial::ParserExternSpecial(char terminator)
-		:ParserSpecialDirective(ParserExternSpecial::DIRECTIVE_EXTERN, true),
-		terminator(terminator)
+		: ParserSpecialDirective(ParserExternSpecial::keywordExtern, true)
+		, terminator(terminator)
 	{
 	}
 

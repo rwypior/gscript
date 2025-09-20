@@ -4,13 +4,12 @@
 namespace gscript
 {
 	ParserListSeparator::ParserListSeparator(const char separator)
-		:KW_SEPARATOR(separator)
+		: separatorChar(separator)
 	{
-
 	}
 
 	ParseResult ParserListSeparator::parse(StringIteratorRange itrange)
 	{
-		return ParserChar::parse(itrange, this->KW_SEPARATOR);
+		return ParserChar::parse(itrange, this->separatorChar);
 	}
 }

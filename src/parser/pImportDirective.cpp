@@ -6,23 +6,8 @@
 
 namespace gscript
 {
-	const char *ParserImportDirective::DIRECTIVE_IMPORT = "import";
-
-	const char ParserImportDirective::ENCLOSURE_BEGIN = '"';
-	const char ParserImportDirective::ENCLOSURE_END = '"';
-
-	const char ParserImportDirective::EXTENSION_ENCLOSURE_BEGIN = '<';
-	const char ParserImportDirective::EXTENSION_ENCLOSURE_END = '>';
-
-	/*ParserImportDirective::ParserImportDirective(char enclosureBegin, char enclosureEnd)
-		:ParserControlDirective(ParserImportDirective::DIRECTIVE_IMPORT),
-		enclosureBegin(enclosureBegin),
-		enclosureEnd(enclosureEnd)
-	{
-	}*/
-
 	ParserImportDirective::ParserImportDirective()
-		:ParserControlDirective(ParserImportDirective::DIRECTIVE_IMPORT)
+		: ParserControlDirective(ParserImportDirective::keywordImport)
 	{
 	}
 
@@ -33,21 +18,17 @@ namespace gscript
 		if (!controlResult.isOk())
 			return controlResult;
 
-		char enclosureEnd = ParserImportDirective::ENCLOSURE_END;
+		char enclosureEnd = ParserImportDirective::keycharEnclosureEnd;
 
-		//ParseResult beginResult = Util::Char::parse(StringIteratorRange(controlResult.result.end, itrange.end), this->enclosureBegin);
-		//if (beginResult.status != ParseResult::STATUS_T::S_OK)
-			//return beginResult;
-
-		ParseResult beginResult = ParserChar::parse(StringIteratorRange(controlResult.result.end, itrange.end), ParserImportDirective::ENCLOSURE_BEGIN);
+		ParseResult beginResult = ParserChar::parse(StringIteratorRange(controlResult.result.end, itrange.end), ParserImportDirective::keycharEnclosureBegin);
 		if (!beginResult.isOk())
 		{
-			beginResult = ParserChar::parse(StringIteratorRange(controlResult.result.end, itrange.end), ParserImportDirective::EXTENSION_ENCLOSURE_BEGIN);
+			beginResult = ParserChar::parse(StringIteratorRange(controlResult.result.end, itrange.end), ParserImportDirective::keycharExtensionEnclosureBegin);
 
 			if (!beginResult.isOk())
 				return beginResult;
 
-			enclosureEnd = ParserImportDirective::EXTENSION_ENCLOSURE_END;
+			enclosureEnd = ParserImportDirective::keycharExtensionEnclosureEnd;
 			this->type = IMPORT_TYPE_T::IT_EXTENSION;
 		}
 		else
@@ -58,7 +39,6 @@ namespace gscript
 		bool endGood = false;
 		for (; it != itrange.end; ++it)
 		{
-			//if (*it == this->enclosureEnd)
 			if (*it == enclosureEnd)
 			{
 				endGood = true;

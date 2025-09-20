@@ -10,8 +10,7 @@ namespace gscript
 	class EntityPath
 	{
 	public:
-		static const char *KW_MEMBER_ACCESSOR;
-		static const char *KW_SCOPE_ACCESSOR;
+		static constexpr char keycharScopeAccessor[] = "::";
 
 		class scope_iterator : public std::iterator<std::forward_iterator_tag, std::string>
 		{

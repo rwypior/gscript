@@ -4,7 +4,7 @@
 namespace gscript
 {
 	ParserConstructor::ParserConstructor(ParserClass &pClass)
-		:pClass(pClass)
+		: pClass(pClass)
 	{
 	}
 

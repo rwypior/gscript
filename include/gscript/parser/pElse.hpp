@@ -12,7 +12,7 @@ namespace gscript
 	class ParserElse : public ParserEntity
 	{
 	public:
-		const char *KW_ELSE = "else";
+		static constexpr char keywordElse[] = "else";
 
 		ParserBlock body;
 		ParserIf *pif = nullptr;

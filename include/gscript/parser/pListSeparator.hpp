@@ -9,9 +9,11 @@ namespace gscript
 	class ParserListSeparator : public ParserEntity
 	{
 	public:
-		const char KW_SEPARATOR = ',';
+		static constexpr char keycharDefaultSeparator = ',';
 
-		ParserListSeparator(const char separator = ',');
+		const char separatorChar = keycharDefaultSeparator;
+
+		ParserListSeparator(const char separator = keycharDefaultSeparator);
 
 		virtual ParseResult parse(StringIteratorRange itrange) override;
 	};

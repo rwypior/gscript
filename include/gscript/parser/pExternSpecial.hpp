@@ -12,13 +12,13 @@ namespace gscript
 	class ParserExternSpecial : public ParserSpecialDirective
 	{
 	public:
-		static const char *DIRECTIVE_EXTERN;
+		static constexpr char keywordExtern[] = "extern";
 
-		char terminator = 0;
+		const char terminator = ParserSpecialDirective::keycharControlParamTerminator;
 
 		std::string name;
 
-		ParserExternSpecial(char terminator = ParserSpecialDirective::C_CONTROL_PARAM_TERMINATOR);
+		ParserExternSpecial(char terminator = ParserSpecialDirective::keycharControlParamTerminator);
 
 		virtual ParseResult parse(StringIteratorRange itrange) override;
 	};

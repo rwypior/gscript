@@ -14,8 +14,6 @@ namespace gscript
 
 	namespace ParserWord
 	{
-		extern const std::string WORD_ANY;
-
 		bool parsePredStrict(StringIteratorRange::ITERATOR_T it, StringIteratorRange::ITERATOR_T end, const std::string& buffer, const std::string& word);
 		bool parsePredExact(StringIteratorRange::ITERATOR_T it, StringIteratorRange::ITERATOR_T end, const std::string& buffer, const std::string& word);
 

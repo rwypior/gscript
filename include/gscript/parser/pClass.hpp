@@ -14,7 +14,7 @@ namespace gscript
 	class ParserClass : public ParserEntity
 	{
 	public:
-		const char *KW_CLASS = "class";
+		static constexpr char keywordClass[] = "class";
 
 		std::vector<ParserMethod> methods;
 		std::vector<ParserFieldDeclaration> fields;

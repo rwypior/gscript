@@ -9,7 +9,7 @@ namespace gscript
 	class ParserEndStatement : public ParserEntity
 	{
 	public:
-		const char KW_ENDSTATEMENT = ';';
+		static constexpr char keycharEndStatement = ';';
 
 		virtual ParseResult parse(StringIteratorRange itrange) override;
 	};

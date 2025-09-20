@@ -137,7 +137,6 @@ namespace gscript
 			{
 				this->type = VALUE_TYPE_T::VT_DOUBLE;
 
-				//if (this->value.back() == 'f' || this->value.back() == 'F')
 				if (foundFloatMarker)
 					this->type = VALUE_TYPE_T::VT_FLOAT;
 			}

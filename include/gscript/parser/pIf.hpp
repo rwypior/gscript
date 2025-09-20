@@ -12,7 +12,7 @@ namespace gscript
 	class ParserIf : public ParserEntity
 	{
 	public:
-		const char *KW_IF = "if";
+		static constexpr char keywordIf[] = "if";
 
 		ParserIf();
 

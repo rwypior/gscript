@@ -9,8 +9,8 @@ namespace gscript
 	class ParserBlockComment : public ParserEntity
 	{
 	public:
-		const char *CHR_BLOCK_COMMENT_BEGIN = "/*";
-		const char *CHR_BLOCK_COMMENT_END = "*/";
+		static constexpr char keycharBlockCommentBegin[] = "/*";
+		static constexpr char keycharBlockCommentEnd[] = "*/";
 
 		virtual ParseResult parse(StringIteratorRange itrange) override;
 	};

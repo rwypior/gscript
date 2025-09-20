@@ -16,18 +16,20 @@ namespace gscript
 	class ParserForArglist : public ParserEntity
 	{
 	public:
-		char separator = 0;
-		char start = 0;
-		char end = 0;
+		static constexpr char keycharSeparator = ';';
+
+		char separator = keycharSeparator;
+		char start = ParserArglistStart::keycharArglistStart;
+		char end = ParserArglistEnd::keycharArglistEnd;
 
 		ParserVarDeclaration *varDecl = nullptr;
 		ParserStatement *condition = nullptr;
 		ParserStatement *progress = nullptr;
 
 		ParserForArglist(
-			const char separator = ';',
-			char start = ParserArglistStart::C_ARGLIST_START,
-			char end = ParserArglistEnd::C_ARGLIST_END
+			const char separator = keycharSeparator,
+			char start = ParserArglistStart::keycharArglistStart,
+			char end = ParserArglistEnd::keycharArglistEnd
 		);
 
 		virtual ParseResult parse(StringIteratorRange itrange) override;

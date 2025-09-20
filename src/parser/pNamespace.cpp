@@ -13,10 +13,6 @@
 
 namespace gscript
 {
-	const char *ParserNamespace::KW_NAMESPACE = "namespace";
-	const char ParserNamespace::KW_ENCLOSURE_BEGIN = '{';
-	const char ParserNamespace::KW_ENCLOSURE_END = '}';
-
 	ParserNamespace::ParserNamespace(NAMESPACE_TYPE_T type)
 		: type(type)
 	{
@@ -29,7 +25,7 @@ namespace gscript
 
 		if (this->type & NAMESPACE_TYPE_T::NT_NAMED)
 		{
-			ParseResult nsResult = ParserWord::parse(StringIteratorRange(endPosition, itrange.end), ParserNamespace::KW_NAMESPACE);
+			ParseResult nsResult = ParserWord::parse(StringIteratorRange(endPosition, itrange.end), ParserNamespace::keywordNamespace);
 
 			if (!nsResult.isOk())
 				return nsResult;
@@ -48,7 +44,7 @@ namespace gscript
 
 		if (this->type & NAMESPACE_TYPE_T::NT_ENCLOSED)
 		{
-			ParseResult enclosureResult = ParserChar::parse(StringIteratorRange(endPosition, itrange.end), ParserNamespace::KW_ENCLOSURE_BEGIN);
+			ParseResult enclosureResult = ParserChar::parse(StringIteratorRange(endPosition, itrange.end), ParserNamespace::keycharEnclosureBegin);
 
 			if (!enclosureResult.isOk())
 				return enclosureResult.as(ParseResult::Status::Fatal);
@@ -135,7 +131,7 @@ namespace gscript
 
 		if (this->type & NAMESPACE_TYPE_T::NT_ENCLOSED)
 		{
-			ParseResult enclosureResult = ParserChar::parse(StringIteratorRange(endPosition, itrange.end), ParserNamespace::KW_ENCLOSURE_END);
+			ParseResult enclosureResult = ParserChar::parse(StringIteratorRange(endPosition, itrange.end), ParserNamespace::keycharEnclosureEnd);
 
 			if (!enclosureResult.isOk())
 				return enclosureResult.as(ParseResult::Status::Fatal);

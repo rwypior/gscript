@@ -8,8 +8,6 @@
 #include <string>
 #include <cassert>
 
-#define OP_CONVERT(parserOperator) if (op->getChar() == parserOperator::KW_OPERATOR) return new parserOperator::SCRIPT_OPERATOR(scope);
-
 namespace gscript
 {
 	std::unordered_map<OPERATOR_TYPE_T, std::string> ScriptOperator::opmap = {

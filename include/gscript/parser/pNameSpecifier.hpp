@@ -12,8 +12,6 @@ namespace gscript
 	class ParserNameSpecifier : public ParserEntity
 	{
 	public:
-		const char CHR_MEMBER_ACCESSOR = '.';
-
 		EntityPath name;
 
 		ParserNameSpecifier(const std::string &name = "");

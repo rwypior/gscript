@@ -8,9 +8,6 @@
 
 namespace gscript
 {
-	const char ParserArrayAccessor::KW_ARRAY_ACCESSOR_BEGIN = '[';
-	const char ParserArrayAccessor::KW_ARRAY_ACCESSOR_END = ']';
-
 	ParserArrayAccessor::ParserArrayAccessor(IndexType indexType)
 		: indexType(indexType)
 		, statement(true, false, false)
@@ -27,7 +24,7 @@ namespace gscript
 		if (itrange.end - itrange.begin < 1)
 			return ParseResult(ParseResult::Status::Invalid, COMMENT_RESULT(itrange, commentLength), nullptr, { itrange, "Expected array accessor, got empty string" });
 
-		ParseResult beginResult = ParserChar::parse(StringIteratorRange(itrange.begin, itrange.end), ParserArrayAccessor::KW_ARRAY_ACCESSOR_BEGIN);
+		ParseResult beginResult = ParserChar::parse(StringIteratorRange(itrange.begin, itrange.end), ParserArrayAccessor::keycharArrayAccessorBegin);
 
 		if (!beginResult.isOk())
 			return beginResult;
@@ -63,7 +60,7 @@ namespace gscript
 				return statementResult.as(ParseResult::Status::Fatal);
 		}
 
-		ParseResult endResult = ParserChar::parse(StringIteratorRange(end, itrange.end), ParserArrayAccessor::KW_ARRAY_ACCESSOR_END);
+		ParseResult endResult = ParserChar::parse(StringIteratorRange(end, itrange.end), ParserArrayAccessor::keycharArrayAccessorEnd);
 
 		if (!endResult.isOk())
 			return endResult.as(ParseResult::Status::Fatal);

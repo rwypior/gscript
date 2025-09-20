@@ -10,8 +10,8 @@ namespace gscript
 	class ParserArrayInitializer : public ParserEntity
 	{
 	public:
-		static const char KW_ARRAY_INITIALIZER_BEGIN;
-		static const char KW_ARRAY_INITIALIZER_END;
+		static constexpr char keycharArrayInitializerBegin = '{';
+		static constexpr char keycharArrayInitializerEnd = '}';
 
 		ParserCallArglist arglist;
 

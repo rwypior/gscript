@@ -32,8 +32,8 @@ namespace gscript
 			const int maxCount = 0,
 			const int minCount = 0,
 			const char separator = ',',
-			char start = ParserArglistStart::C_ARGLIST_START,
-			char end = ParserArglistEnd::C_ARGLIST_END,
+			char start = ParserArglistStart::keycharArglistStart,
+			char end = ParserArglistEnd::keycharArglistEnd,
 			ENTITY_TYPE_T allowedEntities = ENTITY_TYPE_T::ET_STATEMENT
 		);
 		ParserCallArglist(const ParserCallArglist&) = delete;

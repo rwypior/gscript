@@ -21,8 +21,8 @@ namespace gscript
 		};
 
 	public:
-		static const char KW_ARRAY_ACCESSOR_BEGIN;
-		static const char KW_ARRAY_ACCESSOR_END;
+		static constexpr char keycharArrayAccessorBegin = '[';
+		static constexpr char keycharArrayAccessorEnd = ']';
 
 		ParserArrayAccessor(IndexType indexType);
 

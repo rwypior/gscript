@@ -10,7 +10,7 @@ namespace gscript
 	class ParserReference : public ParserEntity
 	{
 	public:
-		static const char KW_REFERENCE;
+		static constexpr char keycharReference = '&';
 
 		virtual ParseResult parse(StringIteratorRange itrange) override;
 	};

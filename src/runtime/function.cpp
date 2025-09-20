@@ -17,13 +17,6 @@
 
 namespace gscript
 {
-	/*SCRIPT_API ScriptFunction::ScriptFunction(const ScriptFunction& fnc)
-		: ScriptCallable(fnc.scope)
-		, ScriptScope(fnc.scope)
-		, ScriptExecutiveBlock(std::move(fnc.statements))
-	{
-	}*/
-
 	ScriptFunction::ScriptFunction(ScriptScopeBase &scope, const std::string &name, std::shared_ptr<ScriptType> returnType, const PARAMS_T &parameters, std::vector<std::shared_ptr<ScriptCallable>>&& statements)
 		: ScriptCallable(scope)
 		, ScriptScope(&scope)
@@ -184,30 +177,4 @@ namespace gscript
 	{
 		return this->name;
 	}
-
-	// PROTOTYPE
-
-	//ScriptFunctionPrototype::ScriptFunctionPrototype(ScriptFunction &target, const ParserFunction &pfunc)
-	//	:target(target),
-	//	pfunc(pfunc)
-	//{
-	//}
-
-	//void ScriptFunctionPrototype::build()
-	//{
-	//	this->target.setup(this->pfunc);
-	//}
-
-	// EXTERN
-
-	//ScriptExternFunctionConnector::ScriptExternFunctionConnector(const std::string &externName, ScriptScope &scope, const std::string &name, ScriptType *returnType, const PARAMS_T &parameters)
-	//	: ScriptFunction(scope, name, returnType, parameters)
-	//	, target(scope.getExternFunction(externName))
-	//{
-	//}
-
-	//ScriptValue *ScriptExternFunctionConnector::run(const CALLABLE_PARAMS_T &c)
-	//{
-	//	return this->target.run(c);
-	//}
 }

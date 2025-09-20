@@ -6,28 +6,6 @@
 
 namespace gscript
 {
-	const std::string ParserOperatorMemberAccessor::KW_OPERATOR = ".";
-	const std::string ParserOperatorNegate::KW_OPERATOR = "!";
-	const std::string ParserOperatorAssign::KW_OPERATOR = "=";
-	const std::string ParserOperatorEquals::KW_OPERATOR = "==";
-	const std::string ParserOperatorGreaterThan::KW_OPERATOR = ">";
-	const std::string ParserOperatorLessThan::KW_OPERATOR = "<";
-	const std::string ParserOperatorGreaterThanOrEqual::KW_OPERATOR = ">=";
-	const std::string ParserOperatorLessThanOrEqual::KW_OPERATOR = "<=";
-	const std::string ParserOperatorAdd::KW_OPERATOR = "+";
-	const std::string ParserOperatorAddTo::KW_OPERATOR = "+=";
-	const std::string ParserOperatorSubtract::KW_OPERATOR = "-";
-	const std::string ParserOperatorSubtractFrom::KW_OPERATOR = "-=";
-	const std::string ParserOperatorMultiply::KW_OPERATOR = "*";
-	const std::string ParserOperatorMultiplyBy::KW_OPERATOR = "*=";
-	const std::string ParserOperatorDivide::KW_OPERATOR = "/";
-	const std::string ParserOperatorDivideBy::KW_OPERATOR = "/=";
-	const std::string ParserOperatorIncrement::KW_OPERATOR = "+=";
-	const std::string ParserOperatorDecrement::KW_OPERATOR = "--";
-	const std::string ParserOperatorConditionalA::KW_OPERATOR = "?";
-	const std::string ParserOperatorConditionalB::KW_OPERATOR = ":";
-	const std::string ParserOperatorConditionalNull::KW_OPERATOR = "?:";
-
 #define OP_PARSECHAIN_BLOCK(P_OP) { \
 	auto op = std::make_shared<P_OP>();\
 	ParseResult res = ParserWord::parseExact(itrange, op->opchar, op); \

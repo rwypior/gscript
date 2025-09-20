@@ -9,9 +9,9 @@ namespace gscript
 	class ParserArglistEnd : public ParserArglistStart
 	{
 	public:
-		static const char C_ARGLIST_END;
+		static constexpr char keycharArglistEnd = ')';
 
-		ParserArglistEnd(char c = ParserArglistEnd::C_ARGLIST_END)
+		ParserArglistEnd(char c = ParserArglistEnd::keycharArglistEnd)
 			: ParserArglistStart(c)
 		{
 		}

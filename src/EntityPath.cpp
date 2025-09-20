@@ -2,11 +2,8 @@
 
 namespace gscript
 {
-	const char *EntityPath::KW_MEMBER_ACCESSOR = ".";
-	const char *EntityPath::KW_SCOPE_ACCESSOR = "::";
-
 	EntityPath::EntityPath(const std::string &path)
-		:path(path)
+		: path(path)
 	{
 	}
 
@@ -27,7 +24,7 @@ namespace gscript
 
 	EntityPath::scope_iterator EntityPath::createScopeIterator() const
 	{
-		return scope_iterator(EntityPath::KW_SCOPE_ACCESSOR, this->path);
+		return scope_iterator(EntityPath::keycharScopeAccessor, this->path);
 	}
 
 	EntityPath::operator std::string() const
@@ -37,7 +34,7 @@ namespace gscript
 
 	bool EntityPath::isScoped() const
 	{
-		return this->path.find_first_of(EntityPath::KW_SCOPE_ACCESSOR) != std::string::npos;
+		return this->path.find_first_of(EntityPath::keycharScopeAccessor) != std::string::npos;
 	}
 
 	const std::string &EntityPath::getString() const

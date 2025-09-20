@@ -9,7 +9,7 @@ namespace gscript
 {
 	ParseResult ParserElse::parse(StringIteratorRange itrange)
 	{
-		ParseResult parentResult = ParserWord::parse(itrange, ParserElse::KW_ELSE);
+		ParseResult parentResult = ParserWord::parse(itrange, ParserElse::keywordElse);
 		if (parentResult.status != ParseResult::Status::Ok)
 			return parentResult;
 

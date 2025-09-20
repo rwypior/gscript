@@ -12,7 +12,7 @@ namespace gscript
 	class ParserWhile : public ParserEntity
 	{
 	public:
-		static const char *KW_WHILE;
+		static constexpr char keywordWhile[] = "while";
 
 		ParserWhile();
 		ParserWhile(const ParserWhile&) = delete;

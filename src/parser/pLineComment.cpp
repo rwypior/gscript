@@ -5,7 +5,7 @@ namespace gscript
 {
 	ParseResult ParserLineComment::parse(StringIteratorRange itrange)
 	{
-		ParseResult res = ParserWord::parseUntil(itrange, ParserLineComment::CHR_LINE_COMMENT, nullptr, " \t\n");
+		ParseResult res = ParserWord::parseUntil(itrange, ParserLineComment::keywordLineComment, nullptr, " \t\n");
 
 		if (res.isOk())
 		{

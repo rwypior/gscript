@@ -103,11 +103,6 @@ namespace gscript
 		return this->status == Status::Fatal;
 	}
 
-	/*bool ParseResult::isComment() const
-	{
-		return this->status == STATUS_T::S_COMMENT;
-	}*/
-
 	unsigned int ParseResult::getLength() const
 	{
 		return this->result.end - this->result.begin;

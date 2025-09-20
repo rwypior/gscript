@@ -8,8 +8,10 @@ namespace gscript
 	class ParserBlockEnd : public ParserBlockStart
 	{
 	public:
+		static constexpr char keycharBlockEnd = '}';
+
 		ParserBlockEnd()
-			: ParserBlockStart('}')
+			: ParserBlockStart(keycharBlockEnd)
 		{
 		}
 	};

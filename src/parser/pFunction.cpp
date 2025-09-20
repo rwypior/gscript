@@ -71,13 +71,10 @@ namespace gscript
 			if (abstractResult.isOk())
 			{
 				if (ParserMethod *method = dynamic_cast<ParserMethod*>(this))
-				{
 					method->accessSpecifier.modifier |= MODIFIER_T::M_ABSTRACT;
-				}
 				else
 					throw CompileException("Only methods may be declared abstract");
 
-				//this->isabstract = true;
 				return ParseResult(ParseResult::Status::Ok, StringIteratorRange(typeBegin, abstractResult.result.end));
 			}
 

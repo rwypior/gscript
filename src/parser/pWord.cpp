@@ -6,8 +6,6 @@
 
 namespace gscript
 {
-	extern const std::string ParserWord::WORD_ANY = "";
-
 	bool ParserWord::parsePredStrict(StringIteratorRange::ITERATOR_T it, StringIteratorRange::ITERATOR_T end, const std::string& buffer, const std::string&)
 	{
 		if (it + 1 == end)
@@ -88,9 +86,6 @@ namespace gscript
 			return ParseResult(ParseResult::Status::Invalid, { itrange.shifted(newlines), (std::stringstream() << "Expected \"" << word << "\", got \"" + getCharsUntilEol(it, itrange.end) + "\"").str() });
 
 		std::string buffer(length, '0');
-
-		// xxx
-		// dupa sraka
 
 		int i = 0;
 		for (; it != itrange.end; ++it)

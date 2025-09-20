@@ -6,8 +6,6 @@
 
 namespace gscript
 {
-	const char *ParserWhile::KW_WHILE = "while";
-
 	ParserWhile::ParserWhile()
 		:arglist(1, 1)
 	{
@@ -15,7 +13,7 @@ namespace gscript
 
 	ParseResult ParserWhile::parse(StringIteratorRange itrange)
 	{
-		ParseResult parentResult = ParserWord::parse(itrange, ParserWhile::KW_WHILE);
+		ParseResult parentResult = ParserWord::parse(itrange, ParserWhile::keywordWhile);
 		if (!parentResult.isOk())
 			return parentResult;
 

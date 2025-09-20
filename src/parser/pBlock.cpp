@@ -20,12 +20,10 @@ namespace gscript
 
 		ParseResult bodyres = this->body.parse(StringIteratorRange(begin.result.end, itrange.end));
 		if (!bodyres.isOk())
-			//return ParseResult(ParseResult::STATUS_T::S_FATAL);
 			return bodyres;
 
 		ParseResult end = (ParserBlockEnd()).parse(StringIteratorRange(bodyres.result.end, itrange.end));
 		if (!end.isOk())
-			//return ParseResult(ParseResult::STATUS_T::S_FATAL);
 			return end;
 
 		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(begin.result.begin, end.result.end));

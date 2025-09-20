@@ -37,7 +37,7 @@ namespace gscript
 		if (it != typemap.end())
 			return TypeDescriptor(it->second);
 
-		size_t firstBracket = name.find_last_of(ParserArrayAccessor::KW_ARRAY_ACCESSOR_BEGIN);
+		size_t firstBracket = name.find_last_of(ParserArrayAccessor::keycharArrayAccessorBegin);
 		if (firstBracket != std::string::npos)
 		{
 			std::string subName = name.substr(0, firstBracket);
@@ -45,7 +45,7 @@ namespace gscript
 			return TypeDescriptor(typemap.at("array"), translateType(subName));
 		}
 
-		size_t firstRef = name.find_last_of(ParserReference::KW_REFERENCE);
+		size_t firstRef = name.find_last_of(ParserReference::keycharReference);
 		if (firstRef != std::string::npos)
 		{
 			std::string subName = name.substr(0, firstRef);

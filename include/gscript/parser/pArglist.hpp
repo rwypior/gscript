@@ -15,11 +15,9 @@ namespace gscript
 	class ParserArglist : public ParserEntity
 	{
 	public:
-		typedef std::vector<ParserVarDeclaration> ARGLIST_PARAMS_T;
+		std::vector<ParserVarDeclaration> parameters;
 
-		ARGLIST_PARAMS_T parameters;
-
-		ParserArglist(char start = ParserArglistStart::C_ARGLIST_START, char end = ParserArglistEnd::C_ARGLIST_END);
+		ParserArglist(char start = ParserArglistStart::keycharArglistStart, char end = ParserArglistEnd::keycharArglistEnd);
 		virtual ParseResult parse(StringIteratorRange itrange) override;
 
 	protected:

@@ -16,9 +16,9 @@ namespace gscript
 	class ParserNamespace : public ParserEntity
 	{
 	public:
-		static const char *KW_NAMESPACE;
-		static const char KW_ENCLOSURE_BEGIN;
-		static const char KW_ENCLOSURE_END;
+		static constexpr char keywordNamespace[] = "namespace";
+		static constexpr char keycharEnclosureBegin = '{';
+		static constexpr char keycharEnclosureEnd = '}';
 
 		typedef std::list<ParserNamespace> NAMESPACE_CONTAINER_T;
 		typedef std::list<ParserClass> CLASS_CONTAINER_T;

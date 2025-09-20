@@ -11,7 +11,7 @@ namespace gscript
 	class ParserFor : public ParserEntity
 	{
 	public:
-		static const char *KW_FOR;
+		static constexpr char keywordFor[] = "for";
 
 		ParserFor();
 

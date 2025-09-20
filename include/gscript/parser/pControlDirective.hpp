@@ -11,7 +11,7 @@ namespace gscript
 	class ParserControlDirective : public ParserEntity
 	{
 	public:
-		static const char C_CONTROL;
+		static constexpr char keycharControl = '#';
 		std::string directive;
 
 		ParserControlDirective(const std::string &directive);

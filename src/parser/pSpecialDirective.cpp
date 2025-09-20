@@ -4,19 +4,15 @@
 
 namespace gscript
 {
-	const char ParserSpecialDirective::C_CONTROL = '@';
-	const char ParserSpecialDirective::C_CONTROL_PARAM = ':';
-	const char ParserSpecialDirective::C_CONTROL_PARAM_TERMINATOR = '\n';
-
 	ParserSpecialDirective::ParserSpecialDirective(const std::string &directive, bool parameterized)
-		:directive(directive),
-		parameterized(parameterized)
+		: directive(directive)
+		, parameterized(parameterized)
 	{
 	}
 
 	ParseResult ParserSpecialDirective::parse(StringIteratorRange itrange)
 	{
-		ParseResult parentResult = ParserChar::parse(itrange, ParserSpecialDirective::C_CONTROL);
+		ParseResult parentResult = ParserChar::parse(itrange, ParserSpecialDirective::keycharControl);
 		if (!parentResult.isOk())
 			return parentResult;
 
@@ -26,7 +22,7 @@ namespace gscript
 		{
 			if (this->parameterized)
 			{
-				ParseResult paramResult = ParserChar::parse(StringIteratorRange(directiveResult.result.end, itrange.end), ParserSpecialDirective::C_CONTROL_PARAM);
+				ParseResult paramResult = ParserChar::parse(StringIteratorRange(directiveResult.result.end, itrange.end), ParserSpecialDirective::keycharControlParam);
 
 				if (paramResult.isOk())
 					return ParseResult(ParseResult::Status::Ok, StringIteratorRange(parentResult.result.begin, paramResult.result.end));

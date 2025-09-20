@@ -5,8 +5,9 @@
 namespace gscript
 {
 	ParserNameSpecifier::ParserNameSpecifier(const std::string &name)
-		:name(name)
-	{ }
+		: name(name)
+	{
+	}
 
 	ParseResult ParserNameSpecifier::parse(StringIteratorRange itrange)
 	{
@@ -38,7 +39,6 @@ namespace gscript
 		{
 			char chr = *it;
 
-			//if (std::isalnum(chr) || chr == ':')
 			if (ParserNameSpecifier::validateChar(it, itrangeOrig))
 				this->name.push_back(*it);
 			else
@@ -55,8 +55,6 @@ namespace gscript
 	{
 		if (std::isalnum(*it) || *it == '_')
 			return true;
-
-		// asdas:dasd:
 
 		if (*it == ':')
 		{

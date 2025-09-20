@@ -2,15 +2,11 @@
 #define _h_gscript_parser_operator
 
 #include "pEntity.hpp"
-//#include "operator.hpp"
 #include "parser/pWord.hpp"
 #include "defs.hpp"
 
 #include <string>
 #include <cassert>
-
-//#define P_OP_CONVERT(P_OP) ScriptOperator *createOperator(ScriptScope &scope) const override { return new P_OP::SCRIPT_OPERATOR(scope, this->getLinkage()); }
-//#define P_OP_PARSE(P_OP) ParseResult parse(StringIteratorRange itrange) { return Util::Word::parse(itrange, this->opchar, new P_OP(*this), true); }
 
 namespace gscript
 {
@@ -47,10 +43,10 @@ namespace gscript
 	class ParserOperatorMemberAccessor : public ParserOperator
 	{
 	public:
-		static const std::string KW_OPERATOR;
+		static constexpr char keywordOperator[] = ".";
 
 		ParserOperatorMemberAccessor()
-			: ParserOperator(".")
+			: ParserOperator(keywordOperator)
 		{
 		}
 
@@ -68,10 +64,10 @@ namespace gscript
 	class ParserOperatorNegate : public ParserOperator
 	{
 	public:
-		static const std::string KW_OPERATOR;
+		static constexpr char keywordOperator[] = "!";
 
 		ParserOperatorNegate()
-			: ParserOperator("!")
+			: ParserOperator(keywordOperator)
 		{
 		}
 
@@ -89,10 +85,10 @@ namespace gscript
 	class ParserOperatorAssign : public ParserOperator
 	{
 	public:
-		static const std::string KW_OPERATOR;
+		static constexpr char keywordOperator[] = "=";
 
 		ParserOperatorAssign()
-			: ParserOperator("=")
+			: ParserOperator(keywordOperator)
 		{
 		}
 
@@ -110,10 +106,10 @@ namespace gscript
 	class ParserOperatorEquals : public ParserOperator
 	{
 	public:
-		static const std::string KW_OPERATOR;
+		static constexpr char keywordOperator[] = "==";
 
 		ParserOperatorEquals()
-			: ParserOperator("==")
+			: ParserOperator(keywordOperator)
 		{
 		}
 
@@ -131,10 +127,10 @@ namespace gscript
 	class ParserOperatorGreaterThan : public ParserOperator
 	{
 	public:
-		static const std::string KW_OPERATOR;
+		static constexpr char keywordOperator[] = ">";
 
 		ParserOperatorGreaterThan()
-			: ParserOperator(">")
+			: ParserOperator(keywordOperator)
 		{
 		}
 
@@ -152,10 +148,10 @@ namespace gscript
 	class ParserOperatorLessThan : public ParserOperator
 	{
 	public:
-		static const std::string KW_OPERATOR;
+		static constexpr char keywordOperator[] = "<";
 
 		ParserOperatorLessThan()
-			: ParserOperator("<")
+			: ParserOperator(keywordOperator)
 		{
 		}
 
@@ -173,10 +169,10 @@ namespace gscript
 	class ParserOperatorGreaterThanOrEqual : public ParserOperator
 	{
 	public:
-		static const std::string KW_OPERATOR;
+		static constexpr char keywordOperator[] = ">=";
 
 		ParserOperatorGreaterThanOrEqual()
-			: ParserOperator(">=")
+			: ParserOperator(keywordOperator)
 		{
 		}
 
@@ -194,10 +190,10 @@ namespace gscript
 	class ParserOperatorLessThanOrEqual : public ParserOperator
 	{
 	public:
-		static const std::string KW_OPERATOR;
+		static constexpr char keywordOperator[] = "<=";
 
 		ParserOperatorLessThanOrEqual()
-			: ParserOperator("<=")
+			: ParserOperator(keywordOperator)
 		{
 		}
 
@@ -215,10 +211,10 @@ namespace gscript
 	class ParserOperatorAdd : public ParserOperator
 	{
 	public:
-		static const std::string KW_OPERATOR;
+		static constexpr char keywordOperator[] = "+";
 
 		ParserOperatorAdd()
-			: ParserOperator("+")
+			: ParserOperator(keywordOperator)
 		{
 		}
 
@@ -236,10 +232,10 @@ namespace gscript
 	class ParserOperatorAddTo : public ParserOperator
 	{
 	public:
-		static const std::string KW_OPERATOR;
+		static constexpr char keywordOperator[] = "+=";
 
 		ParserOperatorAddTo()
-			: ParserOperator("+=")
+			: ParserOperator(keywordOperator)
 		{
 		}
 
@@ -257,10 +253,10 @@ namespace gscript
 	class ParserOperatorSubtract : public ParserOperator
 	{
 	public:
-		static const std::string KW_OPERATOR;
+		static constexpr char keywordOperator[] = "-";
 
 		ParserOperatorSubtract()
-			: ParserOperator("-")
+			: ParserOperator(keywordOperator)
 		{
 		}
 
@@ -278,10 +274,10 @@ namespace gscript
 	class ParserOperatorSubtractFrom : public ParserOperator
 	{
 	public:
-		static const std::string KW_OPERATOR;
+		static constexpr char keywordOperator[] = "-=";
 
 		ParserOperatorSubtractFrom()
-			: ParserOperator("-=")
+			: ParserOperator(keywordOperator)
 		{
 		}
 
@@ -299,10 +295,10 @@ namespace gscript
 	class ParserOperatorMultiply : public ParserOperator
 	{
 	public:
-		static const std::string KW_OPERATOR;
+		static constexpr char keywordOperator[] = "*";
 
 		ParserOperatorMultiply()
-			: ParserOperator("*")
+			: ParserOperator(keywordOperator)
 		{
 		}
 
@@ -320,10 +316,10 @@ namespace gscript
 	class ParserOperatorMultiplyBy : public ParserOperator
 	{
 	public:
-		static const std::string KW_OPERATOR;
+		static constexpr char keywordOperator[] = "*=";
 
 		ParserOperatorMultiplyBy()
-			: ParserOperator("*=")
+			: ParserOperator(keywordOperator)
 		{
 		}
 
@@ -341,10 +337,10 @@ namespace gscript
 	class ParserOperatorDivide : public ParserOperator
 	{
 	public:
-		static const std::string KW_OPERATOR;
+		static constexpr char keywordOperator[] = "/";
 
 		ParserOperatorDivide()
-			: ParserOperator("/")
+			: ParserOperator(keywordOperator)
 		{
 		}
 
@@ -362,10 +358,10 @@ namespace gscript
 	class ParserOperatorDivideBy : public ParserOperator
 	{
 	public:
-		static const std::string KW_OPERATOR;
+		static constexpr char keywordOperator[] = "/=";
 
 		ParserOperatorDivideBy()
-			: ParserOperator("/=")
+			: ParserOperator(keywordOperator)
 		{
 		}
 
@@ -383,15 +379,15 @@ namespace gscript
 	class ParserOperatorIncrement : public ParserOperator
 	{
 	public:
-		static const std::string KW_OPERATOR;
+		static constexpr char keywordOperator[] = "++";
 
 		ParserOperatorIncrement()
-			: ParserOperator("++")
+			: ParserOperator(keywordOperator)
 		{
 		}
 
 		ParserOperatorIncrement(OPERATOR_POSITION_T position)
-			: ParserOperator("++", position)
+			: ParserOperator(keywordOperator, position)
 		{
 		}
 
@@ -414,10 +410,10 @@ namespace gscript
 	class ParserOperatorDecrement : public ParserOperator
 	{
 	public:
-		static const std::string KW_OPERATOR;
+		static constexpr char keywordOperator[] = "--";
 
 		ParserOperatorDecrement(OPERATOR_POSITION_T position)
-			: ParserOperator("--", position)
+			: ParserOperator(keywordOperator, position)
 		{
 		}
 
@@ -440,10 +436,10 @@ namespace gscript
 	class ParserOperatorConditionalNull : public ParserOperator
 	{
 	public:
-		static const std::string KW_OPERATOR;
+		static constexpr char keywordOperator[] = "?:";
 
 		ParserOperatorConditionalNull()
-			: ParserOperator("?:")
+			: ParserOperator(keywordOperator)
 		{
 		}
 
@@ -461,10 +457,10 @@ namespace gscript
 	class ParserOperatorConditionalA : public ParserOperator
 	{
 	public:
-		static const std::string KW_OPERATOR;
+		static constexpr char keywordOperator[] = "?";
 
 		ParserOperatorConditionalA()
-			: ParserOperator("?")
+			: ParserOperator(keywordOperator)
 		{
 		}
 
@@ -482,10 +478,10 @@ namespace gscript
 	class ParserOperatorConditionalB : public ParserOperator
 	{
 	public:
-		static const std::string KW_OPERATOR;
+		static constexpr char keywordOperator[] = ":";
 
 		ParserOperatorConditionalB()
-			: ParserOperator(":")
+			: ParserOperator(keywordOperator)
 		{
 		}
 

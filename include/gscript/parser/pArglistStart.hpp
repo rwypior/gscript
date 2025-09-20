@@ -9,14 +9,14 @@ namespace gscript
 	class ParserArglistStart : public ParserEntity
 	{
 	public:
-		static const char C_ARGLIST_START;
+		static constexpr char keycharArglistStart = '(';
 
-		ParserArglistStart(char ch = ParserArglistStart::C_ARGLIST_START)
-			: KW_BLOCKSTART(ch)
+		const char blockStart = keycharArglistStart;
+
+		ParserArglistStart(char ch = ParserArglistStart::keycharArglistStart)
+			: blockStart(ch)
 		{
 		}
-
-		const char KW_BLOCKSTART = 0;
 
 		virtual ParseResult parse(StringIteratorRange itrange) override;
 	};

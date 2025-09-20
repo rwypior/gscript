@@ -13,7 +13,7 @@ namespace gscript
 {
 	ParseResult ParserClass::parse(StringIteratorRange itrange)
 	{
-		ParseResult parentResult = ParserWord::parse(itrange, ParserClass::KW_CLASS);
+		ParseResult parentResult = ParserWord::parse(itrange, ParserClass::keywordClass);
 		if (parentResult.status != ParseResult::Status::Ok)
 			return parentResult;
 
@@ -34,12 +34,10 @@ namespace gscript
 
 		if (!blockBegin.isOk())
 			return blockBegin;
-			//return ParseResult(ParseResult::STATUS_T::S_FATAL, StringIteratorRange());
 
 		bool anyMatched = false;
 		auto begin = blockBegin.result.end;
 
-		//size_t line = blockBegin.result.getLine();
 		size_t newlines = skipWhitespaces(begin, itrange.end);
 		size_t line = blockBegin.result.getLine() + newlines;
 

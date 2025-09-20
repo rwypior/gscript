@@ -200,10 +200,10 @@ namespace gscript
 			template<typename T_LEFT>
 			std::unique_ptr<ScriptValue> PostDecrement(ScriptCallable *left, ScriptCallable*)
 			{
-				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() - 1;
+				auto data = left->run()->data();
+				auto val = static_cast<T_LEFT*>(data)->getValue() - 1;
 				auto newVal = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
-				//auto res = std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue());
-				auto res = left->run()->data()->clone(); // TODO - make it so that only one run() is performed
+				auto res = data->clone();
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
 				vr->get()->setValue(std::move(newVal));
 				return res;
@@ -222,10 +222,10 @@ namespace gscript
 			template<typename T_LEFT>
 			std::unique_ptr<ScriptValue> PostIncrement(ScriptCallable *left, ScriptCallable*)
 			{
-				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() + 1;
+				auto data = left->run()->data();
+				auto val = static_cast<T_LEFT*>(data)->getValue() + 1;
 				auto newVal = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
-				//auto res = std::make_unique<T_RESULT>(static_cast<T_LEFT*>(left->run()->data())->getValue());
-				auto res = left->run()->data()->clone(); // TODO - make it so that only one run() is performed
+				auto res = data->clone();
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
 				vr->get()->setValue(std::move(newVal));
 				return res;

@@ -19,13 +19,13 @@ namespace gscript
 			IT_EXTENSION = 2
 		};
 
-		static const char *DIRECTIVE_IMPORT;
+		static constexpr char keywordImport[] = "import";
 
-		static const char ENCLOSURE_BEGIN;
-		static const char ENCLOSURE_END;
+		static constexpr char keycharEnclosureBegin = '"';
+		static constexpr char keycharEnclosureEnd = '"';
 
-		static const char EXTENSION_ENCLOSURE_BEGIN;
-		static const char EXTENSION_ENCLOSURE_END;
+		static constexpr char keycharExtensionEnclosureBegin = '<';
+		static constexpr char keycharExtensionEnclosureEnd = '>';
 
 		//char enclosureBegin;
 		//char enclosureEnd;

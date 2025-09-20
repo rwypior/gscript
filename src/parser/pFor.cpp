@@ -6,14 +6,12 @@
 
 namespace gscript
 {
-	const char *ParserFor::KW_FOR = "for";
-
 	ParserFor::ParserFor()
 	{ }
 
 	ParseResult ParserFor::parse(StringIteratorRange itrange)
 	{
-		ParseResult parentResult = ParserWord::parse(itrange, ParserFor::KW_FOR);
+		ParseResult parentResult = ParserWord::parse(itrange, ParserFor::keywordFor);
 		if (parentResult.status != ParseResult::Status::Ok)
 			return parentResult;
 

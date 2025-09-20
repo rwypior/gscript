@@ -4,11 +4,8 @@
 
 namespace gscript
 {
-	const char ParserArrayInitializer::KW_ARRAY_INITIALIZER_BEGIN = '{';
-	const char ParserArrayInitializer::KW_ARRAY_INITIALIZER_END = '}';
-
 	ParserArrayInitializer::ParserArrayInitializer()
-		: arglist(0, 0, ',', KW_ARRAY_INITIALIZER_BEGIN, KW_ARRAY_INITIALIZER_END)
+		: arglist(0, 0, ',', keycharArrayInitializerBegin, keycharArrayInitializerEnd)
 	{
 	}
 

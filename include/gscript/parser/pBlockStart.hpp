@@ -9,10 +9,12 @@ namespace gscript
 	class ParserBlockStart : public ParserEntity
 	{
 	public:
-		const char KW_BLOCKSTART = '{';
+		static constexpr char keycharBlockStart = '{';
 
-		ParserBlockStart(char ch = '{')
-			: KW_BLOCKSTART(ch)
+		const char blockStart = keycharBlockStart;
+
+		ParserBlockStart(char ch = keycharBlockStart)
+			: blockStart(ch)
 		{
 		}
 

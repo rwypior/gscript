@@ -5,6 +5,6 @@ namespace gscript
 {
 	ParseResult ParserEndStatement::parse(StringIteratorRange itrange)
 	{
-		return ParserChar::parse(itrange, this->KW_ENDSTATEMENT);
+		return ParserChar::parse(itrange, this->keycharEndStatement);
 	}
 }

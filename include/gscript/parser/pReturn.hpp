@@ -12,7 +12,7 @@ namespace gscript
 	class ParserReturn : public ParserEntity
 	{
 	public:
-		const std::string KW_RETURN = "return";
+		static constexpr char keywordReturn[] = "return";
 
 		ParserStatement value;
 

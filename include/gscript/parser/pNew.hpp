@@ -12,7 +12,7 @@ namespace gscript
 	class ParserNew : public ParserFuncCall
 	{
 	public:
-		const char *KW_NEW = "new";
+		static constexpr char keywordNew[] = "new";
 
 		std::string constructorName;
 

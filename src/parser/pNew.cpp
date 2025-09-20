@@ -7,7 +7,7 @@ namespace gscript
 {
 	ParseResult ParserNew::parse(StringIteratorRange itrange)
 	{
-		ParseResult rnew = ParserWord::parse(itrange, ParserNew::KW_NEW);
+		ParseResult rnew = ParserWord::parse(itrange, ParserNew::keywordNew);
 		if (!rnew.isOk())
 			return rnew;
 

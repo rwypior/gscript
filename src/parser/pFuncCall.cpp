@@ -15,7 +15,6 @@ namespace gscript
 		begin = name.result.begin;
 		auto nameEnd = name.result.end;
 
-		//this->name = name.getWord();
 		this->name = nameSpecifier.name;
 
 		ParseResult arglist = this->arglist.parse(StringIteratorRange(nameEnd, itrange.end));

@@ -9,7 +9,7 @@ namespace gscript
 	class ParserInherit : public ParserEntity
 	{
 	public:
-		const char KW_INHERIT = ':';
+		static constexpr char keycharInherit = ':';
 
 		virtual ParseResult parse(StringIteratorRange itrange) override;
 	};

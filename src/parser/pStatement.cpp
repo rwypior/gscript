@@ -63,6 +63,7 @@ namespace gscript
 		{
 			anyOk = false;
 
+			// TODO - implement this
 			/*ParserConditionalOperator condstatement;
 			ParseResult condres = condstatement.parse(StringIteratorRange(end, itrange.end));
 			if (condres.isOk())

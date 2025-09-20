@@ -11,9 +11,9 @@ namespace gscript
 	class ParserSpecialDirective : public ParserEntity
 	{
 	public:
-		static const char C_CONTROL;
-		static const char C_CONTROL_PARAM;
-		static const char C_CONTROL_PARAM_TERMINATOR;
+		static constexpr char keycharControl = '@';
+		static constexpr char keycharControlParam = ':';
+		static constexpr char keycharControlParamTerminator = '\n';
 
 		std::string directive;
 		bool parameterized = false;

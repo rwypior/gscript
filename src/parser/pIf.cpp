@@ -7,13 +7,13 @@
 namespace gscript
 {
 	ParserIf::ParserIf()
-		:arglist(1, 1)
+		: arglist(1, 1)
 	{
 	}
 
 	ParseResult ParserIf::parse(StringIteratorRange itrange)
 	{
-		ParseResult parentResult = ParserWord::parse(itrange, ParserIf::KW_IF);
+		ParseResult parentResult = ParserWord::parse(itrange, ParserIf::keywordIf);
 		if (parentResult.status != ParseResult::Status::Ok)
 			return parentResult;
 

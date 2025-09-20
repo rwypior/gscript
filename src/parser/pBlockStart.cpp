@@ -5,6 +5,6 @@ namespace gscript
 {
 	ParseResult ParserBlockStart::parse(StringIteratorRange itrange)
 	{
-		return ParserChar::parse(itrange, this->KW_BLOCKSTART);
+		return ParserChar::parse(itrange, this->blockStart);
 	}
 }

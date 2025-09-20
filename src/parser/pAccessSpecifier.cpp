@@ -5,16 +5,6 @@
 
 namespace gscript
 {
-	const char *ParserAccessSpecifier::KW_M_AS_PUBLIC = "public";
-	const char *ParserAccessSpecifier::KW_M_AS_PRIVATE = "private";
-	const char *ParserAccessSpecifier::KW_M_AS_PROTECTED = "protected";
-
-	const char *ParserAccessSpecifier::KW_M_CONST = "const";
-
-	const char *ParserAccessSpecifier::KW_M_STATIC = "static";
-
-	const char *ParserAccessSpecifier::KW_M_VIRTUAL = "virtual";
-
 	ParserAccessSpecifier::ParserAccessSpecifier(MODIFIER_T defaultModifier)
 		: modifier(defaultModifier)
 	{
@@ -34,7 +24,7 @@ namespace gscript
 		{
 			anyGood = false;
 
-			ParseResult rpublic = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::KW_M_AS_PUBLIC);
+			ParseResult rpublic = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::keywordPublic);
 			if (rpublic.isOk())
 			{
 				this->modifier |= MODIFIER_T::M_ACCESS_PUBLIC;
@@ -42,7 +32,7 @@ namespace gscript
 				anyGood = true;
 			}
 
-			ParseResult rprotected = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::KW_M_AS_PROTECTED);
+			ParseResult rprotected = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::keywordProtected);
 			if (rprotected.isOk())
 			{
 				this->modifier |= MODIFIER_T::M_ACCESS_PROTECTED;
@@ -50,7 +40,7 @@ namespace gscript
 				anyGood = true;
 			}
 
-			ParseResult rprivate = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::KW_M_AS_PRIVATE);
+			ParseResult rprivate = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::keywordPrivate);
 			if (rprivate.isOk())
 			{
 				this->modifier |= MODIFIER_T::M_ACCESS_PRIVATE;
@@ -58,7 +48,7 @@ namespace gscript
 				anyGood = true;
 			}
 
-			ParseResult rconst = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::KW_M_CONST);
+			ParseResult rconst = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::keywordConst);
 			if (rconst.isOk())
 			{
 				this->modifier |= MODIFIER_T::M_CONST;
@@ -66,7 +56,7 @@ namespace gscript
 				anyGood = true;
 			}
 
-			ParseResult rstatic = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::KW_M_STATIC);
+			ParseResult rstatic = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::keywordStatic);
 			if (rstatic.isOk())
 			{
 				this->modifier |= MODIFIER_T::M_STATIC;
@@ -74,7 +64,7 @@ namespace gscript
 				anyGood = true;
 			}
 
-			ParseResult rvirtual = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::KW_M_VIRTUAL);
+			ParseResult rvirtual = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::keywordVirtual);
 			if (rvirtual.isOk())
 			{
 				this->modifier |= MODIFIER_T::M_VIRTUAL;

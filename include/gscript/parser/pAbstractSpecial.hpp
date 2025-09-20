@@ -10,7 +10,7 @@ namespace gscript
 	class ParserAbstractSpecial : public ParserSpecialDirective
 	{
 	public:
-		static const char *DIRECTIVE_ABSTRACT;
+		static constexpr char keywordAbstract[] = "abstract";
 
 		ParserAbstractSpecial();
 

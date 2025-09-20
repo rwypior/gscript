@@ -55,7 +55,6 @@ namespace gscript
 
 		bool isOk() const;
 		bool isFatal() const;
-		//bool isComment() const;
 		unsigned int getLength() const;
 	};
 }

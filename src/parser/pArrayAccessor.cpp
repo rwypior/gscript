@@ -16,14 +16,10 @@ namespace gscript
 
 	ParseResult ParserArrayAccessor::parse(StringIteratorRange itrange)
 	{
-		auto begin = itrange.begin;
-
-		unsigned int commentLength = 0;
-		COMMENT(itrange, itrange.begin, commentLength);
-
 		if (itrange.end - itrange.begin < 1)
-			return ParseResult(ParseResult::Status::Invalid, COMMENT_RESULT(itrange, commentLength), nullptr, { itrange, "Expected array accessor, got empty string" });
+			return ParseResult(ParseResult::Status::Invalid, { itrange, "Expected array accessor, got empty string" });
 
+		itrange.begin = parseComment(itrange.begin, itrange.end);
 		ParseResult beginResult = ParserChar::parse(StringIteratorRange(itrange.begin, itrange.end), ParserArrayAccessor::keycharArrayAccessorBegin);
 
 		if (!beginResult.isOk())
@@ -38,11 +34,13 @@ namespace gscript
 			if (this->indexType & IndexType::Statement)
 			{
 				this->statement.setAllowEmpty(!(this->indexType & IndexType::Required));
+				beginResult.result.end = parseComment(beginResult.result.end, itrange.end);
 				statementResult = this->statement.parse(StringIteratorRange(beginResult.result.end, itrange.end));
 			}
 			else if (this->indexType & IndexType::Literal)
 			{
 				ParserLiteral lit;
+				beginResult.result.end = parseComment(beginResult.result.end, itrange.end);
 				statementResult = lit.parse(StringIteratorRange(beginResult.result.end, itrange.end));
 
 				if (!lit.value.empty())
@@ -60,6 +58,7 @@ namespace gscript
 				return statementResult.as(ParseResult::Status::Fatal);
 		}
 
+		end = parseComment(end, itrange.end);
 		ParseResult endResult = ParserChar::parse(StringIteratorRange(end, itrange.end), ParserArrayAccessor::keycharArrayAccessorEnd);
 
 		if (!endResult.isOk())

@@ -6,6 +6,7 @@
 #include "parser/pLiteral.hpp"
 #include "parser/pFuncCall.hpp"
 #include "parser/pStatement.hpp"
+#include "parser/pComment.hpp"
 #include "StringUtils.hpp"
 
 #include <sstream>
@@ -44,6 +45,7 @@ namespace gscript
 		do
 		{
 			ParserStatement stmt(true);
+			begin = parseComment(begin, itrange.end);
 			ParseResult pvar = stmt.parse(StringIteratorRange(begin, itrange.end));
 			if (pvar.isOk())
 			{
@@ -53,6 +55,7 @@ namespace gscript
 			else
 				return pvar;
 
+			begin = parseComment(begin, itrange.end);
 			ParseResult pseparator = (ParserListSeparator(this->separator)).parse(StringIteratorRange(begin, itrange.end));
 
 			if (pseparator.isOk())

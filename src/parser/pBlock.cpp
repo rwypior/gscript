@@ -2,12 +2,14 @@
 #include "parser/pBlockBody.hpp"
 #include "parser/pBlockStart.hpp"
 #include "parser/pBlockEnd.hpp"
+#include "parser/pComment.hpp"
 #include "IteratorRange.hpp"
 
 namespace gscript
 {
 	ParseResult ParserBlock::parse(StringIteratorRange itrange)
 	{
+		itrange.begin = parseComment(itrange.begin, itrange.end);
 		ParseResult begin = (ParserBlockStart()).parse(StringIteratorRange(itrange.begin, itrange.end));
 		if (!begin.isOk())
 		{
@@ -18,10 +20,12 @@ namespace gscript
 			return bodyres;
 		}
 
+		begin.result.end = parseComment(begin.result.end, itrange.end);
 		ParseResult bodyres = this->body.parse(StringIteratorRange(begin.result.end, itrange.end));
 		if (!bodyres.isOk())
 			return bodyres;
 
+		bodyres.result.end = parseComment(bodyres.result.end, itrange.end);
 		ParseResult end = (ParserBlockEnd()).parse(StringIteratorRange(bodyres.result.end, itrange.end));
 		if (!end.isOk())
 			return end;

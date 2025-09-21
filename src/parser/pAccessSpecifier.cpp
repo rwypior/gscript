@@ -1,5 +1,6 @@
 #include "parser/pAccessSpecifier.hpp"
 #include "parser/pWord.hpp"
+#include "parser/pComment.hpp"
 #include "compileException.hpp"
 #include "StringUtils.hpp"
 
@@ -24,6 +25,7 @@ namespace gscript
 		{
 			anyGood = false;
 
+			it = parseComment(it, itrange.end);
 			ParseResult rpublic = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::keywordPublic);
 			if (rpublic.isOk())
 			{
@@ -32,6 +34,7 @@ namespace gscript
 				anyGood = true;
 			}
 
+			it = parseComment(it, itrange.end);
 			ParseResult rprotected = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::keywordProtected);
 			if (rprotected.isOk())
 			{
@@ -40,6 +43,7 @@ namespace gscript
 				anyGood = true;
 			}
 
+			it = parseComment(it, itrange.end);
 			ParseResult rprivate = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::keywordPrivate);
 			if (rprivate.isOk())
 			{
@@ -48,6 +52,7 @@ namespace gscript
 				anyGood = true;
 			}
 
+			it = parseComment(it, itrange.end);
 			ParseResult rconst = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::keywordConst);
 			if (rconst.isOk())
 			{
@@ -56,6 +61,7 @@ namespace gscript
 				anyGood = true;
 			}
 
+			it = parseComment(it, itrange.end);
 			ParseResult rstatic = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::keywordStatic);
 			if (rstatic.isOk())
 			{
@@ -64,6 +70,7 @@ namespace gscript
 				anyGood = true;
 			}
 
+			it = parseComment(it, itrange.end);
 			ParseResult rvirtual = ParserWord::parse(StringIteratorRange(it, itrange.end), ParserAccessSpecifier::keywordVirtual);
 			if (rvirtual.isOk())
 			{

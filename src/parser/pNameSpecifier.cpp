@@ -13,11 +13,8 @@ namespace gscript
 	{
 		auto begin = itrange.begin;
 
-		unsigned int commentLength = 0;
-		COMMENT(itrange, itrange.begin, commentLength);
-
 		if (itrange.end - itrange.begin < 1)
-			return ParseResult(ParseResult::Status::Invalid, COMMENT_RESULT(itrange, commentLength), nullptr, { itrange, "Expected name" });
+			return ParseResult(ParseResult::Status::Invalid, { itrange, "Expected name" });
 
 		StringIteratorRange itrangeOrig = itrange;
 		StringIteratorRange::ITERATOR_T &it = itrange.begin;
@@ -30,10 +27,10 @@ namespace gscript
 		}
 
 		if (it == itrange.end)
-			return ParseResult(ParseResult::Status::Invalid, COMMENT_RESULT(itrange, commentLength), nullptr, { itrange.shifted(newlines), "Expected name"});
+			return ParseResult(ParseResult::Status::Invalid, { itrange.shifted(newlines), "Expected name"});
 
 		if (std::isdigit(*it))
-			return ParseResult(ParseResult::Status::Invalid, COMMENT_RESULT(itrange, commentLength), nullptr, { itrange.shifted(newlines), "Names may not start with a digit" });
+			return ParseResult(ParseResult::Status::Invalid, { itrange.shifted(newlines), "Names may not start with a digit" });
 
 		for (; it != itrange.end; ++it)
 		{
@@ -46,7 +43,7 @@ namespace gscript
 		}
 
 		if (this->name.empty())
-			return ParseResult(ParseResult::Status::Invalid, COMMENT_RESULT(itrange, commentLength), nullptr, { itrange.shifted(newlines), "Expected name" });
+			return ParseResult(ParseResult::Status::Invalid, { itrange.shifted(newlines), "Expected name" });
 
 		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(it - this->name.length(), it));
 	}

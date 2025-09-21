@@ -51,3 +51,34 @@ TEST_CASE("ParserArrayInitializerFailureEmptyString")
 
 	REQUIRE(!result.isOk());
 }
+
+TEST_CASE("ParserArrayInitializerCommentLineBeforeBegin")
+{
+	std::string txt = 
+		"// This is a comment\n"
+		"{1, 2, 3}";
+
+	gscript::ParserArrayInitializer pArrInitializer;
+	auto result = pArrInitializer.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pArrInitializer.arglist.parameters.size() == 3);
+	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pArrInitializer.arglist.parameters.at(0)->components.front())->value == "1");
+	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pArrInitializer.arglist.parameters.at(1)->components.front())->value == "2");
+	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pArrInitializer.arglist.parameters.at(2)->components.front())->value == "3");
+}
+
+TEST_CASE("ParserArrayInitializerCommentBlockBetweenArgs")
+{
+	std::string txt = 
+		"{1, /* This is a comment */ 2, 3}";
+
+	gscript::ParserArrayInitializer pArrInitializer;
+	auto result = pArrInitializer.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pArrInitializer.arglist.parameters.size() == 3);
+	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pArrInitializer.arglist.parameters.at(0)->components.front())->value == "1");
+	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pArrInitializer.arglist.parameters.at(1)->components.front())->value == "2");
+	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pArrInitializer.arglist.parameters.at(2)->components.front())->value == "3");
+}

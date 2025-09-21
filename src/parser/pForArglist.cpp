@@ -12,10 +12,11 @@
 namespace gscript
 {
 	ParserForArglist::ParserForArglist(const char separator, char start, char end)
-		: separator(separator),
-		start(start),
-		end(end)
-	{ }
+		: separator(separator)
+		, start(start)
+		, end(end)
+	{
+	}
 
 	ParseResult ParserForArglist::parse(StringIteratorRange itrange)
 	{

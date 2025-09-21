@@ -16,4 +16,17 @@ namespace gscript
 
 		return ParseResult(ParseResult::Status::Invalid, itrange);
 	}
+
+	StringIteratorRange::ITERATOR_T parseComment(StringIteratorRange itrange)
+	{
+		auto res = ParserComment().parse(itrange);
+		if (res.isOk())
+			return res.result.end;
+		return itrange.begin;
+	}
+
+	StringIteratorRange::ITERATOR_T parseComment(StringIteratorRange::ITERATOR_T begin, StringIteratorRange::ITERATOR_T end)
+	{
+		return parseComment(StringIteratorRange(begin, end));
+	}
 }

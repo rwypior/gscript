@@ -10,7 +10,7 @@ project ("GScriptTest")
 add_executable(gscriptTest)
 set_property(TARGET gscriptTest PROPERTY CXX_STANDARD 17)
 
-target_sources(gscriptTest PRIVATE "common.h" "main.cpp")
+target_sources(gscriptTest PRIVATE "common.h" "main.cpp" "parser/commentTest.cpp")
 
 # We're compiling against obj files - don't use DLL macros
 target_compile_definitions(gscriptTest PRIVATE BUILD_NOLIB)

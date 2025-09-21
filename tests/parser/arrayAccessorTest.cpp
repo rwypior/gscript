@@ -105,3 +105,45 @@ TEST_CASE("ParserArrayAccessorFailureEmptyString")
 
 	REQUIRE(!result.isOk());
 }
+
+TEST_CASE("ParserArrayAccessorCommentLineBeforeBegin")
+{
+	std::string txt = 
+		"// This is a comment\n"
+		"[0]";
+
+	gscript::ParserArrayAccessor pArrAccessor(gscript::ParserArrayAccessor::IndexType::Required | gscript::ParserArrayAccessor::IndexType::Literal);
+	auto result = pArrAccessor.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pArrAccessor.gotValue);
+	REQUIRE(pArrAccessor.staticIndex == 0);
+}
+
+TEST_CASE("ParserArrayAccessorCommentLineAfterBegin")
+{
+	std::string txt = 
+		"[\n"
+		"// This is a comment\n"
+		"0]";
+
+	gscript::ParserArrayAccessor pArrAccessor(gscript::ParserArrayAccessor::IndexType::Required | gscript::ParserArrayAccessor::IndexType::Literal);
+	auto result = pArrAccessor.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pArrAccessor.gotValue);
+	REQUIRE(pArrAccessor.staticIndex == 0);
+}
+
+TEST_CASE("ParserArrayAccessorCommentBlockBeforeEnd")
+{
+	std::string txt = 
+		"[0 /* This is a comment */]";
+
+	gscript::ParserArrayAccessor pArrAccessor(gscript::ParserArrayAccessor::IndexType::Required | gscript::ParserArrayAccessor::IndexType::Literal);
+	auto result = pArrAccessor.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pArrAccessor.gotValue);
+	REQUIRE(pArrAccessor.staticIndex == 0);
+}

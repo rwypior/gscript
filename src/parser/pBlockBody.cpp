@@ -39,6 +39,7 @@ namespace gscript
 
 		do
 		{
+			endPosition = parseComment(endPosition, itrange.end);
 			anyGood = false;
 
 			ParserIf pif;
@@ -52,7 +53,6 @@ namespace gscript
 			}
 			else if (pifres.isFatal())
 				return pifres;
-			COMMENT_SHIFT_E(pifres, endPosition);
 
 			ParserWhile pwhile;
 			ParseResult pwhileres = pwhile.parse(StringIteratorRange(endPosition, itrange.end));
@@ -65,7 +65,6 @@ namespace gscript
 			}
 			else if (pwhileres.isFatal())
 				return pwhileres;
-			COMMENT_SHIFT_E(pwhileres, endPosition);
 
 			ParserFor pfor;
 			ParseResult pforres = pfor.parse(StringIteratorRange(endPosition, itrange.end));
@@ -78,7 +77,6 @@ namespace gscript
 			}
 			else if (pforres.isFatal())
 				return pforres;
-			COMMENT_SHIFT_E(pforres, endPosition);
 
 			ParserReturn preturn;
 			ParseResult preturnres = preturn.parse(StringIteratorRange(endPosition, itrange.end));
@@ -91,7 +89,6 @@ namespace gscript
 			}
 			else if (preturnres.isFatal())
 				return preturnres;
-			COMMENT_SHIFT_E(preturnres, endPosition);
 
 			ParserVarDeclaration pvar;
 			ParseResult pvarres = pvar.parse(StringIteratorRange(endPosition, itrange.end));
@@ -104,7 +101,6 @@ namespace gscript
 			}
 			else if (pvarres.isFatal())
 				return pvarres;
-			COMMENT_SHIFT_E(pvarres, endPosition);
 
 			ParserStatement pstatement(false);
 			ParseResult pstatementres = pstatement.parse(StringIteratorRange(endPosition, itrange.end));
@@ -117,7 +113,6 @@ namespace gscript
 			}
 			else if (pstatementres.isFatal())
 				return pstatementres;
-			COMMENT_SHIFT_E(pstatementres, endPosition);
 		} while (anyGood && (!this->maxEntries || ++processedEntries < this->maxEntries));
 
 		if (!anyGood && this->minEntries > 0)

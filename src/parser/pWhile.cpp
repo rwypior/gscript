@@ -7,7 +7,7 @@
 namespace gscript
 {
 	ParserWhile::ParserWhile()
-		:arglist(1, 1)
+		: arglist(1, 1)
 	{
 	}
 

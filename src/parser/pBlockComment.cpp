@@ -13,7 +13,7 @@ namespace gscript
 			ParseResult resEnd = ParserWord::parseUntil(StringIteratorRange(res.result.end, itrange.end), ParserBlockComment::keycharBlockCommentEnd);
 
 			if (resEnd.isOk())
-				return ParseResult(ParseResult::Status::Ok, StringIteratorRange(res.result.begin, resEnd.result.end));
+				return ParseResult(ParseResult::Status::Ok, StringIteratorRange(res.result.begin, resEnd.result.end + std::strlen(ParserBlockComment::keycharBlockCommentEnd)));
 		}
 
 		return ParseResult(ParseResult::Status::Invalid);

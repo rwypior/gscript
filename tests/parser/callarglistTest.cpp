@@ -105,3 +105,46 @@ TEST_CASE("ParserCallarglistFailureEmptyString")
 
 	REQUIRE(!result.isOk());
 }
+
+TEST_CASE("ParserCallarglistCommentLineBeforeBegin")
+{
+	std::string txt = 
+		"// This is a comment\n"
+		"(1, 2, \"string\")";
+
+	gscript::ParserCallArglist pArglist;
+	auto result = pArglist.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pArglist.parameters.size() == 3);
+	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pArglist.parameters.at(0)->components.at(0))->value == "1");
+	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pArglist.parameters.at(1)->components.at(0))->value == "2");
+	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pArglist.parameters.at(2)->components.at(0))->value == "string");
+}
+
+TEST_CASE("ParserCallarglistCommentBlockBetweenArgs")
+{
+	std::string txt = 
+		"// This is a comment\n"
+		"(1, 2, /* This is a comment */ \"string\")";
+
+	gscript::ParserCallArglist pArglist;
+	auto result = pArglist.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pArglist.parameters.size() == 3);
+	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pArglist.parameters.at(0)->components.at(0))->value == "1");
+	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pArglist.parameters.at(1)->components.at(0))->value == "2");
+	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pArglist.parameters.at(2)->components.at(0))->value == "string");
+}
+
+TEST_CASE("ParserCallarglistEmptyCommentBlockInside")
+{
+	std::string txt = "(/* This is a comment */)";
+
+	gscript::ParserCallArglist pArglist;
+	auto result = pArglist.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pArglist.parameters.size() == 0);
+}

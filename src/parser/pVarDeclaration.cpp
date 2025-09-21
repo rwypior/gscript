@@ -22,26 +22,28 @@ namespace gscript
 
 		size_t newlines = skipWhitespaces(begin, itrange.end);
 
-		unsigned int commentLength = 0;
-		COMMENT(itrange, itrange.begin, commentLength);
-
 		ParserTypeSpecifier type = ParserTypeSpecifier();
+
+		begin = parseComment(begin, itrange.end);
 		ParseResult typeres = type.parse(StringIteratorRange(begin, itrange.end));
 		if (!typeres.isOk())
 			return typeres;
 		this->type = typeres.getWord();
 
+		typeres.result.end = parseComment(typeres.result.end, itrange.end);
 		ParseResult name = (ParserNameSpecifier()).parse(StringIteratorRange(typeres.result.end, itrange.end));
 		if (!name.isOk())
 			return name;
 		this->name = name.getWord();
 
 		auto end = name.result.end;
+		end = parseComment(end, itrange.end);
 		ParseResult assign = (ParserOperatorAssign()).parse(StringIteratorRange(end, itrange.end));
 
 		if (assign.isOk())
 		{
 			end = assign.result.end;
+			end = parseComment(end, itrange.end);
 			ParseResult valres = this->value.parse(StringIteratorRange(end, itrange.end));
 			if (valres.isOk())
 				end = valres.result.end;
@@ -49,6 +51,7 @@ namespace gscript
 
 		if (!sub)
 		{
+			end = parseComment(end, itrange.end);
 			ParseResult endstatement = (ParserEndStatement()).parse(StringIteratorRange(end, itrange.end));
 			if (!endstatement.isOk())
 				return endstatement;

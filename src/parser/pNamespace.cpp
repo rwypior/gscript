@@ -3,9 +3,10 @@
 #include "parser/pClass.hpp"
 #include "parser/pNameSpecifier.hpp"
 #include "parser/pImportDirective.hpp"
-#include "StringUtils.hpp"
 #include "parser/pChar.hpp"
 #include "parser/pWord.hpp"
+#include "parser/pComment.hpp"
+#include "StringUtils.hpp"
 #include "compileException.hpp"
 
 #include <iostream>
@@ -25,12 +26,14 @@ namespace gscript
 
 		if (this->type & NamespaceType::Named)
 		{
+			endPosition = parseComment(endPosition, itrange.end);
 			ParseResult nsResult = ParserWord::parse(StringIteratorRange(endPosition, itrange.end), ParserNamespace::keywordNamespace);
 
 			if (!nsResult.isOk())
 				return nsResult;
 
 			ParserNameSpecifier nsName;
+			nsResult.result.end = parseComment(nsResult.result.end, itrange.end);
 			ParseResult nsNameResult = nsName.parse(StringIteratorRange(nsResult.result.end, itrange.end));
 
 			if (!nsNameResult.isOk())
@@ -44,6 +47,7 @@ namespace gscript
 
 		if (this->type & NamespaceType::Enclosed)
 		{
+			endPosition = parseComment(endPosition, itrange.end);
 			ParseResult enclosureResult = ParserChar::parse(StringIteratorRange(endPosition, itrange.end), ParserNamespace::keycharEnclosureBegin);
 
 			if (!enclosureResult.isOk())
@@ -60,6 +64,7 @@ namespace gscript
 		do
 		{
 			anyGood = false;
+			endPosition = parseComment(endPosition, itrange.end);
 			StringIteratorRange range(endPosition, itrange.end);
 
 			if (this->type & NamespaceType::Main)
@@ -131,6 +136,7 @@ namespace gscript
 
 		if (this->type & NamespaceType::Enclosed)
 		{
+			endPosition = parseComment(endPosition, itrange.end);
 			ParseResult enclosureResult = ParserChar::parse(StringIteratorRange(endPosition, itrange.end), ParserNamespace::keycharEnclosureEnd);
 
 			if (!enclosureResult.isOk())

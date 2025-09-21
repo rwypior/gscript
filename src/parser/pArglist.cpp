@@ -4,6 +4,7 @@
 #include "parser/pArglistEnd.hpp"
 #include "parser/pVarDeclaration.hpp"
 #include "parser/pListSeparator.hpp"
+#include "parser/pComment.hpp"
 
 #include <vector>
 
@@ -17,6 +18,7 @@ namespace gscript
 
 	ParseResult ParserArglist::parse(StringIteratorRange itrange)
 	{
+		itrange.begin = parseComment(itrange.begin, itrange.end);
 		ParseResult start = (ParserArglistStart(this->arglistStart)).parse(itrange);
 		if (!start.isOk())
 			return start;
@@ -26,6 +28,7 @@ namespace gscript
 		do
 		{
 			ParserVarDeclaration param(true);
+			begin = parseComment(begin, itrange.end);
 			ParseResult pvar = param.parse(StringIteratorRange(begin, itrange.end));
 			if (pvar.isOk())
 			{
@@ -43,6 +46,7 @@ namespace gscript
 				ok = false;
 		} while (ok);
 
+		begin = parseComment(begin, itrange.end);
 		ParseResult end = (ParserArglistEnd(this->arglistEnd)).parse(StringIteratorRange(begin, itrange.end));
 
 		if (!end.isOk())

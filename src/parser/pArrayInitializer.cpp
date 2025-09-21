@@ -11,14 +11,10 @@ namespace gscript
 
 	ParseResult ParserArrayInitializer::parse(StringIteratorRange itrange)
 	{
-		auto begin = itrange.begin;
-
-		unsigned int commentLength = 0;
-		COMMENT(itrange, itrange.begin, commentLength);
-
 		if (itrange.end - itrange.begin < 1)
-			return ParseResult(ParseResult::Status::Invalid, COMMENT_RESULT(itrange, commentLength));
+			return ParseResult(ParseResult::Status::Invalid, { itrange, "Expected array initializer, got empty string" });
 
+		itrange.begin = parseComment(itrange.begin, itrange.end);
 		ParseResult arglistResult = this->arglist.parse(itrange);
 
 		return arglistResult;

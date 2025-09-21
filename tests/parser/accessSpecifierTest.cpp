@@ -125,3 +125,30 @@ TEST_CASE("ParserAccessSpecifierEmpty")
 		REQUIRE(pAcc.getModifier() == gscript::Modifier::AccessPublic);
 	}
 }
+
+TEST_CASE("ParserAccessSpecifierLineCommentBefore")
+{
+	std::string txt = 
+		"// This is a comment\n"
+		"public static";
+
+	gscript::ParserAccessSpecifier pAcc;
+	auto result = pAcc.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pAcc.getModifier() & (gscript::Modifier::AccessPublic | gscript::Modifier::Static));
+}
+
+TEST_CASE("ParserAccessSpecifierLineCommentBetween")
+{
+	std::string txt = 
+		"public\n"
+		"// This is a comment\n"
+		"static";
+
+	gscript::ParserAccessSpecifier pAcc;
+	auto result = pAcc.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pAcc.getModifier() & (gscript::Modifier::AccessPublic | gscript::Modifier::Static));
+}

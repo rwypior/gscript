@@ -147,3 +147,57 @@ TEST_CASE("ParserNamespaceWithEverything")
 	REQUIRE(pNamespace.classes.size() == 2);
 	REQUIRE(pNamespace.functions.size() == 2);
 }
+
+TEST_CASE("ParserNamespaceCommentBeforeNamespace")
+{
+	std::string txt =
+		"// This is a namespace\n"
+		"namespace MyNamespace {\n"
+		"}"
+		;
+
+	gscript::ParserNamespace pNamespace;
+	auto result = pNamespace.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pNamespace.name == "MyNamespace");
+	REQUIRE(pNamespace.namespaces.empty());
+	REQUIRE(pNamespace.classes.empty());
+	REQUIRE(pNamespace.functions.empty());
+}
+
+TEST_CASE("ParserNamespaceCommentBlockBeforeNamespace")
+{
+	std::string txt =
+		"/* This is a namespace */\n"
+		"namespace MyNamespace {\n"
+		"}"
+		;
+
+	gscript::ParserNamespace pNamespace;
+	auto result = pNamespace.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pNamespace.name == "MyNamespace");
+	REQUIRE(pNamespace.namespaces.empty());
+	REQUIRE(pNamespace.classes.empty());
+	REQUIRE(pNamespace.functions.empty());
+}
+
+TEST_CASE("ParserNamespaceCommentBeforeName")
+{
+	std::string txt =
+		"namespace //MyNamespace {\n"
+		"MyNamespace {\n"
+		"}"
+		;
+
+	gscript::ParserNamespace pNamespace;
+	auto result = pNamespace.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pNamespace.name == "MyNamespace");
+	REQUIRE(pNamespace.namespaces.empty());
+	REQUIRE(pNamespace.classes.empty());
+	REQUIRE(pNamespace.functions.empty());
+}

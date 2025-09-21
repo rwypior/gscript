@@ -78,3 +78,48 @@ TEST_CASE("ParserVarDeclarationFailureNoType")
 	REQUIRE(!result.isOk());
 	REQUIRE(result.details.message == "Expected name");
 }
+
+TEST_CASE("ParserVarDeclarationCommentLineBeforeType")
+{
+	std::string txt = 
+		"// This is a comment\n"
+		"int myvar;";
+
+	gscript::ParserVarDeclaration pVar;
+	auto result = pVar.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pVar.name == "myvar");
+	REQUIRE(pVar.type == "int");
+	REQUIRE(pVar.value.components.empty());
+}
+
+TEST_CASE("ParserVarDeclarationCommentBlockBetweenTypeAndName")
+{
+	std::string txt = 
+		"int /* This is a comment */ myvar;";
+
+	gscript::ParserVarDeclaration pVar;
+	auto result = pVar.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pVar.name == "myvar");
+	REQUIRE(pVar.type == "int");
+	REQUIRE(pVar.value.components.empty());
+}
+
+TEST_CASE("ParserVarDeclarationCommentLineAfterEnd")
+{
+	// This test is probably redundant
+
+	std::string txt = 
+		"int myvar; // This is a comment";
+
+	gscript::ParserVarDeclaration pVar;
+	auto result = pVar.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pVar.name == "myvar");
+	REQUIRE(pVar.type == "int");
+	REQUIRE(pVar.value.components.empty());
+}

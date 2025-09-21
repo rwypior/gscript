@@ -6,9 +6,6 @@
 
 namespace gscript
 {
-	ParserFor::ParserFor()
-	{ }
-
 	ParseResult ParserFor::parse(StringIteratorRange itrange)
 	{
 		ParseResult parentResult = ParserWord::parse(itrange, ParserFor::keywordFor);

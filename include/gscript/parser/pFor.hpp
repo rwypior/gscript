@@ -13,8 +13,6 @@ namespace gscript
 	public:
 		static constexpr char keywordFor[] = "for";
 
-		ParserFor();
-
 		ParserBlock body;
 		ParserForArglist arglist;
 

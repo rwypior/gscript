@@ -12,6 +12,7 @@ namespace gscript
 	{
 		bool inString(char ch, const std::string &str);
 		ParseResult parse(StringIteratorRange itrange, char c, bool ltrimWhitespaces = true);
+		ParseResult parseUntilNonWhitespace(StringIteratorRange itrange);
 	};
 }
 

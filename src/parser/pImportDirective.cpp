@@ -1,5 +1,6 @@
 #include "parser/pImportDirective.hpp"
 #include "parser/pChar.hpp"
+#include "parser/pComment.hpp"
 
 #include <string>
 #include <sstream>
@@ -20,6 +21,7 @@ namespace gscript
 
 		char enclosureEnd = ParserImportDirective::keycharEnclosureEnd;
 
+		controlResult.result.end = parseComment(controlResult.result.end, itrange.end);
 		ParseResult beginResult = ParserChar::parse(StringIteratorRange(controlResult.result.end, itrange.end), ParserImportDirective::keycharEnclosureBegin);
 		if (!beginResult.isOk())
 		{

@@ -1,5 +1,6 @@
 #include "parser/pMethod.hpp"
 #include "parser/pAccessSpecifier.hpp"
+#include "parser/pComment.hpp"
 
 namespace gscript
 {
@@ -7,6 +8,7 @@ namespace gscript
 	{
 		auto end = itrange.begin;
 
+		end = parseComment(end, itrange.end);
 		ParseResult accessres = this->accessSpecifier.parse(StringIteratorRange(end, itrange.end));
 		if (accessres.isOk())
 		{

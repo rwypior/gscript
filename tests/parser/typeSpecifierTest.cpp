@@ -98,3 +98,70 @@ TEST_CASE("ParserTypeSpecifierFailureArrayReferenceNoName")
 	REQUIRE(!result.isOk());
 	REQUIRE(result.details.message == "Expected name");
 }
+
+TEST_CASE("ParserTypeSpecifierCommentLineBefore")
+{
+	std::string txt = 
+		"// This is a comment\n"
+		"int";
+
+	gscript::ParserTypeSpecifier pTypeSpecifier;
+	auto result = pTypeSpecifier.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(!pTypeSpecifier.isArray);
+	REQUIRE(!pTypeSpecifier.isReference);
+	REQUIRE(pTypeSpecifier.name == "int");
+}
+
+TEST_CASE("ParserTypeSpecifierCommentBlockBeforeReference")
+{
+	std::string txt = "int /* This is a comment */ &";
+
+	gscript::ParserTypeSpecifier pTypeSpecifier;
+	auto result = pTypeSpecifier.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(!pTypeSpecifier.isArray);
+	REQUIRE(pTypeSpecifier.isReference);
+	REQUIRE(pTypeSpecifier.name == "int");
+}
+
+TEST_CASE("ParserTypeSpecifierCommentBlockAfterReference")
+{
+	std::string txt = "int& /* This is a comment */";
+
+	gscript::ParserTypeSpecifier pTypeSpecifier;
+	auto result = pTypeSpecifier.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(!pTypeSpecifier.isArray);
+	REQUIRE(pTypeSpecifier.isReference);
+	REQUIRE(pTypeSpecifier.name == "int");
+}
+
+TEST_CASE("ParserTypeSpecifierCommentBlockBeforeArray")
+{
+	std::string txt = "int /* This is a comment */ []";
+
+	gscript::ParserTypeSpecifier pTypeSpecifier;
+	auto result = pTypeSpecifier.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pTypeSpecifier.isArray);
+	REQUIRE(!pTypeSpecifier.isReference);
+	REQUIRE(pTypeSpecifier.name == "int");
+}
+
+TEST_CASE("ParserTypeSpecifierCommentBlockAfterArray")
+{
+	std::string txt = "int [] /* This is a comment */";
+
+	gscript::ParserTypeSpecifier pTypeSpecifier;
+	auto result = pTypeSpecifier.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pTypeSpecifier.isArray);
+	REQUIRE(!pTypeSpecifier.isReference);
+	REQUIRE(pTypeSpecifier.name == "int");
+}

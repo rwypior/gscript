@@ -55,3 +55,45 @@ TEST_CASE("ParserInheritFailureNoTarget")
 	REQUIRE(!result.isOk());
 	REQUIRE(result.details.message == "Expected name");
 }
+
+TEST_CASE("ParserInheritCommentLineBefore")
+{
+	std::string txt = 
+		"// This is a comment\n"
+		":something";
+
+	gscript::ParserInherit pInherit;
+	auto result = pInherit.parse(txt);
+
+	REQUIRE(result.isOk());
+}
+
+TEST_CASE("ParserInheritCommentBlockBefore")
+{
+	std::string txt = "/* This is a comment */:something";
+
+	gscript::ParserInherit pInherit;
+	auto result = pInherit.parse(txt);
+
+	REQUIRE(result.isOk());
+}
+
+TEST_CASE("ParserInheritCommentBlockAfterColon")
+{
+	std::string txt = ": /* This is a comment */something";
+
+	gscript::ParserInherit pInherit;
+	auto result = pInherit.parse(txt);
+
+	REQUIRE(result.isOk());
+}
+
+TEST_CASE("ParserInheritCommentLineAfterName")
+{
+	std::string txt = ": something // This is a comment";
+
+	gscript::ParserInherit pInherit;
+	auto result = pInherit.parse(txt);
+
+	REQUIRE(result.isOk());
+}

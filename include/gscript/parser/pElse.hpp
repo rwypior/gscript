@@ -15,7 +15,7 @@ namespace gscript
 		static constexpr char keywordElse[] = "else";
 
 		ParserBlock body;
-		ParserIf *pif = nullptr;
+		ParserIf* pif = nullptr;
 
 		virtual ParseResult parse(StringIteratorRange itrange) override;
 	};

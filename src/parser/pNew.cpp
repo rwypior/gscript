@@ -2,11 +2,13 @@
 #include "parser/pNameSpecifier.hpp"
 #include "parser/pFuncCall.hpp"
 #include "parser/pWord.hpp"
+#include "parser/pComment.hpp"
 
 namespace gscript
 {
 	ParseResult ParserNew::parse(StringIteratorRange itrange)
 	{
+		itrange.begin = parseComment(itrange.begin, itrange.end);
 		ParseResult rnew = ParserWord::parse(itrange, ParserNew::keywordNew);
 		if (!rnew.isOk())
 			return rnew;

@@ -3,6 +3,7 @@
 #include "parser/pArglistEnd.hpp"
 #include "parser/pCallArglist.hpp"
 #include "parser/pWord.hpp"
+#include "parser/pComment.hpp"
 
 namespace gscript
 {
@@ -13,6 +14,7 @@ namespace gscript
 
 	ParseResult ParserWhile::parse(StringIteratorRange itrange)
 	{
+		itrange.begin = parseComment(itrange.begin, itrange.end);
 		ParseResult parentResult = ParserWord::parse(itrange, ParserWhile::keywordWhile);
 		if (!parentResult.isOk())
 			return parentResult;

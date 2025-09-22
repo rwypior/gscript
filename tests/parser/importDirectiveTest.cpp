@@ -61,3 +61,44 @@ TEST_CASE("ParserImportDirectiveFailureNoEnclosureExtension")
 	REQUIRE(!result.isOk());
 	REQUIRE(result.details.message == "Missing import directive enclosure \">\"");
 }
+
+TEST_CASE("ParserImportDirectiveCommentLineBefore")
+{
+	std::string txt = 
+		"// This is a comment\n"
+		"#import \"something\"";
+
+	gscript::ParserImportDirective pCtrl;
+	auto result = pCtrl.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pCtrl.directive == "import");
+	REQUIRE(pCtrl.type == gscript::ParserImportDirective::IMPORT_TYPE_T::IT_FILE);
+	REQUIRE(pCtrl.filename == "something");
+}
+
+TEST_CASE("ParserImportDirectiveCommentBlockAfterImport")
+{
+	std::string txt = "#import /* This is a comment */ \"something\"";
+
+	gscript::ParserImportDirective pCtrl;
+	auto result = pCtrl.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pCtrl.directive == "import");
+	REQUIRE(pCtrl.type == gscript::ParserImportDirective::IMPORT_TYPE_T::IT_FILE);
+	REQUIRE(pCtrl.filename == "something");
+}
+
+TEST_CASE("ParserImportDirectiveCommentBlockAfterFile")
+{
+	std::string txt = "#import \"something\" /* This is a comment */";
+
+	gscript::ParserImportDirective pCtrl;
+	auto result = pCtrl.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pCtrl.directive == "import");
+	REQUIRE(pCtrl.type == gscript::ParserImportDirective::IMPORT_TYPE_T::IT_FILE);
+	REQUIRE(pCtrl.filename == "something");
+}

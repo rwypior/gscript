@@ -80,3 +80,59 @@ TEST_CASE("ParserFieldDeclarationFailureNoSemicolon")
 	REQUIRE(!result.isOk());
 	REQUIRE(result.details.message == "Expected \";\", got empty string");
 }
+
+TEST_CASE("ParserFieldDeclarationCommentLineBefore")
+{
+	std::string txt = 
+		"// This is a comment\n"
+		"type somefield;";
+
+	gscript::ParserFieldDeclaration pField;
+	auto result = pField.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pField.name == "somefield");
+	REQUIRE(pField.type == "type");
+	REQUIRE(pField.accessSpecifier.getModifier() == gscript::Modifier::None);
+}
+
+TEST_CASE("ParserFieldDeclarationCommentBlockBetweenTypeAndName")
+{
+	std::string txt = "type /* This is a comment */ somefield;";
+
+	gscript::ParserFieldDeclaration pField;
+	auto result = pField.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pField.name == "somefield");
+	REQUIRE(pField.type == "type");
+	REQUIRE(pField.accessSpecifier.getModifier() == gscript::Modifier::None);
+}
+
+TEST_CASE("ParserFieldDeclarationCommentBlockBetweenPrivateAndType")
+{
+	std::string txt = "private /* This is a comment */ type somefield;";
+
+	gscript::ParserFieldDeclaration pField;
+	auto result = pField.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pField.name == "somefield");
+	REQUIRE(pField.type == "type");
+	REQUIRE(pField.accessSpecifier.getModifier() & Bitfield(gscript::Modifier::AccessPrivate));
+}
+
+TEST_CASE("ParserFieldDeclarationCommentLineBeforePrivate")
+{
+	std::string txt = 
+		"// This is a comment\n"
+		"private type somefield;";
+
+	gscript::ParserFieldDeclaration pField;
+	auto result = pField.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pField.name == "somefield");
+	REQUIRE(pField.type == "type");
+	REQUIRE(pField.accessSpecifier.getModifier() & Bitfield(gscript::Modifier::AccessPrivate));
+}

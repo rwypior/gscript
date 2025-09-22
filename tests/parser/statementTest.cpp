@@ -19,6 +19,18 @@ TEST_CASE("ParserStatementSingleVariable")
 	REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pStmt.components.at(0))->name == "some_variable");
 }
 
+TEST_CASE("ParserStatementSubStatement")
+{
+	std::string txt = "some_variable";
+
+	gscript::ParserStatement pStmt(true);
+	auto result = pStmt.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pStmt.components.size() == 1);
+	REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pStmt.components.at(0))->name == "some_variable");
+}
+
 TEST_CASE("ParserStatementSingleFunctionCall")
 {
 	std::string txt = "some_func();";
@@ -85,4 +97,87 @@ TEST_CASE("ParserStatementMemberAccessor")
 	REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pStmt.components.at(2))->name == "anotherobject");
 	REQUIRE(std::dynamic_pointer_cast<gscript::ParserOperatorMemberAccessor>(pStmt.components.at(3)));
 	REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pStmt.components.at(4))->name == "myvar");
+}
+
+TEST_CASE("ParserStatementCommentLineBefore")
+{
+	std::string txt = 
+		"// This is a comment\n"
+		"some_variable;";
+
+	gscript::ParserStatement pStmt;
+	auto result = pStmt.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pStmt.components.size() == 1);
+	REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pStmt.components.at(0))->name == "some_variable");
+}
+
+TEST_CASE("ParserStatementCommentBlockBeforeSemicolon")
+{
+	std::string txt = "some_variable /* This is a comment */ ;";
+
+	gscript::ParserStatement pStmt;
+	auto result = pStmt.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pStmt.components.size() == 1);
+	REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pStmt.components.at(0))->name == "some_variable");
+}
+
+TEST_CASE("ParserStatementCommentBlockAfterSemicolon")
+{
+	std::string txt = "some_variable; /* This is a comment */";
+
+	gscript::ParserStatement pStmt;
+	auto result = pStmt.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pStmt.components.size() == 1);
+	REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pStmt.components.at(0))->name == "some_variable");
+}
+
+TEST_CASE("ParserStatementSubstatementCommentBlockAtEnd")
+{
+	std::string txt = "some_variable /* This is a comment */";
+
+	gscript::ParserStatement pStmt(true);
+	auto result = pStmt.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pStmt.components.size() == 1);
+	REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pStmt.components.at(0))->name == "some_variable");
+}
+
+TEST_CASE("ParserStatementCommentBlocksBeforeComponents")
+{
+	std::string txt = "1 /* Comment 1 */ + /* Comment 2 */ 2;";
+
+	gscript::ParserStatement pStmt;
+	auto result = pStmt.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pStmt.components.size() == 3);
+	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pStmt.components.at(0))->value == "1");
+	REQUIRE(std::static_pointer_cast<gscript::ParserOperatorAdd>(pStmt.components.at(1))->getChar() == "+");
+	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pStmt.components.at(2))->value == "2");
+}
+
+TEST_CASE("ParserStatementCommentLinesBeforeComponents")
+{
+	std::string txt = 
+		"1\n"
+		"// This is a comment\n"
+		"+\n"
+		"// Another comment\n"
+		"2;";
+
+	gscript::ParserStatement pStmt;
+	auto result = pStmt.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pStmt.components.size() == 3);
+	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pStmt.components.at(0))->value == "1");
+	REQUIRE(std::static_pointer_cast<gscript::ParserOperatorAdd>(pStmt.components.at(1))->getChar() == "+");
+	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pStmt.components.at(2))->value == "2");
 }

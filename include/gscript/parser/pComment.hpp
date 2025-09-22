@@ -10,7 +10,12 @@ namespace gscript
 	class ParserComment : public ParserEntity
 	{
 	public:
+		ParserComment(bool mergeLineComments = true);
+
 		virtual ParseResult parse(StringIteratorRange itrange) override;
+
+	private:
+		bool mergeLineComments = true;
 	};
 
 	// Utility function to parse comment and return new itrator from which the parsing is supposed to be continued

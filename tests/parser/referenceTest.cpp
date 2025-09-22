@@ -44,3 +44,27 @@ TEST_CASE("ParserReferenceFailureEmptyString")
 	REQUIRE(!result.isOk());
 	REQUIRE(result.details.message == "Expected \"&\", got empty string");
 }
+
+TEST_CASE("ParserReferenceCommentLineBefore")
+{
+	std::string txt = 
+		"// This is a comment\n"
+		"&";
+
+	gscript::ParserReference pRef;
+	auto result = pRef.parse(txt);
+
+	REQUIRE(result.isOk());
+}
+
+TEST_CASE("ParserReferenceCommentLineAfter")
+{
+	std::string txt = 
+		"&\n"
+		"// This is a comment";
+
+	gscript::ParserReference pRef;
+	auto result = pRef.parse(txt);
+
+	REQUIRE(result.isOk());
+}

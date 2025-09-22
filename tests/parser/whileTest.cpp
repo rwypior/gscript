@@ -63,3 +63,38 @@ TEST_CASE("ParserWhileFailureNoArgs")
 	REQUIRE(!result.isOk());
 	REQUIRE(result.details.message == "Expected statement");
 }
+
+TEST_CASE("ParserWhileCommentLineBefore")
+{
+	std::string txt = 
+		"// This is a comment\n"
+		"while (myvar) {}";
+
+	gscript::ParserWhile pwhile;
+	auto result = pwhile.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pwhile.arglist.parameters.at(0)->components.at(0))->name == "myvar");
+}
+
+TEST_CASE("ParserWhileCommentBlockAfterWhile")
+{
+	std::string txt = "while /* This is a comment */ (myvar) {}";
+
+	gscript::ParserWhile pwhile;
+	auto result = pwhile.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pwhile.arglist.parameters.at(0)->components.at(0))->name == "myvar");
+}
+
+TEST_CASE("ParserWhileCommentBlockAfterArglist")
+{
+	std::string txt = "while (myvar) /* This is a comment */ {}";
+
+	gscript::ParserWhile pwhile;
+	auto result = pwhile.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pwhile.arglist.parameters.at(0)->components.at(0))->name == "myvar");
+}

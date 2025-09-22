@@ -44,6 +44,7 @@ namespace gscript
 		bool inArglist = false;
 		if (this->forceEnclosing)
 		{
+			begin = parseComment(begin, itrange.end);
 			ParseResult arglistStart = (ParserArglistStart()).parse(StringIteratorRange(begin, itrange.end));
 			if (arglistStart.isOk())
 			{
@@ -62,6 +63,8 @@ namespace gscript
 		do
 		{
 			anyOk = false;
+
+			end = parseComment(end, itrange.end);
 
 			// TODO - implement this
 			/*ParserConditionalOperator condstatement;
@@ -189,6 +192,7 @@ namespace gscript
 		// If started with arglistStart then must end with arglistEnd
 		if (inArglist)
 		{
+			begin = parseComment(begin, itrange.end);
 			ParseResult arglistEnd = (ParserArglistEnd()).parse(StringIteratorRange(end, itrange.end));
 			if (!arglistEnd.isOk())
 				return arglistEnd.as(ParseResult::Status::Fatal);
@@ -198,6 +202,7 @@ namespace gscript
 		// If is not substatement must end with statementEnd
 		if (!this->isSubStatement)
 		{
+			begin = parseComment(begin, itrange.end);
 			ParseResult statementEnd = (ParserEndStatement()).parse(StringIteratorRange(end, itrange.end));
 			if (!statementEnd.isOk())
 			{

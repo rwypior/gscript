@@ -35,6 +35,7 @@ namespace gscript
 			return ParseResult(ParseResult::Status::Invalid, StringIteratorRange());
 
 		ParserArglistEnd arglistEnd = ParserArglistEnd(this->end);
+		start.result.end = parseComment(start.result.end, itrange.end);
 		ParseResult emptyend = arglistEnd.parse(StringIteratorRange(start.result.end, itrange.end));
 		if (emptyend.isOk())
 			return ParseResult(ParseResult::Status::Ok, StringIteratorRange(start.result.begin, emptyend.result.end));
@@ -67,6 +68,7 @@ namespace gscript
 				break;
 		} while (ok);
 
+		begin = parseComment(begin, itrange.end);
 		ParseResult end = (ParserArglistEnd(this->end)).parse(StringIteratorRange(begin, itrange.end));
 		
 		if (!end.isOk() || i < this->minCount)

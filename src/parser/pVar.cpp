@@ -12,6 +12,7 @@ namespace gscript
 
 	ParseResult ParserVar::parse(StringIteratorRange itrange)
 	{
+		itrange.begin = parseComment(itrange.begin, itrange.end);
 		ParseResult nameResult = ParserNameSpecifier::parse(itrange);
 		if (!nameResult.isOk())
 			return nameResult;

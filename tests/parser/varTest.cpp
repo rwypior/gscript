@@ -72,3 +72,28 @@ TEST_CASE("ParserVarMemberAccess")
 	REQUIRE(result.isOk());
 	REQUIRE(pVar.name == "myobject");
 }
+
+TEST_CASE("ParserVarCommentLineBefore")
+{
+	std::string txt = 
+		"// This is a comment\n"
+		"myvar";
+
+	gscript::ParserVar pVar;
+	auto result = pVar.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pVar.name == "myvar");
+}
+
+TEST_CASE("ParserVarCommentBlockBeforeArray")
+{
+	std::string txt = "myvar /* This is a comment */ [42]";
+
+	gscript::ParserVar pVar;
+	auto result = pVar.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pVar.name == "myvar");
+	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pVar.arrayAccessor->statement.components.at(0))->value == "42");
+}

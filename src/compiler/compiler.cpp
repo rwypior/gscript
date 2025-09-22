@@ -428,6 +428,9 @@ namespace gscript
 	{
 		gs_log("Compiling ScriptElse");
 
+		// TODO - change this, so compiled 'else if' statement will have a condition
+		// instead of adding a statement with single 'if'
+
 		std::unique_ptr<ScriptStatement> condition;
 		std::unique_ptr<ScriptIf> selse;
 		if (pElse.pif)
@@ -436,7 +439,7 @@ namespace gscript
 			if (!pElse.pif->pelse.body.body.statements.empty())
 				selse = this->compileElse(scope, pElse.pif->pelse);
 		}
-
+		
 		auto exeblock = this->compileExecutiveBlock(scope, pElse.body.body);
 		auto sif = std::make_unique<ScriptIf>(*scope, std::move(condition), std::move(selse));
 		sif->merge(std::move(exeblock));

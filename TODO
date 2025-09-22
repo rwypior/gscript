@@ -5,6 +5,7 @@ Fixes
 Framework stuff
 ===============
 
+- Improve error reporting
 - Add tests for reference values
 - See if ScriptValue's getType() can return unique_ptr, or something else than shared_ptr
 - VariableAccessor and FunctionAccessor should be treated as prototypes and return real addresses after built
@@ -13,6 +14,9 @@ Framework stuff
 - Find and eliminate raw pointer usage
 	- ScriptCallable is returning raw pointer - it should return std::shared_ptr instead
 	- ScriptVariable is taking raw pointer as default value - it should take std::unique_ptr (?) instead
+- Remove comment parsing from reduntant places
+	- There may be some comment parsing where it's no longer required - it should be enough to parse
+		for comments ONLY BEFORE AND AFTER any parser entity, and the rest (inbetween stuff) should work itself out
 
 Functionality
 =============
@@ -39,11 +43,6 @@ Samething as for for ... else, but for while loops, same syntax
 
 events
 Make an universal event object, usage would be like in cppevents lib
-
-----------------------
-
-comments
-Yup, make comments work
 
 ----------------------
 

@@ -1,11 +1,13 @@
 #include "parser/pTypeSpecifier.hpp"
 #include "parser/pArrayAccessor.hpp"
 #include "parser/pReference.hpp"
+#include "parser/pComment.hpp"
 
 namespace gscript
 {
 	ParseResult ParserTypeSpecifier::parse(StringIteratorRange itrange)
 	{
+		itrange.begin = parseComment(itrange.begin, itrange.end);
 		ParseResult nameResult = ParserNameSpecifier::parse(itrange);
 		auto end = nameResult.result.end;
 

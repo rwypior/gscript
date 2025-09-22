@@ -61,3 +61,29 @@ TEST_CASE("ParserReturnFailureEmptyString")
 	REQUIRE(!result.isOk());
 	REQUIRE(result.details.message == "Expected \"return\", got empty statement");
 }
+
+TEST_CASE("ParserReturnCommentLineBefore")
+{
+	std::string txt = 
+		"// This is a comment\n"
+		"return 42;";
+
+	gscript::ParserReturn pReturn;
+	auto result = pReturn.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pReturn.value.components.size() == 1);
+	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pReturn.value.components.at(0))->value == "42");
+}
+
+TEST_CASE("ParserReturnCommentBlockAfterReturn")
+{
+	std::string txt = "return /* This is a comment */ 42;";
+
+	gscript::ParserReturn pReturn;
+	auto result = pReturn.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pReturn.value.components.size() == 1);
+	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pReturn.value.components.at(0))->value == "42");
+}

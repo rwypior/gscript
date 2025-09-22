@@ -68,3 +68,27 @@ TEST_CASE("ParserNewFailureEmptyString")
 	REQUIRE(!result.isOk());
 	REQUIRE(result.details.message == "Expected \"new\", got empty statement");
 }
+
+TEST_CASE("ParserNewCommentLineBefore")
+{
+	std::string txt = 
+		"// This is a comment\n"
+		"new someclass();";
+
+	gscript::ParserNew pNew;
+	auto result = pNew.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pNew.name == "someclass");
+}
+
+TEST_CASE("ParserNewCommentBlockAfterNew")
+{
+	std::string txt = "new /* This is a comment */ someclass();";
+
+	gscript::ParserNew pNew;
+	auto result = pNew.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pNew.name == "someclass");
+}

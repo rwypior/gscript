@@ -142,3 +142,14 @@ TEST_CASE("ParserArglistCommentBlockBetweenTypeAndName")
 
 	REQUIRE(result.isOk());
 }
+
+TEST_CASE("ParserArglistCommentBlockBeforeArglistEnd")
+{
+	std::string txt =
+		"(int x /* This is a comment */)";
+
+	gscript::ParserArglist pArglist;
+	auto result = pArglist.parse(txt);
+
+	REQUIRE(result.isOk());
+}

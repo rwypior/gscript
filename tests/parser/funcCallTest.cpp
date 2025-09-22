@@ -100,3 +100,38 @@ TEST_CASE("ParserFuncCallMethod")
 		REQUIRE(std::static_pointer_cast<gscript::ParserFuncCall>(pFunc.components.at(2))->name == "some_function");
 	}
 }
+
+TEST_CASE("ParserFuncCallCommentLineBefore")
+{
+	std::string txt = 
+		"// This is a comment\n"
+		"some_function();";
+
+	gscript::ParserFuncCall pFunc;
+	auto result = pFunc.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pFunc.name == "some_function");
+}
+
+TEST_CASE("ParserFuncCallCommentBlockAfterFunc")
+{
+	std::string txt = "some_function /* This is a comment */ ();";
+
+	gscript::ParserFuncCall pFunc;
+	auto result = pFunc.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pFunc.name == "some_function");
+}
+
+TEST_CASE("ParserFuncCallCommentBlockBeforeSemicolon")
+{
+	std::string txt = "some_function() /* This is a comment */ ;";
+
+	gscript::ParserFuncCall pFunc;
+	auto result = pFunc.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pFunc.name == "some_function");
+}

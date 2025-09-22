@@ -66,3 +66,17 @@ TEST_CASE("ParserControlDirectiveEmptyString")
 
 	REQUIRE(!result.isOk());
 }
+
+TEST_CASE("ParserControlDirectiveCommentLineBefore")
+{
+	std::string directive = "something";
+	std::string txt = 
+		"// This is a comment\n"
+		"#something";
+
+	gscript::ParserControlDirective pCtrl(directive);
+	auto result = pCtrl.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pCtrl.directive == directive);
+}

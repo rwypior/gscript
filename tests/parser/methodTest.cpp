@@ -44,3 +44,46 @@ TEST_CASE("ParserMethodStaticProtected")
 	REQUIRE(result.isOk());
 	REQUIRE(pMethod.accessSpecifier.modifier & (gscript::Modifier::AccessProtected | gscript::Modifier::Static));
 }
+
+TEST_CASE("ParserMethodCommentLineBefore")
+{
+	std::string txt =
+		"// This is a comment\n"
+		"void myfunc() {\n"
+		"}"
+		;
+
+	gscript::ParserMethod pMethod;
+	auto result = pMethod.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pMethod.accessSpecifier.modifier == gscript::Modifier::None);
+}
+
+TEST_CASE("ParserMethodCommentBlockAfterProtected")
+{
+	std::string txt =
+		"protected /* This is a comment */ void myfunc() {\n"
+		"}"
+		;
+
+	gscript::ParserMethod pMethod;
+	auto result = pMethod.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pMethod.accessSpecifier.modifier == gscript::Modifier::AccessProtected);
+}
+
+TEST_CASE("ParserMethodCommentBlockBetweenStaticAndProtected")
+{
+	std::string txt =
+		"static /* This is a comment */ protected void myfunc() {\n"
+		"}"
+		;
+
+	gscript::ParserMethod pMethod;
+	auto result = pMethod.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pMethod.accessSpecifier.modifier & (gscript::Modifier::AccessProtected | gscript::Modifier::Static));
+}

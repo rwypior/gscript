@@ -4,17 +4,20 @@
 #include "parser/pArglistEnd.hpp"
 #include "parser/pCallArglist.hpp"
 #include "parser/pWord.hpp"
+#include "parser/pComment.hpp"
 
 namespace gscript
 {
 	ParseResult ParserElse::parse(StringIteratorRange itrange)
 	{
+		itrange.begin = parseComment(itrange.begin, itrange.end);
 		ParseResult parentResult = ParserWord::parse(itrange, ParserElse::keywordElse);
 		if (parentResult.status != ParseResult::Status::Ok)
 			return parentResult;
 
 		auto begin = parentResult.result.end;
 
+		begin = parseComment(begin, itrange.end);
 		ParseResult bodyres = this->body.parse(StringIteratorRange(begin, itrange.end));
 		if (bodyres.isOk())
 		{
@@ -23,6 +26,7 @@ namespace gscript
 		else
 		{
 			ParserStatement statement;
+			begin = parseComment(begin, itrange.end);
 			ParseResult statementres = statement.parse(StringIteratorRange(begin, itrange.end));
 
 			if (!statementres.isOk())

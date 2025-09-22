@@ -82,3 +82,31 @@ TEST_CASE("ParserSpecialDirectiveFailureWrongDirective")
 
 	REQUIRE(!result.isOk());
 }
+
+TEST_CASE("ParserSpecialDirectiveCommentLineBefore")
+{
+	std::string txt = 
+		"// This is a comment\n"
+		"@test";
+
+	gscript::ParserSpecialDirective pSpecDir("test");
+	auto result = pSpecDir.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(result.result.begin == txt.begin() + 21);
+	REQUIRE(result.result.end == txt.end());
+}
+
+TEST_CASE("ParserSpecialDirectiveCommentBlockBefore")
+{
+	std::string txt = 
+		"/* This is a comment */\n"
+		"@test";
+
+	gscript::ParserSpecialDirective pSpecDir("test");
+	auto result = pSpecDir.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(result.result.begin == txt.begin() + 24);
+	REQUIRE(result.result.end == txt.end());
+}

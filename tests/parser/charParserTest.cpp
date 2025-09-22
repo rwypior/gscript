@@ -68,3 +68,35 @@ TEST_CASE("ParseCharSpacesNotAllowedWithTrailing")
 	REQUIRE(result.result.begin == txt.begin());
 	REQUIRE(result.result.end == txt.begin() + 1);
 }
+
+TEST_CASE("ParseCharParseUntilNonWhitespaceSimple")
+{
+	std::string txt = "     x";
+	auto result = gscript::ParserChar::parseUntilNonWhitespace(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(result.result.begin == txt.begin() + 5);
+	REQUIRE(result.result.end == txt.end());
+}
+
+TEST_CASE("ParseCharParseUntilNonWhitespaceTrailingSpaces")
+{
+	std::string txt = "     x   ";
+	auto result = gscript::ParserChar::parseUntilNonWhitespace(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(result.result.begin == txt.begin() + 5);
+	REQUIRE(result.result.end == txt.end() - 3);
+}
+
+TEST_CASE("ParseCharParseUntilNonWhitespaceNewlines")
+{
+	std::string txt = 
+		"     \n"
+		"   x";
+	auto result = gscript::ParserChar::parseUntilNonWhitespace(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(result.result.begin == txt.begin() + 9);
+	REQUIRE(result.result.end == txt.end());
+}

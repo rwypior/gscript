@@ -1,6 +1,7 @@
 #include "parser/pSpecialDirective.hpp"
 #include "parser/pChar.hpp"
 #include "parser/pWord.hpp"
+#include "parser/pComment.hpp"
 
 namespace gscript
 {
@@ -12,6 +13,7 @@ namespace gscript
 
 	ParseResult ParserSpecialDirective::parse(StringIteratorRange itrange)
 	{
+		itrange.begin = parseComment(itrange.begin, itrange.end);
 		ParseResult parentResult = ParserChar::parse(itrange, ParserSpecialDirective::keycharControl);
 		if (!parentResult.isOk())
 			return parentResult;

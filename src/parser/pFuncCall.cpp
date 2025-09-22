@@ -1,5 +1,6 @@
 #include "parser/pFuncCall.hpp"
 #include "parser/pNameSpecifier.hpp"
+#include "parser/pComment.hpp"
 
 namespace gscript
 {
@@ -8,6 +9,7 @@ namespace gscript
 		auto begin = itrange.end;
 
 		ParserNameSpecifier nameSpecifier;
+		itrange.begin = parseComment(itrange.begin, itrange.end);
 		ParseResult name = nameSpecifier.parse(itrange);
 		if (!name.isOk())
 			return name;

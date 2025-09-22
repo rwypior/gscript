@@ -11,6 +11,7 @@
 #include "parser/pOperator.hpp"
 #include "parser/pExternSpecial.hpp"
 #include "parser/pAbstractSpecial.hpp"
+#include "parser/pComment.hpp"
 
 #include "compileException.hpp"
 
@@ -18,7 +19,7 @@ namespace gscript
 {
 	ParseResult ParserFunction::parse(StringIteratorRange itrange)
 	{
-		bool isConstructor = dynamic_cast<ParserConstructor*>(this) != NULL;
+		bool isConstructor = dynamic_cast<ParserConstructor*>(this) != nullptr;
 
 		auto typeBegin = itrange.begin;
 		auto typeEnd = itrange.begin;
@@ -26,6 +27,7 @@ namespace gscript
 		if (!isConstructor)
 		{
 			ParserTypeSpecifier type = ParserTypeSpecifier();
+			itrange.begin = parseComment(itrange.begin, itrange.end);
 			ParseResult typeres = type.parse(itrange);
 			if (!typeres.isOk())
 				return typeres;
@@ -42,6 +44,7 @@ namespace gscript
 			this->returnTypeClassifier = ValueType::Class;
 		}
 
+		typeEnd = parseComment(typeEnd, itrange.end);
 		ParseResult name = (ParserNameSpecifier()).parse(StringIteratorRange(typeEnd, itrange.end));
 		if (!name.isOk())
 			return name;
@@ -52,6 +55,7 @@ namespace gscript
 		if (!arglist.isOk())
 			return arglist;
 
+		arglist.result.end = parseComment(arglist.result.end, itrange.end);
 		ParseResult assign = (ParserOperatorAssign()).parse(StringIteratorRange(arglist.result.end, itrange.end));
 
 		if (assign.isOk())

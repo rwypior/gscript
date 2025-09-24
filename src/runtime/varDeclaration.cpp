@@ -40,6 +40,16 @@ namespace gscript
 		return this->statement->getType();
 	}
 
+	const std::unique_ptr<ScriptCallable>& ScriptVarDeclaration::getStatement() const
+	{
+		return this->statement;
+	}
+
+	std::unique_ptr<ScriptCallable>& ScriptVarDeclaration::getStatement()
+	{
+		return this->statement;
+	}
+
 	// Field declaration
 
 	ScriptFieldDeclaration::ScriptFieldDeclaration(ScriptScope& scope, const std::string& name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptStatement>&& statement)
@@ -54,21 +64,5 @@ namespace gscript
 		auto& var = instance.registerVariable(std::make_unique<ScriptVariable>(this->name, this->type, nullptr));
 		this->accessor = VariableAccessor::find(instance, var.getName(), false);
 		//this->var = new DirectEntityLink<ScriptVariable&>(var);
-	}
-
-	// Prototype
-
-	ScriptVarDeclarationPrototype::ScriptVarDeclarationPrototype(ScriptScope& scope, const std::string& name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptStatement>&& statement)
-		: ScriptCallablePrototype(scope)
-		, name(name)
-		, type(type)
-		, statement(std::move(statement))
-	{
-	}
-
-	std::unique_ptr<ScriptCallable> ScriptVarDeclarationPrototype::build(ScriptScopeBase* scope)
-	{
-		// TODO
-		return nullptr;
 	}
 }

@@ -29,7 +29,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeWhile")
 	cond->setup();
 
 	// For block
-	auto varread2 = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &testVariable);
+	auto varread2 = std::make_unique<gscript::ScriptVarReferenceRead>(globalNamespace, &testVariable);
 	auto incr = std::make_unique<gscript::ScriptOperatorIncrement>(globalNamespace, gscript::OperatorLinkage::Left);
 	auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecbody.push_back(std::move(varread2));

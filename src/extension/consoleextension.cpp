@@ -12,7 +12,7 @@ namespace gscript
 			name,
 			ScriptType::create(ValueType::Void, this->scope),
 			PARAMS_T({ FunctionParameter(ScriptType::create(ValueType::String, scope)) }),
-			Modifier::Static
+			Modifier::AccessPublic | Modifier::Static
 		)
 	{
 	}
@@ -37,7 +37,7 @@ namespace gscript
 			name,
 			ScriptType::create(ValueType::Void, this->scope),
 			PARAMS_T({ FunctionParameter(ScriptType::create(ValueType::String, scope)) }),
-			Modifier::Static
+			Modifier::AccessPublic | Modifier::Static
 		)
 	{
 	}
@@ -47,9 +47,9 @@ namespace gscript
 		this->validateParams(c);
 
 		const ScriptValue& val = *c[0];
-		const ScriptStringValue& sval = static_cast<const ScriptStringValue&>(val);
+		const ScriptStringValue* sval = static_cast<const ScriptStringValue*>(val.data());
 
-		std::cout << sval.getValue() << std::endl;
+		std::cout << sval->getValue() << std::endl;
 
 		return ScriptType::null();
 	}
@@ -62,7 +62,7 @@ namespace gscript
 			name,
 			ScriptType::create(ValueType::String, this->scope),
 			PARAMS_T(),
-			Modifier::Static
+			Modifier::AccessPublic | Modifier::Static
 		)
 	{
 	}

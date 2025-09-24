@@ -57,6 +57,7 @@ namespace gscript
 
 		const std::string& getName() const;
 		const std::vector<std::unique_ptr<ScriptStatement>>& getParams() const;
+		std::vector<std::unique_ptr<ScriptStatement>>& getParams();
 		const bool isStaticCall() const;
 
 	private:
@@ -64,21 +65,6 @@ namespace gscript
 		std::vector<std::unique_ptr<ScriptStatement>> params;
 		bool staticCall = false;
 	};
-
-	//// RESOLVER
-
-	//class ScriptFuncCallResolver : public ScriptFuncCall
-	//{
-	//public:
-	//	ScriptFuncCallResolver(ScriptScope &originalScope, std::vector<std::unique_ptr<ScriptStatement>>&& params, const std::string &name, PARAMS_T paramTypes, bool staticCall);
-
-	//	std::unique_ptr<ScriptFuncCall> resolve(const ScriptScope *scope);
-
-	//protected:
-	//	std::string name;
-	//	PARAMS_T paramTypes;
-	//	bool staticCall = false;
-	//};
 }
 
 #endif

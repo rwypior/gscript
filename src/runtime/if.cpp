@@ -27,4 +27,14 @@ namespace gscript
 	{
 		return ScriptType::nulltype();
 	}
+
+	const std::unique_ptr<ScriptCallable>& ScriptIf::getCondition() const
+	{
+		return this->condition;
+	}
+
+	std::unique_ptr<ScriptCallable>& ScriptIf::getCondition()
+	{
+		return this->condition;
+	}
 }

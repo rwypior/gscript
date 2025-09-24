@@ -483,8 +483,12 @@ namespace gscript
 	// Array
 
 	ScriptArrayValue::ScriptArrayValue(const ScriptArrayValue& b)
-		: ScriptArrayValue(b.type, b.val)
+		: ScriptArrayValue(b.type, {})
 	{
+		for (auto& entry : b.val)
+		{
+			this->val.push_back(entry->clone());
+		}
 	}
 
 	ScriptArrayValue::ScriptArrayValue(ScriptArrayValue&& b) noexcept
@@ -701,5 +705,63 @@ namespace gscript
 	ScriptNull ScriptNullValue::getValue() const
 	{
 		return {};
+	}
+
+	// Return value
+
+	ScriptReturnValue::ScriptReturnValue(std::unique_ptr<ScriptValue>&& val)
+		: val(std::move(val))
+	{
+	}
+
+	size_t ScriptReturnValue::getSize() const
+	{
+		return this->val ? this->val->getSize() : 0;
+	}
+
+	const std::shared_ptr<ScriptType> ScriptReturnValue::getType()
+	{
+		return this->val ? this->val->getType() : 0;
+	}
+
+	std::unique_ptr<ScriptValue> ScriptReturnValue::clone() const
+	{
+		return this->val ? this->val->clone() : nullptr;
+	}
+
+	void ScriptReturnValue::assign(const ScriptValue& val)
+	{
+		if (this->val)
+			this->val->assign(val);
+	}
+
+	ScriptBoolValue ScriptReturnValue::boolean() const
+	{
+		return !!this->val;
+	}
+
+	std::unique_ptr<ScriptValue>& ScriptReturnValue::getValue()
+	{
+		return this->val;
+	}
+
+	ScriptValue* ScriptReturnValue::data()
+	{
+		return this->val ? this->val->data() : nullptr;
+	}
+
+	const ScriptValue* ScriptReturnValue::data() const
+	{
+		return this->val ? this->val->data() : nullptr;
+	}
+
+	std::unique_ptr<ScriptValue> ScriptReturnValue::returnedData()
+	{
+		return std::move(this->val);
+	}
+
+	bool ScriptReturnValue::isReturnedData() const
+	{
+		return !!this->val;
 	}
 }

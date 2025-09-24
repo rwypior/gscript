@@ -41,6 +41,9 @@ namespace gscript
 		SCRIPT_API virtual ScriptValue* data() { return this; };
 		SCRIPT_API virtual const ScriptValue* data() const { return this; };
 
+		SCRIPT_API virtual std::unique_ptr<ScriptValue> returnedData() { return nullptr; };
+		SCRIPT_API virtual bool isReturnedData() const { return false; };
+
 		SCRIPT_API virtual void assign(const ScriptValue &val) = 0;
 		SCRIPT_API virtual size_t getSize() const = 0;
 		SCRIPT_API virtual const std::shared_ptr<ScriptType> getType() = 0;
@@ -300,6 +303,26 @@ namespace gscript
 		SCRIPT_API virtual void assign(const ScriptValue&) override;
 		SCRIPT_API virtual ScriptBoolValue boolean() const override;
 		SCRIPT_API virtual ScriptNull getValue() const;
+	};
+
+	// Special case for signaling the need of returning from the function
+	class ScriptReturnValue : public ScriptValue
+	{
+	public:
+		SCRIPT_API ScriptReturnValue(std::unique_ptr<ScriptValue>&& val);
+		SCRIPT_API size_t getSize() const override;
+		SCRIPT_API virtual const std::shared_ptr<ScriptType> getType() override;
+		SCRIPT_API virtual std::unique_ptr<ScriptValue> clone() const override;
+		SCRIPT_API virtual void assign(const ScriptValue& val) override;
+		SCRIPT_API virtual ScriptBoolValue boolean() const override;
+		SCRIPT_API virtual std::unique_ptr<ScriptValue>& getValue();
+		SCRIPT_API virtual ScriptValue* data() override;
+		SCRIPT_API virtual const ScriptValue* data() const override;
+		SCRIPT_API virtual std::unique_ptr<ScriptValue> returnedData();
+		SCRIPT_API virtual bool isReturnedData() const override;
+
+	private:
+		std::unique_ptr<ScriptValue> val;
 	};
 }
 

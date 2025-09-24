@@ -157,6 +157,19 @@ TEST_CASE("ParserIfCommentLineBefore")
 	REQUIRE(result.isOk());
 }
 
+TEST_CASE("ParserIfCommentLineBeforeTwice")
+{
+	std::string txt = 
+		"// This is a comment, \n"
+		"// And another one\n"
+		"if (myvar) {}";
+
+	gscript::ParserIf pif;
+	auto result = pif.parse(txt);
+
+	REQUIRE(result.isOk());
+}
+
 TEST_CASE("ParserIfCommentBlockBetweenIfAndArglist")
 {
 	std::string txt = "if /* This is a comment */ (myvar) {}";

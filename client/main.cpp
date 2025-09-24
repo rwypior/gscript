@@ -17,11 +17,11 @@ int main(int argc, char **argv)
 		std::cout << "Please specify path to the script" << std::endl;
 		return 1;
 	}
-
+	
 	gscript::Script scr(argv[1]);
 
 	scr.loadDefaultExtensions();
-
+	
 	auto begin = Clock::now();
 	scr.compile();
 	double period = std::chrono::duration_cast<std::chrono::microseconds>(Clock::now() - begin).count() * 0.000001;

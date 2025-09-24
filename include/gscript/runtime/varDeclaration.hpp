@@ -29,6 +29,9 @@ namespace gscript
 
 		virtual const std::shared_ptr<ScriptType> getType() const override;
 
+		const std::unique_ptr<ScriptCallable>& getStatement() const;
+		std::unique_ptr<ScriptCallable>& getStatement();
+
 		std::string _name() const
 		{
 			return "VarDeclaration";
@@ -36,7 +39,7 @@ namespace gscript
 
 	protected:
 		std::unique_ptr<VariableAccessor> accessor;
-		std::unique_ptr<ScriptStatement> statement;
+		std::unique_ptr<ScriptCallable> statement;
 	};
 
 	class ScriptFieldDeclaration : public ScriptVarDeclaration
@@ -49,20 +52,6 @@ namespace gscript
 	private:
 		std::string name;
 		const std::shared_ptr<ScriptType> type;
-		std::unique_ptr<ScriptStatement> statement;
-	};
-
-	class ScriptVarDeclarationPrototype : public ScriptCallablePrototype
-	{
-	public:
-		ScriptVarDeclarationPrototype(ScriptScope& scope, const std::string& name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptStatement>&& statement);
-
-		virtual std::unique_ptr<ScriptCallable> build(ScriptScopeBase* scope = nullptr) override;
-
-	private:
-		std::string name;
-		const std::shared_ptr<ScriptType> type;
-		std::unique_ptr<ScriptStatement> statement;
 	};
 }
 

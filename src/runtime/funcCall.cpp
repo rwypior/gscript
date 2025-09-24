@@ -87,6 +87,11 @@ namespace gscript
 		return this->params;
 	}
 
+	std::vector<std::unique_ptr<ScriptStatement>>& ScriptFuncCallPrototype::getParams()
+	{
+		return this->params;
+	}
+
 	const bool ScriptFuncCallPrototype::isStaticCall() const
 	{
 		return this->staticCall;

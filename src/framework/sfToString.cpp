@@ -9,8 +9,7 @@ namespace gscript
 	ScriptFuncToString::ScriptFuncToString(ScriptScope &scope, const std::string &name)
 		: ScriptFunction(scope, name, ScriptType::create(ValueType::String, this->scope), PARAMS_T(1, FunctionParameter(ScriptType::create(ValueType::Int, scope))))
 	{
-		PARAMS_T;
-		FunctionParameter;
+		this->setup();
 	}
 
 	std::unique_ptr<ScriptValue> ScriptFuncToString::run(const CALLABLE_PARAMS_T &c)
@@ -18,9 +17,27 @@ namespace gscript
 		this->validateParams(c);
 
 		const ScriptValue &val = *c[0];
-		const ScriptIntValue &sval = static_cast<const ScriptIntValue&>(val);
+		auto resolved = val.data();
 
-		return std::make_unique<ScriptStringValue>(std::to_string(sval.getValue()));
+		std::string res;
+		if (auto cv = dynamic_cast<const ScriptClassValue*>(resolved))
+		{
+			// TODO - implement this
+		}
+		else if (auto cv = dynamic_cast<const ScriptCharValue*>(resolved))
+			res = std::string(1, cv->getValue());
+		else if (auto cv = dynamic_cast<const ScriptByteValue*>(resolved))
+			res = std::to_string(cv->getValue());
+		else if (auto cv = dynamic_cast<const ScriptIntValue*>(resolved))
+			res = std::to_string(cv->getValue());
+		else if (auto cv = dynamic_cast<const ScriptUnsignedIntValue*>(resolved))
+			res = std::to_string(cv->getValue());
+		else if (auto cv = dynamic_cast<const ScriptFloatValue*>(resolved))
+			res = std::to_string(cv->getValue());
+		else if (auto cv = dynamic_cast<const ScriptDoubleValue*>(resolved))
+			res = std::to_string(cv->getValue());
+
+		return std::make_unique<ScriptStringValue>(res);
 	}
 
 	const ScriptType &ScriptFuncToString::getType()

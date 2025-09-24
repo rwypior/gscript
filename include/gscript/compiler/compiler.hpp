@@ -61,7 +61,7 @@ namespace gscript
 		std::unique_ptr<ScriptFunction> compileFunction(ScriptScope* scope, const ParserFunction& pfunc);
 		std::unique_ptr<ScriptMethod> compileMethod(ScriptScope* scope, const ParserMethod& pfunc);
 		std::unique_ptr<ScriptValue> compileValue(const ParserLiteral& pLiteral);
-		std::unique_ptr<ScriptStatement> compileStatement(ScriptScope* scope, const ParserStatement& pstatement);
+		std::unique_ptr<ScriptStatement> compileStatement(ScriptScope* scope, const ParserStatement& pstatement, bool topmostVarReadReference = true);
 		std::unique_ptr<ScriptExecutiveBlock> compileExecutiveBlock(ScriptScope* scope, const ParserBlockBody& pblock);
 		std::unique_ptr<ScriptOperator> compileOperator(ScriptScope* scope, const ParserOperator& pOperator);
 		std::unique_ptr<ScriptCallable> compileVarRead(ScriptScope* scope, const ParserVar& pVar);

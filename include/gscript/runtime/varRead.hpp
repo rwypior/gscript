@@ -17,15 +17,10 @@ namespace gscript
 	class ScriptVarRead : public ScriptCallable, public ScriptScopedCall
 	{
 	public:
-		//ScriptVariable *var;
-		//std::unique_ptr<EntityLink<ScriptVariable*>> var = nullptr;
-
 		ScriptVarRead(ScriptScope& scope);
 		ScriptVarRead(ScriptScope& scope, std::unique_ptr<VariableAccessor>&& accessor);
 		ScriptVarRead(ScriptScope& scope, ScriptVariable *variable);
 		ScriptVarRead(ScriptScope& scope, const std::string& name);
-		//ScriptVarRead(ScriptScope &scope, ScriptVariable *var);
-		//ScriptVarRead(ScriptScope &scope, std::unique_ptr<EntityLink<ScriptVariable*>>&& link);
 
 		virtual const std::shared_ptr<ScriptType> getType() const override;
 
@@ -38,6 +33,13 @@ namespace gscript
 		std::unique_ptr<VariableAccessor> accessor;
 	};
 
+	class ScriptVarReferenceRead : public ScriptVarRead
+	{
+	using ScriptVarRead::ScriptVarRead;
+	public:
+		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override;
+	};
+
 	class ScriptVarReadPrototype : public ScriptCallablePrototype
 	{
 	public:
@@ -45,8 +47,13 @@ namespace gscript
 
 		virtual std::unique_ptr<ScriptCallable> build(ScriptScopeBase* scope = nullptr) override;
 
+		const std::string& getName() const;
+
+		void disableReference();
+
 	private:
 		std::string varname;
+		bool isReference = true;
 	};
 
 	// Array read

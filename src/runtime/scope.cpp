@@ -44,6 +44,7 @@ namespace gscript
 	}
 
 	// TODO - merge those two functions into one
+	// TODO 2 - make this function accept a collection of ValueType enums
 
 	ScriptFunction* ScriptScopeBase::findFunction(const std::string &name, const PARAMS_T params, bool searchParents, bool searchBase) const
 	{

@@ -25,8 +25,11 @@ namespace gscript
 
 		virtual const std::shared_ptr<ScriptType> getType() const override;
 
+		const std::unique_ptr<ScriptCallable>& getCondition() const;
+		std::unique_ptr<ScriptCallable>& getCondition();
+
 	private:
-		std::unique_ptr<ScriptStatement> condition = nullptr;
+		std::unique_ptr<ScriptCallable> condition = nullptr;
 		std::unique_ptr<ScriptIf> selse = nullptr;
 	};
 }

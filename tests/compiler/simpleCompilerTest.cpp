@@ -56,6 +56,33 @@ TEST_CASE_METHOD(GscriptTest, "CompilerFuncCall")
 	REQUIRE(stmt0_call0->getFunc().get()->getName() == "otherfunc");
 }
 
+
+TEST_CASE_METHOD(GscriptTest, "CompilerEmptyFunctions")
+{
+	std::string txt =
+		"void myfunc() {\n"
+		"}\n"
+		"void otherfunc() {\n"
+		"}"
+		;
+
+	gscript::ParserNamespace mainNamespace(gscript::NamespaceType::Main);
+	mainNamespace.parse(gscript::StringIteratorRange(txt.begin(), txt.end(), "", 0));
+
+	gscript::Compiler compiler;
+
+	for (auto& fnc : mainNamespace.functions)
+	{
+		globalNamespace.registerFunction(compiler.compileFunction(&globalNamespace, fnc));
+	}
+
+	auto myfunc = globalNamespace.getFunction("myfunc", {});
+	auto otherfunc = globalNamespace.getFunction("otherfunc", {});
+
+	REQUIRE(myfunc);
+	REQUIRE(otherfunc);
+}
+
 TEST_CASE_METHOD(GscriptTest, "CompilerClassVarRead")
 {
 	std::string txt =

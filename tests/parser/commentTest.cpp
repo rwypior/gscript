@@ -39,7 +39,61 @@ TEST_CASE("ParserCommentSingleLine")
 	}
 }
 
+TEST_CASE("ParserCommentLineWithNumbers")
+{
+	std::string txt = "// Th1s 1s 4 c0mm3nt";
+
+	gscript::ParserComment pComment;
+	auto result = pComment.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(result.getLength() == txt.length());
+	REQUIRE(result.result.end == txt.end());
+}
+
 TEST_CASE("ParserCommentLineMultiple")
+{
+	std::string txt =
+		"// This is a comment\n"
+		"// Another comment";
+
+	gscript::ParserComment pComment;
+	auto result = pComment.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(result.getLength() == txt.length());
+	REQUIRE(result.result.end == txt.end());
+}
+
+TEST_CASE("ParserCommentLineMultiplePrependedWithWhitelines")
+{
+	std::string txt =
+		"		// This is a comment\n"
+		"		// Another comment";
+
+	gscript::ParserComment pComment;
+	auto result = pComment.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(result.getLength() == txt.length());
+	REQUIRE(result.result.end == txt.end());
+}
+
+TEST_CASE("ParserCommentLineMultipleWithSpecialCharacters")
+{
+	std::string txt =
+		"// This is a comment, \n"
+		"// Another comment";
+
+	gscript::ParserComment pComment;
+	auto result = pComment.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(result.getLength() == txt.length());
+	REQUIRE(result.result.end == txt.end());
+}
+
+TEST_CASE("ParserCommentLineMultipleWithBlankLines")
 {
 	std::string txt =
 		"// This is a comment\n"

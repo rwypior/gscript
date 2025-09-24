@@ -17,10 +17,11 @@ namespace gscript
 	{
 		for (auto& stmt : this->statements)
 		{
-			if (std::shared_ptr<ScriptReturn> ret = std::dynamic_pointer_cast<ScriptReturn>(stmt))
-				return ret->run();
-
-			stmt->run();
+			auto ret = stmt->run();
+			if (ret && ret->isReturnedData())
+			{
+				return ret;
+			}
 		}
 
 		return ScriptType::null();

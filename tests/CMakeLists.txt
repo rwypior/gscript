@@ -33,7 +33,7 @@ target_link_libraries(gscriptTest PRIVATE Catch2::Catch2WithMain)
 
 add_subdirectory("compiler")
 add_subdirectory("extension")
-#add_subdirectory("integration")
+add_subdirectory("integration")
 add_subdirectory("parser")
 add_subdirectory("runtime")
 

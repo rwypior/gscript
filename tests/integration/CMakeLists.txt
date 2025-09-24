@@ -1,0 +1,1 @@
+target_sources(gscriptTest PRIVATE "commentsTest.cpp")

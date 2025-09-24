@@ -10,7 +10,7 @@ namespace gscript
 
 	std::unique_ptr<ScriptValue> ScriptReturn::run(const CALLABLE_PARAMS_T &c)
 	{
-		return this->statement->run();
+		return std::make_unique<ScriptReturnValue>(this->statement->run());
 	}
 
 	const std::shared_ptr<ScriptType> ScriptReturn::getType() const

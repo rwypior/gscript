@@ -29,25 +29,9 @@ namespace gscript
 	{
 	}
 
-	/*ScriptVarRead::ScriptVarRead(ScriptScope &scope, ScriptVariable *var)
-		: ScriptCallable(scope),
-		var(std::make_unique<DirectEntityLink<ScriptVariable*>>(var))
-	{
-	}
-
-	ScriptVarRead::ScriptVarRead(ScriptScope &scope, std::unique_ptr<EntityLink<ScriptVariable*>>&& link)
-		: ScriptCallable(scope)
-		, var(std::move(link))
-	{
-	}*/
-
 	std::unique_ptr<ScriptValue> ScriptVarRead::run(const CALLABLE_PARAMS_T &c)
 	{
-		// TODO - check this for performance
-		// 1. Test if reference reads work correctly
-		auto& val = this->accessor->get()->getValue();
-		return std::make_unique<ScriptReferenceValue>(std::make_shared<ScriptReferenceType>(val->getType()), val.get());
-		//return this->accessor->get()->getValue()->clone();
+		return this->accessor->get()->getValue()->clone();
 	}
 
 	ScriptVariable* ScriptVarRead::get()
@@ -58,13 +42,19 @@ namespace gscript
 	const std::shared_ptr<ScriptType> ScriptVarRead::getType() const
 	{
 		return this->accessor->getType();
-		//return this->var->orig()->getType();
 	}
 
 	void ScriptVarRead::setScope(ScriptClassInstance *instance)
 	{	
 		this->accessor->setScope(instance);
-		//static_cast<MemberEntityLink<ScriptVariable*, ScriptClassInstance::VariableContainer>&>(*this->var).container = &instance->getVariables();
+	}
+
+	// Reference read
+
+	std::unique_ptr<ScriptValue> ScriptVarReferenceRead::run(const CALLABLE_PARAMS_T& c)
+	{
+		auto& val = this->accessor->get()->getValue();
+		return std::make_unique<ScriptReferenceValue>(std::make_shared<ScriptReferenceType>(val->getType()), val.get());
 	}
 
 	// Prototype
@@ -83,22 +73,37 @@ namespace gscript
 
 		try
 		{
-			result = std::make_unique<ScriptVarRead>(*usedScope, VariableAccessor::find(*usedScope, this->varname));
+			if (this->isReference)
+				result = std::make_unique<ScriptVarReferenceRead>(*usedScope, VariableAccessor::find(*usedScope, this->varname));
+			else
+				result = std::make_unique<ScriptVarRead>(*usedScope, VariableAccessor::find(*usedScope, this->varname));
 		}
 		catch (...)
 		{
 			try
 			{
-				result = std::make_unique<ScriptVarRead>(*usedScope, ParameterAccessor::find(*usedScope, this->varname));
+				if (this->isReference)
+					result = std::make_unique<ScriptVarReferenceRead>(*usedScope, ParameterAccessor::find(*usedScope, this->varname));
+				else
+					result = std::make_unique<ScriptVarRead>(*usedScope, ParameterAccessor::find(*usedScope, this->varname));
 			}
 			catch (...)
 			{
 				throw;
 			}
 		}
-		//auto result = std::make_unique<ScriptVarRead>(*usedScope, VariableAccessor::find(*usedScope, this->varname));
 
 		return result;
+	}
+
+	const std::string& ScriptVarReadPrototype::getName() const
+	{
+		return this->varname;
+	}
+
+	void ScriptVarReadPrototype::disableReference()
+	{
+		this->isReference = false;
 	}
 
 	// Array var read
@@ -123,7 +128,8 @@ namespace gscript
 
 	std::unique_ptr<ScriptValue> ScriptArrayRead::run(const CALLABLE_PARAMS_T &c)
 	{
-		ScriptArrayValue *arr = static_cast<ScriptArrayValue*>(ScriptVarRead::run(c)->data());
+		auto var = ScriptVarRead::run(c);
+		ScriptArrayValue* arr = static_cast<ScriptArrayValue*>(var->data());
 		int index = static_cast<ScriptIntValue*>(this->arrayAccessor->run().get())->getValue();
 
 		// TODO - check this for performance - same as for VarRead

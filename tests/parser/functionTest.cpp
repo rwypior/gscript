@@ -21,6 +21,23 @@ TEST_CASE("ParserFunctionSimple")
 	REQUIRE(pFunc.returnTypeName == "void");
 }
 
+TEST_CASE("ParserFunctionWithParams")
+{
+	std::string txt =
+		"void myfunc(string str) {\n"
+		"}"
+		;
+
+	gscript::ParserFunction pFunc;
+	auto result = pFunc.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(pFunc.name == "myfunc");
+	REQUIRE(pFunc.returnTypeName == "void");
+	REQUIRE(pFunc.arglist.parameters.at(0).type == "string");
+	REQUIRE(pFunc.arglist.parameters.at(0).name == "str");
+}
+
 TEST_CASE("ParserFunctionFailureNoArglist")
 {
 	std::string txt =

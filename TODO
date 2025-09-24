@@ -1,6 +1,13 @@
 Fixes
 =====
 
+- add tests for returning value from function and another one from nested block
+- add support for returning references from functions:
+	- add syntax for '&' character after type in function parsing
+	- set the appropriate parameter for compiler when parsing detected that character
+- fix this BIG issue:
+	When using recurrency - the parameters all get messed up - the func call should create it's own 'instance' of function,
+	possible solution would be to clone the function when it's executed and perform the operations on it
 
 Framework stuff
 ===============

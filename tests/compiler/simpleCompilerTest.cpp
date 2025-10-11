@@ -185,7 +185,7 @@ TEST_CASE_METHOD(GscriptTest, "CompilerObjectCall")
 	compiler.finalize(globalNamespace);
 
 	auto testFnc = globalNamespace.findFunction("test", {});
-	auto res = testFnc->run();
+	auto res = testFnc->run(*testFnc);
 
 	REQUIRE(res->as<gscript::ScriptIntValue>().getValue() == 42);
 }
@@ -227,7 +227,7 @@ TEST_CASE_METHOD(GscriptTest, "CompilerVirtualCall")
 	compiler.finalize(globalNamespace);
 
 	auto testFnc = globalNamespace.findFunction("test", {});
-	auto res = testFnc->run();
+	auto res = testFnc->run(*testFnc);
 
 	REQUIRE(res->as<gscript::ScriptIntValue>().getValue() == 1337);
 }

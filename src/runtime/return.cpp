@@ -3,14 +3,14 @@
 namespace gscript
 {
 	ScriptReturn::ScriptReturn(ScriptScopeBase& scope, std::unique_ptr<ScriptStatement>&& statement)
-		: ScriptCallable(scope)
-		, statement(std::move(statement))
+		//: ScriptCallable(scope)
+		: statement(std::move(statement))
 	{
 	}
 
-	std::unique_ptr<ScriptValue> ScriptReturn::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptReturn::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		return std::make_unique<ScriptReturnValue>(this->statement->run());
+		return std::make_unique<ScriptReturnValue>(this->statement->run(scope));
 	}
 
 	const std::shared_ptr<ScriptType> ScriptReturn::getType() const

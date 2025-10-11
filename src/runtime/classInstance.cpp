@@ -48,6 +48,11 @@ namespace gscript
 		return this->variables;
 	}
 
+	ScriptMethod* ScriptClassInstance::findMethod(const std::string& name, const PARAMS_T params, bool searchParents, bool searchBase) const
+	{
+		return this->sclass.findMethod(name, params, searchParents, searchBase);
+	}
+
 	void ScriptClassInstance::setParentScope(ScriptScopeBase*)
 	{
 		throw RuntimeException("Cannot set parent scope on class instance");

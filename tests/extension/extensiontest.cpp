@@ -19,7 +19,7 @@ public:
 			: ScriptFunction(
 				scope,
 				name,
-				gscript::ScriptType::create(gscript::ValueType::Int, this->scope),
+				gscript::ScriptType::create(gscript::ValueType::Int, scope),
 				gscript::PARAMS_T({
 					gscript::FunctionParameter(gscript::ScriptType::create(gscript::ValueType::Int, scope)),
 					gscript::FunctionParameter(gscript::ScriptType::create(gscript::ValueType::Int, scope))
@@ -28,7 +28,7 @@ public:
 		{
 		}
 
-		virtual std::unique_ptr<gscript::ScriptValue> run(const gscript::CALLABLE_PARAMS_T& c = {}) override
+		virtual std::unique_ptr<gscript::ScriptValue> run(ScriptScopeBase& scope, const gscript::CALLABLE_PARAMS_T& c = {}) override
 		{
 			this->validateParams(c);
 
@@ -68,7 +68,7 @@ TEST_CASE_METHOD(GscriptTest, "ExtensionSampleExtension")
 	valvec.push_back(std::make_unique<gscript::ScriptIntValue>(42));
 	valvec.push_back(std::make_unique<gscript::ScriptIntValue>(1337));
 
-	auto retval = fnc->run(valvec);
+	auto retval = fnc->run(*fnc, valvec);
 
 	REQUIRE(retval->as<gscript::ScriptIntValue>().getValue() == (42 * 1337));
 

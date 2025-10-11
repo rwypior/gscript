@@ -4,16 +4,16 @@
 namespace gscript
 {
 	ScriptWhile::ScriptWhile(ScriptScope &scope, std::unique_ptr<ScriptStatement>&& condition, std::vector<std::shared_ptr<ScriptCallable>>&& statements)
-		: ScriptCallable(scope)
-		, ScriptExecutiveBlock(std::move(statements))
+		//: ScriptCallable(scope)
+		: ScriptExecutiveBlock(std::move(statements))
 		, condition(std::move(condition))
 	{
 	}
 
-	std::unique_ptr<ScriptValue> ScriptWhile::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptWhile::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		while (this->condition->run()->boolean().getValue())
-			ScriptExecutiveBlock::execute();
+		while (this->condition->run(scope)->boolean().getValue())
+			ScriptExecutiveBlock::execute(scope);
 
 		return ScriptType::null();
 	}

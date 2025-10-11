@@ -26,7 +26,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeArrayInitializer")
 	// Array's type is the underlying element type
 	REQUIRE(ai.getType()->getTypeDescriptor() == gscript::ValueType::Int);
 
-	auto val = ai.run();
+	auto val = ai.run(globalNamespace);
 
 	REQUIRE(val->getType()->getTypeDescriptor() == gscript::ValueType::Array);
 	REQUIRE(val->getType()->getUnderlyingTypeDescriptor() == gscript::ValueType::Int);

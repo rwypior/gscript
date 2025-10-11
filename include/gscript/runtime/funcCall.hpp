@@ -24,11 +24,11 @@ namespace gscript
 	public:
 		//ScriptFuncCall(ScriptScope &scope, ScriptFunction *func, const std::vector<ScriptStatement> &params);
 		//ScriptFuncCall(ScriptScope& scope, EntityLink<ScriptFunction*>* func, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
-		ScriptFuncCall(ScriptScope& scope, FunctionAccessor func, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
-		ScriptFuncCall(ScriptScope& scope, ScriptFunction* func, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
-		ScriptFuncCall(ScriptScope& scope, const std::string& name, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
+		ScriptFuncCall(ScriptScopeBase& scope, FunctionAccessor func, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
+		ScriptFuncCall(ScriptScopeBase& scope, ScriptFunction* func, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
+		ScriptFuncCall(ScriptScopeBase& scope, const std::string& name, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
 
-		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 
 		virtual const std::shared_ptr<ScriptType> getType() const override;
 		void setInstance(std::unique_ptr<ScriptValue>&& instance);
@@ -51,9 +51,9 @@ namespace gscript
 	class ScriptFuncCallPrototype : public ScriptCallablePrototype
 	{
 	public:
-		ScriptFuncCallPrototype(ScriptScope& scope, const std::string& funcname, std::vector<std::unique_ptr<ScriptStatement>>&& params = {}, bool staticCall = false);
+		ScriptFuncCallPrototype(ScriptScopeBase* scope, const std::string& funcname, std::vector<std::unique_ptr<ScriptStatement>>&& params = {}, bool staticCall = false);
 
-		virtual std::unique_ptr<ScriptCallable> build(ScriptScopeBase* scope = nullptr) override;
+		virtual std::unique_ptr<ScriptCallable> build(ScriptScopeBase& scope) override;
 
 		const std::string& getName() const;
 		const std::vector<std::unique_ptr<ScriptStatement>>& getParams() const;
@@ -61,6 +61,7 @@ namespace gscript
 		const bool isStaticCall() const;
 
 	private:
+		ScriptScopeBase* scope;
 		std::string funcname;
 		std::vector<std::unique_ptr<ScriptStatement>> params;
 		bool staticCall = false;

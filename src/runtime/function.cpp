@@ -17,9 +17,18 @@
 
 namespace gscript
 {
+	ScriptFunction::ScriptFunction(const ScriptFunction& fnc)
+		: ScriptScope(fnc.baseFunction ? *fnc.baseFunction : fnc)
+		, name(fnc.name)
+		, returnType(fnc.returnType->clone())
+		, parameters(fnc.parameters)
+		, baseFunction(fnc.baseFunction ? fnc.baseFunction : &fnc)
+	{
+	}
+
 	ScriptFunction::ScriptFunction(ScriptScopeBase &scope, const std::string &name, std::shared_ptr<ScriptType> returnType, const PARAMS_T &parameters, std::vector<std::shared_ptr<ScriptCallable>>&& statements)
-		: ScriptCallable(scope)
-		, ScriptScope(&scope)
+		//: ScriptCallable(scope)
+		: ScriptScope(&scope)
 		, ScriptExecutiveBlock(std::move(statements))
 		, name(name)
 		, parameters(parameters)
@@ -27,12 +36,17 @@ namespace gscript
 	{
 	}
 
-	std::unique_ptr<ScriptValue> ScriptFunction::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptFunction::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
 		this->validateParams(c);
-		this->registerParameters(c);
+		//this->registerParameters(c);
 
-		return ScriptExecutiveBlock::execute();
+		//return ScriptExecutiveBlock::execute(scope);
+
+		ScriptFunction target(*this);
+		target.registerParameters(c);
+		//return target.execute(scope);
+		return this->execute(target);
 	}
 
 	PARAMS_T &ScriptFunction::getParameters()
@@ -176,5 +190,21 @@ namespace gscript
 	const std::string &ScriptFunction::getName() const
 	{
 		return this->name;
+	}
+
+	bool ScriptFunction::isBaseOf(const ScriptScopeBase& scope) const
+	{
+		if (const auto fnc = dynamic_cast<const ScriptFunction*>(&scope))
+		{
+			if (fnc->baseFunction == this || this->baseFunction == fnc->baseFunction)
+				return true;
+			
+			if (auto base = fnc->baseFunction)
+			{
+				return this->isBaseOf(*base);
+			}
+		}
+
+		return false;
 	}
 }

@@ -104,6 +104,11 @@ namespace gscript
 		throw CompileException("Only methods may be registered in class");
 	}
 
+	ScriptMethod* ScriptClass::findMethod(const std::string& name, const PARAMS_T params, bool searchParents, bool searchBase) const
+	{
+		return dynamic_cast<ScriptMethod*>(this->findFunction(name, params, searchParents, searchBase));
+	}
+
 	void ScriptClass::initialize(ScriptClassInstance &instance)
 	{
 		if (this->base)
@@ -112,7 +117,7 @@ namespace gscript
 		for (auto& field : this->fieldDeclarations)
 		{
 			field->setInstance(instance);
-			field->run();
+			field->run(instance);
 		}
 	}
 
@@ -146,7 +151,7 @@ namespace gscript
 		return this->name;
 	}
 
-	bool ScriptClass::isBaseOf(ScriptClass *base)
+	bool ScriptClass::isBaseOf(const ScriptClass *base) const
 	{
 		if (!this->base)
 			return false;

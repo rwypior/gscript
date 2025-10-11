@@ -47,8 +47,8 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeStatement")
 
 	// Statement
 	auto stmt1 = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecbody));
-	stmt1->setup();
-	auto result = stmt1->run();
+	stmt1->setup(globalNamespace);
+	auto result = stmt1->run(globalNamespace);
 
 	REQUIRE(result->as<gscript::ScriptIntValue>().getValue() == 13581);
 }
@@ -63,7 +63,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeStatementWithFuncCalls")
 	auto funcstmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	funcstmtvecbody.push_back(std::move(literal42));
 	auto funcstmt1 = std::make_unique<gscript::ScriptStatement>(myFunc, std::move(funcstmtvecbody));
-	funcstmt1->setup();
+	funcstmt1->setup(globalNamespace);
 
 	auto ret = std::make_unique<gscript::ScriptReturn>(myFunc, std::move(funcstmt1));
 
@@ -95,8 +95,8 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeStatementWithFuncCalls")
 
 	// Statement
 	auto stmt1 = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecbody));
-	stmt1->setup();
-	auto result = stmt1->run();
+	stmt1->setup(globalNamespace);
+	auto result = stmt1->run(globalNamespace);
 
 	REQUIRE(result->as<gscript::ScriptIntValue>().getValue() == 126);
 }

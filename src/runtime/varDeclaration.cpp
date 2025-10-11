@@ -11,15 +11,16 @@ namespace gscript
 	// statement and a value to it is assigned
 
 	ScriptVarDeclaration::ScriptVarDeclaration(ScriptScope &scope, ScriptVariable &var, std::unique_ptr<ScriptStatement> &&statement)
-		: ScriptCallable(scope),
-		accessor(VariableAccessor::find(scope, var.getName())),
-		statement(std::move(statement))
-	{ }
+		//: ScriptCallable(scope)
+		: accessor(VariableAccessor::find(scope, var.getName()))
+		, statement(std::move(statement))
+	{
+	}
 
 	ScriptVarDeclaration::ScriptVarDeclaration(ScriptScope &scope, std::unique_ptr<VariableAccessor>&& accessor, std::unique_ptr<ScriptStatement> &&statement)
-		: ScriptCallable(scope),
-		accessor(std::move(accessor)),
-		statement(std::move(statement))
+		//: ScriptCallable(scope)
+		: accessor(std::move(accessor))
+		, statement(std::move(statement))
 	{
 	}
 
@@ -28,9 +29,15 @@ namespace gscript
 		this->accessor->setScope(&instance);
 	}
 
-	std::unique_ptr<ScriptValue> ScriptVarDeclaration::run(const CALLABLE_PARAMS_T &params)
+	std::unique_ptr<ScriptValue> ScriptVarDeclaration::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &params)
 	{
-		this->accessor->get()->init(this->statement->run());
+		// TODO - setting scope on this accessor will set it on the BASE FUNCTION
+		// This needs to be done by passing the scope and not changing the state of those objects
+
+		/*if (this->accessor->getScope()->isBaseOf(scope))
+			this->accessor->setScope(&scope);*/
+
+		this->accessor->get(&scope)->init(this->statement->run(scope));
 
 		return ScriptType::null();
 	}

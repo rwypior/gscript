@@ -20,7 +20,7 @@ namespace gscript
 		: ScriptMethod(
 			scope,
 			name,
-			ScriptType::create(ValueType::Void, this->scope),
+			ScriptType::create(ValueType::Void, scope),
 			PARAMS_T({
 				FunctionParameter(ScriptType::create(ValueType::String, scope)),
 				FunctionParameter(ScriptType::create(ValueType::String, scope))
@@ -30,7 +30,7 @@ namespace gscript
 	{
 	}
 
-	std::unique_ptr<ScriptValue> IOExtension::ConstructorFile::run(const CALLABLE_PARAMS_T& c)
+	std::unique_ptr<ScriptValue> IOExtension::ConstructorFile::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T& c)
 	{
 		this->validateParams(c);
 
@@ -39,7 +39,7 @@ namespace gscript
 
 		int mode = IOExtension::createFileMode(modestr.getValue());
 
-		static_cast<ClassFile&>(this->scope).str = std::fstream(path.getValue(), mode);
+		static_cast<ClassFile&>(scope).str = std::fstream(path.getValue(), mode);
 
 		return ScriptType::null();
 	}
@@ -50,7 +50,7 @@ namespace gscript
 		: ScriptMethod(
 			scope,
 			name,
-			ScriptType::create(ValueType::Int, this->scope),
+			ScriptType::create(ValueType::Int, scope),
 			PARAMS_T({
 				FunctionParameter(ScriptType::create(TypeDescriptor(ValueType::Reference, ValueType::String), scope))
 			}),
@@ -59,11 +59,11 @@ namespace gscript
 	{
 	}
 
-	std::unique_ptr<ScriptValue> IOExtension::FuncReadAll::run(const CALLABLE_PARAMS_T& c)
+	std::unique_ptr<ScriptValue> IOExtension::FuncReadAll::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T& c)
 	{
 		this->validateParams(c);
 
-		std::fstream& file = static_cast<ClassFile&>(this->scope).str;
+		std::fstream& file = static_cast<ClassFile&>(scope).str;
 
 		ScriptReferenceValue storage(c.at(0).get());
 
@@ -85,7 +85,7 @@ namespace gscript
 		: ScriptMethod(
 			scope,
 			name,
-			ScriptType::create(ValueType::Bool, this->scope),
+			ScriptType::create(ValueType::Bool, scope),
 			PARAMS_T({
 				FunctionParameter(ScriptType::create(TypeDescriptor(ValueType::String), scope))
 			}),
@@ -94,7 +94,7 @@ namespace gscript
 	{
 	}
 
-	std::unique_ptr<ScriptValue> IOExtension::FuncStaticExists::run(const CALLABLE_PARAMS_T& c)
+	std::unique_ptr<ScriptValue> IOExtension::FuncStaticExists::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T& c)
 	{
 		this->validateParams(c);
 

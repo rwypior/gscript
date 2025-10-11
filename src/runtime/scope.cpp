@@ -191,7 +191,7 @@ namespace gscript
 		return nullptr;
 	}
 
-	bool ScriptScopeBase::isAccessible(ScriptScopeBase& targetScope, Modifier access)
+	bool ScriptScopeBase::isAccessible(const ScriptScopeBase& targetScope, Modifier access) const
 	{
 		if (access & Modifier::AccessPublic)
 			return true;
@@ -201,8 +201,8 @@ namespace gscript
 
 		if (access & Modifier::AccessProtected)
 		{
-			ScriptClass *thisClass = dynamic_cast<ScriptClass*>(this);
-			ScriptClass *targetClass = dynamic_cast<ScriptClass*>(&targetScope);
+			const ScriptClass *thisClass = dynamic_cast<const ScriptClass*>(this);
+			const ScriptClass *targetClass = dynamic_cast<const ScriptClass*>(&targetScope);
 			if (thisClass && thisClass->isBaseOf(targetClass))
 				return true;
 		}
@@ -210,7 +210,33 @@ namespace gscript
 		return false;
 	}
 
+	bool ScriptScopeBase::isParentOf(ScriptScopeBase& scope, bool includeGrandparents) const
+	{
+		if (this == scope.getParentScope())
+		{
+			return true;
+		}
+
+		if (includeGrandparents)
+		{
+			if (auto parent = scope.getParentScope())
+				return this->isParentOf(*parent, includeGrandparents);
+		}
+
+		return false;
+	}
+
 	// Scope
+
+	ScriptScope::ScriptScope(const ScriptScope& b)
+		: parentScope(b.getParentScope())
+		//, variables(b.getVariables())
+	{
+		for (auto& var : b.getVariables())
+		{
+			this->variables.push_back(std::make_unique<ScriptVariable>(*var));
+		}
+	}
 
 	ScriptScope::ScriptScope(ScriptScopeBase* parentScope)
 		: parentScope(parentScope)

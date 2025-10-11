@@ -16,20 +16,14 @@ namespace gscript
 	class ScriptCallable
 	{
 	public:
-		SCRIPT_API ScriptCallable(ScriptScopeBase& scope);
 		SCRIPT_API ~ScriptCallable() = default;
 
 		SCRIPT_API virtual const std::shared_ptr<ScriptType> getType() const = 0;
 
-		SCRIPT_API virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) = 0;
+		SCRIPT_API virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) = 0;
 
 		// Post-compilation stage - build prototypes, and do additional steps
-		SCRIPT_API virtual void setup() {};
-
-		SCRIPT_API ScriptScopeBase& getScope();
-
-	protected:
-		ScriptScopeBase& scope;
+		SCRIPT_API virtual void setup(ScriptScopeBase& scope) {};
 	};
 
 	// Partially created callable entity - not usable in raw form.
@@ -40,14 +34,14 @@ namespace gscript
 	public:
 		using ScriptCallable::ScriptCallable;
 
-		SCRIPT_API virtual std::unique_ptr<ScriptCallable> build(ScriptScopeBase* scope = nullptr) override = 0;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> build(ScriptScopeBase& scope) override = 0;
 
 		SCRIPT_API virtual const std::shared_ptr<ScriptType> getType() const
 		{
 			throw RuntimeException("Attempted to call callable prototype");
 		}
 
-		SCRIPT_API virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override
+		SCRIPT_API virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override
 		{
 			throw RuntimeException("Attempted to call callable prototype");
 		}

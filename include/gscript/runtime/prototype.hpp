@@ -22,7 +22,7 @@ namespace gscript
 	{
 	public:
 		virtual ~Prototype() = default;
-		virtual std::unique_ptr<T> build(ScriptScopeBase* scope = nullptr) = 0;
+		virtual std::unique_ptr<T> build(ScriptScopeBase& scope) = 0;
 	};
 
 	// A prototype resolver is any script entity which may contain Prototypes

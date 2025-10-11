@@ -7,10 +7,11 @@
 namespace gscript
 {
 	class ScriptCallable;
+	class ScriptScopeBase;
 
 	namespace OperatorFunctionFactory
 	{
-		typedef std::unique_ptr<ScriptValue>(*OperatorFunction)(ScriptCallable *left, ScriptCallable *right);
+		typedef std::unique_ptr<ScriptValue>(*OperatorFunction)(ScriptScopeBase& scope, ScriptCallable *left, ScriptCallable *right);
 
 		OperatorFunction getFunction(ValueType left, ValueType right, OperatorType oper);
 	};

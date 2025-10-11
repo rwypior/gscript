@@ -21,7 +21,7 @@ namespace gscript
 	public:
 		ScriptIf(ScriptScope& scope, std::unique_ptr<ScriptStatement>&& condition, std::unique_ptr<ScriptIf>&& selse = {}, std::vector<std::shared_ptr<ScriptCallable>>&& statements = {});
 
-		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 
 		virtual const std::shared_ptr<ScriptType> getType() const override;
 

@@ -11,7 +11,7 @@ namespace gscript
 	public:
 
 		ScriptReturn(ScriptScopeBase& scope, std::unique_ptr<ScriptStatement>&& statement);
-		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T());
+		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T());
 
 		virtual const std::shared_ptr<ScriptType> getType() const override;
 

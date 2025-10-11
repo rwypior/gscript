@@ -16,7 +16,7 @@ namespace gscript
 
 	ScriptVariable::ScriptVariable(const ScriptVariable& b)
 		: name(b.name)
-		, value(b.value->clone())
+		, value(b.value ? b.value->clone() : nullptr)
 		, type(new ScriptType(*b.type))
 	{
 	}

@@ -6,19 +6,19 @@
 namespace gscript
 {
 	ScriptIf::ScriptIf(ScriptScope &scope, std::unique_ptr<ScriptStatement>&& condition, std::unique_ptr<ScriptIf>&& selse, std::vector<std::shared_ptr<ScriptCallable>>&& statements)
-		: ScriptCallable(scope)
-		, ScriptExecutiveBlock(std::move(statements))
+		//: ScriptCallable(scope)
+		: ScriptExecutiveBlock(std::move(statements))
 		, condition(std::move(condition))
 		, selse(std::move(selse))
 	{
 	}
 
-	std::unique_ptr<ScriptValue> ScriptIf::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptIf::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		if (!this->condition || this->condition->run()->boolean().getValue())
-			return ScriptExecutiveBlock::execute();
+		if (!this->condition || this->condition->run(scope)->boolean().getValue())
+			return ScriptExecutiveBlock::execute(scope);
 		else if (this->selse)
-			return this->selse->run();
+			return this->selse->run(scope);
 
 		return ScriptType::null();
 	}

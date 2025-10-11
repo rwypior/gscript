@@ -21,12 +21,12 @@
 namespace gscript
 {
 	ScriptStatement::ScriptStatement(ScriptScope &scope)
-		: ScriptCallable(scope)
+		//: ScriptCallable(scope)
 	{
 	}
 
 	ScriptStatement::ScriptStatement(ScriptScope& scope, std::vector<std::unique_ptr<ScriptCallable>>&& callables)
-		: ScriptCallable(scope)
+		//: ScriptCallable(scope)
 	{
 		std::vector<std::shared_ptr<ScriptCallable>> sharedCallables;
 		sharedCallables.reserve(callables.size());
@@ -36,23 +36,23 @@ namespace gscript
 			sharedCallables.push_back(std::move(callable));
 		}
 
-		this->resolveOperations(sharedCallables.rbegin(), sharedCallables.rend(), this->callable);
+		this->resolveOperations(scope, sharedCallables.rbegin(), sharedCallables.rend(), this->callable);
 	}
 
 	ScriptStatement::ScriptStatement(ScriptStatement&& stmt) noexcept
-		: ScriptCallable(stmt.scope)
-		, callable(std::move(stmt.callable))
+		//: ScriptCallable(stmt.scope)
+		: callable(std::move(stmt.callable))
 	{
 	}
 
-	std::unique_ptr<ScriptValue> ScriptStatement::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptStatement::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		return this->callable->run();
+		return this->callable->run(scope);
 	}
 
-	void ScriptStatement::setup()
+	void ScriptStatement::setup(ScriptScopeBase& scope)
 	{
-		this->assignReferences(this->callable, &this->scope, false);
+		this->assignReferences(this->callable, scope, false);
 		if (auto oper = std::dynamic_pointer_cast<ScriptOperator>(this->callable))
 			this->setupOperator(oper);
 	}
@@ -76,30 +76,30 @@ namespace gscript
 		oper->setup();
 	}
 
-	void ScriptStatement::assertAccessibilityOf(ScriptMethod& method) const
+	void ScriptStatement::assertAccessibilityOf(const ScriptScopeBase& scope, ScriptMethod& method) const
 	{
-		if (!method.isAccessible(this->scope, method.accessModifier))
+		if (!method.isAccessible(scope, method.accessModifier))
 			throw CompileException("Method \"" + method.getName() + "\" is inaccessible");
 	}
 
-	void ScriptStatement::assignReferences(std::shared_ptr<ScriptCallable>& entry, const ScriptScopeBase* scope, bool member)
+	void ScriptStatement::assignReferences(std::shared_ptr<ScriptCallable>& entry, ScriptScopeBase& scope, bool member)
 	{
 		if (auto fcall = std::dynamic_pointer_cast<ScriptCallablePrototype>(entry))
 		{
-			entry = fcall->build();
+			entry = fcall->build(scope);
 		}
 
 		if (auto fcall = std::dynamic_pointer_cast<ScriptFuncCall>(entry))
 		{
 			if (ScriptMethod* method = dynamic_cast<ScriptMethod*>(fcall->getFunc().get()))
-				assertAccessibilityOf(*method);
+				assertAccessibilityOf(scope, *method);
 		}
 
 		else if (auto oper = dynamic_cast<ScriptOperator*>(entry.get()))
 		{
 			this->assignReferences(oper->left, scope, false);
 
-			const ScriptScopeBase* resolvedScope = scope;
+			ScriptScopeBase* resolvedScope = &scope;
 
 			bool memberAccess = false;
 			if (ScriptOperatorMemberAccessor *operAccessor = dynamic_cast<ScriptOperatorMemberAccessor*>(oper))
@@ -139,11 +139,12 @@ namespace gscript
 					throw CompileException("Casting member accessor on incompatible entity");
 			}
 
-			this->assignReferences(oper->right, resolvedScope, memberAccess);
+			this->assignReferences(oper->right, *resolvedScope, memberAccess);
 		}
 	}
 
 	int ScriptStatement::resolveOperations(
+		ScriptScopeBase& scope,
 		std::vector<std::shared_ptr<ScriptCallable>>::reverse_iterator begin,
 		std::vector<std::shared_ptr<ScriptCallable>>::reverse_iterator end,
 		std::shared_ptr<ScriptCallable> &result,
@@ -152,7 +153,7 @@ namespace gscript
 	{
 		if (begin == end)
 		{
-			result = std::make_shared<ScriptLiteral>(this->scope, nullptr);
+			result = std::make_shared<ScriptLiteral>(scope, nullptr);
 			return 0;
 		}
 
@@ -254,7 +255,7 @@ namespace gscript
 				else if (currentPrec < prevPrec)
 				{
 					std::shared_ptr<ScriptCallable> sr = nullptr;
-					int subProcessed = this->resolveOperations(operatorIt, end, sr, depth + 1);
+					int subProcessed = this->resolveOperations(scope, operatorIt, end, sr, depth + 1);
 					if (subProcessed)
 					{
 						operatorIt += subProcessed - 1;

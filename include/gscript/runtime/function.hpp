@@ -21,7 +21,6 @@ namespace gscript
 	class ScriptFunction : public ScriptScope, public ScriptExecutiveBlock, public ScriptCallable
 	{
 	public:
-		//SCRIPT_API ScriptFunction(const ScriptFunction& fnc);
 		SCRIPT_API ScriptFunction(
 			ScriptScopeBase& scope, 
 			const std::string& name, 
@@ -30,7 +29,7 @@ namespace gscript
 			std::vector<std::shared_ptr<ScriptCallable>>&& statements = {}
 		);
 
-		SCRIPT_API virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		SCRIPT_API virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		SCRIPT_API virtual PARAMS_T &getParameters();
 		SCRIPT_API virtual bool validateParams(const CALLABLE_PARAMS_T &c, bool throwException = true);
 		SCRIPT_API FunctionParameter* findParam(const std::string& name);
@@ -42,15 +41,12 @@ namespace gscript
 		SCRIPT_API virtual const std::shared_ptr<ScriptType> getType() const override;
 		SCRIPT_API const std::string &getName() const;
 
-		SCRIPT_API size_t getInternalPointer() const
-		{
-			return this->internalPointer;
-		}
+		SCRIPT_API virtual bool isBaseOf(const ScriptScopeBase& scope) const override;
 
 	protected:
-		void throwBadParameters(const std::string& text);
+		SCRIPT_API ScriptFunction(const ScriptFunction& fnc);
 
-		size_t internalPointer = 0;
+		void throwBadParameters(const std::string& text);
 
 		template<typename T>
 		T* getParam(ScriptValue* p)
@@ -66,6 +62,7 @@ namespace gscript
 		const std::string name;
 		std::shared_ptr<ScriptType> returnType;
 		PARAMS_T parameters;
+		const ScriptFunction* baseFunction = nullptr;
 	};
 }
 

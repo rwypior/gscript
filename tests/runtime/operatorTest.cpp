@@ -17,8 +17,8 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeOperatorBasicTest")
 	stmtvecbody.push_back(std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(21)));
 
 	auto stmt = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecbody));
-	stmt->setup();
-	auto result = stmt->run();
+	stmt->setup(globalNamespace);
+	auto result = stmt->run(globalNamespace);
 
 	REQUIRE(result->getType()->getTypeDescriptor() == gscript::ValueType::Int);
 	REQUIRE(result->as<gscript::ScriptIntValue>().getValue() == 42);
@@ -32,8 +32,8 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeOperatorTypeSelectionTest")
 	stmtvecbody.push_back(std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(21)));
 
 	auto stmt = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecbody));
-	stmt->setup();
-	auto result = stmt->run();
+	stmt->setup(globalNamespace);
+	auto result = stmt->run(globalNamespace);
 
 	REQUIRE(result->getType()->getTypeDescriptor() == gscript::ValueType::Float);
 	REQUIRE(result->as<gscript::ScriptFloatValue>().getValue() == 34.37f);
@@ -47,8 +47,8 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeOperatorBoolTypeSelectionTest")
 	stmtvecbody.push_back(std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(1337)));
 
 	auto stmt = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecbody));
-	stmt->setup();
-	auto result = stmt->run();
+	stmt->setup(globalNamespace);
+	auto result = stmt->run(globalNamespace);
 
 	REQUIRE(result->getType()->getTypeDescriptor() == gscript::ValueType::Bool);
 	REQUIRE(result->as<gscript::ScriptBoolValue>().getValue() == false);

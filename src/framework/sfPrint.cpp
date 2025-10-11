@@ -10,12 +10,11 @@
 namespace gscript
 {
 	ScriptFuncPrint::ScriptFuncPrint(ScriptScopeBase& scope, const std::string &name)
-		: ScriptFunction(scope, name, ScriptType::create(ValueType::Null, this->scope), PARAMS_T(1, FunctionParameter(ScriptType::create(ValueType::String, scope))))
+		: ScriptFunction(scope, name, ScriptType::create(ValueType::Null, scope), PARAMS_T(1, FunctionParameter(ScriptType::create(ValueType::String, scope))))
 	{
-
 	}
 
-	std::unique_ptr<ScriptValue> ScriptFuncPrint::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptFuncPrint::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
 		this->validateParams(c);
 

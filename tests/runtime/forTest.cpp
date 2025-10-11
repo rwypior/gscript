@@ -19,7 +19,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFor")
 	auto literal0vec = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	literal0vec.push_back(std::move(literal0));
 	auto stmtliteral = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(literal0vec));
-	stmtliteral->setup();
+	stmtliteral->setup(globalNamespace);
 	auto& sv = globalNamespace.registerVariable("i", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), std::make_unique<gscript::ScriptIntValue>(0));
 	auto vardecl = std::make_unique<gscript::ScriptVarDeclaration>(globalNamespace, sv, std::move(stmtliteral));
 
@@ -32,7 +32,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFor")
 	stmtvec.push_back(std::move(oplessthan));
 	stmtvec.push_back(std::move(literal5));
 	auto cond = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvec));
-	cond->setup();
+	cond->setup(globalNamespace);
 
 	// For progress statement
 	auto varread2 = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &sv);
@@ -41,7 +41,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFor")
 	stmtvecprogress.push_back(std::move(opincrement));
 	stmtvecprogress.push_back(std::move(varread2));
 	auto progress = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecprogress));
-	progress->setup();
+	progress->setup(globalNamespace);
 
 	// For block
 	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), std::make_unique<gscript::ScriptIntValue>(1));
@@ -53,7 +53,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFor")
 	stmtvecbody.push_back(std::move(mul));
 	stmtvecbody.push_back(std::move(varreadi));
 	auto stmt1 = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecbody));
-	stmt1->setup();
+	stmt1->setup(globalNamespace);
 	auto stmtvecbody1 = std::vector<std::shared_ptr<gscript::ScriptCallable>>();
 	stmtvecbody1.push_back(std::move(stmt1));
 	auto eb = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbody1));
@@ -62,7 +62,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFor")
 	gscript::ScriptFor f(globalNamespace, std::move(vardecl), std::move(cond), std::move(progress));
 	f.merge(std::move(eb));
 
-	f.run();
+	f.run(globalNamespace);
 
 	REQUIRE(sv.getValue()->as<gscript::ScriptIntValue>().getValue() == 5);
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 11);

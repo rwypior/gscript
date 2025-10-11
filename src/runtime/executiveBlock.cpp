@@ -13,11 +13,11 @@ namespace gscript
 	{
 	}
 
-	std::unique_ptr<ScriptValue> ScriptExecutiveBlock::execute()
+	std::unique_ptr<ScriptValue> ScriptExecutiveBlock::execute(ScriptScopeBase& scope)
 	{
 		for (auto& stmt : this->statements)
 		{
-			auto ret = stmt->run();
+			auto ret = stmt->run(scope);
 			if (ret && ret->isReturnedData())
 			{
 				return ret;

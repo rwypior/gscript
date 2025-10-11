@@ -24,18 +24,24 @@ namespace gscript
 			Modifier modifier = Modifier::None
 		);
 		
+		SCRIPT_API virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override;
+
 		SCRIPT_API bool isStatic() const;
 		SCRIPT_API bool isVirtual() const;
 		SCRIPT_API bool isAbstract() const;
 
-		SCRIPT_API void setClassInstance(std::unique_ptr<ScriptClassInstance>&& inst);
-		SCRIPT_API void setClassInstance(std::unique_ptr<ScriptValue>&& inst);
+		SCRIPT_API ScriptClassValue& setClassInstance(std::unique_ptr<ScriptClassInstance>&& inst);
+		SCRIPT_API ScriptClassValue& setClassInstance(std::unique_ptr<ScriptValue>&& inst);
 		SCRIPT_API ScriptClassInstance *getClassInstance();
+
+		SCRIPT_API ScriptVariable& getThis() const;
 
 		// Run this method from the class instance
 		SCRIPT_API virtual std::unique_ptr<ScriptValue> instrun(std::unique_ptr<ScriptReferenceValue>&& instance, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T());
 
 	protected:
+		SCRIPT_API ScriptMethod(const ScriptMethod& fnc);
+
 		void createThis(ScriptClass &sclass);
 	};
 }

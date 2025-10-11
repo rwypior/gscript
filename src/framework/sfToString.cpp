@@ -7,12 +7,12 @@ namespace gscript
 	const ScriptType ScriptFuncToString::returnType = ScriptType(ValueType::String);
 
 	ScriptFuncToString::ScriptFuncToString(ScriptScope &scope, const std::string &name)
-		: ScriptFunction(scope, name, ScriptType::create(ValueType::String, this->scope), PARAMS_T(1, FunctionParameter(ScriptType::create(ValueType::Int, scope))))
+		: ScriptFunction(scope, name, ScriptType::create(ValueType::String, scope), PARAMS_T(1, FunctionParameter(ScriptType::create(ValueType::Int, scope))))
 	{
-		this->setup();
+		this->setup(scope);
 	}
 
-	std::unique_ptr<ScriptValue> ScriptFuncToString::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptFuncToString::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
 		this->validateParams(c);
 

@@ -25,7 +25,7 @@ namespace gscript
 			std::vector<std::shared_ptr<ScriptCallable>>&& statements = {}
 		);
 
-		SCRIPT_API virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		SCRIPT_API virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 
 		SCRIPT_API const std::shared_ptr<ScriptType> getType() const override;
 

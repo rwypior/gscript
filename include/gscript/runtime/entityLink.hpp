@@ -28,9 +28,12 @@ namespace gscript
 		SCRIPT_API VariableAccessor(const VariableAccessor& b);
 
 		SCRIPT_API static std::unique_ptr<VariableAccessor> find(ScriptScopeBase& scope, const std::string& name, bool searchParents = true);
-		SCRIPT_API virtual ScriptVariable* get();
+		// Access variable pointed by this accessor
+		// - scope - allows to retarget scope, especially useful for function calls
+		SCRIPT_API virtual ScriptVariable* get(ScriptScopeBase* scope = nullptr);
 		SCRIPT_API virtual const std::shared_ptr<ScriptType> getType() const;
 		SCRIPT_API void setScope(ScriptScopeBase* scope);
+		SCRIPT_API ScriptScopeBase* getScope();
 		SCRIPT_API operator bool() const;
 
 	protected:
@@ -48,7 +51,7 @@ namespace gscript
 		using VariableAccessor::VariableAccessor;
 
 		SCRIPT_API static std::unique_ptr<ParameterAccessor> find(ScriptScopeBase& scope, const std::string& name, bool searchParents = true);
-		SCRIPT_API ScriptVariable* get();
+		SCRIPT_API ScriptVariable* get(ScriptScopeBase* scope = nullptr);
 		SCRIPT_API const std::shared_ptr<ScriptType> getType() const;
 	};
 

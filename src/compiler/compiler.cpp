@@ -378,7 +378,7 @@ namespace gscript
 		}
 
 		bool isStaticCall = fcall.name.isScoped();
-		return std::make_unique<ScriptFuncCallPrototype>(*usedScope, usedName, std::move(params->getParams()), isStaticCall);
+		return std::make_unique<ScriptFuncCallPrototype>(isStaticCall ? usedScope : nullptr, usedName, std::move(params->getParams()), isStaticCall);
 	}
 
 	std::unique_ptr<ScriptArrayInitializer> Compiler::compileArrayInitializer(ScriptScope* scope, const ParserArrayInitializer& initializer)
@@ -518,12 +518,12 @@ namespace gscript
 
 			for (auto& stmt : fnc->getStatements())
 			{
-				this->finalizeCallable(stmt);
+				this->finalizeCallable(stmt, *fnc);
 			}
 		}
 	}
 
-	void Compiler::finalizeCallable(std::shared_ptr<ScriptCallable>& callable, ScriptScopeBase* scope)
+	void Compiler::finalizeCallable(std::shared_ptr<ScriptCallable>& callable, ScriptScopeBase& scope)
 	{
 		if (auto proto = std::dynamic_pointer_cast<ScriptFuncCallPrototype>(callable))
 		{
@@ -536,7 +536,7 @@ namespace gscript
 		if (auto proto = std::dynamic_pointer_cast<ScriptCallablePrototype>(callable))
 		{
 			callable = proto->build(scope);
-			this->finalizeCallable(callable);
+			this->finalizeCallable(callable, scope);
 		}
 		else if (auto stmt = std::dynamic_pointer_cast<ScriptStatement>(callable))
 		{
@@ -550,46 +550,46 @@ namespace gscript
 
 			if (auto proto = std::dynamic_pointer_cast<ScriptCallablePrototype>(stmt->callable))
 			{
-				stmt->callable = proto->build();
+				stmt->callable = proto->build(scope);
 			}
-			this->finalizeCallable(stmt->callable);
+			this->finalizeCallable(stmt->callable, scope);
 			//stmt->setup();
 		}
 		else if (auto ret = std::dynamic_pointer_cast<ScriptReturn>(callable))
 		{
-			this->finalizeCallable(ret->getStatement());
+			this->finalizeCallable(ret->getStatement(), scope);
 		}
 		else if (auto oper = std::dynamic_pointer_cast<ScriptOperator>(callable))
 		{
-			this->finalizeCallable(oper->left);
+			this->finalizeCallable(oper->left, scope);
 
-			ScriptScopeBase* usedScope = scope;
+			ScriptScopeBase* usedScope = &scope;
 			if (auto memberacc = std::dynamic_pointer_cast<ScriptOperatorMemberAccessor>(oper))
 			{
 				auto& target = std::static_pointer_cast<const ScriptClassType>(memberacc->left->getType())->getClass();
 				usedScope = &target;
 			}
 
-			this->finalizeCallable(oper->right, usedScope);
+			this->finalizeCallable(oper->right, *usedScope);
 
 			if (oper->needFactory())
 				oper->assignOperatorFunction();
 		}
 		else if (auto vardecl = std::dynamic_pointer_cast<ScriptVarDeclaration>(callable))
 		{
-			this->finalizeCallable(vardecl->getStatement());
+			this->finalizeCallable(vardecl->getStatement(), scope);
 		}
 		else if (auto sif = std::dynamic_pointer_cast<ScriptIf>(callable))
 		{
-			this->finalizeCallable(sif->getCondition());
+			this->finalizeCallable(sif->getCondition(), scope);
 			for (auto& stmt : sif->getStatements())
 			{
-				this->finalizeCallable(stmt);
+				this->finalizeCallable(stmt, scope);
 			}
 		}
 	}
 
-	void Compiler::finalizeCallable(std::unique_ptr<ScriptCallable>& callable, ScriptScopeBase* scope)
+	void Compiler::finalizeCallable(std::unique_ptr<ScriptCallable>& callable, ScriptScopeBase& scope)
 	{
 		if (auto proto = dynamic_cast<ScriptFuncCallPrototype*>(callable.get()))
 		{
@@ -602,7 +602,7 @@ namespace gscript
 		if (auto proto = dynamic_cast<ScriptCallablePrototype*>(callable.get()))
 		{
 			callable = proto->build(scope);
-			this->finalizeCallable(callable);
+			this->finalizeCallable(callable, scope);
 		}
 		else if (auto stmt = dynamic_cast<ScriptStatement*>(callable.get()))
 		{
@@ -616,41 +616,41 @@ namespace gscript
 
 			if (auto proto = std::dynamic_pointer_cast<ScriptCallablePrototype>(stmt->callable))
 			{
-				stmt->callable = proto->build();
+				stmt->callable = proto->build(scope);
 			}
-			this->finalizeCallable(stmt->callable);
+			this->finalizeCallable(stmt->callable, scope);
 			//stmt->setup();
 		}
 		else if (auto ret = dynamic_cast<ScriptReturn*>(callable.get()))
 		{
-			this->finalizeCallable(ret->getStatement());
+			this->finalizeCallable(ret->getStatement(), scope);
 		}
 		else if (auto oper = dynamic_cast<ScriptOperator*>(callable.get()))
 		{
-			this->finalizeCallable(oper->left);
+			this->finalizeCallable(oper->left, scope);
 
-			ScriptScopeBase* usedScope = scope;
+			ScriptScopeBase* usedScope = &scope;
 			if (auto memberacc = dynamic_cast<ScriptOperatorMemberAccessor*>(oper))
 			{
 				auto& target = std::static_pointer_cast<const ScriptClassType>(memberacc->left->getType())->getClass();
 				usedScope = &target;
 			}
 
-			this->finalizeCallable(oper->right, usedScope);
+			this->finalizeCallable(oper->right, *usedScope);
 
 			if (oper->needFactory())
 				oper->assignOperatorFunction();
 		}
 		else if (auto vardecl = dynamic_cast<ScriptVarDeclaration*>(callable.get()))
 		{
-			this->finalizeCallable(vardecl->getStatement());
+			this->finalizeCallable(vardecl->getStatement(), scope);
 		}
 		else if (auto sif = dynamic_cast<ScriptIf*>(callable.get()))
 		{
-			this->finalizeCallable(sif->getCondition());
+			this->finalizeCallable(sif->getCondition(), scope);
 			for (auto& stmt : sif->getStatements())
 			{
-				this->finalizeCallable(stmt);
+				this->finalizeCallable(stmt, scope);
 			}
 		}
 	}

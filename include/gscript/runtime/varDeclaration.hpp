@@ -25,7 +25,7 @@ namespace gscript
 
 		void setInstance(ScriptClassInstance &instance);
 
-		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &p = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &p = CALLABLE_PARAMS_T()) override;
 
 		virtual const std::shared_ptr<ScriptType> getType() const override;
 

@@ -49,8 +49,8 @@ namespace gscript
 	}
 
 	ScriptOperator::ScriptOperator(ScriptScope &scope, OperatorLinkage linkage)
-		: ScriptCallable(scope)
-		, linkage(linkage)
+		//: ScriptCallable(scope)
+		: linkage(linkage)
 	{
 	}
 
@@ -74,12 +74,12 @@ namespace gscript
 
 
 
-	std::unique_ptr<ScriptValue> ScriptOperatorMemberAccessor::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorMemberAccessor::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
 		// 1. if this->right is scopedCall then provide it with classInstance from this->left
 		// 2. this->right must be scoped call - always
 
-		auto leftres = this->left->run();
+		auto leftres = this->left->run(scope);
 		auto scv = static_cast<ScriptClassValue*>(leftres->data());
 
 		if (ScriptScopedCall *sc = dynamic_cast<ScriptScopedCall*>(this->right.get()))
@@ -92,7 +92,7 @@ namespace gscript
 			fc->setInstance(std::move(leftres));
 		}
 
-		return this->right->run(c);
+		return this->right->run(scope, c);
 	}
 
 	const int ScriptOperatorMemberAccessor::getPrecedence() const
@@ -112,10 +112,10 @@ namespace gscript
 
 
 
-	std::unique_ptr<ScriptValue> ScriptOperatorConditionalNull::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorConditionalNull::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		auto v = this->left->run();
-		return v->boolean().getValue() ? std::move(v) : this->right->run();
+		auto v = this->left->run(scope);
+		return v->boolean().getValue() ? std::move(v) : this->right->run(scope);
 	}
 
 	const int ScriptOperatorConditionalNull::getPrecedence() const
@@ -135,9 +135,9 @@ namespace gscript
 
 
 
-	std::unique_ptr<ScriptValue> ScriptOperatorConditionalA::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorConditionalA::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		return this->left->run();
+		return this->left->run(scope);
 	}
 
 	const int ScriptOperatorConditionalA::getPrecedence() const
@@ -157,9 +157,9 @@ namespace gscript
 
 
 
-	std::unique_ptr<ScriptValue> ScriptOperatorConditionalB::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorConditionalB::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		return this->left->run()->boolean().getValue() ? static_cast<ScriptOperatorConditionalA*>(this->left.get())->right->run() : this->right->run();
+		return this->left->run(scope)->boolean().getValue() ? static_cast<ScriptOperatorConditionalA*>(this->left.get())->right->run(scope) : this->right->run(scope);
 	}
 
 	const int ScriptOperatorConditionalB::getPrecedence() const
@@ -185,7 +185,7 @@ namespace gscript
 
 
 
-	std::unique_ptr<ScriptValue> ScriptOperatorNegate::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorNegate::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
 		return nullptr;
 	}
@@ -202,12 +202,12 @@ namespace gscript
 
 
 
-	std::unique_ptr<ScriptValue> ScriptOperatorAssign::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorAssign::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
 		if (ScriptOperatorMemberAccessor *memberAccessor = dynamic_cast<ScriptOperatorMemberAccessor*>(this->left.get()))
-			memberAccessor->run();
+			memberAccessor->run(scope);
 
-		auto rval = this->right->run();		
+		auto rval = this->right->run(scope);
 		this->varRead->get()->getValue()->assign(*rval);
 
 		return nullptr;
@@ -243,9 +243,9 @@ namespace gscript
 
 
 
-	std::unique_ptr<ScriptValue> ScriptOperatorEquals::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorEquals::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		return this->operatorFunction(this->left.get(), this->right.get());
+		return this->operatorFunction(scope, this->left.get(), this->right.get());
 	}
 
 	const int ScriptOperatorEquals::getPrecedence() const
@@ -260,9 +260,9 @@ namespace gscript
 
 
 
-	std::unique_ptr<ScriptValue> ScriptOperatorGreaterThan::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorGreaterThan::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		return this->operatorFunction(this->left.get(), this->right.get());
+		return this->operatorFunction(scope, this->left.get(), this->right.get());
 	}
 
 	const int ScriptOperatorGreaterThan::getPrecedence() const
@@ -277,9 +277,9 @@ namespace gscript
 
 
 
-	std::unique_ptr<ScriptValue> ScriptOperatorGreaterThanOrEqual::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorGreaterThanOrEqual::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		return this->operatorFunction(this->left.get(), this->right.get());
+		return this->operatorFunction(scope, this->left.get(), this->right.get());
 	}
 
 	const int ScriptOperatorGreaterThanOrEqual::getPrecedence() const
@@ -294,9 +294,9 @@ namespace gscript
 
 
 
-	std::unique_ptr<ScriptValue> ScriptOperatorLessThan::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorLessThan::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		return this->operatorFunction(this->left.get(), this->right.get());
+		return this->operatorFunction(scope, this->left.get(), this->right.get());
 	}
 
 	const int ScriptOperatorLessThan::getPrecedence() const
@@ -311,9 +311,9 @@ namespace gscript
 
 
 
-	std::unique_ptr<ScriptValue> ScriptOperatorLessThanOrEqual::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorLessThanOrEqual::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		return this->operatorFunction(this->left.get(), this->right.get());
+		return this->operatorFunction(scope, this->left.get(), this->right.get());
 	}
 
 	const int ScriptOperatorLessThanOrEqual::getPrecedence() const
@@ -328,9 +328,9 @@ namespace gscript
 
 
 
-	std::unique_ptr<ScriptValue> ScriptOperatorAdd::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorAdd::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		return this->operatorFunction(this->left.get(), this->right.get());
+		return this->operatorFunction(scope, this->left.get(), this->right.get());
 	}
 
 	const int ScriptOperatorAdd::getPrecedence() const
@@ -345,9 +345,9 @@ namespace gscript
 
 
 
-	std::unique_ptr<ScriptValue> ScriptOperatorAddTo::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorAddTo::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		return this->operatorFunction(this->left.get(), this->right.get());
+		return this->operatorFunction(scope, this->left.get(), this->right.get());
 	}
 
 	const int ScriptOperatorAddTo::getPrecedence() const
@@ -362,9 +362,9 @@ namespace gscript
 
 
 
-	std::unique_ptr<ScriptValue> ScriptOperatorSubtract::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorSubtract::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		return this->operatorFunction(this->left.get(), this->right.get());
+		return this->operatorFunction(scope, this->left.get(), this->right.get());
 	}
 
 	const int ScriptOperatorSubtract::getPrecedence() const
@@ -379,9 +379,9 @@ namespace gscript
 
 
 
-	std::unique_ptr<ScriptValue> ScriptOperatorSubtractFrom::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorSubtractFrom::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		return this->operatorFunction(this->left.get(), this->right.get());
+		return this->operatorFunction(scope, this->left.get(), this->right.get());
 	}
 
 	const int ScriptOperatorSubtractFrom::getPrecedence() const
@@ -396,9 +396,9 @@ namespace gscript
 
 
 
-	std::unique_ptr<ScriptValue> ScriptOperatorMultiply::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorMultiply::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		return this->operatorFunction(this->left.get(), this->right.get());
+		return this->operatorFunction(scope, this->left.get(), this->right.get());
 	}
 
 	const int ScriptOperatorMultiply::getPrecedence() const
@@ -413,9 +413,9 @@ namespace gscript
 
 
 
-	std::unique_ptr<ScriptValue> ScriptOperatorMultiplyBy::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorMultiplyBy::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		return this->operatorFunction(this->left.get(), this->right.get());
+		return this->operatorFunction(scope, this->left.get(), this->right.get());
 	}
 
 	const int ScriptOperatorMultiplyBy::getPrecedence() const
@@ -430,9 +430,9 @@ namespace gscript
 
 
 
-	std::unique_ptr<ScriptValue> ScriptOperatorDivide::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorDivide::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		return this->operatorFunction(this->left.get(), this->right.get());
+		return this->operatorFunction(scope, this->left.get(), this->right.get());
 	}
 
 	const int ScriptOperatorDivide::getPrecedence() const
@@ -447,9 +447,9 @@ namespace gscript
 
 
 
-	std::unique_ptr<ScriptValue> ScriptOperatorDivideBy::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorDivideBy::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		return this->operatorFunction(this->left.get(), this->right.get());
+		return this->operatorFunction(scope, this->left.get(), this->right.get());
 	}
 
 	const int ScriptOperatorDivideBy::getPrecedence() const
@@ -464,9 +464,9 @@ namespace gscript
 
 
 
-	std::unique_ptr<ScriptValue> ScriptOperatorIncrement::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorIncrement::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		return this->operatorFunction(this->left.get(), this->right.get());
+		return this->operatorFunction(scope, this->left.get(), this->right.get());
 	}
 
 	const int ScriptOperatorIncrement::getPrecedence() const
@@ -481,9 +481,9 @@ namespace gscript
 
 
 
-	std::unique_ptr<ScriptValue> ScriptOperatorDecrement::run(const CALLABLE_PARAMS_T &c)
+	std::unique_ptr<ScriptValue> ScriptOperatorDecrement::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		return this->operatorFunction(this->left.get(), this->right.get());
+		return this->operatorFunction(scope, this->left.get(), this->right.get());
 	}
 
 	const int ScriptOperatorDecrement::getPrecedence() const

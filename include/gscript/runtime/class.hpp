@@ -31,9 +31,10 @@ namespace gscript
 		SCRIPT_API ScriptMethod *findMethod(const std::string &name, const PARAMS_T &params, bool searchParents = true, bool searchBase = true);
 		SCRIPT_API ScriptClass *getBase() const;
 
-		SCRIPT_API bool isBaseOf(ScriptClass *base);
+		SCRIPT_API bool isBaseOf(const ScriptClass *base) const;
 
 		SCRIPT_API virtual ScriptFunction& registerFunction(std::unique_ptr<ScriptFunction>&& f);
+		SCRIPT_API virtual ScriptMethod* findMethod(const std::string& name, const PARAMS_T params, bool searchParents = true, bool searchBase = true) const;
 
 		SCRIPT_API std::vector<ScriptMethod*> getAbstractMethods();
 

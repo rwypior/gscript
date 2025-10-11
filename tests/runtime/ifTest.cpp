@@ -29,7 +29,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfVariable")
 	stmtvec.push_back(std::move(opeq));
 	stmtvec.push_back(std::move(literal42));
 	auto cond = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvec));
-	cond->setup();
+	cond->setup(globalNamespace);
 
 	// If block
 	auto varreadMyVariable1 = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &myVariable1);
@@ -41,7 +41,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfVariable")
 	stmtvecbody.push_back(std::move(opadd));
 	stmtvecbody.push_back(std::move(literal10));
 	auto stmt1 = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecbody));
-	stmt1->setup();
+	stmt1->setup(globalNamespace);
 	auto stmtvecbody1 = std::vector<std::shared_ptr<gscript::ScriptCallable>>();
 	stmtvecbody1.push_back(std::move(stmt1));
 	auto eb = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbody1));
@@ -52,18 +52,18 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfVariable")
 
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 42);
 
-	f.run();
+	f.run(globalNamespace);
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 52);
 
-	f.run();
+	f.run(globalNamespace);
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 62);
 
 	testVariable.setValue(std::make_unique<gscript::ScriptIntValue>(1337));
 
-	f.run();
+	f.run(globalNamespace);
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 62);
 
-	f.run();
+	f.run(globalNamespace);
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 62);
 }
 
@@ -84,7 +84,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseVariable")
 	stmtvec.push_back(std::move(opeq));
 	stmtvec.push_back(std::move(literal42));
 	auto cond = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvec));
-	cond->setup();
+	cond->setup(globalNamespace);
 
 	// If block
 	auto varreadMyVariable1 = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &myVariable1);
@@ -96,7 +96,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseVariable")
 	stmtvecbody.push_back(std::move(opadd));
 	stmtvecbody.push_back(std::move(literal10));
 	auto stmt1 = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecbody));
-	stmt1->setup();
+	stmt1->setup(globalNamespace);
 	auto stmtvecbody1 = std::vector<std::shared_ptr<gscript::ScriptCallable>>();
 	stmtvecbody1.push_back(std::move(stmt1));
 	auto eb = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbody1));
@@ -111,7 +111,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseVariable")
 	stmtvecbodyelse.push_back(std::move(opmulelse));
 	stmtvecbodyelse.push_back(std::move(literal10else));
 	auto stmt1else = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecbodyelse));
-	stmt1else->setup();
+	stmt1else->setup(globalNamespace);
 	auto stmtvecbody1else = std::vector<std::shared_ptr<gscript::ScriptCallable>>();
 	stmtvecbody1else.push_back(std::move(stmt1else));
 	auto ebelse = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbody1else));
@@ -126,26 +126,26 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseVariable")
 
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 42);
 
-	f.run();
+	f.run(globalNamespace);
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 52);
 
-	f.run();
+	f.run(globalNamespace);
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 62);
 
 	testVariable.setValue(std::make_unique<gscript::ScriptIntValue>(1337));
 
-	f.run();
+	f.run(globalNamespace);
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 620);
 
-	f.run();
+	f.run(globalNamespace);
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 6200);
 
 	testVariable.setValue(std::make_unique<gscript::ScriptIntValue>(42));
 
-	f.run();
+	f.run(globalNamespace);
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 6210);
 
-	f.run();
+	f.run(globalNamespace);
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 6220);
 }
 
@@ -166,7 +166,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseIfElseVariable")
 	stmtvec.push_back(std::move(opeq));
 	stmtvec.push_back(std::move(literal42));
 	auto cond = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvec));
-	cond->setup();
+	cond->setup(globalNamespace);
 
 	// If block
 	auto varreadMyVariable1 = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &myVariable1);
@@ -178,7 +178,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseIfElseVariable")
 	stmtvecbody.push_back(std::move(opadd));
 	stmtvecbody.push_back(std::move(literal10));
 	auto stmt1 = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecbody));
-	stmt1->setup();
+	stmt1->setup(globalNamespace);
 	auto stmtvecbody1 = std::vector<std::shared_ptr<gscript::ScriptCallable>>();
 	stmtvecbody1.push_back(std::move(stmt1));
 	auto eb = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbody1));
@@ -193,7 +193,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseIfElseVariable")
 	stmtvecbodyelse.push_back(std::move(opmulelse));
 	stmtvecbodyelse.push_back(std::move(literal10else));
 	auto stmt1else = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecbodyelse));
-	stmt1else ->setup();
+	stmt1else ->setup(globalNamespace);
 	auto stmtvecbody1else = std::vector<std::shared_ptr<gscript::ScriptCallable>>();
 	stmtvecbody1else.push_back(std::move(stmt1else));
 	auto ebelse = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbody1else));
@@ -211,7 +211,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseIfElseVariable")
 	stmtvecelseif.push_back(std::move(opeqelseif));
 	stmtvecelseif.push_back(std::move(literal1337elseif));
 	auto condelseif = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecelseif));
-	condelseif->setup();
+	condelseif->setup(globalNamespace);
 
 	// Else if block
 	auto varreadMyVariable1elseif = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &myVariable1);
@@ -223,7 +223,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseIfElseVariable")
 	stmtvecbodyelseif.push_back(std::move(opsubtractelseif));
 	stmtvecbodyelseif.push_back(std::move(literal10elseif));
 	auto stmt1elseif = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecbodyelseif));
-	stmt1elseif->setup();
+	stmt1elseif->setup(globalNamespace);
 	auto stmtvecbody1elseif = std::vector<std::shared_ptr<gscript::ScriptCallable>>();
 	stmtvecbody1elseif.push_back(std::move(stmt1elseif));
 	auto ebelseif = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbody1elseif));
@@ -238,33 +238,33 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseIfElseVariable")
 
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 42);
 
-	f.run();
+	f.run(globalNamespace);
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 52);
 
-	f.run();
+	f.run(globalNamespace);
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 62);
 
 	testVariable.setValue(std::make_unique<gscript::ScriptIntValue>(13));
 
-	f.run();
+	f.run(globalNamespace);
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 620);
 
-	f.run();
+	f.run(globalNamespace);
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 6200);
 
 	testVariable.setValue(std::make_unique<gscript::ScriptIntValue>(42));
 
-	f.run();
+	f.run(globalNamespace);
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 6210);
 
-	f.run();
+	f.run(globalNamespace);
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 6220);
 
 	testVariable.setValue(std::make_unique<gscript::ScriptIntValue>(1337));
 
-	f.run();
+	f.run(globalNamespace);
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 6215);
 
-	f.run();
+	f.run(globalNamespace);
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 6210);
 }

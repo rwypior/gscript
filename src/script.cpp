@@ -182,7 +182,7 @@ namespace gscript
 
 		DBG("Running the script");
 
-		auto inst = ep->instantiate();
+		auto inst = std::make_unique<ScriptClassValue>(ep->instantiate());
 
 		std::vector<std::unique_ptr<ScriptValue>> params;
 
@@ -195,7 +195,7 @@ namespace gscript
 		paramvalues.push_back(std::make_unique<ScriptIntValue>(argc));
 		paramvalues.push_back(std::make_unique<ScriptArrayValue>(std::move(params)));
 
-		auto returncode = em->run(std::move(paramvalues));
+		auto returncode = em->instrun(std::make_unique<gscript::ScriptReferenceValue>(inst.get()), std::move(paramvalues));
 
 		return static_cast<ScriptIntValue*>(returncode.get())->getValue();
 	}

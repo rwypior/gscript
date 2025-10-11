@@ -10,14 +10,14 @@ namespace gscript
 		: ScriptMethod(
 			scope,
 			name,
-			ScriptType::create(ValueType::Void, this->scope),
+			ScriptType::create(ValueType::Void, scope),
 			PARAMS_T({ FunctionParameter(ScriptType::create(ValueType::String, scope)) }),
 			Modifier::AccessPublic | Modifier::Static
 		)
 	{
 	}
 
-	std::unique_ptr<ScriptValue> ConsoleExtension::FuncPrint::run(const CALLABLE_PARAMS_T& c)
+	std::unique_ptr<ScriptValue> ConsoleExtension::FuncPrint::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T& c)
 	{
 		this->validateParams(c);
 
@@ -32,17 +32,17 @@ namespace gscript
 	// Println
 
 	ConsoleExtension::FuncPrintLn::FuncPrintLn(ScriptScopeBase& scope, const std::string& name)
-		:ScriptMethod(
+		: ScriptMethod(
 			scope,
 			name,
-			ScriptType::create(ValueType::Void, this->scope),
+			ScriptType::create(ValueType::Void, scope),
 			PARAMS_T({ FunctionParameter(ScriptType::create(ValueType::String, scope)) }),
 			Modifier::AccessPublic | Modifier::Static
 		)
 	{
 	}
 
-	std::unique_ptr<ScriptValue> ConsoleExtension::FuncPrintLn::run(const CALLABLE_PARAMS_T& c)
+	std::unique_ptr<ScriptValue> ConsoleExtension::FuncPrintLn::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T& c)
 	{
 		this->validateParams(c);
 
@@ -60,14 +60,14 @@ namespace gscript
 		: ScriptMethod(
 			scope,
 			name,
-			ScriptType::create(ValueType::String, this->scope),
+			ScriptType::create(ValueType::String, scope),
 			PARAMS_T(),
 			Modifier::AccessPublic | Modifier::Static
 		)
 	{
 	}
 
-	std::unique_ptr<ScriptValue> ConsoleExtension::FuncReadLn::run(const CALLABLE_PARAMS_T& c)
+	std::unique_ptr<ScriptValue> ConsoleExtension::FuncReadLn::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T& c)
 	{
 		this->validateParams(c);
 

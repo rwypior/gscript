@@ -18,7 +18,7 @@ namespace gscript
 	public:
 		SCRIPT_API ScriptArrayInitializer(ScriptScope &scope, std::vector<std::unique_ptr<ScriptStatement>>&& statements);
 
-		SCRIPT_API virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		SCRIPT_API virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 
 		SCRIPT_API virtual const std::shared_ptr<ScriptType> getType() const;
 

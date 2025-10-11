@@ -28,13 +28,15 @@ namespace gscript
 		return std::make_unique<VariableAccessor>(addr.scope, addr.addr);
 	}
 
-	ScriptVariable* VariableAccessor::get()
+	ScriptVariable* VariableAccessor::get(ScriptScopeBase* scope)
 	{
 		assert(this->scope && "Scope must not be null");
 
-		if (this->addr > this->scope->getVariables().size())
+		scope = this->scope->isBaseOf(*scope) ? scope : this->scope;
+
+		if (this->addr > scope->getVariables().size())
 			return nullptr;
-		return this->scope->getVariables().at(this->addr).get();
+		return scope->getVariables().at(this->addr).get();
 	}
 
 	const std::shared_ptr<ScriptType> VariableAccessor::getType() const
@@ -49,6 +51,11 @@ namespace gscript
 	void VariableAccessor::setScope(ScriptScopeBase* scope)
 	{
 		this->scope = scope;
+	}
+
+	ScriptScopeBase* VariableAccessor::getScope()
+	{
+		return this->scope;
 	}
 
 	VariableAccessor::operator bool() const
@@ -71,12 +78,14 @@ namespace gscript
 		return std::make_unique<ParameterAccessor>(addr.scope, addr.addr);
 	}
 
-	ScriptVariable* ParameterAccessor::get()
+	ScriptVariable* ParameterAccessor::get(ScriptScopeBase* scope)
 	{
 		assert(this->scope && "Scope must not be null");
 		assert(dynamic_cast<ScriptFunction*>(this->scope) && "Parameters may only be used in functions");
 
-		ScriptFunction* fnc = static_cast<ScriptFunction*>(this->scope);
+		scope = this->scope->isBaseOf(*scope) ? scope : this->scope;
+
+		ScriptFunction* fnc = static_cast<ScriptFunction*>(scope);
 
 		if (this->addr > fnc->getParameters().size())
 			return nullptr;

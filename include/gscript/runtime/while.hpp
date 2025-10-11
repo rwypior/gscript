@@ -21,7 +21,7 @@ namespace gscript
 		ScriptWhile(ScriptScope& scope, std::unique_ptr<ScriptStatement>&& condition, std::vector<std::shared_ptr<ScriptCallable>>&& statements = {});
 		//ScriptWhile(ScriptScope &scope, const ParserWhile &pwhile);
 
-		virtual std::unique_ptr<ScriptValue> run(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 
 		virtual const std::shared_ptr<ScriptType> getType() const override;
 

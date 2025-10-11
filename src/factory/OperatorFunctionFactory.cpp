@@ -78,16 +78,16 @@ namespace gscript
 #pragma warning(disable: 4804 4805)
 
 			template<typename T_LEFT, typename T_RIGHT>
-			std::unique_ptr<ScriptValue> Add(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> Add(ScriptScopeBase& scope, ScriptCallable *left, ScriptCallable *right)
 			{
-				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() + static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				auto val = static_cast<T_LEFT*>(left->run(scope)->data())->getValue() + static_cast<T_RIGHT*>(right->run(scope)->data())->getValue();
 				return std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 			}
 
 			template<typename T_LEFT, typename T_RIGHT>
-			std::unique_ptr<ScriptValue> AddTo(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> AddTo(ScriptScopeBase& scope, ScriptCallable *left, ScriptCallable *right)
 			{
-				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() + static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				auto val = static_cast<T_LEFT*>(left->run(scope)->data())->getValue() + static_cast<T_RIGHT*>(right->run(scope)->data())->getValue();
 				auto res = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
 				vr->get()->setValue(res->clone());
@@ -95,16 +95,16 @@ namespace gscript
 			}
 
 			template<typename T_LEFT, typename T_RIGHT>
-			std::unique_ptr<ScriptValue> Subtract(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> Subtract(ScriptScopeBase& scope, ScriptCallable *left, ScriptCallable *right)
 			{
-				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() - static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				auto val = static_cast<T_LEFT*>(left->run(scope)->data())->getValue() - static_cast<T_RIGHT*>(right->run(scope)->data())->getValue();
 				return std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 			}
 
 			template<typename T_LEFT, typename T_RIGHT>
-			std::unique_ptr<ScriptValue> SubtractFrom(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> SubtractFrom(ScriptScopeBase& scope, ScriptCallable *left, ScriptCallable *right)
 			{
-				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() - static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				auto val = static_cast<T_LEFT*>(left->run(scope)->data())->getValue() - static_cast<T_RIGHT*>(right->run(scope)->data())->getValue();
 				auto res = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
 				vr->get()->setValue(res->clone());
@@ -112,16 +112,16 @@ namespace gscript
 			}
 
 			template<typename T_LEFT, typename T_RIGHT>
-			std::unique_ptr<ScriptValue> Multiply(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> Multiply(ScriptScopeBase& scope, ScriptCallable *left, ScriptCallable *right)
 			{
-				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() * static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				auto val = static_cast<T_LEFT*>(left->run(scope)->data())->getValue() * static_cast<T_RIGHT*>(right->run(scope)->data())->getValue();
 				return std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 			}
 
 			template<typename T_LEFT, typename T_RIGHT>
-			std::unique_ptr<ScriptValue> MultiplyBy(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> MultiplyBy(ScriptScopeBase& scope, ScriptCallable *left, ScriptCallable *right)
 			{
-				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() * static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				auto val = static_cast<T_LEFT*>(left->run(scope)->data())->getValue() * static_cast<T_RIGHT*>(right->run(scope)->data())->getValue();
 				auto res = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
 				vr->get()->setValue(res->clone());
@@ -129,16 +129,16 @@ namespace gscript
 			}
 
 			template<typename T_LEFT, typename T_RIGHT>
-			std::unique_ptr<ScriptValue> Divide(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> Divide(ScriptScopeBase& scope, ScriptCallable *left, ScriptCallable *right)
 			{
-				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() / static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				auto val = static_cast<T_LEFT*>(left->run(scope)->data())->getValue() / static_cast<T_RIGHT*>(right->run(scope)->data())->getValue();
 				return std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 			}
 
 			template<typename T_LEFT, typename T_RIGHT>
-			std::unique_ptr<ScriptValue> DivideBy(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> DivideBy(ScriptScopeBase& scope, ScriptCallable *left, ScriptCallable *right)
 			{
-				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() / static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				auto val = static_cast<T_LEFT*>(left->run(scope)->data())->getValue() / static_cast<T_RIGHT*>(right->run(scope)->data())->getValue();
 				auto res = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
 				vr->get()->setValue(res->clone());
@@ -146,51 +146,51 @@ namespace gscript
 			}
 
 			template<typename T_LEFT, typename T_RIGHT>
-			std::unique_ptr<ScriptValue> Equal(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> Equal(ScriptScopeBase& scope, ScriptCallable *left, ScriptCallable *right)
 			{
-				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() == static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				auto val = static_cast<T_LEFT*>(left->run(scope)->data())->getValue() == static_cast<T_RIGHT*>(right->run(scope)->data())->getValue();
 				return std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 			}
 
 			template<typename T_LEFT, typename T_RIGHT>
-			std::unique_ptr<ScriptValue> NotEqual(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> NotEqual(ScriptScopeBase& scope, ScriptCallable *left, ScriptCallable *right)
 			{
-				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() != static_cast<T_RIGHT*>(right->run().get())->getValue();
+				auto val = static_cast<T_LEFT*>(left->run(scope)->data())->getValue() != static_cast<T_RIGHT*>(right->run(scope).get())->getValue();
 				return std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 			}
 
 			template<typename T_LEFT, typename T_RIGHT>
-			std::unique_ptr<ScriptValue> GreaterThan(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> GreaterThan(ScriptScopeBase& scope, ScriptCallable *left, ScriptCallable *right)
 			{
-				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() > static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				auto val = static_cast<T_LEFT*>(left->run(scope)->data())->getValue() > static_cast<T_RIGHT*>(right->run(scope)->data())->getValue();
 				return std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 			}
 
 			template<typename T_LEFT, typename T_RIGHT>
-			std::unique_ptr<ScriptValue> GreaterOrEqualThan(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> GreaterOrEqualThan(ScriptScopeBase& scope, ScriptCallable *left, ScriptCallable *right)
 			{
-				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() >= static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				auto val = static_cast<T_LEFT*>(left->run(scope)->data())->getValue() >= static_cast<T_RIGHT*>(right->run(scope)->data())->getValue();
 				return std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 			}
 
 			template<typename T_LEFT, typename T_RIGHT>
-			std::unique_ptr<ScriptValue> LessThan(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> LessThan(ScriptScopeBase& scope, ScriptCallable *left, ScriptCallable *right)
 			{
-				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() < static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				auto val = static_cast<T_LEFT*>(left->run(scope)->data())->getValue() < static_cast<T_RIGHT*>(right->run(scope)->data())->getValue();
 				return std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 			}
 
 			template<typename T_LEFT, typename T_RIGHT>
-			std::unique_ptr<ScriptValue> LessOrEqualThan(ScriptCallable *left, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> LessOrEqualThan(ScriptScopeBase& scope, ScriptCallable *left, ScriptCallable *right)
 			{
-				auto val = static_cast<T_LEFT*>(left->run()->data())->getValue() <= static_cast<T_RIGHT*>(right->run()->data())->getValue();
+				auto val = static_cast<T_LEFT*>(left->run(scope)->data())->getValue() <= static_cast<T_RIGHT*>(right->run(scope)->data())->getValue();
 				return std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 			}
 
 			template<typename T_RIGHT>
-			std::unique_ptr<ScriptValue> PreDecrement(ScriptCallable*, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> PreDecrement(ScriptScopeBase& scope, ScriptCallable*, ScriptCallable *right)
 			{
-				auto val = static_cast<T_RIGHT*>(right->run()->data())->getValue() - 1;
+				auto val = static_cast<T_RIGHT*>(right->run(scope)->data())->getValue() - 1;
 				auto res = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(right);
 				vr->get()->setValue(res->clone());
@@ -198,9 +198,9 @@ namespace gscript
 			}
 
 			template<typename T_LEFT>
-			std::unique_ptr<ScriptValue> PostDecrement(ScriptCallable *left, ScriptCallable*)
+			std::unique_ptr<ScriptValue> PostDecrement(ScriptScopeBase& scope, ScriptCallable *left, ScriptCallable*)
 			{
-				auto data = left->run()->data();
+				auto data = left->run(scope)->data();
 				auto val = static_cast<T_LEFT*>(data)->getValue() - 1;
 				auto newVal = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 				auto res = data->clone();
@@ -210,9 +210,9 @@ namespace gscript
 			}
 
 			template<typename T_RIGHT>
-			std::unique_ptr<ScriptValue> PreIncrement(ScriptCallable*, ScriptCallable *right)
+			std::unique_ptr<ScriptValue> PreIncrement(ScriptScopeBase& scope, ScriptCallable*, ScriptCallable *right)
 			{
-				auto val = static_cast<T_RIGHT*>(right->run()->data())->getValue() + 1;
+				auto val = static_cast<T_RIGHT*>(right->run(scope)->data())->getValue() + 1;
 				auto res = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(right);
 				vr->get()->setValue(res->clone());
@@ -220,9 +220,9 @@ namespace gscript
 			}
 
 			template<typename T_LEFT>
-			std::unique_ptr<ScriptValue> PostIncrement(ScriptCallable *left, ScriptCallable*)
+			std::unique_ptr<ScriptValue> PostIncrement(ScriptScopeBase& scope, ScriptCallable *left, ScriptCallable*)
 			{
-				auto data = left->run()->data();
+				auto data = left->run(scope)->data();
 				auto val = static_cast<T_LEFT*>(data)->getValue() + 1;
 				auto newVal = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 				auto res = data->clone();

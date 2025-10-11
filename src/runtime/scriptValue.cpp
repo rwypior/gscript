@@ -617,6 +617,7 @@ namespace gscript
 
 	ScriptReferenceValue::ScriptReferenceValue(ScriptValue* v)
 	{
+		this->type = v->getType();
 		this->retarget(v);
 	}
 

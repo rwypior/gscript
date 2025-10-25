@@ -1,14 +1,23 @@
 #include "runtime/for.hpp"
 #include "defs.hpp"
+#include "util.hpp"
 
 namespace gscript
 {
+	ScriptFor::ScriptFor(const ScriptFor& b)
+		: ScriptExecutiveBlock(b)
+		, vardecl(static_unique_pointer_cast<ScriptVarDeclaration>( b.vardecl->clone() ))
+		, condition(static_unique_pointer_cast<ScriptStatement>( b.condition->clone() ))
+		, progress(static_unique_pointer_cast<ScriptStatement>( b.progress->clone() ))
+	{
+	}
+
 	ScriptFor::ScriptFor(
 			ScriptScope &scope, 
 			std::unique_ptr<ScriptVarDeclaration>&& vardecl, 
 			std::unique_ptr<ScriptStatement>&& condition, 
 			std::unique_ptr<ScriptStatement>&& progress,
-			std::vector<std::shared_ptr<ScriptCallable>>&& statements
+			std::vector<std::unique_ptr<ScriptCallable>>&& statements
 		)
 		//: ScriptCallable(scope)
 		: ScriptExecutiveBlock(std::move(statements))
@@ -16,6 +25,11 @@ namespace gscript
 		, condition(std::move(condition))
 		, progress(std::move(progress))
 	{
+	}
+
+	std::unique_ptr<ScriptCallable> ScriptFor::clone()
+	{
+		return std::make_unique<ScriptFor>(*this);
 	}
 
 	std::unique_ptr<ScriptValue> ScriptFor::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)

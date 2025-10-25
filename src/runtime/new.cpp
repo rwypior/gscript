@@ -5,6 +5,12 @@
 
 namespace gscript
 {
+	ScriptNew::ScriptNew(const ScriptNew& b)
+		: ScriptFuncCall(b)
+		, sclass(b.sclass)
+	{
+	}
+
 	ScriptNew::ScriptNew(ScriptClass &sclass, std::vector<std::unique_ptr<ScriptStatement>>&& params)
 		//:ScriptFuncCall(sclass, sclass.getConstructor(), params),
 		: ScriptFuncCall(sclass, sclass.getConstructor(), std::move(params))
@@ -12,6 +18,11 @@ namespace gscript
 	{
 		if (sclass.isAbstract())
 			throw CompileException(std::string("Cannot instatiate abstract class ") + sclass.getName());
+	}
+
+	std::unique_ptr<ScriptCallable> ScriptNew::clone()
+	{
+		return std::make_unique<ScriptNew>(*this);
 	}
 
 	std::unique_ptr<ScriptValue> ScriptNew::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)

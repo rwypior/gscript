@@ -1,15 +1,26 @@
 #include "runtime/executiveBlock.hpp"
 #include "runtime/return.hpp"
+#include "runtime/if.hpp"
+#include "util.hpp"
 
 namespace gscript
 {
-	ScriptExecutiveBlock::ScriptExecutiveBlock(std::vector<std::shared_ptr<ScriptCallable>>&& statements)
+	ScriptExecutiveBlock::ScriptExecutiveBlock(std::vector<std::unique_ptr<ScriptCallable>>&& statements)
 		: statements(std::move(statements))
 	{
 	}
 
 	ScriptExecutiveBlock::ScriptExecutiveBlock(ScriptExecutiveBlock&& exeblock) noexcept
 		: statements(std::move(exeblock.statements))
+	{
+	}
+
+	ScriptExecutiveBlock::ScriptExecutiveBlock(const ScriptExecutiveBlock& exeblock)
+		: statements(cloneVector(exeblock.statements))
+	{
+	}
+
+	ScriptExecutiveBlock::~ScriptExecutiveBlock()
 	{
 	}
 
@@ -27,9 +38,14 @@ namespace gscript
 		return ScriptType::null();
 	}
 
+	void ScriptExecutiveBlock::merge(std::vector<std::unique_ptr<ScriptCallable>>&& statements)
+	{
+		this->statements.insert(this->statements.end(), std::make_move_iterator(statements.begin()), std::make_move_iterator(statements.end()));
+	}
+
 	void ScriptExecutiveBlock::merge(ScriptExecutiveBlock&& block)
 	{
-		this->statements.insert(this->statements.end(), std::make_move_iterator(block.statements.begin()), std::make_move_iterator(block.statements.end()));
+		this->merge(std::move(block.statements));
 	}
 
 	void ScriptExecutiveBlock::merge(std::unique_ptr<ScriptExecutiveBlock>&& block)
@@ -37,7 +53,7 @@ namespace gscript
 		this->merge(std::move(*block));
 	}
 
-	std::vector<std::shared_ptr<ScriptCallable>>& ScriptExecutiveBlock::getStatements()
+	std::vector<std::unique_ptr<ScriptCallable>>& ScriptExecutiveBlock::getStatements()
 	{
 		return this->statements;
 	}

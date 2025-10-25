@@ -6,10 +6,20 @@
 
 namespace gscript
 {
+	ScriptLiteral::ScriptLiteral(const ScriptLiteral& literal)
+		: val(literal.val->clone())
+	{
+	}
+
 	ScriptLiteral::ScriptLiteral(ScriptScopeBase& scope, std::unique_ptr<ScriptValue> &&val)
 		//: ScriptCallable(scope)
 		: val(std::move(val))
 	{
+	}
+
+	std::unique_ptr<ScriptCallable> ScriptLiteral::clone()
+	{
+		return std::make_unique<ScriptLiteral>(*this);
 	}
 
 	std::unique_ptr<ScriptValue> ScriptLiteral::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)

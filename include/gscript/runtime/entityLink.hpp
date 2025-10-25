@@ -27,6 +27,8 @@ namespace gscript
 		SCRIPT_API VariableAccessor(ScriptScopeBase* scope, size_t addr);
 		SCRIPT_API VariableAccessor(const VariableAccessor& b);
 
+		SCRIPT_API virtual std::unique_ptr<VariableAccessor> clone() const;
+
 		SCRIPT_API static std::unique_ptr<VariableAccessor> find(ScriptScopeBase& scope, const std::string& name, bool searchParents = true);
 		// Access variable pointed by this accessor
 		// - scope - allows to retarget scope, especially useful for function calls
@@ -49,6 +51,8 @@ namespace gscript
 	{
 	public:
 		using VariableAccessor::VariableAccessor;
+
+		SCRIPT_API virtual std::unique_ptr<VariableAccessor> clone() const;
 
 		SCRIPT_API static std::unique_ptr<ParameterAccessor> find(ScriptScopeBase& scope, const std::string& name, bool searchParents = true);
 		SCRIPT_API ScriptVariable* get(ScriptScopeBase* scope = nullptr);

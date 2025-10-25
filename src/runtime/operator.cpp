@@ -48,6 +48,14 @@ namespace gscript
 		return it->second;
 	}
 
+	ScriptOperator::ScriptOperator(const ScriptOperator& b)
+		: linkage(b.linkage)
+		, left(b.left->clone())
+		, right(b.right->clone())
+		, operatorFunction(b.operatorFunction)
+	{
+	}
+
 	ScriptOperator::ScriptOperator(ScriptScope &scope, OperatorLinkage linkage)
 		//: ScriptCallable(scope)
 		: linkage(linkage)
@@ -73,6 +81,11 @@ namespace gscript
 	}
 
 
+
+	std::unique_ptr<ScriptCallable> ScriptOperatorMemberAccessor::clone()
+	{
+		return std::make_unique<ScriptOperatorMemberAccessor>(*this);
+	}
 
 	std::unique_ptr<ScriptValue> ScriptOperatorMemberAccessor::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
@@ -112,6 +125,11 @@ namespace gscript
 
 
 
+	std::unique_ptr<ScriptCallable> ScriptOperatorConditionalNull::clone()
+	{
+		return std::make_unique<ScriptOperatorConditionalNull>(*this);
+	}
+
 	std::unique_ptr<ScriptValue> ScriptOperatorConditionalNull::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
 		auto v = this->left->run(scope);
@@ -135,6 +153,11 @@ namespace gscript
 
 
 
+	std::unique_ptr<ScriptCallable> ScriptOperatorConditionalA::clone()
+	{
+		return std::make_unique<ScriptOperatorConditionalA>(*this);
+	}
+
 	std::unique_ptr<ScriptValue> ScriptOperatorConditionalA::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
 		return this->left->run(scope);
@@ -156,6 +179,11 @@ namespace gscript
 	}
 
 
+
+	std::unique_ptr<ScriptCallable> ScriptOperatorConditionalB::clone()
+	{
+		return std::make_unique<ScriptOperatorConditionalB>(*this);
+	}
 
 	std::unique_ptr<ScriptValue> ScriptOperatorConditionalB::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
@@ -185,6 +213,11 @@ namespace gscript
 
 
 
+	std::unique_ptr<ScriptCallable> ScriptOperatorNegate::clone()
+	{
+		return std::make_unique<ScriptOperatorNegate>(*this);
+	}
+
 	std::unique_ptr<ScriptValue> ScriptOperatorNegate::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
 		return nullptr;
@@ -201,6 +234,17 @@ namespace gscript
 	}
 
 
+
+	ScriptOperatorAssign::ScriptOperatorAssign(const ScriptOperatorAssign& b)
+		: ScriptOperator(b)
+	{
+		this->setup();
+	}
+
+	std::unique_ptr<ScriptCallable> ScriptOperatorAssign::clone()
+	{
+		return std::make_unique<ScriptOperatorAssign>(*this);
+	}
 
 	std::unique_ptr<ScriptValue> ScriptOperatorAssign::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
@@ -243,6 +287,11 @@ namespace gscript
 
 
 
+	std::unique_ptr<ScriptCallable> ScriptOperatorEquals::clone()
+	{
+		return std::make_unique<ScriptOperatorEquals>(*this);
+	}
+
 	std::unique_ptr<ScriptValue> ScriptOperatorEquals::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
 		return this->operatorFunction(scope, this->left.get(), this->right.get());
@@ -259,6 +308,11 @@ namespace gscript
 	}
 
 
+
+	std::unique_ptr<ScriptCallable> ScriptOperatorGreaterThan::clone()
+	{
+		return std::make_unique<ScriptOperatorGreaterThan>(*this);
+	}
 
 	std::unique_ptr<ScriptValue> ScriptOperatorGreaterThan::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
@@ -277,6 +331,11 @@ namespace gscript
 
 
 
+	std::unique_ptr<ScriptCallable> ScriptOperatorGreaterThanOrEqual::clone()
+	{
+		return std::make_unique<ScriptOperatorGreaterThanOrEqual>(*this);
+	}
+
 	std::unique_ptr<ScriptValue> ScriptOperatorGreaterThanOrEqual::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
 		return this->operatorFunction(scope, this->left.get(), this->right.get());
@@ -293,6 +352,11 @@ namespace gscript
 	}
 
 
+
+	std::unique_ptr<ScriptCallable> ScriptOperatorLessThan::clone()
+	{
+		return std::make_unique<ScriptOperatorLessThan>(*this);
+	}
 
 	std::unique_ptr<ScriptValue> ScriptOperatorLessThan::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
@@ -311,6 +375,11 @@ namespace gscript
 
 
 
+	std::unique_ptr<ScriptCallable> ScriptOperatorLessThanOrEqual::clone()
+	{
+		return std::make_unique<ScriptOperatorLessThanOrEqual>(*this);
+	}
+
 	std::unique_ptr<ScriptValue> ScriptOperatorLessThanOrEqual::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
 		return this->operatorFunction(scope, this->left.get(), this->right.get());
@@ -327,6 +396,11 @@ namespace gscript
 	}
 
 
+
+	std::unique_ptr<ScriptCallable> ScriptOperatorAdd::clone()
+	{
+		return std::make_unique<ScriptOperatorAdd>(*this);
+	}
 
 	std::unique_ptr<ScriptValue> ScriptOperatorAdd::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
@@ -345,6 +419,11 @@ namespace gscript
 
 
 
+	std::unique_ptr<ScriptCallable> ScriptOperatorAddTo::clone()
+	{
+		return std::make_unique<ScriptOperatorAddTo>(*this);
+	}
+
 	std::unique_ptr<ScriptValue> ScriptOperatorAddTo::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
 		return this->operatorFunction(scope, this->left.get(), this->right.get());
@@ -361,6 +440,11 @@ namespace gscript
 	}
 
 
+
+	std::unique_ptr<ScriptCallable> ScriptOperatorSubtract::clone()
+	{
+		return std::make_unique<ScriptOperatorSubtract>(*this);
+	}
 
 	std::unique_ptr<ScriptValue> ScriptOperatorSubtract::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
@@ -379,6 +463,11 @@ namespace gscript
 
 
 
+	std::unique_ptr<ScriptCallable> ScriptOperatorSubtractFrom::clone()
+	{
+		return std::make_unique<ScriptOperatorSubtractFrom>(*this);
+	}
+
 	std::unique_ptr<ScriptValue> ScriptOperatorSubtractFrom::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
 		return this->operatorFunction(scope, this->left.get(), this->right.get());
@@ -395,6 +484,11 @@ namespace gscript
 	}
 
 
+
+	std::unique_ptr<ScriptCallable> ScriptOperatorMultiply::clone()
+	{
+		return std::make_unique<ScriptOperatorMultiply>(*this);
+	}
 
 	std::unique_ptr<ScriptValue> ScriptOperatorMultiply::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
@@ -413,6 +507,11 @@ namespace gscript
 
 
 
+	std::unique_ptr<ScriptCallable> ScriptOperatorMultiplyBy::clone()
+	{
+		return std::make_unique<ScriptOperatorMultiplyBy>(*this);
+	}
+
 	std::unique_ptr<ScriptValue> ScriptOperatorMultiplyBy::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
 		return this->operatorFunction(scope, this->left.get(), this->right.get());
@@ -429,6 +528,11 @@ namespace gscript
 	}
 
 
+
+	std::unique_ptr<ScriptCallable> ScriptOperatorDivide::clone()
+	{
+		return std::make_unique<ScriptOperatorDivide>(*this);
+	}
 
 	std::unique_ptr<ScriptValue> ScriptOperatorDivide::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
@@ -447,6 +551,11 @@ namespace gscript
 
 
 
+	std::unique_ptr<ScriptCallable> ScriptOperatorDivideBy::clone()
+	{
+		return std::make_unique<ScriptOperatorDivideBy>(*this);
+	}
+
 	std::unique_ptr<ScriptValue> ScriptOperatorDivideBy::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
 		return this->operatorFunction(scope, this->left.get(), this->right.get());
@@ -464,6 +573,11 @@ namespace gscript
 
 
 
+	std::unique_ptr<ScriptCallable> ScriptOperatorIncrement::clone()
+	{
+		return std::make_unique<ScriptOperatorIncrement>(*this);
+	}
+
 	std::unique_ptr<ScriptValue> ScriptOperatorIncrement::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
 		return this->operatorFunction(scope, this->left.get(), this->right.get());
@@ -480,6 +594,11 @@ namespace gscript
 	}
 
 
+
+	std::unique_ptr<ScriptCallable> ScriptOperatorDecrement::clone()
+	{
+		return std::make_unique<ScriptOperatorDecrement>(*this);
+	}
 
 	std::unique_ptr<ScriptValue> ScriptOperatorDecrement::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{

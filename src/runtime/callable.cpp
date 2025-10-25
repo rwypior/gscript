@@ -2,4 +2,7 @@
 
 namespace gscript
 {
+	ScriptCallable::~ScriptCallable()
+	{
+	}
 }

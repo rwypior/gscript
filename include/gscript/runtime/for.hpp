@@ -17,13 +17,16 @@ namespace gscript
 	class ScriptFor : public ScriptExecutiveBlock, public ScriptCallable
 	{
 	public:
+		SCRIPT_API ScriptFor(const ScriptFor& b);
 		SCRIPT_API ScriptFor(
 			ScriptScope &scope, 
 			std::unique_ptr<ScriptVarDeclaration>&& vardecl, 
 			std::unique_ptr<ScriptStatement>&& condition, 
 			std::unique_ptr<ScriptStatement>&& progress,
-			std::vector<std::shared_ptr<ScriptCallable>>&& statements = {}
+			std::vector<std::unique_ptr<ScriptCallable>>&& statements = {}
 		);
+
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
 
 		SCRIPT_API virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 

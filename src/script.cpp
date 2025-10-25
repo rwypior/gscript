@@ -61,6 +61,10 @@ namespace gscript
 	{
 	}
 
+	Script::~Script()
+	{
+	}
+
 	void Script::extend(ScriptExtension *extension, const std::string &name)
 	{
 		this->extensions.emplace(name.empty() ? extension->getName() : name, extension);
@@ -70,6 +74,11 @@ namespace gscript
 	{
 		this->extend(new ConsoleExtension());
 		this->extend(new IOExtension());
+	}
+
+	const std::unordered_map<std::string, std::shared_ptr<ScriptExtension>>& Script::getExtensions() const
+	{
+		return this->extensions;
 	}
 
 	ScriptExtension *Script::findExtension(const std::string &name)
@@ -84,7 +93,11 @@ namespace gscript
 	bool Script::compile()
 	{
 		std::string source = loadSource(this->path);
+		return this->compile(source);
+	}
 
+	bool Script::compile(const std::string& source)
+	{
 		Compiler compiler;
 
 		ParserNamespace mainNamespace(NamespaceType::Main);
@@ -92,7 +105,7 @@ namespace gscript
 
 		for (auto& ex : mainNamespace.extensions)
 		{
-			if (ScriptExtension *ext = this->findExtension(ex))
+			if (ScriptExtension* ext = this->findExtension(ex))
 				ext->load(*this);
 			else
 				throw CompileException(std::string("Extension \"" + ex + "\" could not be found"));
@@ -100,7 +113,7 @@ namespace gscript
 
 		if (!this->isExtern)
 			this->init();
-		
+
 		for (auto& ns : mainNamespace.namespaces)
 		{
 			this->mainScope->registerNamespace(compiler.compileNamespace(this->mainScope.get(), ns));
@@ -193,11 +206,14 @@ namespace gscript
 
 		std::vector<std::unique_ptr<ScriptValue>> paramvalues;
 		paramvalues.push_back(std::make_unique<ScriptIntValue>(argc));
-		paramvalues.push_back(std::make_unique<ScriptArrayValue>(std::move(params)));
+		paramvalues.push_back(std::make_unique<ScriptArrayValue>(
+			std::make_shared<ScriptArrayType>(ScriptType::create(ValueType::String, *this->mainScope)),
+			std::move(params)
+		));
 
 		auto returncode = em->instrun(std::make_unique<gscript::ScriptReferenceValue>(inst.get()), std::move(paramvalues));
 
-		return static_cast<ScriptIntValue*>(returncode.get())->getValue();
+		return returncode->data()->as<ScriptIntValue>().getValue();
 	}
 
 	void Script::import(const std::string &path)

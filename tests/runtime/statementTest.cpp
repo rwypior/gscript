@@ -67,7 +67,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeStatementWithFuncCalls")
 
 	auto ret = std::make_unique<gscript::ScriptReturn>(myFunc, std::move(funcstmt1));
 
-	auto stmtvecbodycallable = std::vector<std::shared_ptr<gscript::ScriptCallable>>();
+	auto stmtvecbodycallable = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecbodycallable.push_back(std::move(ret));
 	auto eb = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbodycallable));
 

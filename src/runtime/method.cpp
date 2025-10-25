@@ -42,8 +42,11 @@ namespace gscript
 		this->validateParams(c);
 
 		ScriptMethod target(*this);
+
+		RemapScope remapping(*this, target);
+
 		target.registerParameters(c);
-		return this->execute(target);
+		return target.execute(target);
 	}
 
 	void ScriptMethod::createThis(ScriptClass &sclass)

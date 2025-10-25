@@ -8,6 +8,12 @@
 
 namespace gscript
 {
+	ScriptFuncCall::ScriptFuncCall(const ScriptFuncCall& b)
+		: accessor(b.accessor)
+		, params(cloneVector(b.params))
+	{
+	}
+
 	ScriptFuncCall::ScriptFuncCall(ScriptScopeBase& scope, FunctionAccessor func, std::vector<std::unique_ptr<ScriptStatement>>&& params)
 		//: ScriptCallable(scope)
 		: accessor(func)
@@ -27,6 +33,11 @@ namespace gscript
 		: accessor(FunctionAccessor::find(scope, name, extractParams(params)))
 		, params(std::move(params))
 	{
+	}
+
+	std::unique_ptr<ScriptCallable> ScriptFuncCall::clone()
+	{
+		return std::make_unique<ScriptFuncCall>(*this);
 	}
 
 	std::unique_ptr<ScriptValue> ScriptFuncCall::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)

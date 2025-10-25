@@ -1,1 +1,1 @@
-target_sources(gscriptTest PRIVATE "simpleCompilerTest.cpp" "prototypeTest.cpp")
+target_sources(gscriptTest PRIVATE "simpleCompilerTest.cpp" "prototypeTest.cpp" "compilerExtensionTest.cpp")

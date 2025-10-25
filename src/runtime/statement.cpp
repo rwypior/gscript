@@ -25,6 +25,11 @@ namespace gscript
 	{
 	}
 
+	ScriptStatement::ScriptStatement(const ScriptStatement& b)
+		: callable(b.callable->clone())
+	{
+	}
+
 	ScriptStatement::ScriptStatement(ScriptScope& scope, std::vector<std::unique_ptr<ScriptCallable>>&& callables)
 		//: ScriptCallable(scope)
 	{
@@ -43,6 +48,11 @@ namespace gscript
 		//: ScriptCallable(stmt.scope)
 		: callable(std::move(stmt.callable))
 	{
+	}
+
+	std::unique_ptr<ScriptCallable> ScriptStatement::clone()
+	{
+		return std::make_unique<ScriptStatement>(*this);
 	}
 
 	std::unique_ptr<ScriptValue> ScriptStatement::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)

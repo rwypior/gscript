@@ -162,7 +162,9 @@ namespace gscript
 			template<typename T_LEFT, typename T_RIGHT>
 			std::unique_ptr<ScriptValue> GreaterThan(ScriptScopeBase& scope, ScriptCallable *left, ScriptCallable *right)
 			{
-				auto val = static_cast<T_LEFT*>(left->run(scope)->data())->getValue() > static_cast<T_RIGHT*>(right->run(scope)->data())->getValue();
+				auto valLeft = static_cast<T_LEFT*>(left->run(scope)->data())->getValue();
+				auto valRight = static_cast<T_RIGHT*>(right->run(scope)->data())->getValue();
+				auto val = valLeft > valRight;
 				return std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 			}
 

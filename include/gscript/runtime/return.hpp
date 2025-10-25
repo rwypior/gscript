@@ -9,13 +9,16 @@ namespace gscript
 	class ScriptReturn : public ScriptCallable
 	{
 	public:
+		SCRIPT_API ScriptReturn(const ScriptReturn& b);
+		SCRIPT_API ScriptReturn(ScriptScopeBase& scope, std::unique_ptr<ScriptStatement>&& statement);
 
-		ScriptReturn(ScriptScopeBase& scope, std::unique_ptr<ScriptStatement>&& statement);
-		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T());
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
 
-		virtual const std::shared_ptr<ScriptType> getType() const override;
+		SCRIPT_API virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T());
 
-		std::unique_ptr<ScriptCallable>& getStatement();
+		SCRIPT_API virtual const std::shared_ptr<ScriptType> getType() const override;
+
+		SCRIPT_API std::unique_ptr<ScriptCallable>& getStatement();
 
 	private:
 		std::unique_ptr<ScriptCallable> statement;

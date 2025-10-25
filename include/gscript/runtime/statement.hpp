@@ -23,9 +23,11 @@ namespace gscript
 
 		//SCRIPT_API ScriptStatement(ScriptScope &scope, const ParserStatement &pstatement);
 		SCRIPT_API ScriptStatement(ScriptStatement&& stmt) noexcept;
-		ScriptStatement(const ScriptStatement& stmt) = delete;
+		SCRIPT_API ScriptStatement(const ScriptStatement& b);
 		SCRIPT_API ScriptStatement(ScriptScope &scope);
 		SCRIPT_API ScriptStatement(ScriptScope &scope, std::vector<std::unique_ptr<ScriptCallable>>&& callables);
+
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
 
 		SCRIPT_API virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		SCRIPT_API virtual void setup(ScriptScopeBase& scope) override;

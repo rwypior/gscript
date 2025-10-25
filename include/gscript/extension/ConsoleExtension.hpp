@@ -9,6 +9,7 @@
 #include "runtime/scope.hpp"
 
 #include <string>
+#include <ostream>
 
 namespace gscript
 {
@@ -44,6 +45,8 @@ namespace gscript
 
 		void run(Script& script);
 		std::string getName() const override;
+
+		static std::ostream* out;
 	};
 }
 

@@ -13,11 +13,15 @@ namespace gscript
 	public:
 		std::unique_ptr<ScriptValue> val = nullptr;
 
-		ScriptLiteral(ScriptScopeBase& scope, std::unique_ptr<ScriptValue> &&val = nullptr);
+		SCRIPT_API ScriptLiteral(const ScriptLiteral& literal);
+		SCRIPT_API ScriptLiteral(ScriptScopeBase& scope, std::unique_ptr<ScriptValue> &&val = nullptr);
 		//ScriptLiteral(ScriptScope &scope, ParserLiteral pliteral);
-		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T());
 
-		virtual const std::shared_ptr<ScriptType> getType() const override;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
+
+		SCRIPT_API virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T());
+
+		SCRIPT_API virtual const std::shared_ptr<ScriptType> getType() const override;
 	};
 }
 

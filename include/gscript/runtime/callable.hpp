@@ -16,7 +16,10 @@ namespace gscript
 	class ScriptCallable
 	{
 	public:
-		SCRIPT_API ~ScriptCallable() = default;
+		SCRIPT_API virtual ~ScriptCallable();
+
+		// TODO - remove 'scope' argument from clone
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() = 0;
 
 		SCRIPT_API virtual const std::shared_ptr<ScriptType> getType() const = 0;
 
@@ -34,9 +37,14 @@ namespace gscript
 	public:
 		using ScriptCallable::ScriptCallable;
 
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override
+		{
+			throw RuntimeException("Attempted to clone callable prototype");
+		}
+
 		SCRIPT_API virtual std::unique_ptr<ScriptCallable> build(ScriptScopeBase& scope) override = 0;
 
-		SCRIPT_API virtual const std::shared_ptr<ScriptType> getType() const
+		SCRIPT_API virtual const std::shared_ptr<ScriptType> getType() const override
 		{
 			throw RuntimeException("Attempted to call callable prototype");
 		}

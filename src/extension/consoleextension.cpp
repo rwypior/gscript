@@ -4,6 +4,8 @@
 
 namespace gscript
 {
+	std::ostream* ConsoleExtension::out = &std::cout;
+
 	// Print
 
 	ConsoleExtension::FuncPrint::FuncPrint(ScriptScopeBase& scope, const std::string& name)
@@ -24,7 +26,7 @@ namespace gscript
 		const ScriptValue& val = *c[0];
 		const ScriptStringValue& sval = static_cast<const ScriptStringValue&>(val);
 
-		std::cout << sval.getValue() << std::flush;
+		*ConsoleExtension::out << sval.getValue() << std::flush;
 
 		return ScriptType::null();
 	}
@@ -49,7 +51,7 @@ namespace gscript
 		const ScriptValue& val = *c[0];
 		const ScriptStringValue* sval = static_cast<const ScriptStringValue*>(val.data());
 
-		std::cout << sval->getValue() << std::endl;
+		*ConsoleExtension::out << sval->getValue() << std::endl;
 
 		return ScriptType::null();
 	}

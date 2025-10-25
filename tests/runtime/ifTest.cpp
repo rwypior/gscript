@@ -42,7 +42,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfVariable")
 	stmtvecbody.push_back(std::move(literal10));
 	auto stmt1 = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecbody));
 	stmt1->setup(globalNamespace);
-	auto stmtvecbody1 = std::vector<std::shared_ptr<gscript::ScriptCallable>>();
+	auto stmtvecbody1 = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecbody1.push_back(std::move(stmt1));
 	auto eb = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbody1));
 
@@ -97,7 +97,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseVariable")
 	stmtvecbody.push_back(std::move(literal10));
 	auto stmt1 = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecbody));
 	stmt1->setup(globalNamespace);
-	auto stmtvecbody1 = std::vector<std::shared_ptr<gscript::ScriptCallable>>();
+	auto stmtvecbody1 = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecbody1.push_back(std::move(stmt1));
 	auto eb = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbody1));
 
@@ -112,7 +112,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseVariable")
 	stmtvecbodyelse.push_back(std::move(literal10else));
 	auto stmt1else = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecbodyelse));
 	stmt1else->setup(globalNamespace);
-	auto stmtvecbody1else = std::vector<std::shared_ptr<gscript::ScriptCallable>>();
+	auto stmtvecbody1else = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecbody1else.push_back(std::move(stmt1else));
 	auto ebelse = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbody1else));
 
@@ -179,7 +179,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseIfElseVariable")
 	stmtvecbody.push_back(std::move(literal10));
 	auto stmt1 = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecbody));
 	stmt1->setup(globalNamespace);
-	auto stmtvecbody1 = std::vector<std::shared_ptr<gscript::ScriptCallable>>();
+	auto stmtvecbody1 = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecbody1.push_back(std::move(stmt1));
 	auto eb = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbody1));
 
@@ -194,7 +194,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseIfElseVariable")
 	stmtvecbodyelse.push_back(std::move(literal10else));
 	auto stmt1else = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecbodyelse));
 	stmt1else ->setup(globalNamespace);
-	auto stmtvecbody1else = std::vector<std::shared_ptr<gscript::ScriptCallable>>();
+	auto stmtvecbody1else = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecbody1else.push_back(std::move(stmt1else));
 	auto ebelse = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbody1else));
 
@@ -224,7 +224,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeIfElseIfElseVariable")
 	stmtvecbodyelseif.push_back(std::move(literal10elseif));
 	auto stmt1elseif = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecbodyelseif));
 	stmt1elseif->setup(globalNamespace);
-	auto stmtvecbody1elseif = std::vector<std::shared_ptr<gscript::ScriptCallable>>();
+	auto stmtvecbody1elseif = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecbody1elseif.push_back(std::move(stmt1elseif));
 	auto ebelseif = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbody1elseif));
 

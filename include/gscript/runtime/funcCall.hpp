@@ -24,9 +24,12 @@ namespace gscript
 	public:
 		//ScriptFuncCall(ScriptScope &scope, ScriptFunction *func, const std::vector<ScriptStatement> &params);
 		//ScriptFuncCall(ScriptScope& scope, EntityLink<ScriptFunction*>* func, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
+		ScriptFuncCall(const ScriptFuncCall& b);
 		ScriptFuncCall(ScriptScopeBase& scope, FunctionAccessor func, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
 		ScriptFuncCall(ScriptScopeBase& scope, ScriptFunction* func, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
 		ScriptFuncCall(ScriptScopeBase& scope, const std::string& name, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
+
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
 
 		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 

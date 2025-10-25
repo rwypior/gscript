@@ -6,27 +6,27 @@
 #include "scriptValue.hpp"
 #include "scope.hpp"
 #include "executiveBlock.hpp"
+#include "lib.hpp"
 
 #include <vector>
 #include <memory>
 
 namespace gscript
 {
-	class ParserFunction;
-	class ParserIf;
-	class ParserElse;
-
-	class ScriptIf : public ScriptExecutiveBlock, public ScriptCallable
+	class ScriptIf : public ScriptScope, public ScriptExecutiveBlock, public ScriptCallable
 	{
 	public:
-		ScriptIf(ScriptScope& scope, std::unique_ptr<ScriptStatement>&& condition, std::unique_ptr<ScriptIf>&& selse = {}, std::vector<std::shared_ptr<ScriptCallable>>&& statements = {});
+		SCRIPT_API ScriptIf(const ScriptIf& sif);
+		SCRIPT_API ScriptIf(ScriptScope& scope, std::unique_ptr<ScriptStatement>&& condition, std::unique_ptr<ScriptIf>&& selse = {}, std::vector<std::unique_ptr<ScriptCallable>>&& statements = {});
 
-		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
 
-		virtual const std::shared_ptr<ScriptType> getType() const override;
+		SCRIPT_API virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 
-		const std::unique_ptr<ScriptCallable>& getCondition() const;
-		std::unique_ptr<ScriptCallable>& getCondition();
+		SCRIPT_API virtual const std::shared_ptr<ScriptType> getType() const override;
+
+		SCRIPT_API const std::unique_ptr<ScriptCallable>& getCondition() const;
+		SCRIPT_API std::unique_ptr<ScriptCallable>& getCondition();
 
 	private:
 		std::unique_ptr<ScriptCallable> condition = nullptr;

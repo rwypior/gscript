@@ -18,16 +18,19 @@ namespace gscript
 	{
 	public:
 		//ScriptVarRead(ScriptScope& scope);
-		ScriptVarRead(ScriptScopeBase& scope, std::unique_ptr<VariableAccessor>&& accessor);
-		ScriptVarRead(ScriptScopeBase& scope, ScriptVariable *variable);
-		ScriptVarRead(ScriptScopeBase& scope, const std::string& name);
+		SCRIPT_API ScriptVarRead(const ScriptVarRead& b);
+		SCRIPT_API ScriptVarRead(ScriptScopeBase& scope, std::unique_ptr<VariableAccessor>&& accessor);
+		SCRIPT_API ScriptVarRead(ScriptScopeBase& scope, ScriptVariable *variable);
+		SCRIPT_API ScriptVarRead(ScriptScopeBase& scope, const std::string& name);
 
-		virtual const std::shared_ptr<ScriptType> getType() const override;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
 
-		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
-		virtual ScriptVariable* get();
+		SCRIPT_API virtual const std::shared_ptr<ScriptType> getType() const override;
 
-		virtual void setScope(ScriptClassInstance *instance);
+		SCRIPT_API virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		SCRIPT_API virtual ScriptVariable* get();
+
+		SCRIPT_API virtual void setScope(ScriptClassInstance *instance);
 
 	protected:
 		std::unique_ptr<VariableAccessor> accessor;
@@ -36,8 +39,11 @@ namespace gscript
 	class ScriptVarReferenceRead : public ScriptVarRead
 	{
 	using ScriptVarRead::ScriptVarRead;
+
 	public:
-		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
+
+		SCRIPT_API virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override;
 	};
 
 	class ScriptVarReadPrototype : public ScriptCallablePrototype
@@ -49,6 +55,9 @@ namespace gscript
 
 		const std::string& getName() const;
 
+		// Disable returning reference variable - useful in eg. return statements
+		// TODO - should probably revert this - references should be disabled by default
+		// and enableReferences function should be created instead
 		void disableReference();
 
 	private:
@@ -61,12 +70,16 @@ namespace gscript
 	class ScriptArrayRead : public ScriptVarRead
 	{
 	public:
-		ScriptArrayRead(ScriptScopeBase &scope, std::unique_ptr<VariableAccessor>&& accessor, std::unique_ptr<ScriptCallable> &&arrayAccessor);
-		ScriptArrayRead(ScriptScopeBase &scope, ScriptVariable *variable, std::unique_ptr<ScriptCallable> &&arrayAccessor);
-		ScriptArrayRead(ScriptScopeBase &scope, const std::string& name, std::unique_ptr<ScriptCallable> &&arrayAccessor);
-		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		SCRIPT_API ScriptArrayRead(const ScriptArrayRead& b);
+		SCRIPT_API ScriptArrayRead(ScriptScopeBase &scope, std::unique_ptr<VariableAccessor>&& accessor, std::unique_ptr<ScriptCallable> &&arrayAccessor);
+		SCRIPT_API ScriptArrayRead(ScriptScopeBase &scope, ScriptVariable *variable, std::unique_ptr<ScriptCallable> &&arrayAccessor);
+		SCRIPT_API ScriptArrayRead(ScriptScopeBase &scope, const std::string& name, std::unique_ptr<ScriptCallable> &&arrayAccessor);
 
-		virtual const std::shared_ptr<ScriptType> getType() const override;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
+
+		SCRIPT_API virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+
+		SCRIPT_API virtual const std::shared_ptr<ScriptType> getType() const override;
 
 	protected:
 		std::unique_ptr<ScriptCallable> arrayAccessor = nullptr;

@@ -9,6 +9,8 @@
 #include <list>
 #include <vector>
 #include <memory>
+#include <stack>
+#include <utility>
 
 namespace gscript
 {
@@ -22,14 +24,14 @@ namespace gscript
 	class ScriptScopeBase
 	{
 	public:
-		ScriptScopeBase() = default;
-		ScriptScopeBase(const ScriptScopeBase& scope) = delete;
-		virtual ~ScriptScopeBase() = default;
+		SCRIPT_API ScriptScopeBase() = default;
+		//SCRIPT_API ScriptScopeBase(const ScriptScopeBase& scope) = delete;
+		SCRIPT_API virtual ~ScriptScopeBase() = default;
 
 		SCRIPT_API virtual ScriptFunction& registerFunction(const std::string& name,
 			std::shared_ptr<ScriptType> returnType,
 			const PARAMS_T& parameters = PARAMS_T(),
-			std::vector<std::shared_ptr<ScriptCallable>>&& statements = {});
+			std::vector<std::unique_ptr<ScriptCallable>>&& statements = {});
 		SCRIPT_API virtual ScriptFunction& registerFunction(std::unique_ptr<ScriptFunction>&& function);
 
 		SCRIPT_API virtual ScriptVariable& registerVariable(const std::string& name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptValue>&& value);
@@ -50,6 +52,7 @@ namespace gscript
 
 		SCRIPT_API ScriptNamespace* getClosestNamespace(bool includeSelf = false);
 		SCRIPT_API ScriptNamespace* getGlobalNamespace();
+		SCRIPT_API ScriptFunction* getClosestFunction(bool includeSelf = false);
 
 		SCRIPT_API virtual void setParentScope(ScriptScopeBase* scope) = 0;
 		SCRIPT_API virtual ScriptScopeBase* getParentScope() const = 0;
@@ -79,6 +82,21 @@ namespace gscript
 
 		std::vector<std::unique_ptr<ScriptFunction>> functions;
 		std::vector<std::unique_ptr<ScriptVariable>> variables;
+	};
+
+	// Used as a guard to temporarily change parent scope
+	class RemapScope
+	{
+	public:
+		RemapScope(ScriptScopeBase& source, ScriptScopeBase& target);
+		~RemapScope();
+
+		static ScriptScopeBase& map(ScriptScopeBase& source);
+
+	private:
+		static std::stack<std::pair<ScriptScopeBase*, ScriptScopeBase*>> mappingQueue;
+		//ScriptScopeBase& scope;
+		//ScriptScopeBase* parent = nullptr;
 	};
 }
 

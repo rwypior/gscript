@@ -254,7 +254,7 @@ namespace gscript
 	{
 		gs_log("Compiling ScriptExecutiveBlock with " << pblock.statements.size() << " statements");
 
-		std::vector<std::shared_ptr<ScriptCallable>> statements;
+		std::vector<std::unique_ptr<ScriptCallable>> statements;
 
 		for (auto &ps : pblock.statements)
 		{

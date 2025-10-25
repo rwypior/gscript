@@ -9,6 +9,9 @@
 
 #include <catch2/catch_all.hpp>
 
+#include <sstream>
+#include <iostream>
+
 class SampleExtension : public gscript::ScriptExtension
 {
 public:

@@ -6,10 +6,17 @@
 
 namespace gscript
 {
+	// TODO - remove 'scope' argument from constructors - leave only the one with accessor
+
 	/*ScriptVarRead::ScriptVarRead(ScriptScope& scope)
 		: ScriptCallable(scope)
 	{
 	}*/
+
+	ScriptVarRead::ScriptVarRead(const ScriptVarRead& b)
+		: accessor(b.accessor->clone())
+	{
+	}
 
 	ScriptVarRead::ScriptVarRead(ScriptScopeBase& scope, std::unique_ptr<VariableAccessor>&& accessor)
 		//: ScriptCallable(scope)
@@ -27,6 +34,11 @@ namespace gscript
 		// ScriptCallable(scope)
 		: accessor(VariableAccessor::find(scope, name))
 	{
+	}
+
+	std::unique_ptr<ScriptCallable> ScriptVarRead::clone()
+	{
+		return std::make_unique<ScriptVarRead>(*this);
 	}
 
 	std::unique_ptr<ScriptValue> ScriptVarRead::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
@@ -58,6 +70,11 @@ namespace gscript
 
 	// Reference read
 	
+	std::unique_ptr<ScriptCallable> ScriptVarReferenceRead::clone()
+	{
+		return std::make_unique<ScriptVarReferenceRead>(*this);
+	}
+
 	std::unique_ptr<ScriptValue> ScriptVarReferenceRead::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T& c)
 	{
 		//if (!this->accessor->getScope()->isParentOf(scope))
@@ -121,6 +138,12 @@ namespace gscript
 
 	// Array var read
 
+	ScriptArrayRead::ScriptArrayRead(const ScriptArrayRead& b)
+		: ScriptVarRead(b)
+		, arrayAccessor(b.arrayAccessor->clone())
+	{
+	}
+
 	ScriptArrayRead::ScriptArrayRead(ScriptScopeBase& scope, std::unique_ptr<VariableAccessor>&& accessor, std::unique_ptr<ScriptCallable> &&arrayAccessor)
 		: ScriptVarRead(scope, std::move(accessor))
 		, arrayAccessor(std::move(arrayAccessor))
@@ -137,6 +160,11 @@ namespace gscript
 		: ScriptVarRead(scope, name)
 		, arrayAccessor(std::move(arrayAccessor))
 	{
+	}
+
+	std::unique_ptr<ScriptCallable> ScriptArrayRead::clone()
+	{
+		return std::make_unique<ScriptArrayRead>(*this);
 	}
 
 	std::unique_ptr<ScriptValue> ScriptArrayRead::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)

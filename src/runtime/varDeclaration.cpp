@@ -10,6 +10,12 @@ namespace gscript
 	// and then creates runtime variable declaration entry which is later run as a
 	// statement and a value to it is assigned
 
+	ScriptVarDeclaration::ScriptVarDeclaration(const ScriptVarDeclaration& b)
+		: accessor(b.accessor->clone())
+		, statement(b.statement->clone())
+	{
+	}
+
 	ScriptVarDeclaration::ScriptVarDeclaration(ScriptScope &scope, ScriptVariable &var, std::unique_ptr<ScriptStatement> &&statement)
 		//: ScriptCallable(scope)
 		: accessor(VariableAccessor::find(scope, var.getName()))
@@ -22,6 +28,11 @@ namespace gscript
 		: accessor(std::move(accessor))
 		, statement(std::move(statement))
 	{
+	}
+
+	std::unique_ptr<ScriptCallable> ScriptVarDeclaration::clone()
+	{
+		return std::make_unique<ScriptVarDeclaration>(*this);
 	}
 
 	void ScriptVarDeclaration::setInstance(ScriptClassInstance &instance)
@@ -59,11 +70,23 @@ namespace gscript
 
 	// Field declaration
 
+	ScriptFieldDeclaration::ScriptFieldDeclaration(const ScriptFieldDeclaration& b)
+		: ScriptVarDeclaration(b)
+		, name(b.name)
+		, type(b.type->clone())
+	{
+	}
+
 	ScriptFieldDeclaration::ScriptFieldDeclaration(ScriptScope& scope, const std::string& name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptStatement>&& statement)
 		: ScriptVarDeclaration(scope, {}, std::move(statement))
 		, name(name)
 		, type(type)
 	{
+	}
+
+	std::unique_ptr<ScriptCallable> ScriptFieldDeclaration::clone()
+	{
+		return std::make_unique<ScriptFieldDeclaration>(*this);
 	}
 
 	void ScriptFieldDeclaration::instantiate(ScriptScopeBase& instance)

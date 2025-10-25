@@ -18,8 +18,11 @@ namespace gscript
 	class ScriptWhile : public ScriptExecutiveBlock, public ScriptCallable
 	{
 	public:
-		ScriptWhile(ScriptScope& scope, std::unique_ptr<ScriptStatement>&& condition, std::vector<std::shared_ptr<ScriptCallable>>&& statements = {});
+		ScriptWhile(const ScriptWhile& b);
+		ScriptWhile(ScriptScope& scope, std::unique_ptr<ScriptStatement>&& condition, std::vector<std::unique_ptr<ScriptCallable>>&& statements = {});
 		//ScriptWhile(ScriptScope &scope, const ParserWhile &pwhile);
+
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
 
 		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 

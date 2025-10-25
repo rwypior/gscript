@@ -48,8 +48,8 @@ TEST_CASE_METHOD(GscriptTest, "CompilerPrototypeResolvingNestedFuncCall")
 	REQUIRE(myfunc->getStatements().size() == 1);
 	REQUIRE(otherfunc->getStatements().size() == 0);
 
-	auto stmt0_prototype = std::static_pointer_cast<gscript::ScriptStatement>(myfunc->getStatements().at(0));
-	auto stmt0_call0_prototype = std::static_pointer_cast<gscript::ScriptFuncCallPrototype>(stmt0_prototype->callable);
+	auto* stmt0_prototype = static_cast<gscript::ScriptStatement*>(myfunc->getStatements().at(0).get());
+	auto* stmt0_call0_prototype = dynamic_cast<gscript::ScriptFuncCallPrototype*>(stmt0_prototype->callable.get());
 
 	REQUIRE(stmt0_call0_prototype);
 	REQUIRE(stmt0_call0_prototype->getName() == "otherfunc");
@@ -57,8 +57,8 @@ TEST_CASE_METHOD(GscriptTest, "CompilerPrototypeResolvingNestedFuncCall")
 
 	compiler.finalize(globalNamespace);
 
-	auto stmt0 = std::static_pointer_cast<gscript::ScriptStatement>(myfunc->getStatements().at(0));
-	auto stmt0_call0 = std::static_pointer_cast<gscript::ScriptFuncCall>(stmt0->callable);
+	auto* stmt0 = static_cast<gscript::ScriptStatement*>(myfunc->getStatements().at(0).get());
+	auto* stmt0_call0 = static_cast<gscript::ScriptFuncCall*>(stmt0->callable.get());
 
 	REQUIRE(stmt0_call0);
 	REQUIRE(stmt0_call0->getFunc().get()->getName() == "otherfunc");
@@ -89,18 +89,18 @@ TEST_CASE_METHOD(GscriptTest, "CompilerPrototypeResolvingVariablesReads")
 
 	REQUIRE(myfunc->getStatements().size() == 2);
 
-	auto stmt1_decl0 = std::static_pointer_cast<gscript::ScriptVarDeclaration>(myfunc->getStatements().at(1));
+	auto stmt1_decl0 = static_cast<gscript::ScriptVarDeclaration*>(myfunc->getStatements().at(1).get());
 	auto stmt1_decl0_stmt0 = static_cast<gscript::ScriptStatement*>(stmt1_decl0->getStatement().get());
-	auto stmt1_decl0_stmt0_varreadprototype = std::dynamic_pointer_cast<gscript::ScriptVarReadPrototype>(stmt1_decl0_stmt0->callable);
+	auto stmt1_decl0_stmt0_varreadprototype = dynamic_cast<gscript::ScriptVarReadPrototype*>(stmt1_decl0_stmt0->callable.get());
 
 	REQUIRE(stmt1_decl0_stmt0_varreadprototype); // Before finalization var read is still a prototype
 	REQUIRE(stmt1_decl0_stmt0_varreadprototype->getName() == "a");
 
 	compiler.finalize(globalNamespace);
 
-	auto after_stmt1_decl0 = std::static_pointer_cast<gscript::ScriptVarDeclaration>(myfunc->getStatements().at(1));
+	auto after_stmt1_decl0 = static_cast<gscript::ScriptVarDeclaration*>(myfunc->getStatements().at(1).get());
 	auto after_stmt1_decl0_stmt0 = static_cast<gscript::ScriptStatement*>(stmt1_decl0->getStatement().get());
-	auto after_stmt1_decl0_stmt0_varreadprototype = std::dynamic_pointer_cast<gscript::ScriptVarReadPrototype>(stmt1_decl0_stmt0->callable);
+	auto after_stmt1_decl0_stmt0_varreadprototype = dynamic_cast<gscript::ScriptVarReadPrototype*>(stmt1_decl0_stmt0->callable.get());
 
 	REQUIRE(after_stmt1_decl0_stmt0_varreadprototype == nullptr); // Var read is no longer a prototype
 }

@@ -11,7 +11,10 @@ namespace gscript
 	class ScriptNew : public ScriptFuncCall
 	{
 	public:
+		ScriptNew(const ScriptNew& b);
 		ScriptNew(ScriptClass& sclass, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
+
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
 
 		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 

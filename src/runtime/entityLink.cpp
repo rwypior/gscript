@@ -18,6 +18,11 @@ namespace gscript
 	{
 	}
 
+	std::unique_ptr<VariableAccessor> VariableAccessor::clone() const
+	{
+		return std::make_unique<VariableAccessor>(*this);
+	}
+
 	std::unique_ptr<VariableAccessor> VariableAccessor::find(ScriptScopeBase& scope, const std::string& name, bool searchParents)
 	{
 		auto addr = scope.findVariableAddr(name, searchParents);
@@ -32,11 +37,12 @@ namespace gscript
 	{
 		assert(this->scope && "Scope must not be null");
 
-		scope = this->scope->isBaseOf(*scope) ? scope : this->scope;
+		auto usedScope = this->scope->isBaseOf(*scope) ? scope : this->scope;
+		usedScope = &RemapScope::map(*this->scope);
 
-		if (this->addr > scope->getVariables().size())
+		if (this->addr > usedScope->getVariables().size())
 			return nullptr;
-		return scope->getVariables().at(this->addr).get();
+		return usedScope->getVariables().at(this->addr).get();
 	}
 
 	const std::shared_ptr<ScriptType> VariableAccessor::getType() const
@@ -65,12 +71,18 @@ namespace gscript
 
 	// Parameter accessor
 
+	std::unique_ptr<VariableAccessor> ParameterAccessor::clone() const
+	{
+		return std::make_unique<ParameterAccessor>(*this);
+	}
+
 	std::unique_ptr<ParameterAccessor> ParameterAccessor::find(ScriptScopeBase& scope, const std::string& name, bool searchParents)
 	{
-		assert(dynamic_cast<ScriptFunction*>(&scope) && "Parameters may only be used in functions");
-		ScriptFunction& fnc = static_cast<ScriptFunction&>(scope);
+		//assert(dynamic_cast<ScriptFunction*>(&scope) && "Parameters may only be used in functions");
+		ScriptFunction* fnc = scope.getClosestFunction(true);
+		//ScriptFunction& fnc = static_cast<ScriptFunction&>(scope);
 
-		auto addr = fnc.findParamAddr(name);
+		auto addr = fnc->findParamAddr(name);
 
 		if (!addr)
 			throw CompileException("Variable \"" + name + "\" not found");
@@ -83,9 +95,10 @@ namespace gscript
 		assert(this->scope && "Scope must not be null");
 		assert(dynamic_cast<ScriptFunction*>(this->scope) && "Parameters may only be used in functions");
 
-		scope = this->scope->isBaseOf(*scope) ? scope : this->scope;
+		//scope = this->scope->isBaseOf(*scope) ? scope : this->scope;
+		auto usedScope = &RemapScope::map(*this->scope);
 
-		ScriptFunction* fnc = static_cast<ScriptFunction*>(scope);
+		ScriptFunction* fnc = static_cast<ScriptFunction*>(usedScope);
 
 		if (this->addr > fnc->getParameters().size())
 			return nullptr;

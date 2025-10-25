@@ -36,7 +36,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeClassNewTest")
 	stmtvecbody.push_back(std::move(opadd));
 	stmtvecbody.push_back(std::move(literal5));
 	auto stmt1 = std::make_unique<gscript::ScriptStatement>(*myConstructor, std::move(stmtvecbody));
-	auto stmtvecbody1 = std::vector<std::shared_ptr<gscript::ScriptCallable>>();
+	auto stmtvecbody1 = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmt1->setup(*myConstructor);
 	stmtvecbody1.push_back(std::move(stmt1));
 	auto eb = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbody1));
@@ -105,7 +105,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeClassInheritance")
 	stmtvecbody.push_back(std::move(opadd));
 	stmtvecbody.push_back(std::move(literal5));
 	auto stmt1 = std::make_unique<gscript::ScriptStatement>(*base_fnc, std::move(stmtvecbody));
-	auto stmtvecbody1 = std::vector<std::shared_ptr<gscript::ScriptCallable>>();
+	auto stmtvecbody1 = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmt1->setup(*base_fnc);
 	stmtvecbody1.push_back(std::move(stmt1));
 	auto eb = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbody1));
@@ -172,7 +172,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeClassVirtualCall")
 	stmtvecbody.push_back(std::move(opadd));
 	stmtvecbody.push_back(std::move(literal5));
 	auto stmt1 = std::make_unique<gscript::ScriptStatement>(*class_fnc, std::move(stmtvecbody));
-	auto stmtvecbody1 = std::vector<std::shared_ptr<gscript::ScriptCallable>>();
+	auto stmtvecbody1 = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmt1->setup(*class_fnc);
 	stmtvecbody1.push_back(std::move(stmt1));
 	auto eb = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbody1));

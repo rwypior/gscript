@@ -7,20 +7,10 @@ TODOs
 Fixes
 =====
 
-***** IMPORTANT
-- When compiling a function call / variable read / etc. with scoped call, eg. Namespace::Something
-	then the prototype must contain the scope (revert the logic from before - when passed scope took priority),
-	when this scope is present - ALWAYS use this scope
-- Add a test for the above
-*****
-
-- add tests for returning value from function and another one from nested block
 - add support for returning references from functions:
 	- add syntax for '&' character after type in function parsing
 	- set the appropriate parameter for compiler when parsing detected that character
-- fix this BIG issue:
-	When using recurrency - the parameters all get messed up - the func call should create it's own 'instance' of function,
-	possible solution would be to clone the function when it's executed and perform the operations on it
+	- add tests for it
 
 Framework stuff
 ===============

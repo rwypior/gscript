@@ -7,6 +7,7 @@
 #include <tuple>
 #include <vector>
 #include <memory>
+#include <cassert>
 
 namespace gscript
 {
@@ -64,6 +65,25 @@ namespace gscript
 	}
 
 	PARAMS_T extractParams(std::vector<std::unique_ptr<ScriptStatement>>& statements);
+
+	template<typename To, typename From>
+	std::unique_ptr<To> static_unique_pointer_cast(std::unique_ptr<From>&& from)
+	{
+		assert(dynamic_cast<To*>(from.get()) && "Incompatible pointers");
+		return std::unique_ptr<To>(static_cast<To*>(from.release()));
+	}
+
+	template<typename T>
+	std::vector<std::unique_ptr<T>> cloneVector(const std::vector<std::unique_ptr<T>>& target)
+	{
+		std::vector<std::unique_ptr<T>> result(target.size());
+		size_t i = 0;
+		for (const auto& el : target)
+		{
+			result[i++] = static_unique_pointer_cast<T>( el->clone() );
+		}
+		return result;
+	}
 }
 
 #endif

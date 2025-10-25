@@ -22,7 +22,10 @@ namespace gscript
 		std::shared_ptr<ScriptCallable> left = nullptr;
 		std::shared_ptr<ScriptCallable> right = nullptr;
 
+		ScriptOperator(const ScriptOperator& b);
 		ScriptOperator(ScriptScope &scope, OperatorLinkage linkage = OperatorLinkage::Single);
+
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override = 0;
 
 		virtual const std::shared_ptr<ScriptType> getType() const override;
 
@@ -42,8 +45,11 @@ namespace gscript
 
 	class ScriptOperatorMemberAccessor : public ScriptOperator
 	{
+	using ScriptOperator::ScriptOperator;
+
 	public:
-		using ScriptOperator::ScriptOperator;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
+
 		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OperatorType getOperatorType() const;
@@ -52,8 +58,11 @@ namespace gscript
 
 	class ScriptOperatorNegate : public ScriptOperator
 	{
+	using ScriptOperator::ScriptOperator;
+
 	public:
-		using ScriptOperator::ScriptOperator;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
+
 		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OperatorType getOperatorType() const;
@@ -61,8 +70,13 @@ namespace gscript
 
 	class ScriptOperatorAssign : public ScriptOperator
 	{
+	using ScriptOperator::ScriptOperator;
+
 	public:
-		using ScriptOperator::ScriptOperator;
+		ScriptOperatorAssign(const ScriptOperatorAssign& b);
+
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
+
 		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OperatorType getOperatorType() const;
@@ -75,8 +89,11 @@ namespace gscript
 
 	class ScriptOperatorEquals : public ScriptOperator
 	{
+	using ScriptOperator::ScriptOperator;
+
 	public:
-		using ScriptOperator::ScriptOperator;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
+
 		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OperatorType getOperatorType() const;
@@ -84,8 +101,11 @@ namespace gscript
 
 	class ScriptOperatorGreaterThan : public ScriptOperator
 	{
+	using ScriptOperator::ScriptOperator;
+
 	public:
-		using ScriptOperator::ScriptOperator;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
+
 		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OperatorType getOperatorType() const;
@@ -93,8 +113,11 @@ namespace gscript
 
 	class ScriptOperatorLessThan : public ScriptOperator
 	{
+	using ScriptOperator::ScriptOperator;
+
 	public:
-		using ScriptOperator::ScriptOperator;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
+
 		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OperatorType getOperatorType() const;
@@ -102,8 +125,11 @@ namespace gscript
 
 	class ScriptOperatorGreaterThanOrEqual : public ScriptOperator
 	{
+	using ScriptOperator::ScriptOperator;
+
 	public:
-		using ScriptOperator::ScriptOperator;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
+
 		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OperatorType getOperatorType() const;
@@ -111,8 +137,11 @@ namespace gscript
 
 	class ScriptOperatorLessThanOrEqual : public ScriptOperator
 	{
+	using ScriptOperator::ScriptOperator;
+
 	public:
-		using ScriptOperator::ScriptOperator;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
+
 		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OperatorType getOperatorType() const;
@@ -120,8 +149,11 @@ namespace gscript
 
 	class ScriptOperatorAdd : public ScriptOperator
 	{
+	using ScriptOperator::ScriptOperator;
+
 	public:
-		using ScriptOperator::ScriptOperator;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
+
 		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OperatorType getOperatorType() const;
@@ -129,8 +161,11 @@ namespace gscript
 
 	class ScriptOperatorAddTo : public ScriptOperator
 	{
+	using ScriptOperator::ScriptOperator;
+
 	public:
-		using ScriptOperator::ScriptOperator;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
+
 		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OperatorType getOperatorType() const;
@@ -138,8 +173,11 @@ namespace gscript
 
 	class ScriptOperatorSubtract : public ScriptOperator
 	{
+	using ScriptOperator::ScriptOperator;
+
 	public:
-		using ScriptOperator::ScriptOperator;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
+
 		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OperatorType getOperatorType() const;
@@ -147,8 +185,11 @@ namespace gscript
 
 	class ScriptOperatorSubtractFrom : public ScriptOperator
 	{
+	using ScriptOperator::ScriptOperator;
+
 	public:
-		using ScriptOperator::ScriptOperator;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
+
 		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OperatorType getOperatorType() const;
@@ -156,8 +197,11 @@ namespace gscript
 
 	class ScriptOperatorMultiply : public ScriptOperator
 	{
+	using ScriptOperator::ScriptOperator;
+
 	public:
-		using ScriptOperator::ScriptOperator;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
+
 		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OperatorType getOperatorType() const;
@@ -165,8 +209,11 @@ namespace gscript
 
 	class ScriptOperatorMultiplyBy : public ScriptOperator
 	{
+	using ScriptOperator::ScriptOperator;
+
 	public:
-		using ScriptOperator::ScriptOperator;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
+
 		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OperatorType getOperatorType() const;
@@ -174,8 +221,11 @@ namespace gscript
 
 	class ScriptOperatorDivide : public ScriptOperator
 	{
+	using ScriptOperator::ScriptOperator;
+
 	public:
-		using ScriptOperator::ScriptOperator;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
+
 		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OperatorType getOperatorType() const;
@@ -183,8 +233,11 @@ namespace gscript
 
 	class ScriptOperatorDivideBy : public ScriptOperator
 	{
+	using ScriptOperator::ScriptOperator;
+
 	public:
-		using ScriptOperator::ScriptOperator;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
+
 		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OperatorType getOperatorType() const;
@@ -192,8 +245,11 @@ namespace gscript
 
 	class ScriptOperatorIncrement : public ScriptOperator
 	{
+	using ScriptOperator::ScriptOperator;
+
 	public:
-		using ScriptOperator::ScriptOperator;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
+
 		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OperatorType getOperatorType() const;
@@ -201,8 +257,11 @@ namespace gscript
 
 	class ScriptOperatorDecrement : public ScriptOperator
 	{
+	using ScriptOperator::ScriptOperator;
+
 	public:
-		using ScriptOperator::ScriptOperator;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
+
 		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OperatorType getOperatorType() const;
@@ -210,8 +269,11 @@ namespace gscript
 
 	class ScriptOperatorConditionalA : public ScriptOperator
 	{
+	using ScriptOperator::ScriptOperator;
+
 	public:
-		using ScriptOperator::ScriptOperator;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
+
 		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OperatorType getOperatorType() const;
@@ -220,8 +282,11 @@ namespace gscript
 
 	class ScriptOperatorConditionalB : public ScriptOperator
 	{
+	using ScriptOperator::ScriptOperator;
+
 	public:
-		using ScriptOperator::ScriptOperator;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
+
 		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OperatorType getOperatorType() const;
@@ -231,8 +296,11 @@ namespace gscript
 
 	class ScriptOperatorConditionalNull : public ScriptOperator
 	{
+	using ScriptOperator::ScriptOperator;
+
 	public:
-		using ScriptOperator::ScriptOperator;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
+
 		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
 		virtual const int getPrecedence() const override;
 		virtual const OperatorType getOperatorType() const;

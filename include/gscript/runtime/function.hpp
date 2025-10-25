@@ -11,6 +11,7 @@
 
 #include <string>
 #include <memory>
+#include <cassert>
 
 namespace gscript
 {
@@ -26,10 +27,17 @@ namespace gscript
 			const std::string& name, 
 			std::shared_ptr<ScriptType> returnType, 
 			const PARAMS_T & parameters = PARAMS_T(),
-			std::vector<std::shared_ptr<ScriptCallable>>&& statements = {}
+			std::vector<std::unique_ptr<ScriptCallable>>&& statements = {}
 		);
 
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override
+		{
+			assert(!"This probably should not be implemented");
+			return nullptr;
+		}
+
 		SCRIPT_API virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T()) override;
+		SCRIPT_API virtual std::unique_ptr<ScriptValue> fastrun(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T());
 		SCRIPT_API virtual PARAMS_T &getParameters();
 		SCRIPT_API virtual bool validateParams(const CALLABLE_PARAMS_T &c, bool throwException = true);
 		SCRIPT_API FunctionParameter* findParam(const std::string& name);

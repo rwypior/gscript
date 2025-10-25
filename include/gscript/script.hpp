@@ -25,13 +25,15 @@ namespace gscript
 		SCRIPT_API Script(const std::string &path);
 		SCRIPT_API Script(const std::string &path, std::shared_ptr<ScriptNamespace> mainScope);
 		SCRIPT_API Script(const std::string &path, Script &parent);
-		~Script() = default;
+		SCRIPT_API ~Script();
 
 		SCRIPT_API void extend(ScriptExtension *ext, const std::string &name = "");
 		SCRIPT_API void loadDefaultExtensions();
+		SCRIPT_API const std::unordered_map<std::string, std::shared_ptr<ScriptExtension>>& getExtensions() const;
 		SCRIPT_API ScriptExtension *findExtension(const std::string &name);
 
 		SCRIPT_API bool compile();
+		SCRIPT_API bool compile(const std::string &source);
 		SCRIPT_API int run(int argc, char **argv);
 		
 		SCRIPT_API ScriptNamespace* getMainScope();

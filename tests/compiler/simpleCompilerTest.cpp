@@ -41,16 +41,16 @@ TEST_CASE_METHOD(GscriptTest, "CompilerFuncCall")
 	REQUIRE(myfunc->getStatements().size() == 1);
 	REQUIRE(otherfunc->getStatements().size() == 0);
 
-	auto stmt0_prototype = std::static_pointer_cast<gscript::ScriptStatement>(myfunc->getStatements().at(0));
-	auto stmt0_call0_prototype = std::static_pointer_cast<gscript::ScriptFuncCallPrototype>(stmt0_prototype->callable);
+	auto* stmt0_prototype = static_cast<gscript::ScriptStatement*>(myfunc->getStatements().at(0).get());
+	auto* stmt0_call0_prototype = dynamic_cast<gscript::ScriptFuncCallPrototype*>(stmt0_prototype->callable.get());
 
 	REQUIRE(stmt0_call0_prototype);
 	REQUIRE(stmt0_call0_prototype->getName() == "otherfunc");
 
 	compiler.finalize(globalNamespace);
 
-	auto stmt0 = std::static_pointer_cast<gscript::ScriptStatement>(myfunc->getStatements().at(0));
-	auto stmt0_call0 = std::static_pointer_cast<gscript::ScriptFuncCall>(stmt0->callable);
+	auto* stmt0 = static_cast<gscript::ScriptStatement*>(myfunc->getStatements().at(0).get());
+	auto* stmt0_call0 = static_cast<gscript::ScriptFuncCall*>(stmt0->callable.get());
 
 	REQUIRE(stmt0_call0);
 	REQUIRE(stmt0_call0->getFunc().get()->getName() == "otherfunc");

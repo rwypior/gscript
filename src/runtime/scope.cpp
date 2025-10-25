@@ -15,7 +15,7 @@ namespace gscript
 	ScriptFunction& ScriptScopeBase::registerFunction(const std::string& name,
 		std::shared_ptr<ScriptType> returnType,
 		const PARAMS_T& parameters,
-		std::vector<std::shared_ptr<ScriptCallable>>&& statements)
+		std::vector<std::unique_ptr<ScriptCallable>>&& statements)
 	{
 		return this->registerFunction(std::make_unique<ScriptFunction>(*this, name, returnType, parameters, std::move(statements)));
 	}
@@ -191,6 +191,23 @@ namespace gscript
 		return nullptr;
 	}
 
+	ScriptFunction* ScriptScopeBase::getClosestFunction(bool includeSelf)
+	{
+		if (ScriptFunction* fnc = dynamic_cast<ScriptFunction*>(this))
+		{
+			if (includeSelf)
+				return fnc;
+		}
+
+		if (auto* parentScope = this->getParentScope())
+		{
+			if (ScriptFunction* fnc = parentScope->getClosestFunction(true))
+				return fnc;
+		}
+
+		return nullptr;
+	}
+
 	bool ScriptScopeBase::isAccessible(const ScriptScopeBase& targetScope, Modifier access) const
 	{
 		if (access & Modifier::AccessPublic)
@@ -271,5 +288,31 @@ namespace gscript
 	ScriptScopeBase* ScriptScope::getParentScope() const
 	{
 		return this->parentScope;
+	}
+
+	// Rescope
+
+	std::stack<std::pair<ScriptScopeBase*, ScriptScopeBase*>> RemapScope::mappingQueue;
+
+	RemapScope::RemapScope(ScriptScopeBase& source, ScriptScopeBase& target)
+		/*: scope(scope)
+		, parent(scope.getParentScope())*/
+	{
+		//scope.setParentScope(&target);
+		mappingQueue.push({&source, &target});
+	}
+
+	RemapScope::~RemapScope()
+	{
+		mappingQueue.pop();
+		//this->scope.setParentScope(this->parent);
+	}
+
+	ScriptScopeBase& RemapScope::map(ScriptScopeBase& source)
+	{
+		if (mappingQueue.empty() || mappingQueue.top().first != &source)
+			return source;
+
+		return *mappingQueue.top().second;
 	}
 }

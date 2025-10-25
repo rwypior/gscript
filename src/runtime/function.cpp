@@ -19,6 +19,7 @@ namespace gscript
 {
 	ScriptFunction::ScriptFunction(const ScriptFunction& fnc)
 		: ScriptScope(fnc.baseFunction ? *fnc.baseFunction : fnc)
+		, ScriptExecutiveBlock(fnc)
 		, name(fnc.name)
 		, returnType(fnc.returnType->clone())
 		, parameters(fnc.parameters)
@@ -26,8 +27,7 @@ namespace gscript
 	{
 	}
 
-	ScriptFunction::ScriptFunction(ScriptScopeBase &scope, const std::string &name, std::shared_ptr<ScriptType> returnType, const PARAMS_T &parameters, std::vector<std::shared_ptr<ScriptCallable>>&& statements)
-		//: ScriptCallable(scope)
+	ScriptFunction::ScriptFunction(ScriptScopeBase &scope, const std::string &name, std::shared_ptr<ScriptType> returnType, const PARAMS_T &parameters, std::vector<std::unique_ptr<ScriptCallable>>&& statements)
 		: ScriptScope(&scope)
 		, ScriptExecutiveBlock(std::move(statements))
 		, name(name)
@@ -38,26 +38,29 @@ namespace gscript
 
 	std::unique_ptr<ScriptValue> ScriptFunction::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		this->validateParams(c);
-		//this->registerParameters(c);
+		this->validateParams(c); // TODO - move this to compilation stage
 
-		//return ScriptExecutiveBlock::execute(scope);
+		// TODO - create a better implementation of this
 
 		ScriptFunction target(*this);
+
+		RemapScope remapping(*this, target);
+
 		target.registerParameters(c);
-		//return target.execute(scope);
-		return this->execute(target);
+		return target.execute(target);
+		//return this->execute(target);
+	}
+
+	std::unique_ptr<ScriptValue> ScriptFunction::fastrun(ScriptScopeBase& scope, const CALLABLE_PARAMS_T& c)
+	{
+		this->registerParameters(c);
+		return this->execute(scope);
 	}
 
 	PARAMS_T &ScriptFunction::getParameters()
 	{
 		return this->parameters;
 	}
-
-	//
-	// WHEN USING REFERENCE TYPE - SETVALUE SHOULD SET THE VALUE THAT THE REFERENCE POINTS TO.
-	// NEW METHOD SHOULD BE ADDED TO RETARGET THE REFERENCE - THIS SHOULD BE USED HERE.
-	//
 
 	void ScriptFunction::registerParameters(const CALLABLE_PARAMS_T &c)
 	{
@@ -70,12 +73,8 @@ namespace gscript
 			int idx = it - this->getParameters().begin();
 
 			const std::unique_ptr<ScriptValue>& val = c[idx];
-			//it->setValue(val);
-			//it->setValue(val->clone());
 
 			if (it->getType()->getTypeDescriptor() == ValueType::Reference)
-				//static_cast<ScriptReferenceValue&>(*it->getValue()).setValue(val);
-				//static_cast<ScriptReferenceValue&>(*it->getValue()).retarget(val);
 				assert(!"NOT IMPLEMENTED"); // TODO - this needs to be fixed
 			else
 				it->setValue(val->clone());
@@ -191,6 +190,15 @@ namespace gscript
 	{
 		return this->name;
 	}
+
+	// TODO - fix this problem:
+	// 1. Function must be "copied" to allow recurrence to work - it needs it's own memory space
+	// 2. When the function is copied, only the parameters are copied and the statements
+	//	are reused from the original - so is their scope - it points to the original scope (function)
+	// 3. This is a problem with nested scopes - they are not retargetted, so the solution is to:
+	// a. Either implement isBaseOf for every scope, not just the function, but this implies additional
+	//	memory usage and overhead
+	// b. Copy the statements when copying function
 
 	bool ScriptFunction::isBaseOf(const ScriptScopeBase& scope) const
 	{

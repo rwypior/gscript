@@ -146,7 +146,7 @@ namespace gscript
 	// GENERAL TYPE
 
 	ScriptType::ScriptType(ValueType type)
-		:type(type)
+		: type(type)
 	{
 	}
 

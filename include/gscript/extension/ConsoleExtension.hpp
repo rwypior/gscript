@@ -4,7 +4,6 @@
 #include "script.hpp"
 #include "scriptExtension.hpp"
 #include "runtime/function.hpp"
-#include "runtime/method.hpp"
 #include "runtime/class.hpp"
 #include "runtime/scope.hpp"
 
@@ -16,21 +15,21 @@ namespace gscript
 	class ConsoleExtension : public ScriptExtension
 	{
 	public:
-		class FuncPrint : public ScriptMethod
+		class FuncPrint : public ScriptFunction
 		{
 		public:
 			FuncPrint(ScriptScopeBase& scope, const std::string& name);
 			virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override;
 		};
 
-		class FuncPrintLn : public ScriptMethod
+		class FuncPrintLn : public ScriptFunction
 		{
 		public:
 			FuncPrintLn(ScriptScopeBase& scope, const std::string& name);
 			virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override;
 		};
 
-		class FuncReadLn : public ScriptMethod
+		class FuncReadLn : public ScriptFunction
 		{
 		public:
 			FuncReadLn(ScriptScopeBase& scope, const std::string& name);

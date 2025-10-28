@@ -1,6 +1,6 @@
 target_sources(gscript PRIVATE
 	"defs.cpp" "EntityPath.cpp" "script.cpp" "type.cpp" "util.cpp"
- "logger.cpp")
+	"logger.cpp" "parseexception.cpp")
 add_subdirectory("compiler")
 add_subdirectory("extension")
 add_subdirectory("factory")

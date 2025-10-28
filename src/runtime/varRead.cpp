@@ -8,30 +8,22 @@ namespace gscript
 {
 	// TODO - remove 'scope' argument from constructors - leave only the one with accessor
 
-	/*ScriptVarRead::ScriptVarRead(ScriptScope& scope)
-		: ScriptCallable(scope)
-	{
-	}*/
-
 	ScriptVarRead::ScriptVarRead(const ScriptVarRead& b)
 		: accessor(b.accessor->clone())
 	{
 	}
 
 	ScriptVarRead::ScriptVarRead(ScriptScopeBase& scope, std::unique_ptr<VariableAccessor>&& accessor)
-		//: ScriptCallable(scope)
 		: accessor(std::move(accessor))
 	{
 	}
 
 	ScriptVarRead::ScriptVarRead(ScriptScopeBase& scope, ScriptVariable* variable)
-		//: ScriptCallable(scope)
 		: accessor(VariableAccessor::find(scope, variable->getName()))
 	{
 	}
 
 	ScriptVarRead::ScriptVarRead(ScriptScopeBase& scope, const std::string& name)
-		// ScriptCallable(scope)
 		: accessor(VariableAccessor::find(scope, name))
 	{
 	}
@@ -43,13 +35,6 @@ namespace gscript
 
 	std::unique_ptr<ScriptValue> ScriptVarRead::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		//if (!this->accessor->getScope()->isParentOf(scope))
-		//	this->accessor->setScope(&scope);
-
-		/*if (this->accessor->getScope()->isBaseOf(scope))
-			this->accessor->setScope(&scope);*/
-
-		//auto& asd = this->accessor->get()->getValue();
 		return this->accessor->get(&scope)->getValue()->clone();
 	}
 
@@ -77,12 +62,6 @@ namespace gscript
 
 	std::unique_ptr<ScriptValue> ScriptVarReferenceRead::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T& c)
 	{
-		//if (!this->accessor->getScope()->isParentOf(scope))
-		//	this->accessor->setScope(&scope);
-
-		/*if (this->accessor->getScope()->isBaseOf(scope))
-			this->accessor->setScope(&scope);*/
-
 		auto& val = this->accessor->get(&scope)->getValue();
 		return std::make_unique<ScriptReferenceValue>(std::make_shared<ScriptReferenceType>(val->getType()), val.get());
 	}
@@ -90,15 +69,12 @@ namespace gscript
 	// Prototype
 
 	ScriptVarReadPrototype::ScriptVarReadPrototype(ScriptScopeBase& scope, const std::string& varname)
-		//: ScriptCallablePrototype(scope)
 		: varname(varname)
 	{
 	}
 
 	std::unique_ptr<ScriptCallable> ScriptVarReadPrototype::build(ScriptScopeBase& scope)
 	{
-		//ScriptScope* usedScope = static_cast<ScriptScope*>(scope ? scope : &this->scope);
-
 		std::unique_ptr<ScriptVarRead> result;
 
 		try
@@ -185,7 +161,6 @@ namespace gscript
 	// Array var read prototype
 
 	ScriptArrayReadPrototype::ScriptArrayReadPrototype(ScriptScopeBase& scope, const std::string& varname, std::unique_ptr<ScriptCallable>&& arrayAccessor)
-		//: ScriptCallablePrototype(scope)
 		: varname(varname)
 		, arrayAccessor(std::move(arrayAccessor))
 	{
@@ -193,10 +168,7 @@ namespace gscript
 
 	std::unique_ptr<ScriptCallable> ScriptArrayReadPrototype::build(ScriptScopeBase& scope)
 	{
-		//ScriptScope* usedScope = static_cast<ScriptScope*>(scope ? scope : &this->scope);
-
 		auto result = std::make_unique<ScriptArrayRead>(scope, VariableAccessor::find(scope, this->varname), std::move(this->arrayAccessor));
-
 		return result;
 	}
 }

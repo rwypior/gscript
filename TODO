@@ -1,5 +1,6 @@
 TODOs
 =====
+- Change true, false and null to literals
 - Make VariableAccessors find addresses during compilation
 - Add test for nested scopes
 - Remove setScope() from variable/function accessors and everything that's related to it

@@ -24,6 +24,7 @@
 #include "util.hpp"
 #include "compileException.hpp"
 #include "runtimeException.hpp"
+#include "parseexception.hpp"
 #include "debug.hpp"
 
 #include <iostream>
@@ -101,7 +102,10 @@ namespace gscript
 		Compiler compiler;
 
 		ParserNamespace mainNamespace(NamespaceType::Main);
-		mainNamespace.parse(StringIteratorRange(source.begin(), source.end(), this->path, 0));
+		auto parseResult = mainNamespace.parse(StringIteratorRange(source.begin(), source.end(), this->path, 0));
+
+		if (!parseResult.isOk())
+			throw ParseException(parseResult);
 
 		for (auto& ex : mainNamespace.extensions)
 		{

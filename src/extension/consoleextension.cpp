@@ -9,12 +9,11 @@ namespace gscript
 	// Print
 
 	ConsoleExtension::FuncPrint::FuncPrint(ScriptScopeBase& scope, const std::string& name)
-		: ScriptMethod(
+		: ScriptFunction(
 			scope,
 			name,
 			ScriptType::create(ValueType::Void, scope),
-			PARAMS_T({ FunctionParameter(ScriptType::create(ValueType::String, scope)) }),
-			Modifier::AccessPublic | Modifier::Static
+			PARAMS_T({ FunctionParameter(ScriptType::create(ValueType::String, scope)) })
 		)
 	{
 	}
@@ -34,12 +33,11 @@ namespace gscript
 	// Println
 
 	ConsoleExtension::FuncPrintLn::FuncPrintLn(ScriptScopeBase& scope, const std::string& name)
-		: ScriptMethod(
+		: ScriptFunction(
 			scope,
 			name,
 			ScriptType::create(ValueType::Void, scope),
-			PARAMS_T({ FunctionParameter(ScriptType::create(ValueType::String, scope)) }),
-			Modifier::AccessPublic | Modifier::Static
+			PARAMS_T({ FunctionParameter(ScriptType::create(ValueType::String, scope)) })
 		)
 	{
 	}
@@ -59,12 +57,11 @@ namespace gscript
 	// Readln
 
 	ConsoleExtension::FuncReadLn::FuncReadLn(ScriptScopeBase& scope, const std::string& name)
-		: ScriptMethod(
+		: ScriptFunction(
 			scope,
 			name,
 			ScriptType::create(ValueType::String, scope),
-			PARAMS_T(),
-			Modifier::AccessPublic | Modifier::Static
+			PARAMS_T()
 		)
 	{
 	}

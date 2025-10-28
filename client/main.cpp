@@ -23,7 +23,18 @@ int main(int argc, char **argv)
 	scr.loadDefaultExtensions();
 	
 	auto begin = Clock::now();
-	scr.compile();
+	
+	try
+	{
+		scr.compile();
+	}
+	catch (const std::exception& ex)
+	{
+		std::cout << "Compilation failed:" << std::endl;
+		std::cout << ex.what() << std::endl;
+		return 1;
+	}
+
 	double period = std::chrono::duration_cast<std::chrono::microseconds>(Clock::now() - begin).count() * 0.000001;
 
 	std::cout << "Compile finished in " << period << "s" << std::endl;
@@ -42,9 +53,6 @@ int main(int argc, char **argv)
 		std::cout << "An exception has been thrown: " << ex.what() << std::endl;
 		std::cout << "Program aborted." << std::endl;
 	}
-
-	std::cin.ignore();
-	std::cin.get();
 
 	return returncode;
 }

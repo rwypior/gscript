@@ -117,7 +117,7 @@ namespace gscript
 
 		for (auto& pmethod : pclass.methods)
 		{
-			auto method = this->compileMethod(scope, pmethod);
+			auto method = this->compileMethod(cl.get(), pmethod);
 			cl->registerFunction(std::move(method));
 		}
 
@@ -419,13 +419,13 @@ namespace gscript
 		gs_log("Compiling ScriptIf");
 
 		auto condition = this->compileStatement(scope, *pIf.arglist.parameters.front());
-		auto exeblock = this->compileExecutiveBlock(scope, pIf.body.body);
 
 		std::unique_ptr<ScriptIf> selse;
 		if (!pIf.pelse.body.body.statements.empty())
 			selse = this->compileElse(scope, pIf.pelse);
 
 		auto sif = std::make_unique<ScriptIf>(*scope, std::move(condition), std::move(selse));
+		auto exeblock = this->compileExecutiveBlock(sif.get(), pIf.body.body);
 		sif->merge(std::move(exeblock));
 
 		return sif;
@@ -447,8 +447,8 @@ namespace gscript
 				selse = this->compileElse(scope, pElse.pif->pelse);
 		}
 		
-		auto exeblock = this->compileExecutiveBlock(scope, pElse.body.body);
 		auto sif = std::make_unique<ScriptIf>(*scope, std::move(condition), std::move(selse));
+		auto exeblock = this->compileExecutiveBlock(sif.get(), pElse.body.body);
 		sif->merge(std::move(exeblock));
 
 		return sif;
@@ -584,7 +584,7 @@ namespace gscript
 			this->finalizeCallable(sif->getCondition(), scope);
 			for (auto& stmt : sif->getStatements())
 			{
-				this->finalizeCallable(stmt, scope);
+				this->finalizeCallable(stmt, *sif);
 			}
 		}
 	}
@@ -650,7 +650,7 @@ namespace gscript
 			this->finalizeCallable(sif->getCondition(), scope);
 			for (auto& stmt : sif->getStatements())
 			{
-				this->finalizeCallable(stmt, scope);
+				this->finalizeCallable(stmt, *sif);
 			}
 		}
 	}

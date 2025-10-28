@@ -29,13 +29,13 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeClassNewTest")
 
 	// Constructor block
 	auto varreadMyVariable1 = std::make_unique<gscript::ScriptVarRead>(*myConstructor, &myVariable1);
-	auto opadd = std::make_unique<gscript::ScriptOperatorAddTo>(*myConstructor, gscript::OperatorLinkage::Both);
-	auto literal5 = std::make_unique<gscript::ScriptLiteral>(*myConstructor, std::make_unique<gscript::ScriptIntValue>(5));
+	auto opadd = std::make_unique<gscript::ScriptOperatorAddTo>(gscript::OperatorLinkage::Both);
+	auto literal5 = std::make_unique<gscript::ScriptLiteral>(std::make_unique<gscript::ScriptIntValue>(5));
 	auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecbody.push_back(std::move(varreadMyVariable1));
 	stmtvecbody.push_back(std::move(opadd));
 	stmtvecbody.push_back(std::move(literal5));
-	auto stmt1 = std::make_unique<gscript::ScriptStatement>(*myConstructor, std::move(stmtvecbody));
+	auto stmt1 = std::make_unique<gscript::ScriptStatement>(std::move(stmtvecbody));
 	auto stmtvecbody1 = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmt1->setup(*myConstructor);
 	stmtvecbody1.push_back(std::move(stmt1));
@@ -68,14 +68,14 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeClassVariableRead")
 
 	// Variable read
 	auto varreadobject = std::make_unique<gscript::ScriptVarRead>(globalNamespace, "myClassObject");
-	auto memberaccess = std::make_unique<gscript::ScriptOperatorMemberAccessor>(globalNamespace, gscript::OperatorLinkage::Both);
+	auto memberaccess = std::make_unique<gscript::ScriptOperatorMemberAccessor>(gscript::OperatorLinkage::Both);
 	auto varreadtest = std::make_unique<gscript::ScriptVarRead>(myClass, "test");
 
 	auto stmtvectest = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvectest.push_back(std::move(varreadobject));
 	stmtvectest.push_back(std::move(memberaccess));
 	stmtvectest.push_back(std::move(varreadtest));
-	auto stmttest = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvectest));
+	auto stmttest = std::make_unique<gscript::ScriptStatement>(std::move(stmtvectest));
 	stmttest->setup(globalNamespace);
 
 	auto resultsomething = stmttest->run(globalNamespace);
@@ -98,13 +98,13 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeClassInheritance")
 
 	// Constructor block
 	auto varreadMyVariable1 = std::make_unique<gscript::ScriptVarRead>(*base_fnc, &myVariable1);
-	auto opadd = std::make_unique<gscript::ScriptOperatorAddTo>(*base_fnc, gscript::OperatorLinkage::Both);
-	auto literal5 = std::make_unique<gscript::ScriptLiteral>(*base_fnc, std::make_unique<gscript::ScriptIntValue>(5));
+	auto opadd = std::make_unique<gscript::ScriptOperatorAddTo>(gscript::OperatorLinkage::Both);
+	auto literal5 = std::make_unique<gscript::ScriptLiteral>(std::make_unique<gscript::ScriptIntValue>(5));
 	auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecbody.push_back(std::move(varreadMyVariable1));
 	stmtvecbody.push_back(std::move(opadd));
 	stmtvecbody.push_back(std::move(literal5));
-	auto stmt1 = std::make_unique<gscript::ScriptStatement>(*base_fnc, std::move(stmtvecbody));
+	auto stmt1 = std::make_unique<gscript::ScriptStatement>(std::move(stmtvecbody));
 	auto stmtvecbody1 = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmt1->setup(*base_fnc);
 	stmtvecbody1.push_back(std::move(stmt1));
@@ -165,13 +165,13 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeClassVirtualCall")
 
 	// Constructor block
 	auto varreadMyVariable1 = std::make_unique<gscript::ScriptVarRead>(*class_fnc, &myVariable1);
-	auto opadd = std::make_unique<gscript::ScriptOperatorAddTo>(*class_fnc, gscript::OperatorLinkage::Both);
-	auto literal5 = std::make_unique<gscript::ScriptLiteral>(*class_fnc, std::make_unique<gscript::ScriptIntValue>(5));
+	auto opadd = std::make_unique<gscript::ScriptOperatorAddTo>(gscript::OperatorLinkage::Both);
+	auto literal5 = std::make_unique<gscript::ScriptLiteral>(std::make_unique<gscript::ScriptIntValue>(5));
 	auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecbody.push_back(std::move(varreadMyVariable1));
 	stmtvecbody.push_back(std::move(opadd));
 	stmtvecbody.push_back(std::move(literal5));
-	auto stmt1 = std::make_unique<gscript::ScriptStatement>(*class_fnc, std::move(stmtvecbody));
+	auto stmt1 = std::make_unique<gscript::ScriptStatement>(std::move(stmtvecbody));
 	auto stmtvecbody1 = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmt1->setup(*class_fnc);
 	stmtvecbody1.push_back(std::move(stmt1));
@@ -188,14 +188,14 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeClassVirtualCall")
 	auto& myClassObjectVar = globalNamespace.registerVariable("myClassObject", gscript::ScriptType::create(gscript::ValueType::Class, globalNamespace, "Base"), myClassObject);
 
 	auto varreadobject = std::make_unique<gscript::ScriptVarRead>(globalNamespace, "myClassObject");
-	auto memberaccess = std::make_unique<gscript::ScriptOperatorMemberAccessor>(globalNamespace, gscript::OperatorLinkage::Both);
+	auto memberaccess = std::make_unique<gscript::ScriptOperatorMemberAccessor>(gscript::OperatorLinkage::Both);
 	auto varreadtest = std::make_unique<gscript::ScriptFuncCall>(myClass, "fnc");
 
 	auto stmtvectest = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvectest.push_back(std::move(varreadobject));
 	stmtvectest.push_back(std::move(memberaccess));
 	stmtvectest.push_back(std::move(varreadtest));
-	auto stmttest = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvectest));
+	auto stmttest = std::make_unique<gscript::ScriptStatement>(std::move(stmtvectest));
 	stmttest->setup(globalNamespace);
 
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 1);

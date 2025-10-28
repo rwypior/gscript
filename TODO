@@ -4,6 +4,8 @@ TODOs
 - Make VariableAccessors find addresses during compilation
 - Add test for nested scopes
 - Remove setScope() from variable/function accessors and everything that's related to it
+- Add exception support
+- Add tests for field declarations
 
 Fixes
 =====

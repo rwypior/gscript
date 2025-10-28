@@ -22,10 +22,8 @@ namespace gscript
 	class ScriptFuncCall : public ScriptCallable
 	{
 	public:
-		//ScriptFuncCall(ScriptScope &scope, ScriptFunction *func, const std::vector<ScriptStatement> &params);
-		//ScriptFuncCall(ScriptScope& scope, EntityLink<ScriptFunction*>* func, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
 		ScriptFuncCall(const ScriptFuncCall& b);
-		ScriptFuncCall(ScriptScopeBase& scope, FunctionAccessor func, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
+		ScriptFuncCall(FunctionAccessor func, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
 		ScriptFuncCall(ScriptScopeBase& scope, ScriptFunction* func, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
 		ScriptFuncCall(ScriptScopeBase& scope, const std::string& name, std::vector<std::unique_ptr<ScriptStatement>>&& params = {});
 

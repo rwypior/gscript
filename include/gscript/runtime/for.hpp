@@ -6,7 +6,6 @@
 #include "statement.hpp"
 #include "scriptValue.hpp"
 #include "scope.hpp"
-#include "runnable.hpp"
 #include "executiveBlock.hpp"
 #include "lib.hpp"
 
@@ -19,7 +18,6 @@ namespace gscript
 	public:
 		SCRIPT_API ScriptFor(const ScriptFor& b);
 		SCRIPT_API ScriptFor(
-			ScriptScope &scope, 
 			std::unique_ptr<ScriptVarDeclaration>&& vardecl, 
 			std::unique_ptr<ScriptStatement>&& condition, 
 			std::unique_ptr<ScriptStatement>&& progress,

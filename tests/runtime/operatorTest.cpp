@@ -12,11 +12,11 @@
 TEST_CASE_METHOD(GscriptTest, "RuntimeOperatorBasicTest")
 {
 	auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
-	stmtvecbody.push_back(std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(21)));
-	stmtvecbody.push_back(std::make_unique<gscript::ScriptOperatorAdd>(globalNamespace, gscript::OperatorLinkage::Both));
-	stmtvecbody.push_back(std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(21)));
+	stmtvecbody.push_back(std::make_unique<gscript::ScriptLiteral>(std::make_unique<gscript::ScriptIntValue>(21)));
+	stmtvecbody.push_back(std::make_unique<gscript::ScriptOperatorAdd>(gscript::OperatorLinkage::Both));
+	stmtvecbody.push_back(std::make_unique<gscript::ScriptLiteral>(std::make_unique<gscript::ScriptIntValue>(21)));
 
-	auto stmt = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecbody));
+	auto stmt = std::make_unique<gscript::ScriptStatement>(std::move(stmtvecbody));
 	stmt->setup(globalNamespace);
 	auto result = stmt->run(globalNamespace);
 
@@ -27,11 +27,11 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeOperatorBasicTest")
 TEST_CASE_METHOD(GscriptTest, "RuntimeOperatorTypeSelectionTest")
 {
 	auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
-	stmtvecbody.push_back(std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptFloatValue>(13.37f)));
-	stmtvecbody.push_back(std::make_unique<gscript::ScriptOperatorAdd>(globalNamespace, gscript::OperatorLinkage::Both));
-	stmtvecbody.push_back(std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(21)));
+	stmtvecbody.push_back(std::make_unique<gscript::ScriptLiteral>(std::make_unique<gscript::ScriptFloatValue>(13.37f)));
+	stmtvecbody.push_back(std::make_unique<gscript::ScriptOperatorAdd>(gscript::OperatorLinkage::Both));
+	stmtvecbody.push_back(std::make_unique<gscript::ScriptLiteral>(std::make_unique<gscript::ScriptIntValue>(21)));
 
-	auto stmt = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecbody));
+	auto stmt = std::make_unique<gscript::ScriptStatement>(std::move(stmtvecbody));
 	stmt->setup(globalNamespace);
 	auto result = stmt->run(globalNamespace);
 
@@ -42,11 +42,11 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeOperatorTypeSelectionTest")
 TEST_CASE_METHOD(GscriptTest, "RuntimeOperatorBoolTypeSelectionTest")
 {
 	auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
-	stmtvecbody.push_back(std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(42)));
-	stmtvecbody.push_back(std::make_unique<gscript::ScriptOperatorEquals>(globalNamespace, gscript::OperatorLinkage::Both));
-	stmtvecbody.push_back(std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(1337)));
+	stmtvecbody.push_back(std::make_unique<gscript::ScriptLiteral>(std::make_unique<gscript::ScriptIntValue>(42)));
+	stmtvecbody.push_back(std::make_unique<gscript::ScriptOperatorEquals>(gscript::OperatorLinkage::Both));
+	stmtvecbody.push_back(std::make_unique<gscript::ScriptLiteral>(std::make_unique<gscript::ScriptIntValue>(1337)));
 
-	auto stmt = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecbody));
+	auto stmt = std::make_unique<gscript::ScriptStatement>(std::move(stmtvecbody));
 	stmt->setup(globalNamespace);
 	auto result = stmt->run(globalNamespace);
 

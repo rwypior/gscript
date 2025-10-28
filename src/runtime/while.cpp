@@ -10,8 +10,7 @@ namespace gscript
 	{
 	}
 
-	ScriptWhile::ScriptWhile(ScriptScope &scope, std::unique_ptr<ScriptStatement>&& condition, std::vector<std::unique_ptr<ScriptCallable>>&& statements)
-		//: ScriptCallable(scope)
+	ScriptWhile::ScriptWhile(std::unique_ptr<ScriptStatement>&& condition, std::vector<std::unique_ptr<ScriptCallable>>&& statements)
 		: ScriptExecutiveBlock(std::move(statements))
 		, condition(std::move(condition))
 	{

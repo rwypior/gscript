@@ -13,13 +13,11 @@ namespace gscript
 	}
 
 	ScriptFor::ScriptFor(
-			ScriptScope &scope, 
 			std::unique_ptr<ScriptVarDeclaration>&& vardecl, 
 			std::unique_ptr<ScriptStatement>&& condition, 
 			std::unique_ptr<ScriptStatement>&& progress,
 			std::vector<std::unique_ptr<ScriptCallable>>&& statements
 		)
-		//: ScriptCallable(scope)
 		: ScriptExecutiveBlock(std::move(statements))
 		, vardecl(std::move(vardecl))
 		, condition(std::move(condition))

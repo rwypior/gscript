@@ -7,8 +7,7 @@ namespace gscript
 	{
 	}
 
-	ScriptReturn::ScriptReturn(ScriptScopeBase& scope, std::unique_ptr<ScriptStatement>&& statement)
-		//: ScriptCallable(scope)
+	ScriptReturn::ScriptReturn(std::unique_ptr<ScriptStatement>&& statement)
 		: statement(std::move(statement))
 	{
 	}

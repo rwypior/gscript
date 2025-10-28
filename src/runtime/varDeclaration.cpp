@@ -17,14 +17,12 @@ namespace gscript
 	}
 
 	ScriptVarDeclaration::ScriptVarDeclaration(ScriptScope &scope, ScriptVariable &var, std::unique_ptr<ScriptStatement> &&statement)
-		//: ScriptCallable(scope)
 		: accessor(VariableAccessor::find(scope, var.getName()))
 		, statement(std::move(statement))
 	{
 	}
 
-	ScriptVarDeclaration::ScriptVarDeclaration(ScriptScope &scope, std::unique_ptr<VariableAccessor>&& accessor, std::unique_ptr<ScriptStatement> &&statement)
-		//: ScriptCallable(scope)
+	ScriptVarDeclaration::ScriptVarDeclaration(std::unique_ptr<VariableAccessor>&& accessor, std::unique_ptr<ScriptStatement> &&statement)
 		: accessor(std::move(accessor))
 		, statement(std::move(statement))
 	{
@@ -42,14 +40,7 @@ namespace gscript
 
 	std::unique_ptr<ScriptValue> ScriptVarDeclaration::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &params)
 	{
-		// TODO - setting scope on this accessor will set it on the BASE FUNCTION
-		// This needs to be done by passing the scope and not changing the state of those objects
-
-		/*if (this->accessor->getScope()->isBaseOf(scope))
-			this->accessor->setScope(&scope);*/
-
 		this->accessor->get(&scope)->init(this->statement->run(scope));
-
 		return ScriptType::null();
 	}
 
@@ -77,8 +68,8 @@ namespace gscript
 	{
 	}
 
-	ScriptFieldDeclaration::ScriptFieldDeclaration(ScriptScope& scope, const std::string& name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptStatement>&& statement)
-		: ScriptVarDeclaration(scope, {}, std::move(statement))
+	ScriptFieldDeclaration::ScriptFieldDeclaration(const std::string& name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptStatement>&& statement)
+		: ScriptVarDeclaration({}, std::move(statement))
 		, name(name)
 		, type(type)
 	{
@@ -93,6 +84,5 @@ namespace gscript
 	{
 		auto& var = instance.registerVariable(std::make_unique<ScriptVariable>(this->name, this->type, nullptr));
 		this->accessor = VariableAccessor::find(instance, var.getName(), false);
-		//this->var = new DirectEntityLink<ScriptVariable&>(var);
 	}
 }

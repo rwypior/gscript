@@ -6,6 +6,9 @@
 #include <sstream>
 
 #ifdef DEBUG
+//	A utility macro to log given operations into memory to debug compiling operations.
+//	To debug this stuff, just create a watch for Logger::entries
+//	TODO - maybe add some option to print it to a file, or to stdout
 #	define gs_log(what) do { gscript::Logger::get().log((std::stringstream() << what).str()); } while(0)
 #	define gs_debug_log() auto& GS_DEBUG_LOGGER = gscript::Logger::get();
 #else

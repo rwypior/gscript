@@ -20,18 +20,12 @@
 
 namespace gscript
 {
-	ScriptStatement::ScriptStatement(ScriptScope &scope)
-		//: ScriptCallable(scope)
-	{
-	}
-
 	ScriptStatement::ScriptStatement(const ScriptStatement& b)
 		: callable(b.callable->clone())
 	{
 	}
 
-	ScriptStatement::ScriptStatement(ScriptScope& scope, std::vector<std::unique_ptr<ScriptCallable>>&& callables)
-		//: ScriptCallable(scope)
+	ScriptStatement::ScriptStatement(std::vector<std::unique_ptr<ScriptCallable>>&& callables)
 	{
 		std::vector<std::shared_ptr<ScriptCallable>> sharedCallables;
 		sharedCallables.reserve(callables.size());
@@ -41,11 +35,10 @@ namespace gscript
 			sharedCallables.push_back(std::move(callable));
 		}
 
-		this->resolveOperations(scope, sharedCallables.rbegin(), sharedCallables.rend(), this->callable);
+		this->resolveOperations(sharedCallables.rbegin(), sharedCallables.rend(), this->callable);
 	}
 
 	ScriptStatement::ScriptStatement(ScriptStatement&& stmt) noexcept
-		//: ScriptCallable(stmt.scope)
 		: callable(std::move(stmt.callable))
 	{
 	}
@@ -154,7 +147,6 @@ namespace gscript
 	}
 
 	int ScriptStatement::resolveOperations(
-		ScriptScopeBase& scope,
 		std::vector<std::shared_ptr<ScriptCallable>>::reverse_iterator begin,
 		std::vector<std::shared_ptr<ScriptCallable>>::reverse_iterator end,
 		std::shared_ptr<ScriptCallable> &result,
@@ -163,7 +155,7 @@ namespace gscript
 	{
 		if (begin == end)
 		{
-			result = std::make_shared<ScriptLiteral>(scope, nullptr);
+			result = std::make_shared<ScriptLiteral>(nullptr);
 			return 0;
 		}
 
@@ -265,7 +257,7 @@ namespace gscript
 				else if (currentPrec < prevPrec)
 				{
 					std::shared_ptr<ScriptCallable> sr = nullptr;
-					int subProcessed = this->resolveOperations(scope, operatorIt, end, sr, depth + 1);
+					int subProcessed = this->resolveOperations(operatorIt, end, sr, depth + 1);
 					if (subProcessed)
 					{
 						operatorIt += subProcessed - 1;

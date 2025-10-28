@@ -17,7 +17,7 @@ namespace gscript
 	{
 	public:
 		SCRIPT_API ScriptArrayInitializer(const ScriptArrayInitializer& b);
-		SCRIPT_API ScriptArrayInitializer(ScriptScope &scope, std::vector<std::unique_ptr<ScriptStatement>>&& statements);
+		SCRIPT_API ScriptArrayInitializer(std::vector<std::unique_ptr<ScriptStatement>>&& statements);
 
 		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
 

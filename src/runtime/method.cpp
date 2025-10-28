@@ -32,13 +32,6 @@ namespace gscript
 	{
 		assert(this->getThis().getValue() && "Methods must be run by instrun");
 
-		/*auto inst = static_cast<ScriptClassInstance&>(scope);
-		c.front()*/
-		
-		/*auto instref = std::make_unique<ScriptReferenceValue>(std::make_shared<ScriptReferenceType>(std::make_shared<ScriptClassType>(inst.getClass())), &scope);
-		ScriptReferenceValue(std::make_shared<ScriptReferenceType>(std::make_shared<ScriptClassType>(inst.getClass())), &scope);
-		this->getThis().setValue(std::move(instref));*/
-
 		this->validateParams(c);
 
 		ScriptMethod target(*this);
@@ -58,7 +51,6 @@ namespace gscript
 	{
 		auto& inst = this->setClassInstance(std::move(instance));
 		return this->run(*inst.getValue(), c);
-		//return this->run(*instance->data()->as<ScriptClassValue>().getValue(), c);
 	}
 
 	bool ScriptMethod::isStatic() const

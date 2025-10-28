@@ -14,8 +14,7 @@ namespace gscript
 		std::unique_ptr<ScriptValue> val = nullptr;
 
 		SCRIPT_API ScriptLiteral(const ScriptLiteral& literal);
-		SCRIPT_API ScriptLiteral(ScriptScopeBase& scope, std::unique_ptr<ScriptValue> &&val = nullptr);
-		//ScriptLiteral(ScriptScope &scope, ParserLiteral pliteral);
+		SCRIPT_API ScriptLiteral(std::unique_ptr<ScriptValue> &&val = nullptr);
 
 		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
 

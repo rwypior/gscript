@@ -19,8 +19,7 @@ namespace gscript
 	{
 	public:
 		ScriptWhile(const ScriptWhile& b);
-		ScriptWhile(ScriptScope& scope, std::unique_ptr<ScriptStatement>&& condition, std::vector<std::unique_ptr<ScriptCallable>>&& statements = {});
-		//ScriptWhile(ScriptScope &scope, const ParserWhile &pwhile);
+		ScriptWhile(std::unique_ptr<ScriptStatement>&& condition, std::vector<std::unique_ptr<ScriptCallable>>&& statements = {});
 
 		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
 

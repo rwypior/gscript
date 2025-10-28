@@ -16,7 +16,6 @@ namespace gscript
 	}
 
 	ScriptIf::ScriptIf(ScriptScope &scope, std::unique_ptr<ScriptStatement>&& condition, std::unique_ptr<ScriptIf>&& selse, std::vector<std::unique_ptr<ScriptCallable>>&& statements)
-		//: ScriptCallable(scope)
 		: ScriptScope(&scope)
 		, ScriptExecutiveBlock(std::move(statements))
 		, condition(std::move(condition))
@@ -27,13 +26,10 @@ namespace gscript
 	std::unique_ptr<ScriptCallable> ScriptIf::clone()
 	{
 		return std::make_unique<ScriptIf>(*this);
-		//return std::make_unique<ScriptIf>(scope, this->condition->clone(scope), this->selse->clone(scope), cloneVector(this->statements, *this));
 	}
 
 	std::unique_ptr<ScriptValue> ScriptIf::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		//Rescope rescope(*this, scope);
-
 		if (!this->condition || this->condition->run(scope)->boolean().getValue())
 			return ScriptExecutiveBlock::execute(*this);
 		else if (this->selse)

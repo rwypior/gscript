@@ -19,7 +19,7 @@ namespace gscript
 	public:
 		//ScriptVarRead(ScriptScope& scope);
 		SCRIPT_API ScriptVarRead(const ScriptVarRead& b);
-		SCRIPT_API ScriptVarRead(ScriptScopeBase& scope, std::unique_ptr<VariableAccessor>&& accessor);
+		SCRIPT_API explicit ScriptVarRead(std::unique_ptr<VariableAccessor>&& accessor);
 		SCRIPT_API ScriptVarRead(ScriptScopeBase& scope, ScriptVariable *variable);
 		SCRIPT_API ScriptVarRead(ScriptScopeBase& scope, const std::string& name);
 
@@ -49,7 +49,7 @@ namespace gscript
 	class ScriptVarReadPrototype : public ScriptCallablePrototype
 	{
 	public:
-		ScriptVarReadPrototype(ScriptScopeBase& scope, const std::string& varname);
+		ScriptVarReadPrototype(const std::string& varname);
 
 		virtual std::unique_ptr<ScriptCallable> build(ScriptScopeBase& scope) override;
 
@@ -71,7 +71,7 @@ namespace gscript
 	{
 	public:
 		SCRIPT_API ScriptArrayRead(const ScriptArrayRead& b);
-		SCRIPT_API ScriptArrayRead(ScriptScopeBase &scope, std::unique_ptr<VariableAccessor>&& accessor, std::unique_ptr<ScriptCallable> &&arrayAccessor);
+		SCRIPT_API ScriptArrayRead(std::unique_ptr<VariableAccessor>&& accessor, std::unique_ptr<ScriptCallable> &&arrayAccessor);
 		SCRIPT_API ScriptArrayRead(ScriptScopeBase &scope, ScriptVariable *variable, std::unique_ptr<ScriptCallable> &&arrayAccessor);
 		SCRIPT_API ScriptArrayRead(ScriptScopeBase &scope, const std::string& name, std::unique_ptr<ScriptCallable> &&arrayAccessor);
 
@@ -88,7 +88,7 @@ namespace gscript
 	class ScriptArrayReadPrototype : public ScriptCallablePrototype
 	{
 	public:
-		ScriptArrayReadPrototype(ScriptScopeBase& scope, const std::string& varname, std::unique_ptr<ScriptCallable>&& arrayAccessor);
+		ScriptArrayReadPrototype(const std::string& varname, std::unique_ptr<ScriptCallable>&& arrayAccessor);
 
 		virtual std::unique_ptr<ScriptCallable> build(ScriptScopeBase& scope) override;
 

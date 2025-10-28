@@ -22,7 +22,6 @@
 
 #include "runtime/statement.hpp"
 #include "runtime/funcParam.hpp"
-#include "runtime/runnable.hpp"
 #include "runtime/namespace.hpp"
 #include "runtime/class.hpp"
 #include "runtime/varDeclaration.hpp"
@@ -68,20 +67,13 @@ namespace gscript
 
 		for (auto& cls : entry.classes)
 		{
-			//ns->registerClassPrototype(cls);
 			ns->registerClass(this->compileClass(ns.get(), cls));
 		}
-
-		//ns->resolveClasses(); // TODO
 
 		for (auto& fnc : entry.functions)
 		{
 			ns->registerFunction(this->compileFunction(scope, fnc));
-			//ns->registerFunctionPrototype(fnc);
 		}
-
-		ns->resolveFunctions();
-		ns->resolveClassMembers();
 
 		return ns;
 	}
@@ -92,10 +84,6 @@ namespace gscript
 
 		const std::string& base = pclass.base;
 
-		// TODO - clients of this method must check if class already exists
-		//if (ScriptClass* existing = parentScope->findClass(pclass.name))
-		//	return existing;
-
 		ScriptClass* baseClass = nullptr;
 
 		if (base.length() > 0)
@@ -104,14 +92,10 @@ namespace gscript
 		}
 
 		auto cl = std::make_unique<ScriptClass>(*scope, pclass.name, baseClass);
-		//parentScope->registerClass(cl); // TODO - register where needed
-		
-		//parentScope->classes.push_back(cl);
-		//cl->parentScope = parentScope;
 
 		for (auto& pf : pclass.fields)
 		{
-			auto field = std::make_unique<ScriptFieldDeclaration>(*cl, pf.name, ScriptType::create(pf.type, *cl), this->compileStatement(cl.get(), pf.value));
+			auto field = std::make_unique<ScriptFieldDeclaration>(pf.name, ScriptType::create(pf.type, *cl), this->compileStatement(cl.get(), pf.value));
 			cl->addFieldDeclaration(std::move(field));
 		}
 
@@ -213,7 +197,7 @@ namespace gscript
 			}
 			else if (auto lit = std::dynamic_pointer_cast<ParserLiteral>(comp))
 			{
-				substatements.push_back(std::make_unique<ScriptLiteral>(*scope, this->compileValue(*lit)));
+				substatements.push_back(std::make_unique<ScriptLiteral>(this->compileValue(*lit)));
 			}
 			else if (auto stmt = std::dynamic_pointer_cast<ParserStatement>(comp))
 			{
@@ -233,7 +217,7 @@ namespace gscript
 			}
 			else if (auto oper = std::dynamic_pointer_cast<ParserOperator>(comp))
 			{
-				substatements.push_back(this->compileOperator(scope, *oper));
+				substatements.push_back(this->compileOperator(*oper));
 			}
 			else
 				throw CompileException("Unknown entity type");
@@ -247,7 +231,7 @@ namespace gscript
 			}
 		}
 
-		return std::make_unique<ScriptStatement>(*scope, std::move(substatements));
+		return std::make_unique<ScriptStatement>(std::move(substatements));
 	}
 
 	std::unique_ptr<ScriptExecutiveBlock> Compiler::compileExecutiveBlock(ScriptScope* scope, const ParserBlockBody& pblock)
@@ -275,44 +259,44 @@ namespace gscript
 		return std::make_unique<ScriptExecutiveBlock>(std::move(statements));
 	}
 
-	std::unique_ptr<ScriptOperator> Compiler::compileOperator(ScriptScope* scope, const ParserOperator& pOperator)
+	std::unique_ptr<ScriptOperator> Compiler::compileOperator(const ParserOperator& pOperator)
 	{
 		gs_log("Compiling ScriptOperator " << pOperator.getChar());
 
-		std::unordered_map<OperatorType, std::function<std::unique_ptr<ScriptOperator>(ScriptScope&, OperatorLinkage)>> opmap = {
-			{ OperatorType::MemberAccessor, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorMemberAccessor>(s, l); }},
-			{ OperatorType::Add, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorAdd>(s, l); }},
-			{ OperatorType::AddTo, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorAddTo>(s, l); }},
-			{ OperatorType::Subtract, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorSubtract>(s, l); }},
-			{ OperatorType::SubtractFrom, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorSubtractFrom>(s, l); }},
-			{ OperatorType::Multiply, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorMultiply>(s, l); }},
-			{ OperatorType::MultiplyBy, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorMultiplyBy>(s, l); }},
-			{ OperatorType::Divide, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorDivide>(s, l); }},
-			{ OperatorType::DivideBy, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorDivideBy>(s, l); }},
-			{ OperatorType::Equals, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorEquals>(s, l); }},
-			{ OperatorType::NotEquals, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorEquals>(s, l); }}, // TODO - missing operator for not equals?
-			{ OperatorType::GreaterThan, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorGreaterThan>(s, l); }},
-			{ OperatorType::GreaterThanOrEqual, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorGreaterThanOrEqual>(s, l); }},
-			{ OperatorType::LesserThan, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorLessThan>(s, l); }},
-			{ OperatorType::LesserThanOrEqual, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorLessThanOrEqual>(s, l); }},
-			{ OperatorType::Assign, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorAssign>(s, l); }},
-			{ OperatorType::Negate, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorNegate>(s, l); }},
-			{ OperatorType::Increment, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorIncrement>(s, l); }},
-			{ OperatorType::PreIncrement, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorIncrement>(s, l); }},
-			{ OperatorType::PostIncrement, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorIncrement>(s, l); }},
-			{ OperatorType::Decrement, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorDecrement>(s, l); }},
-			{ OperatorType::PreDecrement, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorDecrement>(s, l); }},
-			{ OperatorType::PostDecrement, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorDecrement>(s, l); }},
-			{ OperatorType::ConditionalIf, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorConditionalA>(s, l); }},
-			{ OperatorType::ConditionalElse, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorConditionalB>(s, l); }},
-			{ OperatorType::ConditionalNull, [](ScriptScope& s, OperatorLinkage l) { return std::make_unique<ScriptOperatorConditionalNull>(s, l); }}
+		std::unordered_map<OperatorType, std::function<std::unique_ptr<ScriptOperator>(OperatorLinkage)>> opmap = {
+			{ OperatorType::MemberAccessor, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorMemberAccessor>(l); }},
+			{ OperatorType::Add, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorAdd>(l); }},
+			{ OperatorType::AddTo, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorAddTo>(l); }},
+			{ OperatorType::Subtract, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorSubtract>(l); }},
+			{ OperatorType::SubtractFrom, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorSubtractFrom>(l); }},
+			{ OperatorType::Multiply, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorMultiply>(l); }},
+			{ OperatorType::MultiplyBy, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorMultiplyBy>(l); }},
+			{ OperatorType::Divide, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorDivide>(l); }},
+			{ OperatorType::DivideBy, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorDivideBy>(l); }},
+			{ OperatorType::Equals, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorEquals>(l); }},
+			{ OperatorType::NotEquals, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorEquals>(l); }}, // TODO - missing operator for not equals?
+			{ OperatorType::GreaterThan, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorGreaterThan>(l); }},
+			{ OperatorType::GreaterThanOrEqual, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorGreaterThanOrEqual>(l); }},
+			{ OperatorType::LesserThan, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorLessThan>(l); }},
+			{ OperatorType::LesserThanOrEqual, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorLessThanOrEqual>(l); }},
+			{ OperatorType::Assign, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorAssign>(l); }},
+			{ OperatorType::Negate, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorNegate>(l); }},
+			{ OperatorType::Increment, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorIncrement>(l); }},
+			{ OperatorType::PreIncrement, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorIncrement>(l); }},
+			{ OperatorType::PostIncrement, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorIncrement>(l); }},
+			{ OperatorType::Decrement, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorDecrement>(l); }},
+			{ OperatorType::PreDecrement, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorDecrement>(l); }},
+			{ OperatorType::PostDecrement, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorDecrement>(l); }},
+			{ OperatorType::ConditionalIf, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorConditionalA>(l); }},
+			{ OperatorType::ConditionalElse, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorConditionalB>(l); }},
+			{ OperatorType::ConditionalNull, [](OperatorLinkage l) { return std::make_unique<ScriptOperatorConditionalNull>(l); }}
 		};
 
 		auto it = opmap.find(pOperator.getType());
 		if (it == opmap.end())
 			throw CompileException("Cannot find operator " + std::to_string(static_cast<int>(pOperator.getType())));
 
-		return it->second(*scope, pOperator.getLinkage());
+		return it->second(pOperator.getLinkage());
 	}
 
 	std::unique_ptr<ScriptCallable> Compiler::compileVarRead(ScriptScope* scope, const ParserVar& pVar)
@@ -320,9 +304,9 @@ namespace gscript
 		gs_log("Compiling ScriptVarRead " << pVar.name.getString());
 
 		if (auto& arr = pVar.arrayAccessor)
-			return std::make_unique<ScriptArrayReadPrototype>(*scope, pVar.name, this->compileStatement(scope, arr->statement));
+			return std::make_unique<ScriptArrayReadPrototype>(pVar.name, this->compileStatement(scope, arr->statement));
 
-		return std::make_unique<ScriptVarReadPrototype>(*scope, pVar.name);
+		return std::make_unique<ScriptVarReadPrototype>(pVar.name);
 	}
 
 	std::unique_ptr<ScriptNew> Compiler::compileNewCall(ScriptScope* scope, const ParserNew& fcall)
@@ -400,9 +384,9 @@ namespace gscript
 			statements.push_back(std::move(stmt));
 		}
 
-		auto type = new ScriptArrayType(prevType ? prevType : ScriptType::create(ValueType::Null, *scope));
+		auto type = new ScriptArrayType(prevType ? prevType : ScriptType::createNull());
 
-		return std::make_unique<ScriptArrayInitializer>(*scope, std::move(statements));
+		return std::make_unique<ScriptArrayInitializer>(std::move(statements));
 	}
 
 	std::unique_ptr<ScriptVarDeclaration> Compiler::compileVarDeclaration(ScriptScope* scope, const ParserVarDeclaration& pVar)
@@ -435,9 +419,6 @@ namespace gscript
 	{
 		gs_log("Compiling ScriptElse");
 
-		// TODO - change this, so compiled 'else if' statement will have a condition
-		// instead of adding a statement with single 'if'
-
 		std::unique_ptr<ScriptStatement> condition;
 		std::unique_ptr<ScriptIf> selse;
 		if (pElse.pif)
@@ -458,10 +439,13 @@ namespace gscript
 	{
 		gs_log("Compiling ScriptWhile");
 
+		// TODO - make while have it's own scope, and place any variable created by
+		// condition into that scope
+
 		auto condition = this->compileStatement(scope, *pWhile.arglist.parameters.front());
 		auto exeblock = this->compileExecutiveBlock(scope, pWhile.body.body);
 
-		auto swhile = std::make_unique<ScriptWhile>(*scope, std::move(condition));
+		auto swhile = std::make_unique<ScriptWhile>(std::move(condition));
 		swhile->merge(std::move(exeblock));
 
 		return swhile;
@@ -471,12 +455,14 @@ namespace gscript
 	{
 		gs_log("Compiling ScriptFor");
 
+		// TODO - make for have it's own scope, and place the vardecl into that scope
+
 		auto vardecl = this->compileVarDeclaration(scope, pFor.arglist.varDecl);
 		auto condition = this->compileStatement(scope, pFor.arglist.condition);
 		auto progress = this->compileStatement(scope, pFor.arglist.progress);
 		auto exeblock = this->compileExecutiveBlock(scope, pFor.body.body);
 
-		auto sfor = std::make_unique<ScriptFor>(*scope, std::move(vardecl), std::move(condition), std::move(progress));
+		auto sfor = std::make_unique<ScriptFor>(std::move(vardecl), std::move(condition), std::move(progress));
 		sfor->merge(std::move(exeblock));
 
 		return sfor;
@@ -487,7 +473,7 @@ namespace gscript
 		gs_log("Compiling ScriptReturn with " << pReturn.value.components.size() << " components");
 
 		auto stmt = this->compileStatement(scope, pReturn.value, false);
-		return std::make_unique<ScriptReturn>(*scope, std::move(stmt));
+		return std::make_unique<ScriptReturn>(std::move(stmt));
 	}
 
 	// Finalize

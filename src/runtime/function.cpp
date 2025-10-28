@@ -48,7 +48,6 @@ namespace gscript
 
 		target.registerParameters(c);
 		return target.execute(target);
-		//return this->execute(target);
 	}
 
 	std::unique_ptr<ScriptValue> ScriptFunction::fastrun(ScriptScopeBase& scope, const CALLABLE_PARAMS_T& c)

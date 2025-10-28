@@ -112,6 +112,29 @@ namespace gscript
 		return std::make_shared<ScriptType>(ValueType::Bool);
 	}
 
+	std::unique_ptr<ScriptType> ScriptType::createClass(const std::string& classname, ScriptScopeBase& scope)
+	{
+		if (ScriptClass* c = scope.getGlobalNamespace()->findClass(classname))
+			return std::make_unique<ScriptClassType>(*c);
+
+		throw CompileException(std::string("Class \"") + classname + "\" was not found");
+	}
+
+	std::unique_ptr<ScriptType> ScriptType::createPod(ValueType valuetype)
+	{
+		return std::make_unique<ScriptType>(valuetype);
+	}
+
+	std::unique_ptr<ScriptType> ScriptType::createVoid()
+	{
+		return ScriptType::createPod(ValueType::Void);
+	}
+
+	std::unique_ptr<ScriptType> ScriptType::createNull()
+	{
+		return ScriptType::createPod(ValueType::Null);
+	}
+
 	std::unique_ptr<ScriptType> ScriptType::create(ValueType valueType, ScriptScopeBase& scope, const std::string& cname)
 	{
 		return ScriptType::create(TypeDescriptor(valueType), scope, cname);
@@ -120,22 +143,19 @@ namespace gscript
 	std::unique_ptr<ScriptType> ScriptType::create(TypeDescriptor type, ScriptScopeBase& scope, const std::string &cname)
 	{
 		if (type.type == ValueType::Class)
-		{
-			if (ScriptClass *c = scope.getGlobalNamespace()->findClass(cname))
-				return std::make_unique<ScriptClassType>(*c);
-
-			throw CompileException(std::string("Class \"") + cname + "\" was not found");
-		}
+			return ScriptType::createClass(cname, scope);
 		else if (type.type == ValueType::Array)
 		{
-			return std::make_unique<ScriptArrayType>(ScriptType::create(type.subType->type, scope));
+			assert(type.subType && "Subtype must be specified for array type");
+			return std::make_unique<ScriptArrayType>(ScriptType::create(*type.subType, scope));
 		}
 		else if (type.type == ValueType::Reference)
 		{
-			return std::make_unique<ScriptReferenceType>(ScriptType::create(type.subType->type, scope));
+			assert(type.subType && "Subtype must be specified for reference type");
+			return std::make_unique<ScriptReferenceType>(ScriptType::create(*type.subType, scope));
 		}
 
-		return std::make_unique<ScriptType>(type.type);
+		return ScriptType::createPod(type.type);
 	}
 
 	std::unique_ptr<ScriptType> ScriptType::create(const std::string &tname, ScriptScopeBase& scope)

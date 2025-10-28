@@ -23,15 +23,14 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionSimple")
 	// Function block
 	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), std::make_unique<gscript::ScriptIntValue>(1));
 
-	//auto varreadMyVariable1 = std::make_unique<gscript::ScriptVarReadPrototype>(myFunc, &myVariable1);
-	auto varreadMyVariable1 = std::make_unique<gscript::ScriptVarReadPrototype>(myFunc, "myVariable1");
-	auto mul = std::make_unique<gscript::ScriptOperatorMultiplyBy>(myFunc, gscript::OperatorLinkage::Both);
-	auto literal5 = std::make_unique<gscript::ScriptLiteral>(myFunc, std::make_unique<gscript::ScriptIntValue>(5));
+	auto varreadMyVariable1 = std::make_unique<gscript::ScriptVarReadPrototype>("myVariable1");
+	auto mul = std::make_unique<gscript::ScriptOperatorMultiplyBy>(gscript::OperatorLinkage::Both);
+	auto literal5 = std::make_unique<gscript::ScriptLiteral>(std::make_unique<gscript::ScriptIntValue>(5));
 	auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecbody.push_back(std::move(varreadMyVariable1));
 	stmtvecbody.push_back(std::move(mul));
 	stmtvecbody.push_back(std::move(literal5));
-	auto stmt1 = std::make_unique<gscript::ScriptStatement>(myFunc, std::move(stmtvecbody));
+	auto stmt1 = std::make_unique<gscript::ScriptStatement>(std::move(stmtvecbody));
 	stmt1->setup(myFunc);
 	auto stmtvecbody1 = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecbody1.push_back(std::move(stmt1));
@@ -54,13 +53,13 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionReturn")
 	gscript::ScriptFunction myFunc(globalNamespace, "myfunc", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), {}, {});
 
 	// Function block
-	auto literal42 = std::make_unique<gscript::ScriptLiteral>(myFunc, std::make_unique<gscript::ScriptIntValue>(42));
+	auto literal42 = std::make_unique<gscript::ScriptLiteral>(std::make_unique<gscript::ScriptIntValue>(42));
 	auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecbody.push_back(std::move(literal42));
-	auto stmt1 = std::make_unique<gscript::ScriptStatement>(myFunc, std::move(stmtvecbody));
+	auto stmt1 = std::make_unique<gscript::ScriptStatement>(std::move(stmtvecbody));
 	stmt1->setup(myFunc);
 
-	auto ret = std::make_unique<gscript::ScriptReturn>(myFunc, std::move(stmt1));
+	auto ret = std::make_unique<gscript::ScriptReturn>(std::move(stmt1));
 
 	auto stmtvecbodycallable = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecbodycallable.push_back(std::move(ret));
@@ -84,20 +83,20 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionReturnFromBlock")
 	gscript::ScriptFunction myFunc(globalNamespace, "myfunc", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), {}, {});
 
 	// If
-	auto iftrue = std::make_unique<gscript::ScriptLiteral>(myFunc, gscript::ScriptType::btrue());
+	auto iftrue = std::make_unique<gscript::ScriptLiteral>(gscript::ScriptType::btrue());
 	std::vector<std::unique_ptr<gscript::ScriptCallable>> ifcallables;
 	ifcallables.push_back(std::move(iftrue));
-	auto ifstmt = std::make_unique<gscript::ScriptStatement>(myFunc, std::move(ifcallables));
+	auto ifstmt = std::make_unique<gscript::ScriptStatement>(std::move(ifcallables));
 	ifstmt->setup(myFunc);
 
 	// If block
 
-	auto ifblock42 = std::make_unique<gscript::ScriptLiteral>(myFunc, std::make_unique<gscript::ScriptIntValue>(42));
+	auto ifblock42 = std::make_unique<gscript::ScriptLiteral>(std::make_unique<gscript::ScriptIntValue>(42));
 	std::vector<std::unique_ptr<gscript::ScriptCallable>> ifblockcallables;
 	ifblockcallables.push_back(std::move(ifblock42));
-	auto ifblockstmt = std::make_unique<gscript::ScriptStatement>(myFunc, std::move(ifblockcallables));
+	auto ifblockstmt = std::make_unique<gscript::ScriptStatement>(std::move(ifblockcallables));
 	ifblockstmt->setup(myFunc);
-	auto ifblockreturn = std::make_unique<gscript::ScriptReturn>(myFunc, std::move(ifblockstmt));
+	auto ifblockreturn = std::make_unique<gscript::ScriptReturn>(std::move(ifblockstmt));
 	ifblockreturn->setup(myFunc);
 	std::vector<std::unique_ptr<gscript::ScriptCallable>> ifblockstatements;
 	ifblockstatements.push_back(std::move(ifblockreturn));
@@ -106,13 +105,13 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionReturnFromBlock")
 	sif->setup(myFunc);
 
 	// Return
-	auto literal1337 = std::make_unique<gscript::ScriptLiteral>(myFunc, std::make_unique<gscript::ScriptIntValue>(42));
+	auto literal1337 = std::make_unique<gscript::ScriptLiteral>(std::make_unique<gscript::ScriptIntValue>(42));
 	auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecbody.push_back(std::move(literal1337));
-	auto stmt1 = std::make_unique<gscript::ScriptStatement>(myFunc, std::move(stmtvecbody));
+	auto stmt1 = std::make_unique<gscript::ScriptStatement>(std::move(stmtvecbody));
 	stmt1->setup(myFunc);
 
-	auto ret = std::make_unique<gscript::ScriptReturn>(myFunc, std::move(stmt1));
+	auto ret = std::make_unique<gscript::ScriptReturn>(std::move(stmt1));
 
 	auto stmtvecbodycallable = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecbodycallable.push_back(std::move(sif));
@@ -146,13 +145,13 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionWithParams")
 	auto& myVariable1 = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), std::make_unique<gscript::ScriptIntValue>(1));
 
 	auto varreadMyVariable1 = std::make_unique<gscript::ScriptVarRead>(myFunc, &myVariable1);
-	auto assign = std::make_unique<gscript::ScriptOperatorAssign>(myFunc, gscript::OperatorLinkage::Both);
-	auto varreadParam1 = std::make_unique<gscript::ScriptVarReadPrototype>(myFunc, "arg1");
+	auto assign = std::make_unique<gscript::ScriptOperatorAssign>(gscript::OperatorLinkage::Both);
+	auto varreadParam1 = std::make_unique<gscript::ScriptVarReadPrototype>("arg1");
 	auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecbody.push_back(std::move(varreadMyVariable1));
 	stmtvecbody.push_back(std::move(assign));
 	stmtvecbody.push_back(std::move(varreadParam1));
-	auto stmt1 = std::make_unique<gscript::ScriptStatement>(myFunc, std::move(stmtvecbody));
+	auto stmt1 = std::make_unique<gscript::ScriptStatement>(std::move(stmtvecbody));
 	stmt1->setup(myFunc);
 	auto stmtvecbody1 = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecbody1.push_back(std::move(stmt1));
@@ -179,13 +178,6 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionWithParams")
 TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionRecursive")
 {
 	// Function
-	//gscript::ScriptFunction myFunc(
-	//	globalNamespace,
-	//	"myfunc",
-	//	gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace),
-	//	{ { std::make_shared<gscript::ScriptType>(gscript::ValueType::Int), "arg1" } },
-	//	{}
-	//);
 
 	auto& myFunc = globalNamespace.registerFunction(
 		"myfunc",
@@ -196,28 +188,28 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionRecursive")
 
 	// If
 
-	auto ifvarread = std::make_unique<gscript::ScriptVarReadPrototype>(myFunc, "arg1");
-	auto ifgreater = std::make_unique<gscript::ScriptOperatorGreaterThan>(myFunc, gscript::OperatorLinkage::Both);
-	auto if10 = std::make_unique<gscript::ScriptLiteral>(myFunc, std::make_unique<gscript::ScriptIntValue>(10));
+	auto ifvarread = std::make_unique<gscript::ScriptVarReadPrototype>("arg1");
+	auto ifgreater = std::make_unique<gscript::ScriptOperatorGreaterThan>(gscript::OperatorLinkage::Both);
+	auto if10 = std::make_unique<gscript::ScriptLiteral>(std::make_unique<gscript::ScriptIntValue>(10));
 	std::vector<std::unique_ptr<gscript::ScriptCallable>> ifcallables;
 	ifcallables.push_back(std::move(ifvarread));
 	ifcallables.push_back(std::move(ifgreater));
 	ifcallables.push_back(std::move(if10));
-	auto ifstmt = std::make_unique<gscript::ScriptStatement>(myFunc, std::move(ifcallables));
+	auto ifstmt = std::make_unique<gscript::ScriptStatement>(std::move(ifcallables));
 	ifstmt->setup(myFunc);
 
 	// If block
 
 	auto sif = std::make_unique<gscript::ScriptIf>(myFunc, std::move(ifstmt));
 
-	auto ifblockvarread = std::make_unique<gscript::ScriptVarReadPrototype>(*sif, "arg1");
+	auto ifblockvarread = std::make_unique<gscript::ScriptVarReadPrototype>("arg1");
 	// TODO - this logic should probably be reverted - it would be much more logical
 	ifblockvarread->disableReference();
 	std::vector<std::unique_ptr<gscript::ScriptCallable>> ifblockcallables;
 	ifblockcallables.push_back(std::move(ifblockvarread));
-	auto ifblockstmt = std::make_unique<gscript::ScriptStatement>(*sif, std::move(ifblockcallables));
+	auto ifblockstmt = std::make_unique<gscript::ScriptStatement>(std::move(ifblockcallables));
 	ifblockstmt->setup(*sif);
-	auto ifblockreturn = std::make_unique<gscript::ScriptReturn>(*sif, std::move(ifblockstmt));
+	auto ifblockreturn = std::make_unique<gscript::ScriptReturn>(std::move(ifblockstmt));
 	ifblockreturn->setup(*sif);
 	std::vector<std::unique_ptr<gscript::ScriptCallable>> ifblockstatements;
 	ifblockstatements.push_back(std::move(ifblockreturn));
@@ -227,14 +219,14 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionRecursive")
 
 	// Func call param
 
-	auto fcallvarread = std::make_unique<gscript::ScriptVarReadPrototype>(myFunc, "arg1");
-	auto fcallvarread2 = std::make_unique<gscript::ScriptVarReadPrototype>(myFunc, "arg1");
-	auto fcallmul = std::make_unique<gscript::ScriptOperatorMultiply>(myFunc, gscript::OperatorLinkage::Both);
+	auto fcallvarread = std::make_unique<gscript::ScriptVarReadPrototype>("arg1");
+	auto fcallvarread2 = std::make_unique<gscript::ScriptVarReadPrototype>("arg1");
+	auto fcallmul = std::make_unique<gscript::ScriptOperatorMultiply>(gscript::OperatorLinkage::Both);
 	std::vector<std::unique_ptr<gscript::ScriptCallable>> fcallcallables;
 	fcallcallables.push_back(std::move(fcallvarread));
 	fcallcallables.push_back(std::move(fcallmul));
 	fcallcallables.push_back(std::move(fcallvarread2));
-	auto fcallstmt = std::make_unique<gscript::ScriptStatement>(myFunc, std::move(fcallcallables));
+	auto fcallstmt = std::make_unique<gscript::ScriptStatement>(std::move(fcallcallables));
 	fcallstmt->setup(myFunc);
 
 	// Func call
@@ -249,10 +241,10 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionRecursive")
 
 	std::vector<std::unique_ptr<gscript::ScriptCallable>> returncallables;
 	returncallables.push_back(std::move(returnfunccall));
-	auto returnstmt = std::make_unique<gscript::ScriptStatement>(myFunc, std::move(returncallables));
+	auto returnstmt = std::make_unique<gscript::ScriptStatement>(std::move(returncallables));
 	returnstmt->setup(myFunc);
 
-	auto elsereturn = std::make_unique<gscript::ScriptReturn>(myFunc, std::move(returnstmt));
+	auto elsereturn = std::make_unique<gscript::ScriptReturn>(std::move(returnstmt));
 	elsereturn->setup(myFunc);
 
 	// Function statements
@@ -270,9 +262,6 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionRecursive")
 	//stmtvecbody1.push_back(std::move(stmt1));
 	//
 
-	//auto eb = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbody));
-
-	//myFunc.merge(std::move(eb));
 	myFunc.merge(std::move(stmtvecbody));
 	myFunc.setup(myFunc);
 

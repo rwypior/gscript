@@ -247,7 +247,6 @@ namespace gscript
 
 	ScriptScope::ScriptScope(const ScriptScope& b)
 		: parentScope(b.getParentScope())
-		//, variables(b.getVariables())
 	{
 		for (auto& var : b.getVariables())
 		{
@@ -295,17 +294,13 @@ namespace gscript
 	std::stack<std::pair<ScriptScopeBase*, ScriptScopeBase*>> RemapScope::mappingQueue;
 
 	RemapScope::RemapScope(ScriptScopeBase& source, ScriptScopeBase& target)
-		/*: scope(scope)
-		, parent(scope.getParentScope())*/
 	{
-		//scope.setParentScope(&target);
 		mappingQueue.push({&source, &target});
 	}
 
 	RemapScope::~RemapScope()
 	{
 		mappingQueue.pop();
-		//this->scope.setParentScope(this->parent);
 	}
 
 	ScriptScopeBase& RemapScope::map(ScriptScopeBase& source)

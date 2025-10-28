@@ -14,22 +14,19 @@ namespace gscript
 	{
 	}
 
-	ScriptFuncCall::ScriptFuncCall(ScriptScopeBase& scope, FunctionAccessor func, std::vector<std::unique_ptr<ScriptStatement>>&& params)
-		//: ScriptCallable(scope)
+	ScriptFuncCall::ScriptFuncCall(FunctionAccessor func, std::vector<std::unique_ptr<ScriptStatement>>&& params)
 		: accessor(func)
 		, params(std::move(params))
 	{
 	}
 
 	ScriptFuncCall::ScriptFuncCall(ScriptScopeBase& scope, ScriptFunction* func, std::vector<std::unique_ptr<ScriptStatement>>&& params)
-		//: ScriptCallable(scope)
 		: accessor(func ? FunctionAccessor::find(scope, func->getName(), func->getParameters()) : FunctionAccessor())
 		, params(std::move(params))
 	{
 	}
 
 	ScriptFuncCall::ScriptFuncCall(ScriptScopeBase& scope, const std::string& name, std::vector<std::unique_ptr<ScriptStatement>>&& params)
-		//: ScriptCallable(scope)
 		: accessor(FunctionAccessor::find(scope, name, extractParams(params)))
 		, params(std::move(params))
 	{
@@ -71,7 +68,6 @@ namespace gscript
 	// Prototype
 
 	ScriptFuncCallPrototype::ScriptFuncCallPrototype(ScriptScopeBase* scope, const std::string& funcname, std::vector<std::unique_ptr<ScriptStatement>>&& params, bool staticCall)
-		//: ScriptCallablePrototype(scope)
 		: scope(scope)
 		, funcname(funcname)
 		, params(std::move(params))
@@ -84,9 +80,7 @@ namespace gscript
 		ScriptScopeBase* usedScope = this->scope ? this->scope : &scope;
 
 		PARAMS_T params = extractParams(this->params);
-		// TODO - use constructor which uses name instead of function here
-		auto result = std::make_unique<ScriptFuncCall>(*usedScope, FunctionAccessor::find(*usedScope, this->funcname, params), std::move(this->params));
-
+		auto result = std::make_unique<ScriptFuncCall>(FunctionAccessor::find(*usedScope, this->funcname, params), std::move(this->params));
 		return result;
 	}
 

@@ -10,7 +10,7 @@ namespace gscript
 	{
 	public:
 		SCRIPT_API ScriptReturn(const ScriptReturn& b);
-		SCRIPT_API ScriptReturn(ScriptScopeBase& scope, std::unique_ptr<ScriptStatement>&& statement);
+		SCRIPT_API ScriptReturn(std::unique_ptr<ScriptStatement>&& statement);
 
 		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
 

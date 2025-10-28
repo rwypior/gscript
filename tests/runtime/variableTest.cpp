@@ -21,7 +21,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeVariableBasicRead")
 	auto stmtvec = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvec.push_back(std::move(varread));
 
-	auto stmt1 = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvec));
+	auto stmt1 = std::make_unique<gscript::ScriptStatement>(std::move(stmtvec));
 	stmt1->setup(globalNamespace);
 
 	auto result = stmt1->run(globalNamespace);
@@ -47,12 +47,12 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeVariableArrayRead")
 		std::move(arr)
 	);
 
-	auto literal0 = std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(0));
+	auto literal0 = std::make_unique<gscript::ScriptLiteral>(std::make_unique<gscript::ScriptIntValue>(0));
 	auto varread0 = std::make_unique<gscript::ScriptArrayRead>(globalNamespace, "myArray1", std::move(literal0));
 	auto result0 = varread0->run(globalNamespace);
 	REQUIRE(result0->as<gscript::ScriptIntValue>().getValue() == 1);
 	
-	auto literal4 = std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(4));
+	auto literal4 = std::make_unique<gscript::ScriptLiteral>(std::make_unique<gscript::ScriptIntValue>(4));
 	auto varread4 = std::make_unique<gscript::ScriptArrayRead>(globalNamespace, "myArray1", std::move(literal4));
 	auto result4 = varread4->run(globalNamespace);
 	REQUIRE(result4->as<gscript::ScriptIntValue>().getValue() == 5);
@@ -69,13 +69,13 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeVariableReadFromNamespace")
 	auto varreadsomething = std::make_unique<gscript::ScriptVarRead>(first, "something");
 	auto stmtvecsomething = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecsomething.push_back(std::move(varreadsomething));
-	auto stmtsomething = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecsomething));
+	auto stmtsomething = std::make_unique<gscript::ScriptStatement>(std::move(stmtvecsomething));
 	stmtsomething->setup(globalNamespace);
 
 	auto varreadblabla = std::make_unique<gscript::ScriptVarRead>(second, "blabla");
 	auto stmtvecblabla = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecblabla.push_back(std::move(varreadblabla));
-	auto stmtblabla = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvecblabla));
+	auto stmtblabla = std::make_unique<gscript::ScriptStatement>(std::move(stmtvecblabla));
 	stmtblabla->setup(globalNamespace);
 
 	auto resultsomething = stmtsomething->run(first);
@@ -87,11 +87,11 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeVariableReadFromNamespace")
 
 TEST_CASE_METHOD(GscriptTest, "RuntimeVariableDeclaration")
 {
-	auto literal42 = std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(42));
+	auto literal42 = std::make_unique<gscript::ScriptLiteral>(std::make_unique<gscript::ScriptIntValue>(42));
 	auto literal42vec = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	literal42vec.push_back(std::move(literal42));
 
-	auto stmt1 = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(literal42vec));
+	auto stmt1 = std::make_unique<gscript::ScriptStatement>(std::move(literal42vec));
 	stmt1->setup(globalNamespace);
 
 	auto& sv = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), std::make_unique<gscript::ScriptIntValue>(0));
@@ -106,11 +106,11 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeVariableDeclaration")
 
 TEST_CASE_METHOD(GscriptTest, "RuntimeVariableRegistering")
 {
-	auto literal42 = std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(42));
+	auto literal42 = std::make_unique<gscript::ScriptLiteral>(std::make_unique<gscript::ScriptIntValue>(42));
 	auto literal42vec = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	literal42vec.push_back(std::move(literal42));
 
-	auto stmt1 = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(literal42vec));
+	auto stmt1 = std::make_unique<gscript::ScriptStatement>(std::move(literal42vec));
 	stmt1->setup(globalNamespace);
 
 	auto sv = std::make_unique<gscript::ScriptVariable>("myVariable1", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), std::make_unique<gscript::ScriptIntValue>(0));
@@ -137,15 +137,15 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeVariableModifying")
 	auto& sv = globalNamespace.registerVariable("myVariable1", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), std::make_unique<gscript::ScriptIntValue>(0));
 
 	auto varread = std::make_unique<gscript::ScriptVarRead>(globalNamespace, &sv);
-	auto assign = std::make_unique<gscript::ScriptOperatorAssign>(globalNamespace, gscript::OperatorLinkage::Both);
-	auto literal42 = std::make_unique<gscript::ScriptLiteral>(globalNamespace, std::make_unique<gscript::ScriptIntValue>(42));
+	auto assign = std::make_unique<gscript::ScriptOperatorAssign>(gscript::OperatorLinkage::Both);
+	auto literal42 = std::make_unique<gscript::ScriptLiteral>(std::make_unique<gscript::ScriptIntValue>(42));
 
 	auto stmtvec = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvec.push_back(std::move(varread));
 	stmtvec.push_back(std::move(assign));
 	stmtvec.push_back(std::move(literal42));
 
-	auto stmt1 = std::make_unique<gscript::ScriptStatement>(globalNamespace, std::move(stmtvec));
+	auto stmt1 = std::make_unique<gscript::ScriptStatement>(std::move(stmtvec));
 	stmt1->setup(globalNamespace);
 	
 	REQUIRE(sv.getValue()->as<gscript::ScriptIntValue>().getValue() == 0);

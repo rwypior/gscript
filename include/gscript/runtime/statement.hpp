@@ -9,7 +9,6 @@
 
 namespace gscript
 {
-	//class ParserStatement;
 	class ScriptValue;
 	class ScriptOperator;
 	class ScriptCallable;
@@ -18,14 +17,11 @@ namespace gscript
 	class ScriptStatement : public ScriptCallable
 	{
 	public:
-		//ScriptCallable *callable = nullptr;
 		std::shared_ptr<ScriptCallable> callable = nullptr;
 
-		//SCRIPT_API ScriptStatement(ScriptScope &scope, const ParserStatement &pstatement);
 		SCRIPT_API ScriptStatement(ScriptStatement&& stmt) noexcept;
 		SCRIPT_API ScriptStatement(const ScriptStatement& b);
-		SCRIPT_API ScriptStatement(ScriptScope &scope);
-		SCRIPT_API ScriptStatement(ScriptScope &scope, std::vector<std::unique_ptr<ScriptCallable>>&& callables);
+		SCRIPT_API ScriptStatement(std::vector<std::unique_ptr<ScriptCallable>>&& callables);
 
 		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
 
@@ -35,9 +31,8 @@ namespace gscript
 		SCRIPT_API virtual const std::shared_ptr<ScriptType> getType() const override;
 
 	protected:
-		/// <return>count of processed callables</return>
+		// count of processed callables
 		SCRIPT_API int resolveOperations(
-			ScriptScopeBase& scope, 
 			std::vector<std::shared_ptr<ScriptCallable>>::reverse_iterator begin,
 			std::vector<std::shared_ptr<ScriptCallable>>::reverse_iterator end,
 			std::shared_ptr<ScriptCallable>& result,

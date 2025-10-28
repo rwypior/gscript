@@ -10,12 +10,10 @@ namespace gscript
 	{
 	}
 
-	ScriptArrayInitializer::ScriptArrayInitializer(ScriptScope& scope, std::vector<std::unique_ptr<ScriptStatement>>&& statements)
-		//: ScriptCallable(scope)
+	ScriptArrayInitializer::ScriptArrayInitializer(std::vector<std::unique_ptr<ScriptStatement>>&& statements)
 		: statements(std::move(statements))
-		, type(statements.empty() ? ScriptType::create(ValueType::Void, scope) : statements.front()->getType())
+		, type(statements.empty() ? ScriptType::createVoid() : statements.front()->getType())
 	{
-		ScriptType::create(ValueType::Void, scope);
 	}
 
 	std::unique_ptr<ScriptCallable> ScriptArrayInitializer::clone()

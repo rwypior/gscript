@@ -23,21 +23,21 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeScopeVariableOutsideScope")
 
 	// Variable
 
-	auto literal42 = std::make_unique<gscript::ScriptLiteral>(myFunc, std::make_unique<gscript::ScriptIntValue>(42));
+	auto literal42 = std::make_unique<gscript::ScriptLiteral>(std::make_unique<gscript::ScriptIntValue>(42));
 	auto literal42vec = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	literal42vec.push_back(std::move(literal42));
 
-	auto varstmt = std::make_unique<gscript::ScriptStatement>(myFunc, std::move(literal42vec));
+	auto varstmt = std::make_unique<gscript::ScriptStatement>(std::move(literal42vec));
 	varstmt->setup(myFunc);
 
 	auto& sv = myFunc.registerVariable("myVariable1", gscript::ScriptType::create(gscript::ValueType::Int, myFunc), std::make_unique<gscript::ScriptIntValue>(0));
 	auto vd = std::make_unique<gscript::ScriptVarDeclaration>(myFunc, sv, std::move(varstmt));
 
 	// If
-	auto iftrue = std::make_unique<gscript::ScriptLiteral>(myFunc, gscript::ScriptType::btrue());
+	auto iftrue = std::make_unique<gscript::ScriptLiteral>(gscript::ScriptType::btrue());
 	std::vector<std::unique_ptr<gscript::ScriptCallable>> ifcallables;
 	ifcallables.push_back(std::move(iftrue));
-	auto ifstmt = std::make_unique<gscript::ScriptStatement>(myFunc, std::move(ifcallables));
+	auto ifstmt = std::make_unique<gscript::ScriptStatement>(std::move(ifcallables));
 	ifstmt->setup(myFunc);
 
 	// If block
@@ -47,9 +47,9 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeScopeVariableOutsideScope")
 	auto varreadMyVariable1 = std::make_unique<gscript::ScriptVarRead>(*sif, &sv);
 	std::vector<std::unique_ptr<gscript::ScriptCallable>> ifblockcallables;
 	ifblockcallables.push_back(std::move(varreadMyVariable1));
-	auto ifblockstmt = std::make_unique<gscript::ScriptStatement>(*sif, std::move(ifblockcallables));
+	auto ifblockstmt = std::make_unique<gscript::ScriptStatement>(std::move(ifblockcallables));
 	ifblockstmt->setup(*sif);
-	auto ifblockreturn = std::make_unique<gscript::ScriptReturn>(*sif, std::move(ifblockstmt));
+	auto ifblockreturn = std::make_unique<gscript::ScriptReturn>(std::move(ifblockstmt));
 	ifblockreturn->setup(*sif);
 	std::vector<std::unique_ptr<gscript::ScriptCallable>> ifblockstatements;
 	ifblockstatements.push_back(std::move(ifblockreturn));
@@ -58,13 +58,13 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeScopeVariableOutsideScope")
 	sif->setup(myFunc);
 
 	// Return
-	auto literal1337 = std::make_unique<gscript::ScriptLiteral>(myFunc, std::make_unique<gscript::ScriptIntValue>(42));
+	auto literal1337 = std::make_unique<gscript::ScriptLiteral>(std::make_unique<gscript::ScriptIntValue>(42));
 	auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecbody.push_back(std::move(literal1337));
-	auto stmt1 = std::make_unique<gscript::ScriptStatement>(myFunc, std::move(stmtvecbody));
+	auto stmt1 = std::make_unique<gscript::ScriptStatement>(std::move(stmtvecbody));
 	stmt1->setup(myFunc);
-
-	auto ret = std::make_unique<gscript::ScriptReturn>(myFunc, std::move(stmt1));
+	
+	auto ret = std::make_unique<gscript::ScriptReturn>(std::move(stmt1));
 
 	auto stmtvecbodycallable = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 	stmtvecbodycallable.push_back(std::move(vd));

@@ -1,5 +1,4 @@
 #include "runtime/variable.hpp"
-#include "runtime/scope.hpp"
 #include "runtime/scriptValue.hpp"
 
 #include "type.hpp"

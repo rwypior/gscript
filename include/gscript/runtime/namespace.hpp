@@ -23,12 +23,10 @@ namespace gscript
 		SCRIPT_API ScriptNamespace(ScriptScopeBase* parentScope = NULL);
 		SCRIPT_API ScriptNamespace(ScriptScopeBase* parentScope, const std::string &name);
 		
-		//SCRIPT_API ScriptClass &registerClassPrototype(const ParserClass &c);
-		//SCRIPT_API ScriptClass &registerClass(const ParserClass &c);
+		// Register a given class in the namespace, and take ownership of it
 		SCRIPT_API ScriptClass& registerClass(std::unique_ptr<ScriptClass> &&c);
 
-		//SCRIPT_API ScriptNamespace &registerNamespace(const ParserNamespace &ns);
-		//SCRIPT_API ScriptNamespace &registerNamespace(ScriptNamespace *ns);
+		// Register a given namespace in the namespace, and take ownership of it
 		SCRIPT_API ScriptNamespace &registerNamespace(std::unique_ptr<ScriptNamespace> &&ns);
 
 		SCRIPT_API ScriptClass *findClass(const std::string &name);
@@ -40,16 +38,9 @@ namespace gscript
 
 		SCRIPT_API const std::string &getName() const;
 
-		void resolveFunctions();
-		//void resolveClasses();
-		void resolveClassMembers();
-
 	protected:
-		//NAMESPACE_CONTAINER_T namespaces;
 		std::vector<std::unique_ptr<ScriptNamespace>> namespaces;
 		std::vector<std::unique_ptr<ScriptClass>> classes;
-		//std::unordered_map<std::string, std::unique_ptr<ScriptClassPrototype>> classPrototypes;
-		//CLASS_PROTOTYPE_CONTAINER_T classPrototypes;
 
 	private:
 		std::string name = "";

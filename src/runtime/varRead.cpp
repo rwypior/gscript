@@ -6,14 +6,12 @@
 
 namespace gscript
 {
-	// TODO - remove 'scope' argument from constructors - leave only the one with accessor
-
 	ScriptVarRead::ScriptVarRead(const ScriptVarRead& b)
 		: accessor(b.accessor->clone())
 	{
 	}
 
-	ScriptVarRead::ScriptVarRead(ScriptScopeBase& scope, std::unique_ptr<VariableAccessor>&& accessor)
+	ScriptVarRead::ScriptVarRead(std::unique_ptr<VariableAccessor>&& accessor)
 		: accessor(std::move(accessor))
 	{
 	}
@@ -68,7 +66,7 @@ namespace gscript
 
 	// Prototype
 
-	ScriptVarReadPrototype::ScriptVarReadPrototype(ScriptScopeBase& scope, const std::string& varname)
+	ScriptVarReadPrototype::ScriptVarReadPrototype(const std::string& varname)
 		: varname(varname)
 	{
 	}
@@ -80,18 +78,18 @@ namespace gscript
 		try
 		{
 			if (this->isReference)
-				result = std::make_unique<ScriptVarReferenceRead>(scope, VariableAccessor::find(scope, this->varname));
+				result = std::make_unique<ScriptVarReferenceRead>(VariableAccessor::find(scope, this->varname));
 			else
-				result = std::make_unique<ScriptVarRead>(scope, VariableAccessor::find(scope, this->varname));
+				result = std::make_unique<ScriptVarRead>(VariableAccessor::find(scope, this->varname));
 		}
 		catch (...)
 		{
 			try
 			{
 				if (this->isReference)
-					result = std::make_unique<ScriptVarReferenceRead>(scope, ParameterAccessor::find(scope, this->varname));
+					result = std::make_unique<ScriptVarReferenceRead>(ParameterAccessor::find(scope, this->varname));
 				else
-					result = std::make_unique<ScriptVarRead>(scope, ParameterAccessor::find(scope, this->varname));
+					result = std::make_unique<ScriptVarRead>(ParameterAccessor::find(scope, this->varname));
 			}
 			catch (...)
 			{
@@ -120,8 +118,8 @@ namespace gscript
 	{
 	}
 
-	ScriptArrayRead::ScriptArrayRead(ScriptScopeBase& scope, std::unique_ptr<VariableAccessor>&& accessor, std::unique_ptr<ScriptCallable> &&arrayAccessor)
-		: ScriptVarRead(scope, std::move(accessor))
+	ScriptArrayRead::ScriptArrayRead(std::unique_ptr<VariableAccessor>&& accessor, std::unique_ptr<ScriptCallable> &&arrayAccessor)
+		: ScriptVarRead(std::move(accessor))
 		, arrayAccessor(std::move(arrayAccessor))
 	{
 	}
@@ -160,7 +158,7 @@ namespace gscript
 
 	// Array var read prototype
 
-	ScriptArrayReadPrototype::ScriptArrayReadPrototype(ScriptScopeBase& scope, const std::string& varname, std::unique_ptr<ScriptCallable>&& arrayAccessor)
+	ScriptArrayReadPrototype::ScriptArrayReadPrototype(const std::string& varname, std::unique_ptr<ScriptCallable>&& arrayAccessor)
 		: varname(varname)
 		, arrayAccessor(std::move(arrayAccessor))
 	{
@@ -168,7 +166,7 @@ namespace gscript
 
 	std::unique_ptr<ScriptCallable> ScriptArrayReadPrototype::build(ScriptScopeBase& scope)
 	{
-		auto result = std::make_unique<ScriptArrayRead>(scope, VariableAccessor::find(scope, this->varname), std::move(this->arrayAccessor));
+		auto result = std::make_unique<ScriptArrayRead>(VariableAccessor::find(scope, this->varname), std::move(this->arrayAccessor));
 		return result;
 	}
 }

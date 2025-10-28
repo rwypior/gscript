@@ -56,8 +56,7 @@ namespace gscript
 	{
 	}
 
-	ScriptOperator::ScriptOperator(ScriptScope &scope, OperatorLinkage linkage)
-		//: ScriptCallable(scope)
+	ScriptOperator::ScriptOperator(OperatorLinkage linkage)
 		: linkage(linkage)
 	{
 	}

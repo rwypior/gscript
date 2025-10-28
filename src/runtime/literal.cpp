@@ -11,8 +11,7 @@ namespace gscript
 	{
 	}
 
-	ScriptLiteral::ScriptLiteral(ScriptScopeBase& scope, std::unique_ptr<ScriptValue> &&val)
-		//: ScriptCallable(scope)
+	ScriptLiteral::ScriptLiteral(std::unique_ptr<ScriptValue> &&val)
 		: val(std::move(val))
 	{
 	}

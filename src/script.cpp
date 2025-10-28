@@ -121,7 +121,6 @@ namespace gscript
 		for (auto& ns : mainNamespace.namespaces)
 		{
 			this->mainScope->registerNamespace(compiler.compileNamespace(this->mainScope.get(), ns));
-			//this->mainScope->registerNamespace(*it);
 		}
 
 		for (auto& imp : mainNamespace.imports)
@@ -131,20 +130,13 @@ namespace gscript
 
 		for (auto& cls : mainNamespace.classes)
 		{
-			//this->mainScope->registerClassPrototype(*it);
 			this->mainScope->registerClass(compiler.compileClass(this->mainScope.get(), cls));
 		}
-
-		// this->mainScope->resolveClasses(); // TODO
 
 		for (auto& fnc : mainNamespace.functions)
 		{
 			this->mainScope->registerFunction(compiler.compileFunction(this->mainScope.get(), fnc));
-			//this->mainScope->registerFunctionPrototype(*it);
 		}
-
-		this->mainScope->resolveFunctions();
-		this->mainScope->resolveClassMembers();
 
 		compiler.finalize(*this->mainScope);
 

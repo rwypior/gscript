@@ -21,7 +21,7 @@ namespace gscript
 	public:
 		SCRIPT_API ScriptVarDeclaration(const ScriptVarDeclaration& b);
 		SCRIPT_API ScriptVarDeclaration(ScriptScope &scope, ScriptVariable &var, std::unique_ptr<ScriptStatement> &&statement);
-		SCRIPT_API ScriptVarDeclaration(ScriptScope &scope, std::unique_ptr<VariableAccessor>&& accessor, std::unique_ptr<ScriptStatement> &&statement);
+		SCRIPT_API ScriptVarDeclaration(std::unique_ptr<VariableAccessor>&& accessor, std::unique_ptr<ScriptStatement> &&statement);
 
 		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
 
@@ -48,7 +48,7 @@ namespace gscript
 	{
 	public:
 		SCRIPT_API ScriptFieldDeclaration(const ScriptFieldDeclaration& b);
-		SCRIPT_API ScriptFieldDeclaration(ScriptScope& scope, const std::string& name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptStatement>&& statement);
+		SCRIPT_API ScriptFieldDeclaration(const std::string& name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptStatement>&& statement);
 
 		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
 

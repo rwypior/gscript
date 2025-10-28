@@ -12,7 +12,6 @@ namespace gscript
 	}
 
 	ScriptNew::ScriptNew(ScriptClass &sclass, std::vector<std::unique_ptr<ScriptStatement>>&& params)
-		//:ScriptFuncCall(sclass, sclass.getConstructor(), params),
 		: ScriptFuncCall(sclass, sclass.getConstructor(), std::move(params))
 		, sclass(sclass)
 	{
@@ -32,11 +31,8 @@ namespace gscript
 
 		auto val = std::make_unique<ScriptClassValue>(std::move(classInstance));
 
-		/*if (this->func && this->func->get())
-		{*/
 		this->setInstance(ScriptReferenceValue::create(val.get()));
 		ScriptFuncCall::run(scope, c);
-		//}
 
 		return val;
 	}

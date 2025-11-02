@@ -24,9 +24,8 @@ namespace gscript
 	class ScriptScopeBase
 	{
 	public:
-		SCRIPT_API ScriptScopeBase() = default;
-		//SCRIPT_API ScriptScopeBase(const ScriptScopeBase& scope) = delete;
-		SCRIPT_API virtual ~ScriptScopeBase() = default;
+		SCRIPT_API ScriptScopeBase();
+		SCRIPT_API virtual ~ScriptScopeBase();
 
 		SCRIPT_API virtual ScriptFunction& registerFunction(const std::string& name,
 			std::shared_ptr<ScriptType> returnType,
@@ -67,7 +66,6 @@ namespace gscript
 	public:
 		SCRIPT_API ScriptScope(const ScriptScope& b);
 		SCRIPT_API ScriptScope(ScriptScopeBase* parentScope);
-		//ScriptScope(const ScriptScope& scope) = delete;
 
 		SCRIPT_API virtual std::vector<std::unique_ptr<ScriptFunction>>& getFunctions() override;
 		SCRIPT_API virtual const std::vector<std::unique_ptr<ScriptFunction>>& getFunctions() const override;

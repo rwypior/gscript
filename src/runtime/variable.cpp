@@ -20,6 +20,8 @@ namespace gscript
 	{
 	}
 
+	ScriptVariable::~ScriptVariable() = default;
+
 	void ScriptVariable::init(std::unique_ptr<ScriptValue>&& value)
 	{
 		if (this->getType()->getTypeDescriptor() == ValueType::Reference)

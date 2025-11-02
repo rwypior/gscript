@@ -445,7 +445,7 @@ namespace gscript
 		auto condition = this->compileStatement(scope, *pWhile.arglist.parameters.front());
 		auto exeblock = this->compileExecutiveBlock(scope, pWhile.body.body);
 
-		auto swhile = std::make_unique<ScriptWhile>(std::move(condition));
+		auto swhile = std::make_unique<ScriptWhile>(*scope, std::move(condition));
 		swhile->merge(std::move(exeblock));
 
 		return swhile;
@@ -462,7 +462,7 @@ namespace gscript
 		auto progress = this->compileStatement(scope, pFor.arglist.progress);
 		auto exeblock = this->compileExecutiveBlock(scope, pFor.body.body);
 
-		auto sfor = std::make_unique<ScriptFor>(std::move(vardecl), std::move(condition), std::move(progress));
+		auto sfor = std::make_unique<ScriptFor>(*scope, std::move(vardecl), std::move(condition), std::move(progress));
 		sfor->merge(std::move(exeblock));
 
 		return sfor;

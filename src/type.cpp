@@ -13,6 +13,8 @@
 
 namespace gscript
 {
+	TypeDescriptor::TypeDescriptor() = default;
+
 	// TYPE FACTORY
 
 	std::unordered_map<std::string, ValueType> ScriptType::typemap({

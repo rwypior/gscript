@@ -30,6 +30,8 @@ namespace gscript
 			std::vector<std::unique_ptr<ScriptCallable>>&& statements = {}
 		);
 
+		SCRIPT_API ~ScriptFunction();
+
 		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override
 		{
 			assert(!"This probably should not be implemented");

@@ -92,7 +92,7 @@ namespace gscript
 		};
 
 	public:
-		EntityPath() = default;
+		EntityPath();
 		EntityPath(const std::string &path);
 
 		bool isScoped() const;

@@ -18,6 +18,10 @@ namespace gscript
 	{
 	}
 
+	VariableAccessor::VariableAccessor() = default;
+
+	VariableAccessor::~VariableAccessor() = default;
+
 	std::unique_ptr<VariableAccessor> VariableAccessor::clone() const
 	{
 		return std::make_unique<VariableAccessor>(*this);
@@ -118,6 +122,8 @@ namespace gscript
 	}
 
 	// Function accessor
+
+	FunctionAccessor::FunctionAccessor() = default;
 
 	FunctionAccessor::FunctionAccessor(ScriptScopeBase* scope, size_t addr)
 		: scope(scope)

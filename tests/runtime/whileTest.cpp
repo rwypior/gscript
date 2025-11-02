@@ -41,10 +41,36 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeWhile")
 	auto eb = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbody1));
 
 	// While
-	gscript::ScriptWhile f(std::move(cond));
+	gscript::ScriptWhile f(globalNamespace, std::move(cond));
 	f.merge(std::move(eb));
 
 	REQUIRE(testVariable.getValue()->as<gscript::ScriptIntValue>().getValue() == 0);
 	f.run(globalNamespace);
 	REQUIRE(testVariable.getValue()->as<gscript::ScriptIntValue>().getValue() == 10);
+}
+
+TEST_CASE_METHOD(GscriptTest, "RuntimeWhileIncrement")
+{
+	// Test variable
+	auto& testVariable = globalNamespace.registerVariable("testVariable", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), std::make_unique<gscript::ScriptIntValue>(0));
+
+	// While condition
+	auto varread = std::make_unique<gscript::ScriptVarReferenceRead>(globalNamespace, &testVariable);
+	auto opincrement = std::make_unique<gscript::ScriptOperatorIncrement>(gscript::OperatorLinkage::Left);
+	auto oplessthan = std::make_unique<gscript::ScriptOperatorLessThan>(gscript::OperatorLinkage::Both);
+	auto literal3 = std::make_unique<gscript::ScriptLiteral>(std::make_unique<gscript::ScriptIntValue>(3));
+	auto stmtvec = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
+	stmtvec.push_back(std::move(varread));
+	stmtvec.push_back(std::move(opincrement));
+	stmtvec.push_back(std::move(oplessthan));
+	stmtvec.push_back(std::move(literal3));
+	auto cond = std::make_unique<gscript::ScriptStatement>(std::move(stmtvec));
+	cond->setup(globalNamespace);
+	
+	// While
+	gscript::ScriptWhile f(globalNamespace, std::move(cond));
+	
+	REQUIRE(testVariable.getValue()->as<gscript::ScriptIntValue>().getValue() == 0);
+	f.run(globalNamespace);
+	REQUIRE(testVariable.getValue()->as<gscript::ScriptIntValue>().getValue() == 4);
 }

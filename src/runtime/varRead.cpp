@@ -33,6 +33,10 @@ namespace gscript
 
 	std::unique_ptr<ScriptValue> ScriptVarRead::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
+		// TODO - this should probably return reference;
+		// Maybe, only when required
+		// 
+		//return std::make_unique<ScriptReferenceValue>(this->accessor->get(&scope)->getValue().get());
 		return this->accessor->get(&scope)->getValue()->clone();
 	}
 

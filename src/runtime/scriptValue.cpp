@@ -3,6 +3,8 @@
 
 namespace gscript
 {
+	ScriptValue::~ScriptValue() = default;
+
 	// Bool
 
 	ScriptBoolValue::ScriptBoolValue(const ScriptBoolValue& b)
@@ -481,6 +483,8 @@ namespace gscript
 	}
 
 	// Array
+
+	ScriptArrayValue::ScriptArrayValue() = default;
 
 	ScriptArrayValue::ScriptArrayValue(const ScriptArrayValue& b)
 		: ScriptArrayValue(b.type, {})

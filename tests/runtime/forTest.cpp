@@ -59,7 +59,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFor")
 	auto eb = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbody1));
 
 	// The for itself
-	gscript::ScriptFor f(std::move(vardecl), std::move(cond), std::move(progress));
+	gscript::ScriptFor f(globalNamespace, std::move(vardecl), std::move(cond), std::move(progress));
 	f.merge(std::move(eb));
 
 	f.run(globalNamespace);

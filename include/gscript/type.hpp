@@ -42,7 +42,7 @@ namespace gscript
 		{
 		}
 
-		TypeDescriptor() = default;
+		TypeDescriptor();
 
 		~TypeDescriptor()
 		{

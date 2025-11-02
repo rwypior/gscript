@@ -16,7 +16,7 @@ namespace gscript
 	public:
 		SCRIPT_API ScriptVariable(const std::string &name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptValue>&& value);
 		SCRIPT_API ScriptVariable(const ScriptVariable& b);
-		SCRIPT_API virtual ~ScriptVariable() = default;
+		SCRIPT_API virtual ~ScriptVariable();
 
 		SCRIPT_API void init(std::unique_ptr<ScriptValue>&& value);
 

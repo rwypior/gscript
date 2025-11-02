@@ -13,11 +13,12 @@ namespace gscript
 {
 	class ParserFor;
 
-	class ScriptFor : public ScriptExecutiveBlock, public ScriptCallable
+	class ScriptFor : public ScriptScope, public ScriptExecutiveBlock, public ScriptCallable
 	{
 	public:
 		SCRIPT_API ScriptFor(const ScriptFor& b);
 		SCRIPT_API ScriptFor(
+			ScriptScope& scope,
 			std::unique_ptr<ScriptVarDeclaration>&& vardecl, 
 			std::unique_ptr<ScriptStatement>&& condition, 
 			std::unique_ptr<ScriptStatement>&& progress,

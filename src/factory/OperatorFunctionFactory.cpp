@@ -224,6 +224,7 @@ namespace gscript
 			template<typename T_LEFT>
 			std::unique_ptr<ScriptValue> PostIncrement(ScriptScopeBase& scope, ScriptCallable *left, ScriptCallable*)
 			{
+				//auto lvalue = left->run(scope);
 				auto data = left->run(scope)->data();
 				auto val = static_cast<T_LEFT*>(data)->getValue() + 1;
 				auto newVal = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);

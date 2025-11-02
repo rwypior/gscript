@@ -27,7 +27,7 @@ namespace gscript
 		static Logger& get();
 
 	private:
-		Logger() = default;
+		Logger();
 
 		std::vector<std::string> entries;
 	};

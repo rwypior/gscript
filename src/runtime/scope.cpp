@@ -12,6 +12,9 @@ namespace gscript
 {
 	// Scope base
 
+	ScriptScopeBase::ScriptScopeBase() = default;
+	ScriptScopeBase::~ScriptScopeBase() = default;
+
 	ScriptFunction& ScriptScopeBase::registerFunction(const std::string& name,
 		std::shared_ptr<ScriptType> returnType,
 		const PARAMS_T& parameters,

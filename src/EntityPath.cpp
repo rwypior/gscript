@@ -7,6 +7,8 @@ namespace gscript
 	{
 	}
 
+	EntityPath::EntityPath() = default;
+
 	bool EntityPath::empty() const
 	{
 		return this->path.empty();

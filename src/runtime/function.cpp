@@ -36,6 +36,8 @@ namespace gscript
 	{
 	}
 
+	ScriptFunction::~ScriptFunction() = default;
+
 	std::unique_ptr<ScriptValue> ScriptFunction::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
 		this->validateParams(c); // TODO - move this to compilation stage

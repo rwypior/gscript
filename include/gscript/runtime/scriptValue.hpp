@@ -36,7 +36,7 @@ namespace gscript
 	class ScriptValue
 	{
 	public:
-		SCRIPT_API virtual ~ScriptValue() = default;
+		SCRIPT_API virtual ~ScriptValue();
 
 		SCRIPT_API virtual ScriptValue* data() { return this; };
 		SCRIPT_API virtual const ScriptValue* data() const { return this; };
@@ -234,7 +234,7 @@ namespace gscript
 	class ScriptArrayValue : public ScriptValue
 	{
 	public:
-		SCRIPT_API ScriptArrayValue() = default;
+		SCRIPT_API ScriptArrayValue();
 		SCRIPT_API ScriptArrayValue(const ScriptArrayValue& b);
 		SCRIPT_API ScriptArrayValue(ScriptArrayValue&& b) noexcept;
 		SCRIPT_API ScriptArrayValue(std::shared_ptr<ScriptType> elementType, const std::vector<std::unique_ptr<ScriptValue>>& val = {});

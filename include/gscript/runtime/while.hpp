@@ -15,11 +15,11 @@ namespace gscript
 	class ParserWhile;
 	class ScriptStatement;
 
-	class ScriptWhile : public ScriptExecutiveBlock, public ScriptCallable
+	class ScriptWhile : public ScriptScope, public ScriptExecutiveBlock, public ScriptCallable
 	{
 	public:
 		ScriptWhile(const ScriptWhile& b);
-		ScriptWhile(std::unique_ptr<ScriptStatement>&& condition, std::vector<std::unique_ptr<ScriptCallable>>&& statements = {});
+		ScriptWhile(ScriptScope& scope, std::unique_ptr<ScriptStatement>&& condition, std::vector<std::unique_ptr<ScriptCallable>>&& statements = {});
 
 		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
 

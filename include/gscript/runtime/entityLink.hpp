@@ -22,8 +22,8 @@ namespace gscript
 	class VariableAccessor
 	{
 	public:
-		virtual ~VariableAccessor() = default;
-		VariableAccessor() = default;
+		virtual ~VariableAccessor();
+		VariableAccessor();
 		SCRIPT_API VariableAccessor(ScriptScopeBase* scope, size_t addr);
 		SCRIPT_API VariableAccessor(const VariableAccessor& b);
 
@@ -66,7 +66,7 @@ namespace gscript
 	class FunctionAccessor
 	{
 	public:
-		FunctionAccessor() = default;
+		FunctionAccessor();
 		SCRIPT_API FunctionAccessor(ScriptScopeBase* scope, size_t addr);
 		SCRIPT_API FunctionAccessor(const FunctionAccessor& b);
 

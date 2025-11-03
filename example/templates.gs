@@ -2,7 +2,7 @@
 // A template is a type which substitutes a template type
 // with a real type during compilation type, in order to
 // create a generic type as needed
-// 
+
 // NOTE - To be implemented
 
 #import <console>

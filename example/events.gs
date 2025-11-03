@@ -4,7 +4,7 @@
 // this event type will automatically unregister its' subscribers
 // when they will go out of scope, or (in case if the subscriber
 // is a member of a class object) the object is deleted.
-// 
+
 // NOTE - To be implemented
 
 #import <console>

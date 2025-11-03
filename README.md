@@ -5,7 +5,7 @@ Gscript (name TBD) is a scripting language with designed for extending existing 
 with fast and easy to use scripting functionality.
 
 The project is currently under development and many features are to be implemented. Contributions
-are welcome.
+are welcome. For ideas, and TODO items, refer to the [TODO](TODO) file.
 
 Installation
 ------------
@@ -73,7 +73,7 @@ Usage
 In order to use the script as an embedded extension to an existing project, the following steps may be
 used as a good starting point:
 
-```
+```cpp
 #include "script.hpp" // Include the primary include file
 
 int main(int argc, char** argv)
@@ -128,7 +128,7 @@ more generic functionalities, such as fibonacci sequence utilizing many areas of
 Syntax example
 --------------
 
-```
+```cpp
 #import <console>
 
 int fib(int n)
@@ -159,6 +159,6 @@ the the standard output.
 More docs
 ---------
 
-[Data handling](doc/DATA-HANDLING.md)
-[Extensions](doc/EXTENSIONS.md)
-[Syntax](doc/SYNTAX.md)
+- [Data handling](doc/DATA-HANDLING.md)
+- [Extensions](doc/EXTENSIONS.md)
+- [Syntax](doc/SYNTAX.md)

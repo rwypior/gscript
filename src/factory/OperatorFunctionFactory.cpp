@@ -74,6 +74,8 @@ namespace gscript
 
 		namespace Functions
 		{
+
+// Disable the 'unsafe mix of type' warnings
 #pragma warning(push)
 #pragma warning(disable: 4804 4805)
 

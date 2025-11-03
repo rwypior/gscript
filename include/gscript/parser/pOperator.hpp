@@ -20,11 +20,6 @@ namespace gscript
 
 		const std::string &getChar() const;
 
-		virtual std::string _name()
-		{
-			return this->getChar();
-		}
-
 		virtual OperatorLinkage getLinkage() const
 		{
 			return OperatorLinkage::Both;

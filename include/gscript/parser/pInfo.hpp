@@ -5,6 +5,7 @@
 
 namespace gscript
 {
+	/// Contains additional information about parsing entity
 	class ParserInfo
 	{
 	public:

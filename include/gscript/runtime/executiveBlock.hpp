@@ -13,7 +13,6 @@ namespace gscript
 
 	// ScriptExecutiveBlock is a single block of executable statements - anything that
 	// can be run as a code - typically a part of another script construct
-
 	class ScriptExecutiveBlock
 	{
 	public:

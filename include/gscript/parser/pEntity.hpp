@@ -9,16 +9,17 @@
 
 namespace gscript
 {
+	/// A base class for all parser entities. Every parsing entity should inherit this class
+	/// and provide specialized parsing for themselves.
+	/// Usually the parsing starts with the namespace parser, which owns parsing of child entities.
 	class ParserEntity
 	{
 	public:
 		virtual ~ParserEntity() = default;
-		virtual ParseResult parse(StringIteratorRange itrange) = 0;
 
-		virtual std::string _name() const
-		{
-			return "unknown";
-		}
+		/// Parse the entity
+		/// @param itrange A string iterator range of source code to be parsed
+		virtual ParseResult parse(StringIteratorRange itrange) = 0;
 
 		ParserInfo info;
 	};

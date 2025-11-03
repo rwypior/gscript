@@ -35,25 +35,25 @@ namespace gscript
 		}
 	};
 
+	/// Represents a range of characters in string
 	class StringIteratorRange : public IteratorRange<std::string>
 	{
-	// Constructor from const char* not allowed - it's not supposed to hold copy of string
+	// NOTE - Constructor from const char* not allowed - it's not supposed to hold copy of string
 
 	public:
 		StringIteratorRange()
 		{
 		}
 
-		StringIteratorRange(ITERATOR_T begin, ITERATOR_T end, const std::string& file = "", size_t line = 1/*, size_t newlines = 0*/)
+		StringIteratorRange(ITERATOR_T begin, ITERATOR_T end, const std::string& file = "", size_t line = 1)
 			: IteratorRange<std::string>(begin, end)
 			, file(file)
 			, line(line)
-			//, newlines(newlines)
 		{
 		}
 
-		StringIteratorRange(const std::string& str, const std::string& file = "", size_t line = 1/*, size_t newlines = 0*/)
-			: StringIteratorRange(str.begin(), str.end(), file, line/*, newlines*/)
+		StringIteratorRange(const std::string& str, const std::string& file = "", size_t line = 1)
+			: StringIteratorRange(str.begin(), str.end(), file, line)
 		{
 		}
 

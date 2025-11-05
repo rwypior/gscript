@@ -45,6 +45,7 @@ namespace gscript
 		SCRIPT_API void run(Script& script);
 		SCRIPT_API std::string getName() const override;
 
+		/// Pointer to output stream. By default points to std::cout
 		SCRIPT_API static std::ostream* out;
 	};
 }

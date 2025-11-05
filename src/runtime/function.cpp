@@ -1,15 +1,15 @@
-#include "runtime/function.hpp"
-#include "runtime/varDeclaration.hpp"
-#include "runtime/statement.hpp"
-#include "runtime/return.hpp"
-#include "runtime/scriptValue.hpp"
-#include "runtime/scope.hpp"
-#include "runtime/literal.hpp"
-#include "framework/sfPrint.hpp"
+#include "gscript/runtime/function.hpp"
+#include "gscript/runtime/varDeclaration.hpp"
+#include "gscript/runtime/statement.hpp"
+#include "gscript/runtime/return.hpp"
+#include "gscript/runtime/scriptValue.hpp"
+#include "gscript/runtime/scope.hpp"
+#include "gscript/runtime/literal.hpp"
+#include "gscript/framework/sfPrint.hpp"
 
-#include "defs.hpp"
-#include "compileException.hpp"
-#include "debug.hpp"
+#include "gscript/defs.hpp"
+#include "gscript/compileException.hpp"
+#include "gscript/debug.hpp"
 
 #include <iostream>
 #include <memory>

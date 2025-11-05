@@ -1,7 +1,7 @@
 #ifndef _h_gscript_function_path
 #define _h_gscript_function_path
 
-#include "defs.hpp"
+#include "gscript/defs.hpp"
 
 #include <string>
 

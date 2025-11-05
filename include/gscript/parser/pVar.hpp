@@ -1,9 +1,9 @@
 #ifndef _h_gscript_parser_var
 #define _h_gscript_parser_var
 
-#include "pNameSpecifier.hpp"
-#include "pArrayAccessor.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pNameSpecifier.hpp"
+#include "gscript/parser/pArrayAccessor.hpp"
+#include "gscript/IteratorRange.hpp"
 
 #include <memory>
 

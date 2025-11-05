@@ -1,7 +1,7 @@
-#include "parser/pControlDirective.hpp"
-#include "parser/pChar.hpp"
-#include "parser/pWord.hpp"
-#include "parser/pComment.hpp"
+#include "gscript/parser/pControlDirective.hpp"
+#include "gscript/parser/pChar.hpp"
+#include "gscript/parser/pWord.hpp"
+#include "gscript/parser/pComment.hpp"
 
 namespace gscript
 {

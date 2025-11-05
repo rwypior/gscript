@@ -1,8 +1,8 @@
 #ifndef _h_gscript_parser_char
 #define _h_gscript_parser_char
 
-#include "parser/pEntity.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pEntity.hpp"
+#include "gscript/IteratorRange.hpp"
 
 #include <string>
 

@@ -1,13 +1,13 @@
-#include "type.hpp"
-#include "defs.hpp"
-#include "compileException.hpp"
-#include "runtime/scope.hpp"
-#include "runtime/namespace.hpp"
-#include "runtime/class.hpp"
-#include "runtime/classInstance.hpp"
-#include "runtime/variable.hpp"
-#include "parser/pReference.hpp"
-#include "parser/pArrayAccessor.hpp"
+#include "gscript/type.hpp"
+#include "gscript/defs.hpp"
+#include "gscript/compileException.hpp"
+#include "gscript/runtime/scope.hpp"
+#include "gscript/runtime/namespace.hpp"
+#include "gscript/runtime/class.hpp"
+#include "gscript/runtime/classInstance.hpp"
+#include "gscript/runtime/variable.hpp"
+#include "gscript/parser/pReference.hpp"
+#include "gscript/parser/pArrayAccessor.hpp"
 
 #include <cassert>
 

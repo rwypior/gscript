@@ -1,9 +1,9 @@
 #ifndef _h_gscript_parser_entity
 #define _h_gscript_parser_entity
 
-#include "IteratorRange.hpp"
-#include "ParseResult.hpp"
-#include "pInfo.hpp"
+#include "gscript/IteratorRange.hpp"
+#include "gscript/parser/ParseResult.hpp"
+#include "gscript/parser/pInfo.hpp"
 
 #include <string>
 

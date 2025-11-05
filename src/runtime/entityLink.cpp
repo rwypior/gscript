@@ -1,6 +1,6 @@
-#include "runtime/entityLink.hpp"
-#include "runtime/scope.hpp"
-#include "runtime/function.hpp"
+#include "gscript/runtime/entityLink.hpp"
+#include "gscript/runtime/scope.hpp"
+#include "gscript/runtime/function.hpp"
 
 namespace gscript
 {

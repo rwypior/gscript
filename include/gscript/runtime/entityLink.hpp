@@ -1,9 +1,9 @@
 #ifndef _h_gscript_entitylink
 #define _h_gscript_entitylink
 
-#include "compileException.hpp"
-#include "lib.hpp"
-#include "defs.hpp"
+#include "gscript/compileException.hpp"
+#include "gscript/lib.hpp"
+#include "gscript/defs.hpp"
 
 #include <cassert>
 #include <memory>
@@ -22,8 +22,8 @@ namespace gscript
 	class VariableAccessor
 	{
 	public:
-		virtual ~VariableAccessor();
-		VariableAccessor();
+		SCRIPT_API virtual ~VariableAccessor();
+		SCRIPT_API VariableAccessor();
 		SCRIPT_API VariableAccessor(ScriptScopeBase* scope, size_t addr);
 		SCRIPT_API VariableAccessor(const VariableAccessor& b);
 
@@ -66,7 +66,7 @@ namespace gscript
 	class FunctionAccessor
 	{
 	public:
-		FunctionAccessor();
+		SCRIPT_API FunctionAccessor();
 		SCRIPT_API FunctionAccessor(ScriptScopeBase* scope, size_t addr);
 		SCRIPT_API FunctionAccessor(const FunctionAccessor& b);
 

@@ -1,13 +1,13 @@
-#include "parser/pCallArglist.hpp"
-#include "parser/pArglistStart.hpp"
-#include "parser/pArglistEnd.hpp"
-#include "parser/pListSeparator.hpp"
-#include "parser/pVar.hpp"
-#include "parser/pLiteral.hpp"
-#include "parser/pFuncCall.hpp"
-#include "parser/pStatement.hpp"
-#include "parser/pComment.hpp"
-#include "StringUtils.hpp"
+#include "gscript/parser/pCallArglist.hpp"
+#include "gscript/parser/pArglistStart.hpp"
+#include "gscript/parser/pArglistEnd.hpp"
+#include "gscript/parser/pListSeparator.hpp"
+#include "gscript/parser/pVar.hpp"
+#include "gscript/parser/pLiteral.hpp"
+#include "gscript/parser/pFuncCall.hpp"
+#include "gscript/parser/pStatement.hpp"
+#include "gscript/parser/pComment.hpp"
+#include "gscript/StringUtils.hpp"
 
 #include <sstream>
 

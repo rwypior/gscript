@@ -1,6 +1,6 @@
-#include "parser/pNameSpecifier.hpp"
-#include "parser/pComment.hpp"
-#include "StringUtils.hpp"
+#include "gscript/parser/pNameSpecifier.hpp"
+#include "gscript/parser/pComment.hpp"
+#include "gscript/StringUtils.hpp"
 
 namespace gscript
 {

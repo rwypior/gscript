@@ -1,9 +1,9 @@
 #ifndef _h_gscript_parser_extern_special
 #define _h_gscript_parser_extern_special
 
-#include "pEntity.hpp"
-#include "pSpecialDirective.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pEntity.hpp"
+#include "gscript/parser/pSpecialDirective.hpp"
+#include "gscript/IteratorRange.hpp"
 
 #include <string>
 

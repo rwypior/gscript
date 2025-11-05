@@ -1,5 +1,5 @@
-#include "parser/pConstructor.hpp"
-#include "parser/pClass.hpp"
+#include "gscript/parser/pConstructor.hpp"
+#include "gscript/parser/pClass.hpp"
 
 namespace gscript
 {

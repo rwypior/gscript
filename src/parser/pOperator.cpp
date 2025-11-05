@@ -1,6 +1,6 @@
-#include "parser/pOperator.hpp"
-#include "parser/pWord.hpp"
-#include "StringUtils.hpp"
+#include "gscript/parser/pOperator.hpp"
+#include "gscript/parser/pWord.hpp"
+#include "gscript/StringUtils.hpp"
 
 #include <sstream>
 

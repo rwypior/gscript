@@ -1,8 +1,8 @@
 #ifndef _h_gscript_classinstance
 #define _h_gscript_classinstance
 
-#include "scope.hpp"
-#include "lib.hpp"
+#include "gscript/lib.hpp"
+#include "gscript/runtime/scope.hpp"
 
 namespace gscript
 {

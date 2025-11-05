@@ -1,8 +1,8 @@
-#include "parser/pAccessSpecifier.hpp"
-#include "parser/pWord.hpp"
-#include "parser/pComment.hpp"
-#include "compileException.hpp"
-#include "StringUtils.hpp"
+#include "gscript/parser/pAccessSpecifier.hpp"
+#include "gscript/parser/pWord.hpp"
+#include "gscript/parser/pComment.hpp"
+#include "gscript/compileException.hpp"
+#include "gscript/StringUtils.hpp"
 
 namespace gscript
 {

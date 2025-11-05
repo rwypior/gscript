@@ -1,12 +1,12 @@
 #ifndef _h_gscript_parser_function
 #define _h_gscript_parser_function
 
-#include "pEntity.hpp"
-#include "pArglist.hpp"
-#include "pBlockBody.hpp"
-#include "defs.hpp"
-#include "type.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pEntity.hpp"
+#include "gscript/parser/pArglist.hpp"
+#include "gscript/parser/pBlockBody.hpp"
+#include "gscript/defs.hpp"
+#include "gscript/type.hpp"
+#include "gscript/IteratorRange.hpp"
 
 #include <string>
 

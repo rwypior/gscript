@@ -1,12 +1,12 @@
 #ifndef _h_gscript_class
 #define _h_gscript_class
 
-#include "defs.hpp"
-#include "method.hpp"
-#include "scope.hpp"
-#include "namespace.hpp"
-#include "varDeclaration.hpp"
-#include "lib.hpp"
+#include "gscript/defs.hpp"
+#include "gscript/lib.hpp"
+#include "gscript/runtime/method.hpp"
+#include "gscript/runtime/scope.hpp"
+#include "gscript/runtime/namespace.hpp"
+#include "gscript/runtime/varDeclaration.hpp"
 
 #include <string>
 #include <vector>

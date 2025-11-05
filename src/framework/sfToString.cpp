@@ -1,6 +1,6 @@
-#include "framework/sfToString.hpp"
-#include "runtime/scriptValue.hpp"
-#include "defs.hpp"
+#include "gscript/framework/sfToString.hpp"
+#include "gscript/runtime/scriptValue.hpp"
+#include "gscript/defs.hpp"
 
 namespace gscript
 {

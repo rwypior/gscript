@@ -1,9 +1,14 @@
-#include "runtime/scriptValue.hpp"
-#include "runtime/classInstance.hpp"
+#include "gscript/runtime/scriptValue.hpp"
+#include "gscript/runtime/classInstance.hpp"
 
 namespace gscript
 {
 	ScriptValue::~ScriptValue() = default;
+
+	std::unique_ptr<ScriptReferenceValue> ScriptValue::makeref()
+	{
+		return std::make_unique<ScriptReferenceValue>(this);
+	}
 
 	// Bool
 
@@ -483,6 +488,8 @@ namespace gscript
 	}
 
 	// Array
+
+	ScriptArrayValue::~ScriptArrayValue() = default;
 
 	ScriptArrayValue::ScriptArrayValue() = default;
 

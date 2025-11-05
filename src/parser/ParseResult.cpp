@@ -1,4 +1,4 @@
-#include "parser/ParseResult.hpp"
+#include "gscript/parser/ParseResult.hpp"
 
 namespace gscript
 {

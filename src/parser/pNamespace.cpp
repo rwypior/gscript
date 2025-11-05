@@ -1,13 +1,13 @@
-#include "parser/pNamespace.hpp"
-#include "parser/pFunction.hpp"
-#include "parser/pClass.hpp"
-#include "parser/pNameSpecifier.hpp"
-#include "parser/pImportDirective.hpp"
-#include "parser/pChar.hpp"
-#include "parser/pWord.hpp"
-#include "parser/pComment.hpp"
-#include "StringUtils.hpp"
-#include "compileException.hpp"
+#include "gscript/parser/pNamespace.hpp"
+#include "gscript/parser/pFunction.hpp"
+#include "gscript/parser/pClass.hpp"
+#include "gscript/parser/pNameSpecifier.hpp"
+#include "gscript/parser/pImportDirective.hpp"
+#include "gscript/parser/pChar.hpp"
+#include "gscript/parser/pWord.hpp"
+#include "gscript/parser/pComment.hpp"
+#include "gscript/StringUtils.hpp"
+#include "gscript/compileException.hpp"
 
 #include <iostream>
 #include <vector>

@@ -1,10 +1,10 @@
-#include "parser/pVarDeclaration.hpp"
-#include "parser/pTypeSpecifier.hpp"
-#include "parser/pNameSpecifier.hpp"
-#include "parser/pEndStatement.hpp"
-#include "parser/pOperator.hpp"
-#include "parser/pComment.hpp"
-#include "StringUtils.hpp"
+#include "gscript/parser/pVarDeclaration.hpp"
+#include "gscript/parser/pTypeSpecifier.hpp"
+#include "gscript/parser/pNameSpecifier.hpp"
+#include "gscript/parser/pEndStatement.hpp"
+#include "gscript/parser/pOperator.hpp"
+#include "gscript/parser/pComment.hpp"
+#include "gscript/StringUtils.hpp"
 
 #include <iostream>
 

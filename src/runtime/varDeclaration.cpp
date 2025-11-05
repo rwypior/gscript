@@ -1,7 +1,7 @@
-#include "runtime/varDeclaration.hpp"
-#include "runtime/function.hpp"
-#include "runtime/scope.hpp"
-#include "runtime/classInstance.hpp"
+#include "gscript/runtime/varDeclaration.hpp"
+#include "gscript/runtime/function.hpp"
+#include "gscript/runtime/scope.hpp"
+#include "gscript/runtime/classInstance.hpp"
 
 namespace gscript
 {

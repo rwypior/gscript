@@ -1,9 +1,9 @@
-#include "framework/sfPrint.hpp"
-#include "runtime/scriptValue.hpp"
-#include "runtime/callable.hpp"
-#include "script.hpp"
-#include "defs.hpp"
-#include "debug.hpp"
+#include "gscript/framework/sfPrint.hpp"
+#include "gscript/runtime/scriptValue.hpp"
+#include "gscript/runtime/callable.hpp"
+#include "gscript/script.hpp"
+#include "gscript/defs.hpp"
+#include "gscript/debug.hpp"
 
 #include <iostream>
 

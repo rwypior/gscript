@@ -1,4 +1,4 @@
-#include "extension/IOExtension.hpp"
+#include "gscript/extension/IOExtension.hpp"
 
 #include <sys/stat.h>
 

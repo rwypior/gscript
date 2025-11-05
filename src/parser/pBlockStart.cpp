@@ -1,5 +1,5 @@
-#include "parser/pBlockStart.hpp"
-#include "parser/pChar.hpp"
+#include "gscript/parser/pBlockStart.hpp"
+#include "gscript/parser/pChar.hpp"
 
 namespace gscript
 {

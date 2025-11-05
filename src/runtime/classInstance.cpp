@@ -1,5 +1,5 @@
-#include "runtime/classInstance.hpp"
-#include "runtime/class.hpp"
+#include "gscript/runtime/classInstance.hpp"
+#include "gscript/runtime/class.hpp"
 
 #include <algorithm>
 

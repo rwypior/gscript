@@ -1,7 +1,7 @@
-#include "util.hpp"
-#include "runtime/scriptValue.hpp"
-#include "runtime/statement.hpp"
-#include "runtime/funcParam.hpp"
+#include "gscript/util.hpp"
+#include "gscript/runtime/scriptValue.hpp"
+#include "gscript/runtime/statement.hpp"
+#include "gscript/runtime/funcParam.hpp"
 
 namespace gscript
 {

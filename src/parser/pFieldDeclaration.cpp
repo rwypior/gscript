@@ -1,5 +1,5 @@
-#include "parser/pFieldDeclaration.hpp"
-#include "parser/pAccessSpecifier.hpp"
+#include "gscript/parser/pFieldDeclaration.hpp"
+#include "gscript/parser/pAccessSpecifier.hpp"
 
 namespace gscript
 {

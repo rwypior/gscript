@@ -1,6 +1,6 @@
-#include "parser/pBlockComment.hpp"
-#include "parser/pWord.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pBlockComment.hpp"
+#include "gscript/parser/pWord.hpp"
+#include "gscript/IteratorRange.hpp"
 
 namespace gscript
 {

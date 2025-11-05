@@ -1,10 +1,10 @@
-#include "runtime/funcCall.hpp"
-#include "runtime/function.hpp"
-#include "runtime/method.hpp"
-#include "runtime/classInstance.hpp"
-#include "defs.hpp"
-#include "util.hpp"
-#include "compileException.hpp"
+#include "gscript/runtime/funcCall.hpp"
+#include "gscript/runtime/function.hpp"
+#include "gscript/runtime/method.hpp"
+#include "gscript/runtime/classInstance.hpp"
+#include "gscript/defs.hpp"
+#include "gscript/util.hpp"
+#include "gscript/compileException.hpp"
 
 namespace gscript
 {

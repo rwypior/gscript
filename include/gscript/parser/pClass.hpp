@@ -1,10 +1,10 @@
 #ifndef _h_gscript_parser_class
 #define _h_gscript_parser_class
 
-#include "pEntity.hpp"
-#include "pMethod.hpp"
-#include "pFieldDeclaration.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pEntity.hpp"
+#include "gscript/parser/pMethod.hpp"
+#include "gscript/parser/pFieldDeclaration.hpp"
+#include "gscript/IteratorRange.hpp"
 
 #include <vector>
 #include <string>

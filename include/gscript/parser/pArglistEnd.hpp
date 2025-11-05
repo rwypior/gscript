@@ -1,8 +1,8 @@
 #ifndef _h_gscript_parser_arglist_end
 #define _h_gscript_parser_arglist_end
 
-#include "pArglistStart.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pArglistStart.hpp"
+#include "gscript/IteratorRange.hpp"
 
 namespace gscript
 {

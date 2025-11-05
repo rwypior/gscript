@@ -1,10 +1,10 @@
 #ifndef _h_gscript_parser_method
 #define _h_gscript_parser_method
 
-#include "pEntity.hpp"
-#include "pFunction.hpp"
-#include "pAccessSpecifier.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pEntity.hpp"
+#include "gscript/parser/pFunction.hpp"
+#include "gscript/parser/pAccessSpecifier.hpp"
+#include "gscript/IteratorRange.hpp"
 
 namespace gscript
 {

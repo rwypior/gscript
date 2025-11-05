@@ -1,9 +1,9 @@
 #ifndef _h_gscript_parser_conditional_operator
 #define _h_gscript_parser_conditional_operator
 
-#include "pEntity.hpp"
-#include "pStatement.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pEntity.hpp"
+#include "gscript/parser/pStatement.hpp"
+#include "gscript/IteratorRange.hpp"
 
 namespace gscript
 {

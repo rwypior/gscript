@@ -1,7 +1,7 @@
-#include "runtime/executiveBlock.hpp"
-#include "runtime/return.hpp"
-#include "runtime/if.hpp"
-#include "util.hpp"
+#include "gscript/runtime/executiveBlock.hpp"
+#include "gscript/runtime/return.hpp"
+#include "gscript/runtime/if.hpp"
+#include "gscript/util.hpp"
 
 namespace gscript
 {

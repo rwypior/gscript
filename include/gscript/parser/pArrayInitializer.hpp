@@ -1,9 +1,9 @@
 #ifndef _h_gscript_parser_array_initializer
 #define _h_gscript_parser_array_initializer
 
-#include "pEntity.hpp"
-#include "pCallArglist.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pEntity.hpp"
+#include "gscript/parser/pCallArglist.hpp"
+#include "gscript/IteratorRange.hpp"
 
 namespace gscript
 {

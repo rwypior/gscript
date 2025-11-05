@@ -1,11 +1,11 @@
 #ifndef _h_gscript_operator
 #define _h_gscript_operator
 
-#include "variable.hpp"
-#include "statement.hpp"
-#include "scriptValue.hpp"
-#include "scope.hpp"
-#include "factory/OperatorFunctionFactory.hpp"
+#include "gscript/runtime/variable.hpp"
+#include "gscript/runtime/statement.hpp"
+#include "gscript/runtime/scriptValue.hpp"
+#include "gscript/runtime/scope.hpp"
+#include "gscript/factory/OperatorFunctionFactory.hpp"
 
 #include <memory>
 

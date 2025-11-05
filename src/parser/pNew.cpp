@@ -1,8 +1,8 @@
-#include "parser/pNew.hpp"
-#include "parser/pNameSpecifier.hpp"
-#include "parser/pFuncCall.hpp"
-#include "parser/pWord.hpp"
-#include "parser/pComment.hpp"
+#include "gscript/parser/pNew.hpp"
+#include "gscript/parser/pNameSpecifier.hpp"
+#include "gscript/parser/pFuncCall.hpp"
+#include "gscript/parser/pWord.hpp"
+#include "gscript/parser/pComment.hpp"
 
 namespace gscript
 {

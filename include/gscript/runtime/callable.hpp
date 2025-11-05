@@ -1,10 +1,10 @@
 #ifndef _h_gscript_callable
 #define _h_gscript_callable
 
-#include "scriptValue.hpp"
-#include "lib.hpp"
-#include "runtimeException.hpp"
-#include "prototype.hpp"
+#include "gscript/lib.hpp"
+#include "gscript/runtimeException.hpp"
+#include "gscript/runtime/scriptValue.hpp"
+#include "gscript/runtime/prototype.hpp"
 
 #include <memory>
 #include <vector>

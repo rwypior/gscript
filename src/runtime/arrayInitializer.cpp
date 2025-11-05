@@ -1,6 +1,6 @@
-#include "runtime/arrayInitializer.hpp"
-#include "compileException.hpp"
-#include "util.hpp"
+#include "gscript/runtime/arrayInitializer.hpp"
+#include "gscript/compileException.hpp"
+#include "gscript/util.hpp"
 
 namespace gscript
 {

@@ -1,9 +1,9 @@
 #ifndef _h_gscript_method
 #define _h_gscript_method
 
-#include "function.hpp"
-#include "defs.hpp"
-#include "lib.hpp"
+#include "gscript/defs.hpp"
+#include "gscript/lib.hpp"
+#include "gscript/runtime/function.hpp"
 
 #include <string>
 
@@ -42,7 +42,7 @@ namespace gscript
 	protected:
 		SCRIPT_API ScriptMethod(const ScriptMethod& fnc);
 
-		void createThis(ScriptClass &sclass);
+		SCRIPT_API void createThis(ScriptClass &sclass);
 	};
 }
 

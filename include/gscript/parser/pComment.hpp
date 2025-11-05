@@ -1,9 +1,9 @@
 #ifndef _h_gscript_parser_comment
 #define _h_gscript_parser_comment
 
-#include "pEntity.hpp"
-#include "ParseResult.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pEntity.hpp"
+#include "gscript/parser/ParseResult.hpp"
+#include "gscript/IteratorRange.hpp"
 
 namespace gscript
 {

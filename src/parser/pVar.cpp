@@ -1,6 +1,6 @@
-#include "parser/pVar.hpp"
-#include "parser/pComment.hpp"
-#include "parser/pArrayAccessor.hpp"
+#include "gscript/parser/pVar.hpp"
+#include "gscript/parser/pComment.hpp"
+#include "gscript/parser/pArrayAccessor.hpp"
 
 namespace gscript
 {

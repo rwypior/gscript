@@ -1,9 +1,9 @@
 #ifndef _h_gscript_parser_namespecifier
 #define _h_gscript_parser_namespecifier
 
-#include "pEntity.hpp"
-#include "EntityPath.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pEntity.hpp"
+#include "gscript/EntityPath.hpp"
+#include "gscript/IteratorRange.hpp"
 
 #include <string>
 

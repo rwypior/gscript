@@ -1,5 +1,5 @@
-#include "parser/pLineComment.hpp"
-#include "parser/pWord.hpp"
+#include "gscript/parser/pLineComment.hpp"
+#include "gscript/parser/pWord.hpp"
 
 namespace gscript
 {

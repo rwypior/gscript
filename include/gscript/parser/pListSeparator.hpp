@@ -1,8 +1,8 @@
 #ifndef _h_gscript_parser_listseparator
 #define _h_gscript_parser_listseparator
 
-#include "pEntity.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pEntity.hpp"
+#include "gscript/IteratorRange.hpp"
 
 namespace gscript
 {

@@ -1,8 +1,8 @@
 #ifndef _h_gscript_return
 #define _h_gscript_return
 
-#include "callable.hpp"
-#include "statement.hpp"
+#include "gscript/runtime/callable.hpp"
+#include "gscript/runtime/statement.hpp"
 
 namespace gscript
 {

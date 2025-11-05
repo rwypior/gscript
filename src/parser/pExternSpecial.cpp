@@ -1,4 +1,4 @@
-#include "parser/pExternSpecial.hpp"
+#include "gscript/parser/pExternSpecial.hpp"
 
 #include <string>
 #include <sstream>

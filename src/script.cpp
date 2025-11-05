@@ -1,31 +1,31 @@
-#include "script.hpp"
+#include "gscript/script.hpp"
 
-#include "parser/pClass.hpp"
-#include "parser/pNamespace.hpp"
-#include "parser/pStatement.hpp"
-#include "parser/pVarDeclaration.hpp"
+#include "gscript/parser/pClass.hpp"
+#include "gscript/parser/pNamespace.hpp"
+#include "gscript/parser/pStatement.hpp"
+#include "gscript/parser/pVarDeclaration.hpp"
 
-#include "runtime/scriptValue.hpp"
-#include "runtime/classInstance.hpp"
+#include "gscript/runtime/scriptValue.hpp"
+#include "gscript/runtime/classInstance.hpp"
 
-#include "framework/sfPrint.hpp"
-#include "framework/sfToString.hpp"
+#include "gscript/framework/sfPrint.hpp"
+#include "gscript/framework/sfToString.hpp"
 
-#include "extension/scriptExtension.hpp"
-#include "extension/ConsoleExtension.hpp"
-#include "extension/IOExtension.hpp"
+#include "gscript/extension/scriptExtension.hpp"
+#include "gscript/extension/ConsoleExtension.hpp"
+#include "gscript/extension/IOExtension.hpp"
 
-#include "compiler/compiler.hpp"
+#include "gscript/compiler/compiler.hpp"
 
-#include "IteratorRange.hpp"
-#include "defs.hpp"
-#include "type.hpp"
-#include "path.hpp"
-#include "util.hpp"
-#include "compileException.hpp"
-#include "runtimeException.hpp"
-#include "parseexception.hpp"
-#include "debug.hpp"
+#include "gscript/IteratorRange.hpp"
+#include "gscript/defs.hpp"
+#include "gscript/type.hpp"
+#include "gscript/path.hpp"
+#include "gscript/util.hpp"
+#include "gscript/compileException.hpp"
+#include "gscript/runtimeException.hpp"
+#include "gscript/parseexception.hpp"
+#include "gscript/debug.hpp"
 
 #include <iostream>
 #include <fstream>

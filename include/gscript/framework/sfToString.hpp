@@ -1,7 +1,7 @@
 #ifndef _h_gscript_func_tostring
 #define _h_gscript_func_tostring
 
-#include "runtime/function.hpp"
+#include "gscript/runtime/function.hpp"
 
 namespace gscript
 {

@@ -1,8 +1,8 @@
 #ifndef _h_gscript_util
 #define _h_gscript_util
 
-#include "lib.hpp"
-#include "defs.hpp"
+#include "gscript/lib.hpp"
+#include "gscript/defs.hpp"
 
 #include <tuple>
 #include <vector>

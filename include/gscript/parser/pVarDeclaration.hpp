@@ -1,9 +1,9 @@
 #ifndef _h_gscript_parser_vardeclaration
 #define _h_gscript_parser_vardeclaration
 
-#include "pEntity.hpp"
-#include "pStatement.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pEntity.hpp"
+#include "gscript/parser/pStatement.hpp"
+#include "gscript/IteratorRange.hpp"
 
 #include <string>
 

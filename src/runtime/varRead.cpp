@@ -1,8 +1,8 @@
-#include "runtime/varRead.hpp"
-#include "runtime/scope.hpp"
-#include "runtime/classInstance.hpp"
+#include "gscript/runtime/varRead.hpp"
+#include "gscript/runtime/scope.hpp"
+#include "gscript/runtime/classInstance.hpp"
 
-#include "compileException.hpp"
+#include "gscript/compileException.hpp"
 
 namespace gscript
 {

@@ -1,5 +1,5 @@
-#include "parser/pListSeparator.hpp"
-#include "parser/pChar.hpp"
+#include "gscript/parser/pListSeparator.hpp"
+#include "gscript/parser/pChar.hpp"
 
 namespace gscript
 {

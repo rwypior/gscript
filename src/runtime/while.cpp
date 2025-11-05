@@ -1,7 +1,7 @@
-#include "runtime/while.hpp"
-#include "runtime/statement.hpp"
-#include "runtime/function.hpp"
-#include "util.hpp"
+#include "gscript/runtime/while.hpp"
+#include "gscript/runtime/statement.hpp"
+#include "gscript/runtime/function.hpp"
+#include "gscript/util.hpp"
 
 namespace gscript
 {

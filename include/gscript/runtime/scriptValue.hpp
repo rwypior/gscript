@@ -1,10 +1,10 @@
 #ifndef _h_gscript_value
 #define _h_gscript_value
 
-#include "defs.hpp"
-#include "type.hpp"
-#include "lib.hpp"
-#include "runtimeException.hpp"
+#include "gscript/defs.hpp"
+#include "gscript/type.hpp"
+#include "gscript/lib.hpp"
+#include "gscript/runtimeException.hpp"
 
 #include <string>
 #include <vector>
@@ -48,6 +48,7 @@ namespace gscript
 		SCRIPT_API virtual size_t getSize() const = 0;
 		SCRIPT_API virtual const std::shared_ptr<ScriptType> getType() = 0;
 		SCRIPT_API virtual std::unique_ptr<ScriptValue> clone() const = 0;
+		SCRIPT_API virtual std::unique_ptr<ScriptReferenceValue> makeref();
 
 		SCRIPT_API virtual ScriptBoolValue boolean() const = 0;
 
@@ -234,6 +235,7 @@ namespace gscript
 	class ScriptArrayValue : public ScriptValue
 	{
 	public:
+		SCRIPT_API virtual ~ScriptArrayValue();
 		SCRIPT_API ScriptArrayValue();
 		SCRIPT_API ScriptArrayValue(const ScriptArrayValue& b);
 		SCRIPT_API ScriptArrayValue(ScriptArrayValue&& b) noexcept;

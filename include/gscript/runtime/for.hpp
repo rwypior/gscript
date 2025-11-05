@@ -1,13 +1,13 @@
 #ifndef _h_gscript_for
 #define _h_gscript_for
 
-#include "variable.hpp"
-#include "varDeclaration.hpp"
-#include "statement.hpp"
-#include "scriptValue.hpp"
-#include "scope.hpp"
-#include "executiveBlock.hpp"
-#include "lib.hpp"
+#include "gscript/lib.hpp"
+#include "gscript/runtime/variable.hpp"
+#include "gscript/runtime/varDeclaration.hpp"
+#include "gscript/runtime/statement.hpp"
+#include "gscript/runtime/scriptValue.hpp"
+#include "gscript/runtime/scope.hpp"
+#include "gscript/runtime/executiveBlock.hpp"
 
 namespace gscript
 {

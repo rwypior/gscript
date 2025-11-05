@@ -1,10 +1,10 @@
 #ifndef _h_gscript_vardeclaration
 #define _h_gscript_vardeclaration
 
-#include "callable.hpp"
-#include "scriptValue.hpp"
-#include "statement.hpp"
-#include "entityLink.hpp"
+#include "gscript/runtime/callable.hpp"
+#include "gscript/runtime/scriptValue.hpp"
+#include "gscript/runtime/statement.hpp"
+#include "gscript/runtime/entityLink.hpp"
 
 #include <string>
 #include <memory>

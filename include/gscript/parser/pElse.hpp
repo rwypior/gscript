@@ -1,9 +1,9 @@
 #ifndef _h_gscript_parser_else
 #define _h_gscript_parser_else
 
-#include "pEntity.hpp"
-#include "pBlock.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pEntity.hpp"
+#include "gscript/parser/pBlock.hpp"
+#include "gscript/IteratorRange.hpp"
 
 namespace gscript
 {

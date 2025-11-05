@@ -1,5 +1,5 @@
-#include "parser/pChar.hpp"
-#include "StringUtils.hpp"
+#include "gscript/parser/pChar.hpp"
+#include "gscript/StringUtils.hpp"
 
 #include <sstream>
 

@@ -1,8 +1,8 @@
 #ifndef _h_gscript_parser_blockbody
 #define _h_gscript_parser_blockbody
 
-#include "pEntity.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pEntity.hpp"
+#include "gscript/IteratorRange.hpp"
 
 #include <memory>
 #include <vector>

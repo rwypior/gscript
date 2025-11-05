@@ -1,8 +1,8 @@
 #ifndef _h_gscript_parser_special_directive
 #define _h_gscript_parser_special_directive
 
-#include "pEntity.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pEntity.hpp"
+#include "gscript/IteratorRange.hpp"
 
 #include <string>
 

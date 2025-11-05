@@ -1,4 +1,4 @@
-#include "parser/pAbstractSpecial.hpp"
+#include "gscript/parser/pAbstractSpecial.hpp"
 
 #include <string>
 #include <cctype>

@@ -1,13 +1,13 @@
-#include "runtime/class.hpp"
-#include "runtime/method.hpp"
-#include "runtime/function.hpp"
-#include "runtime/namespace.hpp"
-#include "runtime/varDeclaration.hpp"
-#include "runtime/entityLink.hpp"
-#include "runtime/classInstance.hpp"
+#include "gscript/runtime/class.hpp"
+#include "gscript/runtime/method.hpp"
+#include "gscript/runtime/function.hpp"
+#include "gscript/runtime/namespace.hpp"
+#include "gscript/runtime/varDeclaration.hpp"
+#include "gscript/runtime/entityLink.hpp"
+#include "gscript/runtime/classInstance.hpp"
 
-#include "defs.hpp"
-#include "compileException.hpp"
+#include "gscript/defs.hpp"
+#include "gscript/compileException.hpp"
 
 namespace gscript
 {

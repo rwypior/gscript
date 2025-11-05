@@ -1,6 +1,6 @@
-#include "parser/pMethod.hpp"
-#include "parser/pAccessSpecifier.hpp"
-#include "parser/pComment.hpp"
+#include "gscript/parser/pMethod.hpp"
+#include "gscript/parser/pAccessSpecifier.hpp"
+#include "gscript/parser/pComment.hpp"
 
 namespace gscript
 {

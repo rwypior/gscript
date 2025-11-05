@@ -1,8 +1,8 @@
-#include "runtime/namespace.hpp"
-#include "runtime/varDeclaration.hpp"
-#include "runtime/class.hpp"
-#include "extension/scriptExtension.hpp"
-#include "compileException.hpp"
+#include "gscript/runtime/namespace.hpp"
+#include "gscript/runtime/varDeclaration.hpp"
+#include "gscript/runtime/class.hpp"
+#include "gscript/extension/scriptExtension.hpp"
+#include "gscript/compileException.hpp"
 
 namespace gscript
 {

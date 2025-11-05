@@ -1,9 +1,9 @@
 #ifndef _h_gscript_parser_new
 #define _h_gscript_parser_new
 
-#include "pEntity.hpp"
-#include "pFuncCall.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pEntity.hpp"
+#include "gscript/parser/pFuncCall.hpp"
+#include "gscript/IteratorRange.hpp"
 
 #include <string>
 

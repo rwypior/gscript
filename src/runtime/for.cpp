@@ -1,7 +1,7 @@
-#include "runtime/for.hpp"
-#include "runtime/function.hpp"
-#include "defs.hpp"
-#include "util.hpp"
+#include "gscript/runtime/for.hpp"
+#include "gscript/runtime/function.hpp"
+#include "gscript/defs.hpp"
+#include "gscript/util.hpp"
 
 namespace gscript
 {

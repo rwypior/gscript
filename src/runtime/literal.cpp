@@ -1,8 +1,8 @@
-#include "runtime/literal.hpp"
-#include "runtime/scriptValue.hpp"
-#include "defs.hpp"
-#include "runtimeException.hpp"
-#include "debug.hpp"
+#include "gscript/runtime/literal.hpp"
+#include "gscript/runtime/scriptValue.hpp"
+#include "gscript/defs.hpp"
+#include "gscript/runtimeException.hpp"
+#include "gscript/debug.hpp"
 
 namespace gscript
 {

@@ -1,13 +1,13 @@
-#include "parser/pClass.hpp"
-#include "parser/pNameSpecifier.hpp"
-#include "parser/pBlockStart.hpp"
-#include "parser/pBlockEnd.hpp"
-#include "parser/pInherit.hpp"
-#include "parser/pMethod.hpp"
-#include "parser/pFieldDeclaration.hpp"
-#include "parser/pConstructor.hpp"
-#include "parser/pWord.hpp"
-#include "StringUtils.hpp"
+#include "gscript/parser/pClass.hpp"
+#include "gscript/parser/pNameSpecifier.hpp"
+#include "gscript/parser/pBlockStart.hpp"
+#include "gscript/parser/pBlockEnd.hpp"
+#include "gscript/parser/pInherit.hpp"
+#include "gscript/parser/pMethod.hpp"
+#include "gscript/parser/pFieldDeclaration.hpp"
+#include "gscript/parser/pConstructor.hpp"
+#include "gscript/parser/pWord.hpp"
+#include "gscript/StringUtils.hpp"
 
 namespace gscript
 {

@@ -1,6 +1,6 @@
-#include "runtime/funcParam.hpp"
-#include "runtime/statement.hpp"
-#include "type.hpp"
+#include "gscript/runtime/funcParam.hpp"
+#include "gscript/runtime/statement.hpp"
+#include "gscript/type.hpp"
 
 namespace gscript
 {

@@ -1,7 +1,7 @@
-#include "parser/pComment.hpp"
-#include "parser/pLineComment.hpp"
-#include "parser/pBlockComment.hpp"
-#include "parser/pChar.hpp"
+#include "gscript/parser/pComment.hpp"
+#include "gscript/parser/pLineComment.hpp"
+#include "gscript/parser/pBlockComment.hpp"
+#include "gscript/parser/pChar.hpp"
 
 namespace gscript
 {

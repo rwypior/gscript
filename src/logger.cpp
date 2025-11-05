@@ -1,4 +1,4 @@
-#include "logger.hpp"
+#include "gscript/logger.hpp"
 
 namespace gscript
 {

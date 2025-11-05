@@ -1,9 +1,9 @@
-#include "parser/pWhile.hpp"
-#include "parser/pArglistStart.hpp"
-#include "parser/pArglistEnd.hpp"
-#include "parser/pCallArglist.hpp"
-#include "parser/pWord.hpp"
-#include "parser/pComment.hpp"
+#include "gscript/parser/pWhile.hpp"
+#include "gscript/parser/pArglistStart.hpp"
+#include "gscript/parser/pArglistEnd.hpp"
+#include "gscript/parser/pCallArglist.hpp"
+#include "gscript/parser/pWord.hpp"
+#include "gscript/parser/pComment.hpp"
 
 namespace gscript
 {

@@ -1,9 +1,9 @@
-#include "runtime/method.hpp"
-#include "runtime/class.hpp"
-#include "runtime/classInstance.hpp"
+#include "gscript/runtime/method.hpp"
+#include "gscript/runtime/class.hpp"
+#include "gscript/runtime/classInstance.hpp"
 
-#include "defs.hpp"
-#include "compileException.hpp"
+#include "gscript/defs.hpp"
+#include "gscript/compileException.hpp"
 
 #include <cassert>
 

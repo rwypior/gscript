@@ -1,12 +1,12 @@
 #ifndef _h_gscript_if
 #define _h_gscript_if
 
-#include "variable.hpp"
-#include "statement.hpp"
-#include "scriptValue.hpp"
-#include "scope.hpp"
-#include "executiveBlock.hpp"
-#include "lib.hpp"
+#include "gscript/lib.hpp"
+#include "gscript/runtime/variable.hpp"
+#include "gscript/runtime/statement.hpp"
+#include "gscript/runtime/scriptValue.hpp"
+#include "gscript/runtime/scope.hpp"
+#include "gscript/runtime/executiveBlock.hpp"
 
 #include <vector>
 #include <memory>

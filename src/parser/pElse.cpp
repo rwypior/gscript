@@ -1,10 +1,10 @@
-#include "parser/pElse.hpp"
-#include "parser/pIf.hpp"
-#include "parser/pArglistStart.hpp"
-#include "parser/pArglistEnd.hpp"
-#include "parser/pCallArglist.hpp"
-#include "parser/pWord.hpp"
-#include "parser/pComment.hpp"
+#include "gscript/parser/pElse.hpp"
+#include "gscript/parser/pIf.hpp"
+#include "gscript/parser/pArglistStart.hpp"
+#include "gscript/parser/pArglistEnd.hpp"
+#include "gscript/parser/pCallArglist.hpp"
+#include "gscript/parser/pWord.hpp"
+#include "gscript/parser/pComment.hpp"
 
 namespace gscript
 {

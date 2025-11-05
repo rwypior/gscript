@@ -1,6 +1,6 @@
-#include "parser/pFuncCall.hpp"
-#include "parser/pNameSpecifier.hpp"
-#include "parser/pComment.hpp"
+#include "gscript/parser/pFuncCall.hpp"
+#include "gscript/parser/pNameSpecifier.hpp"
+#include "gscript/parser/pComment.hpp"
 
 namespace gscript
 {

@@ -1,4 +1,4 @@
-#include "extension/ConsoleExtension.hpp"
+#include "gscript/extension/ConsoleExtension.hpp"
 
 #include <iostream>
 

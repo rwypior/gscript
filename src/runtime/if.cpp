@@ -1,7 +1,7 @@
-#include "runtime/if.hpp"
-#include "runtime/function.hpp"
-#include "defs.hpp"
-#include "util.hpp"
+#include "gscript/runtime/if.hpp"
+#include "gscript/runtime/function.hpp"
+#include "gscript/defs.hpp"
+#include "gscript/util.hpp"
 
 #include <memory>
 

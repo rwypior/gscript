@@ -1,7 +1,7 @@
 #ifndef _h_gscript_scoped_call
 #define _h_gscript_scoped_call
 
-#include "entityLink.hpp"
+#include "gscript/runtime/entityLink.hpp"
 
 namespace gscript
 {

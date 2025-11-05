@@ -1,7 +1,7 @@
 #ifndef _h_gscript_prototype
 #define _h_gscript_prototype
 
-#include "lib.hpp"
+#include "gscript/lib.hpp"
 
 #include <memory>
 
@@ -16,7 +16,6 @@ namespace gscript
 	// Every executable part of the script must scan for prototypes in their call
 	// queue for prototypes, and upon encountering one - a prototype must be set up
 	// before it's good for execution
-
 	template<typename T>
 	class Prototype
 	{
@@ -29,7 +28,6 @@ namespace gscript
 	// A class which inherits PrototypeResolver will have it's setupPrototypes function 
 	// called by the compiler after the final compilation stage in order to resolve 
 	// dependenties of it's contained prototypes
-
 	class PrototypeResolver
 	{
 	public:

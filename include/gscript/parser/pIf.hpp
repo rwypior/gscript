@@ -1,11 +1,11 @@
 #ifndef _h_gscript_parser_if
 #define _h_gscript_parser_if
 
-#include "pEntity.hpp"
-#include "pCallArglist.hpp"
-#include "pBlock.hpp"
-#include "pElse.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pEntity.hpp"
+#include "gscript/parser/pCallArglist.hpp"
+#include "gscript/parser/pBlock.hpp"
+#include "gscript/parser/pElse.hpp"
+#include "gscript/IteratorRange.hpp"
 
 namespace gscript
 {

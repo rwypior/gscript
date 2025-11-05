@@ -1,8 +1,8 @@
 #ifndef _h_gscript_literal
 #define _h_gscript_literal
 
-#include "callable.hpp"
-#include "scriptValue.hpp"
+#include "gscript/runtime/callable.hpp"
+#include "gscript/runtime/scriptValue.hpp"
 
 #include <memory>
 

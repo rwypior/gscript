@@ -1,6 +1,6 @@
-#include "parser/pChar.hpp"
-#include "parser/pArglistStart.hpp"
-#include "parser/pComment.hpp"
+#include "gscript/parser/pChar.hpp"
+#include "gscript/parser/pArglistStart.hpp"
+#include "gscript/parser/pComment.hpp"
 
 namespace gscript
 {

@@ -1,9 +1,9 @@
-#include "parser/pBlock.hpp"
-#include "parser/pBlockBody.hpp"
-#include "parser/pBlockStart.hpp"
-#include "parser/pBlockEnd.hpp"
-#include "parser/pComment.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pBlock.hpp"
+#include "gscript/parser/pBlockBody.hpp"
+#include "gscript/parser/pBlockStart.hpp"
+#include "gscript/parser/pBlockEnd.hpp"
+#include "gscript/parser/pComment.hpp"
+#include "gscript/IteratorRange.hpp"
 
 namespace gscript
 {

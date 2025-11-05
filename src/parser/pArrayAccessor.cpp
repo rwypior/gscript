@@ -1,8 +1,8 @@
-#include "parser/pArrayAccessor.hpp"
-#include "parser/pComment.hpp"
-#include "parser/pLiteral.hpp"
-#include "parser/pChar.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pArrayAccessor.hpp"
+#include "gscript/parser/pComment.hpp"
+#include "gscript/parser/pLiteral.hpp"
+#include "gscript/parser/pChar.hpp"
+#include "gscript/IteratorRange.hpp"
 
 #include <cassert>
 

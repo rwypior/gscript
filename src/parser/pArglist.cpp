@@ -1,10 +1,10 @@
-#include "parser/pArglist.hpp"
-#include "parser/pEntity.hpp"
-#include "parser/pArglistStart.hpp"
-#include "parser/pArglistEnd.hpp"
-#include "parser/pVarDeclaration.hpp"
-#include "parser/pListSeparator.hpp"
-#include "parser/pComment.hpp"
+#include "gscript/parser/pArglist.hpp"
+#include "gscript/parser/pEntity.hpp"
+#include "gscript/parser/pArglistStart.hpp"
+#include "gscript/parser/pArglistEnd.hpp"
+#include "gscript/parser/pVarDeclaration.hpp"
+#include "gscript/parser/pListSeparator.hpp"
+#include "gscript/parser/pComment.hpp"
 
 #include <vector>
 

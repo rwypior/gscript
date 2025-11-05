@@ -1,9 +1,9 @@
 #ifndef _h_gscript_funcparam
 #define _h_gscript_funcparam
 
-#include "defs.hpp"
-#include "variable.hpp"
-#include "lib.hpp"
+#include "gscript/defs.hpp"
+#include "gscript/lib.hpp"
+#include "gscript/runtime/variable.hpp"
 
 #include <string>
 #include <vector>

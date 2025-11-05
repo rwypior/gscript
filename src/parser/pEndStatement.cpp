@@ -1,5 +1,5 @@
-#include "parser/pEndStatement.hpp"
-#include "parser/pChar.hpp"
+#include "gscript/parser/pEndStatement.hpp"
+#include "gscript/parser/pChar.hpp"
 
 namespace gscript
 {

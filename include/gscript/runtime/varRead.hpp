@@ -1,9 +1,9 @@
 #ifndef _h_gscript_varread
 #define _h_gscript_varread
 
-#include "callable.hpp"
-#include "entityLink.hpp"
-#include "scopedCall.hpp"
+#include "gscript/runtime/callable.hpp"
+#include "gscript/runtime/entityLink.hpp"
+#include "gscript/runtime/scopedCall.hpp"
 
 #include <string>
 #include <memory>
@@ -49,16 +49,16 @@ namespace gscript
 	class ScriptVarReadPrototype : public ScriptCallablePrototype
 	{
 	public:
-		ScriptVarReadPrototype(const std::string& varname);
+		SCRIPT_API ScriptVarReadPrototype(const std::string& varname);
 
-		virtual std::unique_ptr<ScriptCallable> build(ScriptScopeBase& scope) override;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> build(ScriptScopeBase& scope) override;
 
-		const std::string& getName() const;
+		SCRIPT_API const std::string& getName() const;
 
 		// Disable returning reference variable - useful in eg. return statements
 		// TODO - should probably revert this - references should be disabled by default
 		// and enableReferences function should be created instead
-		void disableReference();
+		SCRIPT_API void disableReference();
 
 	private:
 		std::string varname;
@@ -88,9 +88,9 @@ namespace gscript
 	class ScriptArrayReadPrototype : public ScriptCallablePrototype
 	{
 	public:
-		ScriptArrayReadPrototype(const std::string& varname, std::unique_ptr<ScriptCallable>&& arrayAccessor);
+		SCRIPT_API ScriptArrayReadPrototype(const std::string& varname, std::unique_ptr<ScriptCallable>&& arrayAccessor);
 
-		virtual std::unique_ptr<ScriptCallable> build(ScriptScopeBase& scope) override;
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> build(ScriptScopeBase& scope) override;
 
 	private:
 		std::string varname;

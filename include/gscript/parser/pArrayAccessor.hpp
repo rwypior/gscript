@@ -1,10 +1,10 @@
 #ifndef _h_gscript_parser_array_accessor
 #define _h_gscript_parser_array_accessor
 
-#include "pEntity.hpp"
-#include "pStatement.hpp"
-#include "IteratorRange.hpp"
-#include "bitfield.hpp"
+#include "gscript/parser/pEntity.hpp"
+#include "gscript/parser/pStatement.hpp"
+#include "gscript/IteratorRange.hpp"
+#include "gscript/bitfield.hpp"
 
 namespace gscript
 {

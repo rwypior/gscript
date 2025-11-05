@@ -1,7 +1,7 @@
-#include "parser/pTypeSpecifier.hpp"
-#include "parser/pArrayAccessor.hpp"
-#include "parser/pReference.hpp"
-#include "parser/pComment.hpp"
+#include "gscript/parser/pTypeSpecifier.hpp"
+#include "gscript/parser/pArrayAccessor.hpp"
+#include "gscript/parser/pReference.hpp"
+#include "gscript/parser/pComment.hpp"
 
 namespace gscript
 {

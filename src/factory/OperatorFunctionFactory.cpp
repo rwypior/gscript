@@ -1,11 +1,11 @@
-#include "factory/OperatorFunctionFactory.hpp"
-#include "runtime/scriptValue.hpp"
-#include "runtime/callable.hpp"
-#include "runtime/varRead.hpp"
-#include "runtime/variable.hpp"
-#include "runtime/operator.hpp"
-#include "type.hpp"
-#include "compileException.hpp"
+#include "gscript/factory/OperatorFunctionFactory.hpp"
+#include "gscript/runtime/scriptValue.hpp"
+#include "gscript/runtime/callable.hpp"
+#include "gscript/runtime/varRead.hpp"
+#include "gscript/runtime/variable.hpp"
+#include "gscript/runtime/operator.hpp"
+#include "gscript/type.hpp"
+#include "gscript/compileException.hpp"
 
 namespace gscript
 {

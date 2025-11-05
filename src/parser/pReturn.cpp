@@ -1,7 +1,7 @@
-#include "parser/pReturn.hpp"
-#include "parser/pStatement.hpp"
-#include "parser/pWord.hpp"
-#include "parser/pComment.hpp"
+#include "gscript/parser/pReturn.hpp"
+#include "gscript/parser/pStatement.hpp"
+#include "gscript/parser/pWord.hpp"
+#include "gscript/parser/pComment.hpp"
 
 namespace gscript
 {

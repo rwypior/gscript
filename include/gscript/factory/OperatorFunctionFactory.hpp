@@ -1,8 +1,9 @@
 #ifndef _h_gscript_operator_function_factory
 #define _h_gscript_operator_function_factory
 
-#include "defs.hpp"
-#include "util.hpp"
+#include "gscript/defs.hpp"
+#include "gscript/util.hpp"
+#include "gscript/lib.hpp"
 
 namespace gscript
 {
@@ -13,7 +14,7 @@ namespace gscript
 	{
 		typedef std::unique_ptr<ScriptValue>(*OperatorFunction)(ScriptScopeBase& scope, ScriptCallable *left, ScriptCallable *right);
 
-		OperatorFunction getFunction(ValueType left, ValueType right, OperatorType oper);
+		SCRIPT_API OperatorFunction getFunction(ValueType left, ValueType right, OperatorType oper);
 	};
 }
 

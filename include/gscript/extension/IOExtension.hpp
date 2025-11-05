@@ -1,12 +1,13 @@
 #ifndef _h_gscript_extension_io
 #define _h_gscript_extension_io
 
-#include "script.hpp"
-#include "defs.hpp"
-#include "scriptExtension.hpp"
-#include "runtime/function.hpp"
-#include "runtime/class.hpp"
-#include "runtimeException.hpp"
+#include "gscript/script.hpp"
+#include "gscript/defs.hpp"
+#include "gscript/lib.hpp"
+#include "gscript/extension/scriptExtension.hpp"
+#include "gscript/runtime/function.hpp"
+#include "gscript/runtime/class.hpp"
+#include "gscript/runtimeException.hpp"
 
 #include <fstream>
 
@@ -15,27 +16,27 @@ namespace gscript
 	class IOExtension : public ScriptExtension
 	{
 	public:
-		static int createFileMode(const std::string& mode);
+		SCRIPT_API static int createFileMode(const std::string& mode);
 
 		class ConstructorFile : public ScriptMethod, public ScriptExtension::ExtensionFunction
 		{
 		public:
-			ConstructorFile(ScriptScopeBase& scope, const std::string& name);
-			virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override;
+			SCRIPT_API ConstructorFile(ScriptScopeBase& scope, const std::string& name);
+			SCRIPT_API virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override;
 		};
 
 		class FuncReadAll : public ScriptMethod, public ScriptExtension::ExtensionFunction
 		{
 		public:
-			FuncReadAll(ScriptScopeBase& scope, const std::string& name);
-			virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override;
+			SCRIPT_API FuncReadAll(ScriptScopeBase& scope, const std::string& name);
+			SCRIPT_API virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override;
 		};
 
 		class FuncStaticExists : public ScriptMethod, public ScriptExtension::ExtensionFunction
 		{
 		public:
-			FuncStaticExists(ScriptScopeBase& scope, const std::string& name);
-			virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override;
+			SCRIPT_API FuncStaticExists(ScriptScopeBase& scope, const std::string& name);
+			SCRIPT_API virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T& c = CALLABLE_PARAMS_T()) override;
 		};
 
 		class ClassFile : public ScriptClass
@@ -44,15 +45,15 @@ namespace gscript
 			friend class FuncReadAll;
 
 		public:
-			ClassFile(ScriptScopeBase& scope, const std::string& name);
-			~ClassFile();
+			SCRIPT_API ClassFile(ScriptScopeBase& scope, const std::string& name);
+			SCRIPT_API ~ClassFile();
 
 		protected:
 			std::fstream str;
 		};
 
-		void run(Script& script);
-		std::string getName() const override;
+		SCRIPT_API void run(Script& script);
+		SCRIPT_API std::string getName() const override;
 	};
 }
 

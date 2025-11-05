@@ -1,7 +1,7 @@
-#include "runtime/new.hpp"
-#include "runtime/class.hpp"
-#include "runtime/classInstance.hpp"
-#include "compileException.hpp"
+#include "gscript/runtime/new.hpp"
+#include "gscript/runtime/class.hpp"
+#include "gscript/runtime/classInstance.hpp"
+#include "gscript/compileException.hpp"
 
 namespace gscript
 {

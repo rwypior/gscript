@@ -1,13 +1,13 @@
 #ifndef _h_gscript_array_initializer
 #define _h_gscript_array_initializer
 
-#include "defs.hpp"
-#include "statement.hpp"
-#include "scriptValue.hpp"
-#include "funcCall.hpp"
-#include "lib.hpp"
-#include "type.hpp"
-#include "scope.hpp"
+#include "gscript/defs.hpp"
+#include "gscript/lib.hpp"
+#include "gscript/type.hpp"
+#include "gscript/runtime/statement.hpp"
+#include "gscript/runtime/scriptValue.hpp"
+#include "gscript/runtime/funcCall.hpp"
+#include "gscript/runtime/scope.hpp"
 
 #include <memory>
 

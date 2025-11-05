@@ -1,11 +1,11 @@
 #ifndef _h_gscript_parser_funccall
 #define _h_gscript_parser_funccall
 
-#include "pEntity.hpp"
-#include "pCallArglist.hpp"
-#include "pVar.hpp"
-#include "EntityPath.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pEntity.hpp"
+#include "gscript/parser/pCallArglist.hpp"
+#include "gscript/parser/pVar.hpp"
+#include "gscript/EntityPath.hpp"
+#include "gscript/IteratorRange.hpp"
 
 namespace gscript
 {

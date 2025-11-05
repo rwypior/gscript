@@ -1,12 +1,11 @@
 #ifndef BUILD_SCRIPT_DLL
 
+#include "gscript/script.hpp"
+
 #include <iostream>
 #include <fstream>
 #include <limits>
-
 #include <chrono>
-
-#include "script.hpp"
 
 typedef std::chrono::high_resolution_clock Clock;
 

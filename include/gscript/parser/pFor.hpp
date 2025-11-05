@@ -1,10 +1,10 @@
 #ifndef _h_gscript_parser_for
 #define _h_gscript_parser_for
 
-#include "pEntity.hpp"
-#include "pForArglist.hpp"
-#include "pBlock.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pEntity.hpp"
+#include "gscript/parser/pForArglist.hpp"
+#include "gscript/parser/pBlock.hpp"
+#include "gscript/IteratorRange.hpp"
 
 namespace gscript
 {

@@ -1,12 +1,12 @@
 #ifndef _h_gscript_parser_arglist
 #define _h_gscript_parser_arglist
 
-#include "pEntity.hpp"
-#include "pArglistStart.hpp"
-#include "pArglistEnd.hpp"
-#include "pVarDeclaration.hpp"
-#include "pListSeparator.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pEntity.hpp"
+#include "gscript/parser/pArglistStart.hpp"
+#include "gscript/parser/pArglistEnd.hpp"
+#include "gscript/parser/pVarDeclaration.hpp"
+#include "gscript/parser/pListSeparator.hpp"
+#include "gscript/IteratorRange.hpp"
 
 #include <vector>
 

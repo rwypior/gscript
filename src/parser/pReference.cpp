@@ -1,6 +1,6 @@
-#include "parser/pReference.hpp"
-#include "parser/pChar.hpp"
-#include "parser/pComment.hpp"
+#include "gscript/parser/pReference.hpp"
+#include "gscript/parser/pChar.hpp"
+#include "gscript/parser/pComment.hpp"
 
 namespace gscript
 {

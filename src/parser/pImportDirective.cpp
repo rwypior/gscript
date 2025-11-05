@@ -1,6 +1,6 @@
-#include "parser/pImportDirective.hpp"
-#include "parser/pChar.hpp"
-#include "parser/pComment.hpp"
+#include "gscript/parser/pImportDirective.hpp"
+#include "gscript/parser/pChar.hpp"
+#include "gscript/parser/pComment.hpp"
 
 #include <string>
 #include <sstream>

@@ -1,5 +1,5 @@
-#include "parseexception.hpp"
-#include "parser/ParseResult.hpp"
+#include "gscript/parseexception.hpp"
+#include "gscript/parser/ParseResult.hpp"
 
 namespace
 {

@@ -1,7 +1,7 @@
 #ifndef _h_gscript_parser_blockend
 #define _h_gscript_parser_blockend
 
-#include "pBlockStart.hpp"
+#include "gscript/parser/pBlockStart.hpp"
 
 namespace gscript
 {

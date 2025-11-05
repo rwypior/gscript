@@ -1,9 +1,9 @@
 #ifndef _h_gscript_parser_operator
 #define _h_gscript_parser_operator
 
-#include "pEntity.hpp"
-#include "parser/pWord.hpp"
-#include "defs.hpp"
+#include "gscript/parser/pEntity.hpp"
+#include "gscript/parser/pWord.hpp"
+#include "gscript/defs.hpp"
 
 #include <string>
 #include <cassert>

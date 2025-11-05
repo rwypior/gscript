@@ -1,12 +1,12 @@
-#include "runtime/scope.hpp"
-#include "runtime/function.hpp"
-#include "runtime/class.hpp"
-#include "runtime/namespace.hpp"
-#include "runtime/function.hpp"
-#include "type.hpp"
-#include "defs.hpp"
-#include "EntityPath.hpp"
-#include "compileException.hpp"
+#include "gscript/runtime/scope.hpp"
+#include "gscript/runtime/function.hpp"
+#include "gscript/runtime/class.hpp"
+#include "gscript/runtime/namespace.hpp"
+#include "gscript/runtime/function.hpp"
+#include "gscript/type.hpp"
+#include "gscript/defs.hpp"
+#include "gscript/EntityPath.hpp"
+#include "gscript/compileException.hpp"
 
 namespace gscript
 {

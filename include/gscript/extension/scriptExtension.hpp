@@ -1,8 +1,8 @@
 #ifndef _h_gscript_extension
 #define _h_gscript_extension
 
-#include "defs.hpp"
-#include "lib.hpp"
+#include "gscript/defs.hpp"
+#include "gscript/lib.hpp"
 
 #include <string>
 
@@ -20,8 +20,8 @@ namespace gscript
 		};
 
 	public:
-		void load(Script& script);
-		virtual std::string getName() const;
+		SCRIPT_API void load(Script& script);
+		SCRIPT_API virtual std::string getName() const;
 
 	protected:
 		SCRIPT_API virtual void run(Script &script) = 0;

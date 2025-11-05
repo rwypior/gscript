@@ -1,9 +1,9 @@
-#include "runtime/operator.hpp"
-#include "runtime/varRead.hpp"
-#include "runtime/scopedCall.hpp"
-#include "runtime/funcCall.hpp"
-#include "compileException.hpp"
-#include "debug.hpp"
+#include "gscript/runtime/operator.hpp"
+#include "gscript/runtime/varRead.hpp"
+#include "gscript/runtime/scopedCall.hpp"
+#include "gscript/runtime/funcCall.hpp"
+#include "gscript/compileException.hpp"
+#include "gscript/debug.hpp"
 
 #include <string>
 #include <cassert>

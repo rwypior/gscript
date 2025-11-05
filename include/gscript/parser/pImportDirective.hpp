@@ -1,9 +1,9 @@
 #ifndef _h_gscript_parser_control_import
 #define _h_gscript_parser_control_import
 
-#include "pEntity.hpp"
-#include "pControlDirective.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pEntity.hpp"
+#include "gscript/parser/pControlDirective.hpp"
+#include "gscript/IteratorRange.hpp"
 
 #include <string>
 

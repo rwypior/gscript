@@ -1,4 +1,4 @@
-#include "EntityPath.hpp"
+#include "gscript/EntityPath.hpp"
 
 namespace gscript
 {

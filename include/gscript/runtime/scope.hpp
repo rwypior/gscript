@@ -1,9 +1,9 @@
 #ifndef _h_gscript_scope
 #define _h_gscript_scope
 
-#include "variable.hpp"
-#include "defs.hpp"
-#include "lib.hpp"
+#include "gscript/defs.hpp"
+#include "gscript/lib.hpp"
+#include "gscript/runtime/variable.hpp"
 
 #include <string>
 #include <list>
@@ -86,10 +86,10 @@ namespace gscript
 	class RemapScope
 	{
 	public:
-		RemapScope(ScriptScopeBase& source, ScriptScopeBase& target);
-		~RemapScope();
+		SCRIPT_API RemapScope(ScriptScopeBase& source, ScriptScopeBase& target);
+		SCRIPT_API ~RemapScope();
 
-		static ScriptScopeBase& map(ScriptScopeBase& source);
+		SCRIPT_API static ScriptScopeBase& map(ScriptScopeBase& source);
 
 	private:
 		static std::stack<std::pair<ScriptScopeBase*, ScriptScopeBase*>> mappingQueue;

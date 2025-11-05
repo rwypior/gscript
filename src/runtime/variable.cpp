@@ -1,8 +1,8 @@
-#include "runtime/variable.hpp"
-#include "runtime/scriptValue.hpp"
+#include "gscript/runtime/variable.hpp"
+#include "gscript/runtime/scriptValue.hpp"
 
-#include "type.hpp"
-#include "compileException.hpp"
+#include "gscript/type.hpp"
+#include "gscript/compileException.hpp"
 
 namespace gscript
 {

@@ -1,7 +1,7 @@
-#include "parser/pInherit.hpp"
-#include "parser/pNameSpecifier.hpp"
-#include "parser/pBlockStart.hpp"
-#include "parser/pComment.hpp"
+#include "gscript/parser/pInherit.hpp"
+#include "gscript/parser/pNameSpecifier.hpp"
+#include "gscript/parser/pBlockStart.hpp"
+#include "gscript/parser/pComment.hpp"
 
 #include <sstream>
 

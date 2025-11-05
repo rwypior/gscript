@@ -1,8 +1,8 @@
 #ifndef _h_gscript_executiveblock
 #define _h_gscript_executiveblock
 
-#include "lib.hpp"
-#include "callable.hpp"
+#include "gscript/lib.hpp"
+#include "gscript/runtime/callable.hpp"
 
 #include <vector>
 #include <memory>

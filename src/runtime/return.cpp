@@ -1,4 +1,4 @@
-#include "runtime/return.hpp"
+#include "gscript/runtime/return.hpp"
 
 namespace gscript
 {

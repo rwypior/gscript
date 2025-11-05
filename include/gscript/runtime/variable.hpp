@@ -1,8 +1,8 @@
 #ifndef _h_gscript_variable
 #define _h_gscript_variable
 
-#include "defs.hpp"
-#include "lib.hpp"
+#include "gscript/defs.hpp"
+#include "gscript/lib.hpp"
 
 #include <string>
 

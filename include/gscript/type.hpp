@@ -1,8 +1,8 @@
 #ifndef _h_gscript_type
 #define _h_gscript_type
 
-#include "defs.hpp"
-#include "lib.hpp"
+#include "gscript/defs.hpp"
+#include "gscript/lib.hpp"
 
 #include <string>
 #include <unordered_map>
@@ -54,24 +54,24 @@ namespace gscript
 	class ScriptType
 	{
 	public:
-		static std::unordered_map<std::string, ValueType> typemap;
+		SCRIPT_API static std::unordered_map<std::string, ValueType> typemap;
 
-		static TypeDescriptor translateType(const std::string &name);
-		static std::string translateType(ValueType t);
-		static std::unique_ptr<ScriptValue> createEmptyValue(ValueType type, const std::shared_ptr<ScriptType> t = nullptr);
+		SCRIPT_API static TypeDescriptor translateType(const std::string &name);
+		SCRIPT_API static std::string translateType(ValueType t);
+		SCRIPT_API static std::unique_ptr<ScriptValue> createEmptyValue(ValueType type, const std::shared_ptr<ScriptType> t = nullptr);
 
 		// Utility function to create null value
-		static std::unique_ptr<ScriptNullValue> null();
+		SCRIPT_API static std::unique_ptr<ScriptNullValue> null();
 
 		// Utility function to create null type
-		static std::shared_ptr<ScriptType> nulltype();
+		SCRIPT_API static std::shared_ptr<ScriptType> nulltype();
 
 		// Utility function to create boolean values
-		static std::unique_ptr<ScriptBoolValue> btrue();
-		static std::unique_ptr<ScriptBoolValue> bfalse();
+		SCRIPT_API static std::unique_ptr<ScriptBoolValue> btrue();
+		SCRIPT_API static std::unique_ptr<ScriptBoolValue> bfalse();
 
 		// Utility function to create boolean type
-		static std::shared_ptr<ScriptType> booltype();
+		SCRIPT_API static std::shared_ptr<ScriptType> booltype();
 
 		SCRIPT_API explicit ScriptType(ValueType type);
 

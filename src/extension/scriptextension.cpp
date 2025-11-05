@@ -1,4 +1,4 @@
-#include "extension/scriptExtension.hpp"
+#include "gscript/extension/scriptExtension.hpp"
 
 namespace gscript
 {

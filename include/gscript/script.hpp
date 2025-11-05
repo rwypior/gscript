@@ -1,9 +1,9 @@
 #ifndef _h_gscript_script
 #define _h_gscript_script
 
-#include "runtime/scriptValue.hpp"
-#include "runtime/function.hpp"
-#include "lib.hpp"
+#include "gscript/lib.hpp"
+#include "gscript/runtime/scriptValue.hpp"
+#include "gscript/runtime/function.hpp"
 
 #include <string>
 #include <vector>
@@ -42,10 +42,10 @@ namespace gscript
 		std::shared_ptr<ScriptNamespace> mainScope = nullptr; // Must be shared in case the script is imported by another script
 		std::unordered_map<std::string, std::shared_ptr<ScriptExtension>> extensions;
 
-		void init();
-		void import(const std::string &path);
+		SCRIPT_API void init();
+		SCRIPT_API void import(const std::string &path);
 
-		static std::string loadSource(const std::string& path);
+		SCRIPT_API static std::string loadSource(const std::string& path);
 
 	private:
 		std::string path;

@@ -1,8 +1,8 @@
 #ifndef _h_gscript_parser_arglist_start
 #define _h_gscript_parser_arglist_start
 
-#include "pEntity.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pEntity.hpp"
+#include "gscript/IteratorRange.hpp"
 
 namespace gscript
 {

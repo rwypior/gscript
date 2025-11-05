@@ -1,8 +1,8 @@
 #ifndef _h_gscript_typespecifier
 #define _h_gscript_typespecifier
 
-#include "pNameSpecifier.hpp"
-#include "IteratorRange.hpp"
+#include "gscript/parser/pNameSpecifier.hpp"
+#include "gscript/IteratorRange.hpp"
 
 namespace gscript
 {

@@ -1,8 +1,8 @@
 #ifndef _h_gscript_namespace
 #define _h_gscript_namespace
 
-#include "scope.hpp"
-#include "lib.hpp"
+#include "gscript/lib.hpp"
+#include "gscript/runtime/scope.hpp"
 
 #include <string>
 #include <vector>

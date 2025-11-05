@@ -1,7 +1,7 @@
 #ifndef _h_gscript_defs
 #define _h_gscript_defs
 
-#include "bitfield.hpp"
+#include "gscript/bitfield.hpp"
 
 #include <vector>
 #include <limits>

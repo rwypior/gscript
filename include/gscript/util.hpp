@@ -8,10 +8,12 @@
 #include <vector>
 #include <memory>
 #include <cassert>
+#include <string>
 
 namespace gscript
 {
 	class ScriptStatement;
+	class ScriptFieldDeclaration;
 
 	namespace hash_tuple
 	{
@@ -83,6 +85,18 @@ namespace gscript
 			result[i++] = static_unique_pointer_cast<T>( el->clone() );
 		}
 		return result;
+	}
+
+	std::unique_ptr<ScriptStatement> createNullStatement();
+
+	template<typename Type>
+	std::unique_ptr<gscript::ScriptFieldDeclaration> createFieldDeclaration(const std::string& name)
+	{
+		return std::make_unique<gscript::ScriptFieldDeclaration>(
+			name,
+			std::make_unique<Type>(),
+			gscript::createNullStatement()
+		);
 	}
 }
 

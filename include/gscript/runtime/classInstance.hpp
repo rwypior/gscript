@@ -15,6 +15,7 @@ namespace gscript
 		using VariableContainer = std::vector<std::unique_ptr<ScriptVariable>>;
 
 	public:
+		SCRIPT_API virtual ~ScriptClassInstance();
 		SCRIPT_API ScriptClassInstance(const ScriptClassInstance& sclass);
 		SCRIPT_API ScriptClassInstance(ScriptClass& sclass);
 

@@ -7,6 +7,7 @@
 #include "gscript/runtime/scope.hpp"
 #include "gscript/runtime/namespace.hpp"
 #include "gscript/runtime/varDeclaration.hpp"
+#include "gscript/runtime/classInstance.hpp"
 
 #include <string>
 #include <vector>
@@ -18,7 +19,6 @@ namespace gscript
 	class ParserMethod;
 	class ParserClass;
 	class ScriptClassPrototype;
-	class ScriptClassInstance;
 
 	class ScriptClass : public ScriptNamespace
 	{
@@ -26,6 +26,7 @@ namespace gscript
 		static constexpr char keywordThis[] = "this";
 
 	public:
+		SCRIPT_API virtual ~ScriptClass();
 		SCRIPT_API ScriptClass(ScriptScopeBase& scope, const std::string &name, ScriptClass *base = nullptr);
 
 		SCRIPT_API ScriptMethod *findMethod(const std::string &name, const PARAMS_T &params, bool searchParents = true, bool searchBase = true);

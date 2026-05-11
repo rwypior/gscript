@@ -427,8 +427,10 @@ namespace gscript
 
 	// Class
 
+	ScriptClassValue::~ScriptClassValue() = default;
+
 	ScriptClassValue::ScriptClassValue(const ScriptClassValue& b)
-		: val(std::make_unique<ScriptClassInstance>(*b.val))
+		: val(b.val ? std::make_unique<ScriptClassInstance>(*b.val) : nullptr)
 		, type(b.type)
 	{
 	}
@@ -608,6 +610,8 @@ namespace gscript
 	
 	// Reference
 
+	ScriptReferenceValue::~ScriptReferenceValue() = default;
+
 	ScriptReferenceValue::ScriptReferenceValue(const ScriptReferenceValue& b)
 		: type(b.type)
 		, val(b.val)
@@ -720,6 +724,8 @@ namespace gscript
 	}
 
 	// Return value
+
+	ScriptReturnValue::~ScriptReturnValue() = default;
 
 	ScriptReturnValue::ScriptReturnValue(std::unique_ptr<ScriptValue>&& val)
 		: val(std::move(val))

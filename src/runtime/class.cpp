@@ -4,13 +4,14 @@
 #include "gscript/runtime/namespace.hpp"
 #include "gscript/runtime/varDeclaration.hpp"
 #include "gscript/runtime/entityLink.hpp"
-#include "gscript/runtime/classInstance.hpp"
 
 #include "gscript/defs.hpp"
 #include "gscript/compileException.hpp"
 
 namespace gscript
 {
+	ScriptClass::~ScriptClass() = default;
+
 	ScriptClass::ScriptClass(ScriptScopeBase& scope, const std::string &name, ScriptClass *base)
 		: ScriptNamespace(&scope)
 		, name(name)

@@ -1,1 +1,1 @@
-target_sources(gscriptTest PRIVATE "commentsTest.cpp" "fibonacciTest.cpp")
+target_sources(gscriptTest PRIVATE "commentsTest.cpp" "externvalueTest.cpp" "fibonacciTest.cpp")

@@ -5,6 +5,8 @@
 
 namespace gscript
 {
+	ScriptClassInstance::~ScriptClassInstance() = default;
+
 	ScriptClassInstance::ScriptClassInstance(const ScriptClassInstance& b)
 		: sclass(b.sclass)
 	{

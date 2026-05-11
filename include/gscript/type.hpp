@@ -150,6 +150,18 @@ namespace gscript
 	protected:
 		const std::shared_ptr<ScriptType> subType;
 	};
+
+	class ScriptExternType : public ScriptType
+	{
+	public:
+		SCRIPT_API ScriptExternType();
+
+		SCRIPT_API virtual std::unique_ptr<ScriptType> clone() const override = 0;
+
+		SCRIPT_API virtual bool matches(const ScriptVariable& var) override = 0;
+
+		SCRIPT_API virtual bool operator==(const ScriptType& b) const override = 0;
+	};
 }
 
 #endif

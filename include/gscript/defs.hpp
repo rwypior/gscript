@@ -72,7 +72,8 @@ namespace gscript
 		Array,
 		Reference,
 		Null,
-		Void
+		Void,
+		Extern
 	};
 
 	enum class OperatorType

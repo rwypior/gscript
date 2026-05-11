@@ -214,6 +214,7 @@ namespace gscript
 	class ScriptClassValue : public ScriptValue
 	{
 	public:
+		SCRIPT_API virtual ~ScriptClassValue();
 		SCRIPT_API ScriptClassValue(const ScriptClassValue& b);
 		SCRIPT_API ScriptClassValue(ScriptClassValue&& b) noexcept;
 		SCRIPT_API ScriptClassValue(std::unique_ptr<ScriptClassInstance>&& val);
@@ -264,6 +265,7 @@ namespace gscript
 	class ScriptReferenceValue : public ScriptValue
 	{
 	public:
+		SCRIPT_API virtual ~ScriptReferenceValue();
 		SCRIPT_API ScriptReferenceValue(const ScriptReferenceValue& b);
 		SCRIPT_API ScriptReferenceValue(ScriptReferenceValue&& b) noexcept;
 		SCRIPT_API ScriptReferenceValue(std::shared_ptr<ScriptReferenceType> type = nullptr, ScriptValue* val = nullptr);
@@ -307,10 +309,22 @@ namespace gscript
 		SCRIPT_API virtual ScriptNull getValue() const;
 	};
 
+	// Special case for storing host-provided values - not to be used directly by the script code
+	class ScriptExternValue : public ScriptValue
+	{
+	public:
+		SCRIPT_API size_t getSize() const override = 0;
+		SCRIPT_API virtual const std::shared_ptr<ScriptType> getType() override = 0;
+		SCRIPT_API virtual std::unique_ptr<ScriptValue> clone() const override = 0;
+		SCRIPT_API virtual void assign(const ScriptValue&) override = 0;
+		SCRIPT_API virtual ScriptBoolValue boolean() const override = 0;
+	};
+
 	// Special case for signaling the need of returning from the function
 	class ScriptReturnValue : public ScriptValue
 	{
 	public:
+		SCRIPT_API virtual ~ScriptReturnValue();
 		SCRIPT_API ScriptReturnValue(std::unique_ptr<ScriptValue>&& val);
 		SCRIPT_API size_t getSize() const override;
 		SCRIPT_API virtual const std::shared_ptr<ScriptType> getType() override;

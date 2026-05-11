@@ -80,10 +80,15 @@ namespace gscript
 		case ValueType::Float: return std::make_unique<ScriptFloatValue>();
 		case ValueType::Double: return std::make_unique<ScriptDoubleValue>();
 		case ValueType::String: return std::make_unique<ScriptStringValue>();
-		case ValueType::Class: return std::make_unique<ScriptClassValue>(nullptr, std::static_pointer_cast<ScriptClassType>(t)->getClass());
+		case ValueType::Class:
+			assert(t && "Class type must provide subtype");
+			return std::make_unique<ScriptClassValue>(nullptr, std::static_pointer_cast<ScriptClassType>(t)->getClass());
 		case ValueType::Array: return std::make_unique<ScriptArrayValue>();
-		case ValueType::Reference: return std::make_unique<ScriptReferenceValue>(std::static_pointer_cast<ScriptReferenceType>(t));
+		case ValueType::Reference:
+			assert(t && "Reference type must provide subtype");
+			return std::make_unique<ScriptReferenceValue>(std::static_pointer_cast<ScriptReferenceType>(t));
 		case ValueType::Null: return ScriptType::null();
+		case ValueType::Extern: return ScriptType::null();
 		}
 
 		throw new CompileException("Invalid type given");
@@ -330,5 +335,12 @@ namespace gscript
 	ValueType ScriptReferenceType::getUnderlyingTypeDescriptor() const
 	{
 		return this->subType->getTypeDescriptor();
+	}
+
+	// EXTERN TYPE
+
+	ScriptExternType::ScriptExternType()
+		: ScriptType(ValueType::Extern)
+	{
 	}
 }

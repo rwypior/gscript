@@ -4,7 +4,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserArrayInitializerSimple")
+TEST_CASE("Parser::ArrayInitializer::Simple")
 {
 	std::string txt = "{1, 2, 3,4,5, 6}";
 
@@ -21,7 +21,7 @@ TEST_CASE("ParserArrayInitializerSimple")
 	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pArrInitializer.arglist.parameters.at(5)->components.front())->value == "6");
 }
 
-TEST_CASE("ParserArrayInitializerEmpty")
+TEST_CASE("Parser::ArrayInitializer::Empty")
 {
 	std::string txt = "{}";
 
@@ -32,7 +32,7 @@ TEST_CASE("ParserArrayInitializerEmpty")
 	REQUIRE(pArrInitializer.arglist.parameters.size() == 0);
 }
 
-TEST_CASE("ParserArrayInitializerFailureNoEnclosure")
+TEST_CASE("Parser::ArrayInitializer::FailureNoEnclosure")
 {
 	std::string txt = "{";
 
@@ -42,7 +42,7 @@ TEST_CASE("ParserArrayInitializerFailureNoEnclosure")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserArrayInitializerFailureEmptyString")
+TEST_CASE("Parser::ArrayInitializer::FailureEmptyString")
 {
 	std::string txt = "";
 
@@ -52,7 +52,7 @@ TEST_CASE("ParserArrayInitializerFailureEmptyString")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserArrayInitializerCommentLineBeforeBegin")
+TEST_CASE("Parser::ArrayInitializer::CommentLineBeforeBegin")
 {
 	std::string txt = 
 		"// This is a comment\n"
@@ -68,7 +68,7 @@ TEST_CASE("ParserArrayInitializerCommentLineBeforeBegin")
 	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pArrInitializer.arglist.parameters.at(2)->components.front())->value == "3");
 }
 
-TEST_CASE("ParserArrayInitializerCommentBlockBetweenArgs")
+TEST_CASE("Parser::ArrayInitializer::CommentBlockBetweenArgs")
 {
 	std::string txt = 
 		"{1, /* This is a comment */ 2, 3}";

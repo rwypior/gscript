@@ -16,7 +16,7 @@
 #include <vector>
 #include <memory>
 
-TEST_CASE_METHOD(GscriptTest, "RuntimeScopeVariableOutsideScope")
+TEST_CASE_METHOD(GscriptTest, "Runtime::Scope::VariableOutsideScope")
 {
 	// Function
 	gscript::ScriptFunction myFunc(globalNamespace, "myfunc", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), {}, {});

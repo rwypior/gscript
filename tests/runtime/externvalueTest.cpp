@@ -58,7 +58,7 @@ namespace
 	};
 }
 
-TEST_CASE_METHOD(GscriptTest, "RuntimeExternValueBasicTest")
+TEST_CASE_METHOD(GscriptTest, "Runtime::ExternValue::BasicTest")
 {
 	auto& sv = globalNamespace.registerVariable("myExtern1", gscript::ScriptType::create(gscript::ValueType::Extern, globalNamespace), std::make_unique<ExternIntValue>(42, 1337));
 

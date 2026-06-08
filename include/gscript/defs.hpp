@@ -6,6 +6,8 @@
 #include <vector>
 #include <limits>
 #include <memory>
+#include <map>
+#include <string>
 
 #define NOARG
 
@@ -104,7 +106,8 @@ namespace gscript
 		PostDecrement = 23,
 		ConditionalIf = 24,
 		ConditionalElse = 25,
-		ConditionalNull = 26
+		ConditionalNull = 26,
+		Call = 27
 	};
 
 	enum class OperatorPosition
@@ -140,6 +143,9 @@ namespace gscript
 	const std::shared_ptr<ScriptNullValue> getNull();
 	const std::shared_ptr<ScriptBoolValue> getTrue();
 	const std::shared_ptr<ScriptBoolValue> getFalse();
+	const std::map<std::string, OperatorType>& getOperatorMap();
+	const std::map<OperatorType, std::string>& getOperatorNameMap();
+	const std::string getOperatorFunctionName(OperatorType type);
 }
 
 DEFINE_BITFIELD(gscript::Modifier);

@@ -3,7 +3,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("IntegrationCommentsFunction")
+TEST_CASE("Integration::CommentsFunction::Basic")
 {
 	{
 		std::string txt =

@@ -3,7 +3,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserControlDirectiveSimple")
+TEST_CASE("Parser::ControlDirective::Simple")
 {
 	std::string directive = "something";
 	std::string txt = "#something";
@@ -15,7 +15,7 @@ TEST_CASE("ParserControlDirectiveSimple")
 	REQUIRE(pCtrl.directive == directive);
 }
 
-TEST_CASE("ParserControlDirectiveFailure")
+TEST_CASE("Parser::ControlDirective::Failure")
 {
 	std::string directive = "something";
 	std::string txt = "#nothing";
@@ -27,7 +27,7 @@ TEST_CASE("ParserControlDirectiveFailure")
 	REQUIRE(result.details.message == "Expected \"something\", got \"nothing\"");
 }
 
-TEST_CASE("ParserControlDirectiveFailurePartial")
+TEST_CASE("Parser::ControlDirective::FailurePartial")
 {
 	std::string directive = "something";
 	std::string txt = "#somethingelse";
@@ -39,7 +39,7 @@ TEST_CASE("ParserControlDirectiveFailurePartial")
 	REQUIRE(result.details.message == "Expected \"something\"");
 }
 
-TEST_CASE("ParserControlDirectiveEmptyDirective")
+TEST_CASE("Parser::ControlDirective::EmptyDirective")
 {
 	std::string directive = "";
 	std::string txt = "#";
@@ -56,7 +56,7 @@ TEST_CASE("ParserControlDirectiveEmptyDirective")
 	REQUIRE(!result2.isOk());
 }
 
-TEST_CASE("ParserControlDirectiveEmptyString")
+TEST_CASE("Parser::ControlDirective::EmptyString")
 {
 	std::string directive = "something";
 	std::string txt = "";
@@ -67,7 +67,7 @@ TEST_CASE("ParserControlDirectiveEmptyString")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserControlDirectiveCommentLineBefore")
+TEST_CASE("Parser::ControlDirective::CommentLineBefore")
 {
 	std::string directive = "something";
 	std::string txt = 

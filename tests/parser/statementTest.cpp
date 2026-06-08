@@ -7,7 +7,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserStatementSingleVariable")
+TEST_CASE("Parser::Statement::SingleVariable")
 {
 	std::string txt = "some_variable;";
 
@@ -19,7 +19,7 @@ TEST_CASE("ParserStatementSingleVariable")
 	REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pStmt.components.at(0))->name == "some_variable");
 }
 
-TEST_CASE("ParserStatementSubStatement")
+TEST_CASE("Parser::Statement::SubStatement")
 {
 	std::string txt = "some_variable";
 
@@ -31,7 +31,7 @@ TEST_CASE("ParserStatementSubStatement")
 	REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pStmt.components.at(0))->name == "some_variable");
 }
 
-TEST_CASE("ParserStatementSingleFunctionCall")
+TEST_CASE("Parser::Statement::SingleFunctionCall")
 {
 	std::string txt = "some_func();";
 
@@ -43,7 +43,7 @@ TEST_CASE("ParserStatementSingleFunctionCall")
 	REQUIRE(std::static_pointer_cast<gscript::ParserFuncCall>(pStmt.components.at(0))->name == "some_func");
 }
 
-TEST_CASE("ParserStatementSingleLiteral")
+TEST_CASE("Parser::Statement::SingleLiteral")
 {
 	std::string txt = "\"somestring\";";
 
@@ -55,7 +55,7 @@ TEST_CASE("ParserStatementSingleLiteral")
 	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pStmt.components.at(0))->value == "somestring");
 }
 
-TEST_CASE("ParserStatementAddition")
+TEST_CASE("Parser::Statement::Addition")
 {
 	std::string txt = "1 + 2;";
 
@@ -69,7 +69,7 @@ TEST_CASE("ParserStatementAddition")
 	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pStmt.components.at(2))->value == "2");
 }
 
-TEST_CASE("ParserStatementAdditionNoSpaces")
+TEST_CASE("Parser::Statement::AdditionNoSpaces")
 {
 	std::string txt = "1+2;";
 
@@ -83,7 +83,7 @@ TEST_CASE("ParserStatementAdditionNoSpaces")
 	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pStmt.components.at(2))->value == "2");
 }
 
-TEST_CASE("ParserStatementMemberAccessor")
+TEST_CASE("Parser::Statement::MemberAccessor")
 {
 	std::string txt = "myobject.anotherobject.myvar;";
 
@@ -99,7 +99,7 @@ TEST_CASE("ParserStatementMemberAccessor")
 	REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pStmt.components.at(4))->name == "myvar");
 }
 
-TEST_CASE("ParserStatementCommentLineBefore")
+TEST_CASE("Parser::Statement::CommentLineBefore")
 {
 	std::string txt = 
 		"// This is a comment\n"
@@ -113,7 +113,7 @@ TEST_CASE("ParserStatementCommentLineBefore")
 	REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pStmt.components.at(0))->name == "some_variable");
 }
 
-TEST_CASE("ParserStatementCommentBlockBeforeSemicolon")
+TEST_CASE("Parser::Statement::CommentBlockBeforeSemicolon")
 {
 	std::string txt = "some_variable /* This is a comment */ ;";
 
@@ -125,7 +125,7 @@ TEST_CASE("ParserStatementCommentBlockBeforeSemicolon")
 	REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pStmt.components.at(0))->name == "some_variable");
 }
 
-TEST_CASE("ParserStatementCommentBlockAfterSemicolon")
+TEST_CASE("Parser::Statement::CommentBlockAfterSemicolon")
 {
 	std::string txt = "some_variable; /* This is a comment */";
 
@@ -137,7 +137,7 @@ TEST_CASE("ParserStatementCommentBlockAfterSemicolon")
 	REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pStmt.components.at(0))->name == "some_variable");
 }
 
-TEST_CASE("ParserStatementSubstatementCommentBlockAtEnd")
+TEST_CASE("Parser::Statement::SubstatementCommentBlockAtEnd")
 {
 	std::string txt = "some_variable /* This is a comment */";
 
@@ -149,7 +149,7 @@ TEST_CASE("ParserStatementSubstatementCommentBlockAtEnd")
 	REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pStmt.components.at(0))->name == "some_variable");
 }
 
-TEST_CASE("ParserStatementCommentBlocksBeforeComponents")
+TEST_CASE("Parser::Statement::CommentBlocksBeforeComponents")
 {
 	std::string txt = "1 /* Comment 1 */ + /* Comment 2 */ 2;";
 
@@ -163,7 +163,7 @@ TEST_CASE("ParserStatementCommentBlocksBeforeComponents")
 	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pStmt.components.at(2))->value == "2");
 }
 
-TEST_CASE("ParserStatementCommentLinesBeforeComponents")
+TEST_CASE("Parser::Statement::CommentLinesBeforeComponents")
 {
 	std::string txt = 
 		"1\n"

@@ -1,3 +1,4 @@
+#include "gscript/defs.hpp"
 #include "gscript/runtime/class.hpp"
 #include "gscript/runtime/method.hpp"
 #include "gscript/runtime/function.hpp"
@@ -45,7 +46,8 @@ namespace gscript
 
 		for (auto& field : this->fieldDeclarations)
 		{
-			field->instantiate(*inst);
+			//field->instantiate(*inst);
+			field->run(*inst);
 		}
 
 		this->initialize(*inst);
@@ -61,6 +63,12 @@ namespace gscript
 	ScriptMethod *ScriptClass::findMethod(const std::string &name, const PARAMS_T &params, bool searchParents, bool searchBase)
 	{
 		return static_cast<ScriptMethod*>(this->getFunction(name, params, searchParents, searchBase));
+	}
+
+	ScriptMethod* ScriptClass::findOperator(OperatorType operatorType, const PARAMS_T& params, bool searchParents, bool searchBase)
+	{
+		const std::string name = getOperatorFunctionName(operatorType);
+		return this->findMethod(name, params, searchParents, searchBase);
 	}
 
 	std::vector<ScriptMethod*> ScriptClass::getAbstractMethods()
@@ -142,9 +150,38 @@ namespace gscript
 		}
 	}
 
+	std::vector<std::unique_ptr<ScriptFieldDeclaration>>& ScriptClass::getFields()
+	{
+		return this->fieldDeclarations;
+	}
+
+	const std::vector<std::unique_ptr<ScriptFieldDeclaration>>& ScriptClass::getFields() const
+	{
+		return this->fieldDeclarations;
+	}
+
 	void ScriptClass::addFieldDeclaration(std::unique_ptr<ScriptFieldDeclaration>&& svd)
 	{
 		this->fieldDeclarations.push_back(std::move(svd));
+	}
+
+	ScopedAddress ScriptClass::findFieldAddr(const std::string& name)
+	{
+		auto it = std::find_if(this->fieldDeclarations.begin(), this->fieldDeclarations.end(), [&name](const std::unique_ptr<ScriptFieldDeclaration>& f) {
+			return f->getName() == name;
+		});
+		if (it != this->fieldDeclarations.end())
+			return ScopedAddress(this, it - this->fieldDeclarations.begin());
+
+		return {};
+	}
+
+	ScriptFieldDeclaration* ScriptClass::findField(const std::string& name)
+	{
+		auto addr = this->findFieldAddr(name);
+		if (!addr)
+			return nullptr;
+		return this->fieldDeclarations[addr.addr].get();
 	}
 
 	const std::string &ScriptClass::getName() const

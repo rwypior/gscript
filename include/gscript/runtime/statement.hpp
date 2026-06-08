@@ -22,6 +22,7 @@ namespace gscript
 		SCRIPT_API ScriptStatement(ScriptStatement&& stmt) noexcept;
 		SCRIPT_API ScriptStatement(const ScriptStatement& b);
 		SCRIPT_API ScriptStatement(std::vector<std::unique_ptr<ScriptCallable>>&& callables);
+		SCRIPT_API ScriptStatement(std::unique_ptr<ScriptCallable>&& callable);
 
 		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
 

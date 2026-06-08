@@ -3,7 +3,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserImportDirectiveFile")
+TEST_CASE("Parser::ImportDirective::File")
 {
 	std::string txt = "#import \"something\"";
 
@@ -16,7 +16,7 @@ TEST_CASE("ParserImportDirectiveFile")
 	REQUIRE(pCtrl.filename == "something");
 }
 
-TEST_CASE("ParserImportDirectiveFailureNoChar")
+TEST_CASE("Parser::ImportDirective::FailureNoChar")
 {
 	std::string txt = "import \"something\"";
 
@@ -27,7 +27,7 @@ TEST_CASE("ParserImportDirectiveFailureNoChar")
 	REQUIRE(result.details.message == "Expected \"#\", got \"i\"");
 }
 
-TEST_CASE("ParserImportDirectiveExtension")
+TEST_CASE("Parser::ImportDirective::Extension")
 {
 	std::string txt = "#import <someext>";
 
@@ -40,7 +40,7 @@ TEST_CASE("ParserImportDirectiveExtension")
 	REQUIRE(pCtrl.filename == "someext");
 }
 
-TEST_CASE("ParserImportDirectiveFailureNoEnclosure")
+TEST_CASE("Parser::ImportDirective::FailureNoEnclosure")
 {
 	std::string txt = "#import \"something";
 
@@ -51,7 +51,7 @@ TEST_CASE("ParserImportDirectiveFailureNoEnclosure")
 	REQUIRE(result.details.message == "Missing import directive enclosure \"\"\"");
 }
 
-TEST_CASE("ParserImportDirectiveFailureNoEnclosureExtension")
+TEST_CASE("Parser::ImportDirective::FailureNoEnclosureExtension")
 {
 	std::string txt = "#import <something";
 
@@ -62,7 +62,7 @@ TEST_CASE("ParserImportDirectiveFailureNoEnclosureExtension")
 	REQUIRE(result.details.message == "Missing import directive enclosure \">\"");
 }
 
-TEST_CASE("ParserImportDirectiveCommentLineBefore")
+TEST_CASE("Parser::ImportDirective::CommentLineBefore")
 {
 	std::string txt = 
 		"// This is a comment\n"
@@ -77,7 +77,7 @@ TEST_CASE("ParserImportDirectiveCommentLineBefore")
 	REQUIRE(pCtrl.filename == "something");
 }
 
-TEST_CASE("ParserImportDirectiveCommentBlockAfterImport")
+TEST_CASE("Parser::ImportDirective::CommentBlockAfterImport")
 {
 	std::string txt = "#import /* This is a comment */ \"something\"";
 
@@ -90,7 +90,7 @@ TEST_CASE("ParserImportDirectiveCommentBlockAfterImport")
 	REQUIRE(pCtrl.filename == "something");
 }
 
-TEST_CASE("ParserImportDirectiveCommentBlockAfterFile")
+TEST_CASE("Parser::ImportDirective::CommentBlockAfterFile")
 {
 	std::string txt = "#import \"something\" /* This is a comment */";
 

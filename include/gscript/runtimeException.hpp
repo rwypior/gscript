@@ -10,18 +10,18 @@ namespace gscript
 	{
 	public:
 		RuntimeException(const std::string msg)
-			:std::exception(),
-			msg(std::string("Runtime error: ") + msg)
+			: std::exception()
+			, msg(std::string("Runtime error: ") + msg)
 		{
+		}
+
+		virtual const char* what() const noexcept
+		{
+			return this->msg.c_str();
 		}
 
 	protected:
 		std::string msg;
-
-		virtual const char *what() const throw()
-		{
-			return this->msg.c_str();
-		}
 	};
 }
 

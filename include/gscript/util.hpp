@@ -9,11 +9,13 @@
 #include <memory>
 #include <cassert>
 #include <string>
+#include <type_traits>
 
 namespace gscript
 {
 	class ScriptStatement;
 	class ScriptFieldDeclaration;
+	class ScriptScope;
 
 	namespace hash_tuple
 	{
@@ -90,14 +92,78 @@ namespace gscript
 	std::unique_ptr<ScriptStatement> createNullStatement();
 
 	template<typename Type>
-	std::unique_ptr<gscript::ScriptFieldDeclaration> createFieldDeclaration(const std::string& name)
+	std::unique_ptr<gscript::ScriptFieldDeclaration> createFieldDeclaration(ScriptScope& scope, const std::string& name)
 	{
 		return std::make_unique<gscript::ScriptFieldDeclaration>(
+			scope,
 			name,
 			std::make_unique<Type>(),
 			gscript::createNullStatement()
 		);
 	}
+
+	template <typename...>
+	struct isUniquePtr final : std::false_type
+	{
+	};
+
+	template<class T, typename... Args>
+	struct isUniquePtr<std::unique_ptr<T, Args...>> final : std::true_type 
+	{
+	};
+
+	template<typename T>
+	struct dereference_t
+	{
+		T& operator()(std::remove_reference_t<std::remove_cv_t<T>>& a)
+		{
+			return a;
+		}
+	};
+
+	template<typename T>
+	struct dereference_t<T*>
+	{
+		T& operator()(T* a)
+		{
+			return *a;
+		}
+	};
+
+	template<typename T>
+	struct dereference_t<std::unique_ptr<T>>
+	{
+		T& operator()(std::unique_ptr<T>& a)
+		{
+			return *a;
+		}
+	};
+
+	template<typename T>
+	auto dereference(T& a)
+	{
+		return dereference_t<T>()(a);
+	}
+
+	template<typename T>
+	auto dereference(T&& a)
+	{
+		return dereference_t<T>()(a);
+	}
+
+	template<typename Key, typename Value>
+	auto flip(const std::map<Key, Value>& collection)
+	{
+		std::map<Value, Key> flipped;
+		for (auto& pair : collection)
+		{
+			flipped[pair.second] = pair.first;
+		}
+		return flipped;
+	}
+
+	/// Format list of parameters to human-friendly string
+	std::string parametersToString(const PARAMS_T& params, const bool withNewLines = false);
 }
 
 #endif

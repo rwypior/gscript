@@ -50,9 +50,14 @@ namespace gscript
 		return this->variables;
 	}
 
-	ScriptMethod* ScriptClassInstance::findMethod(const std::string& name, const PARAMS_T params, bool searchParents, bool searchBase) const
+	ScriptMethod* ScriptClassInstance::findMethod(const std::string& name, const PARAMS_T& params, bool searchParents, bool searchBase) const
 	{
 		return this->sclass.findMethod(name, params, searchParents, searchBase);
+	}
+
+	ScriptMethod* ScriptClassInstance::findOperator(OperatorType operatorType, const PARAMS_T& params, bool searchParents, bool searchBase) const
+	{
+		return this->sclass.findOperator(operatorType, params, searchParents, searchBase);
 	}
 
 	void ScriptClassInstance::setParentScope(ScriptScopeBase*)

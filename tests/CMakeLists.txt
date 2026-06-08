@@ -36,6 +36,7 @@ add_subdirectory("extension")
 add_subdirectory("integration")
 add_subdirectory("parser")
 add_subdirectory("runtime")
+add_subdirectory("util")
 
 list(APPEND CMAKE_MODULE_PATH ${Catch2_SOURCE_DIR}/extras)
 include(Catch)

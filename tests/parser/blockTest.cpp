@@ -3,7 +3,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserBlockSimple")
+TEST_CASE("Parser::Block::Simple")
 {
 	std::string txt = 
 		"{\n"
@@ -17,7 +17,7 @@ TEST_CASE("ParserBlockSimple")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserBlockOneLiner")
+TEST_CASE("Parser::Block::OneLiner")
 {
 	{
 		std::string txt =
@@ -40,7 +40,7 @@ TEST_CASE("ParserBlockOneLiner")
 	}
 }
 
-TEST_CASE("ParserBlockOneLinerNoSemicolon")
+TEST_CASE("Parser::Block::OneLinerNoSemicolon")
 {
 	std::string txt = 
 		"		a_statement"
@@ -53,7 +53,7 @@ TEST_CASE("ParserBlockOneLinerNoSemicolon")
 	REQUIRE(result.details.message == "Expected \";\", got empty string");
 }
 
-TEST_CASE("ParserBlockFailureNoSemicolon")
+TEST_CASE("Parser::Block::FailureNoSemicolon")
 {
 	std::string txt = 
 		"{\n"
@@ -68,7 +68,7 @@ TEST_CASE("ParserBlockFailureNoSemicolon")
 	REQUIRE(result.details.message == "Expected \";\", got \"}\"");
 }
 
-TEST_CASE("ParserBlockFailureNoEnclosure")
+TEST_CASE("Parser::Block::FailureNoEnclosure")
 {
 	std::string txt = 
 		"{\n"
@@ -81,7 +81,7 @@ TEST_CASE("ParserBlockFailureNoEnclosure")
 	REQUIRE(result.details.message == "Expected \"}\", got empty string");
 }
 
-TEST_CASE("ParserBlockFailureEmptyString")
+TEST_CASE("Parser::Block::FailureEmptyString")
 {
 	std::string txt = "";
 
@@ -92,7 +92,7 @@ TEST_CASE("ParserBlockFailureEmptyString")
 	REQUIRE(result.details.message == "Expected statement");
 }
 
-TEST_CASE("ParserBlockCommentBeforeBlock")
+TEST_CASE("Parser::Block::CommentBeforeBlock")
 {
 	std::string txt =
 		"// This is a comment\n"
@@ -107,7 +107,7 @@ TEST_CASE("ParserBlockCommentBeforeBlock")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserBlockCommentBlockBeforeBlock")
+TEST_CASE("Parser::Block::CommentBlockBeforeBlock")
 {
 	std::string txt =
 		"/* This is a block comment */\n"
@@ -122,7 +122,7 @@ TEST_CASE("ParserBlockCommentBlockBeforeBlock")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserBlockCommentBlockAfterBlock")
+TEST_CASE("Parser::Block::CommentBlockAfterBlock")
 {
 	std::string txt =
 		"{\n"
@@ -137,7 +137,7 @@ TEST_CASE("ParserBlockCommentBlockAfterBlock")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserBlockCommentBlockBeforeBlockEnd")
+TEST_CASE("Parser::Block::CommentBlockBeforeBlockEnd")
 {
 	std::string txt =
 		"{\n"

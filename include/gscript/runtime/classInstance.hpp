@@ -26,7 +26,8 @@ namespace gscript
 		SCRIPT_API virtual std::vector<std::unique_ptr<ScriptVariable>>& getVariables() override;
 		SCRIPT_API virtual const std::vector<std::unique_ptr<ScriptVariable>>& getVariables() const;
 
-		SCRIPT_API virtual ScriptMethod* findMethod(const std::string& name, const PARAMS_T params, bool searchParents = true, bool searchBase = true) const;
+		SCRIPT_API virtual ScriptMethod* findMethod(const std::string& name, const PARAMS_T& params, bool searchParents = true, bool searchBase = true) const;
+		SCRIPT_API virtual ScriptMethod* findOperator(OperatorType operatorType, const PARAMS_T& params, bool searchParents = true, bool searchBase = true) const;
 
 		SCRIPT_API void setParentScope(ScriptScopeBase* scope) override;
 		SCRIPT_API ScriptScope* getParentScope() const override;

@@ -1,4 +1,5 @@
 #include "gscript/defs.hpp"
+#include "gscript/util.hpp"
 #include "gscript/runtime/scriptValue.hpp"
 
 namespace gscript
@@ -28,5 +29,45 @@ namespace gscript
 	const std::shared_ptr<ScriptBoolValue> getFalse()
 	{
 		return script_false;
+	}
+
+	const std::map<std::string, OperatorType>& getOperatorMap()
+	{
+		static const std::map<std::string, OperatorType> typemap
+		{
+			{ "+", OperatorType::Add },
+			{ "+=", OperatorType::AddTo },
+			{ "-", OperatorType::Subtract },
+			{ "-=", OperatorType::SubtractFrom },
+			{ "*", OperatorType::Multiply },
+			{ "*=", OperatorType::MultiplyBy },
+			{ "/", OperatorType::Divide },
+			{ "/=", OperatorType::DivideBy },
+			{ "==", OperatorType::Equals },
+			{ "!=", OperatorType::NotEquals },
+			{ ">", OperatorType::GreaterThan },
+			{ ">=", OperatorType::GreaterThanOrEqual },
+			{ "<", OperatorType::LesserThan },
+			{ "<=", OperatorType::LesserThanOrEqual },
+			{ "=", OperatorType::Assign },
+			{ "!", OperatorType::Negate },
+			{ ".++", OperatorType::PostIncrement },
+			{ "++.", OperatorType::PreIncrement },
+			{ ".--", OperatorType::PostDecrement },
+			{ "--.", OperatorType::PreDecrement },
+			{ "()", OperatorType::Call }
+		};
+		return typemap;
+	}
+
+	const std::map<OperatorType, std::string>& getOperatorNameMap()
+	{
+		static const auto typemap = flip<std::string, OperatorType>(getOperatorMap());
+		return typemap;
+	}
+
+	const std::string getOperatorFunctionName(OperatorType type)
+	{
+		return "operator" + getOperatorNameMap().at(type);
 	}
 }

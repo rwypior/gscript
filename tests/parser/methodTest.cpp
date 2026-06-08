@@ -3,7 +3,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserMethodSimple")
+TEST_CASE("Parser::Method::Simple")
 {
 	std::string txt =
 		"void myfunc() {\n"
@@ -17,7 +17,7 @@ TEST_CASE("ParserMethodSimple")
 	REQUIRE(pMethod.accessSpecifier.modifier == gscript::Modifier::None);
 }
 
-TEST_CASE("ParserMethodProtected")
+TEST_CASE("Parser::Method::Protected")
 {
 	std::string txt =
 		"protected void myfunc() {\n"
@@ -31,7 +31,7 @@ TEST_CASE("ParserMethodProtected")
 	REQUIRE(pMethod.accessSpecifier.modifier == gscript::Modifier::AccessProtected);
 }
 
-TEST_CASE("ParserMethodStaticProtected")
+TEST_CASE("Parser::Method::StaticProtected")
 {
 	std::string txt =
 		"static protected void myfunc() {\n"
@@ -45,7 +45,7 @@ TEST_CASE("ParserMethodStaticProtected")
 	REQUIRE(pMethod.accessSpecifier.modifier & (gscript::Modifier::AccessProtected | gscript::Modifier::Static));
 }
 
-TEST_CASE("ParserMethodCommentLineBefore")
+TEST_CASE("Parser::Method::CommentLineBefore")
 {
 	std::string txt =
 		"// This is a comment\n"
@@ -60,7 +60,7 @@ TEST_CASE("ParserMethodCommentLineBefore")
 	REQUIRE(pMethod.accessSpecifier.modifier == gscript::Modifier::None);
 }
 
-TEST_CASE("ParserMethodCommentBlockAfterProtected")
+TEST_CASE("Parser::Method::CommentBlockAfterProtected")
 {
 	std::string txt =
 		"protected /* This is a comment */ void myfunc() {\n"
@@ -74,7 +74,7 @@ TEST_CASE("ParserMethodCommentBlockAfterProtected")
 	REQUIRE(pMethod.accessSpecifier.modifier == gscript::Modifier::AccessProtected);
 }
 
-TEST_CASE("ParserMethodCommentBlockBetweenStaticAndProtected")
+TEST_CASE("Parser::Method::CommentBlockBetweenStaticAndProtected")
 {
 	std::string txt =
 		"static /* This is a comment */ protected void myfunc() {\n"
@@ -86,4 +86,19 @@ TEST_CASE("ParserMethodCommentBlockBetweenStaticAndProtected")
 
 	REQUIRE(result.isOk());
 	REQUIRE(pMethod.accessSpecifier.modifier & (gscript::Modifier::AccessProtected | gscript::Modifier::Static));
+}
+
+TEST_CASE("Parser::Method::Operator")
+{
+	std::string txt =
+		"public void operator.++() {\n"
+		"}"
+		;
+
+	gscript::ParserMethod pMethod;
+	auto result = pMethod.parse(txt);
+
+	REQUIRE(result.isOk());
+	REQUIRE(!!(pMethod.accessSpecifier.modifier & (gscript::Modifier::AccessPublic)));
+	REQUIRE(pMethod.operatorType == gscript::OperatorType::PostIncrement);
 }

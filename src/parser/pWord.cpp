@@ -24,6 +24,17 @@ namespace gscript
 		return parsePredStrict(it, end, buffer, word);
 	}
 
+	bool ParserWord::parsePredNonWhitespace(StringIteratorRange::ITERATOR_T begin, StringIteratorRange::ITERATOR_T it, StringIteratorRange::ITERATOR_T end)
+	{
+		return !std::isspace(*it);
+	}
+
+	bool ParserWord::parsePredSpecial(StringIteratorRange::ITERATOR_T begin, StringIteratorRange::ITERATOR_T it, StringIteratorRange::ITERATOR_T end)
+	{
+		char c = *it;
+		return std::isspace(c) || c == '(' || c == '{';
+	}
+
 	ParseResult ParserWord::parse(StringIteratorRange itrange, const std::string &word, std::shared_ptr<ParserEntity>&& subResult, std::function<parsePred> pred)
 	{
 		int length = word.length();
@@ -111,6 +122,41 @@ namespace gscript
 		}
 
 		return ParseResult(ParseResult::Status::Invalid, { itrange.shifted(newlines), (std::stringstream() << "Expected \"" << word << "\", got \"" << buffer << "\"").str() });
+	}
+
+	ParseResult ParserWord::parseAny(StringIteratorRange itrange, bool trimLeadingWhitespaces, std::function<parseCharPred> predAllowed, std::function<parseCharPred> predFinishing)
+	{
+		StringIteratorRange::ITERATOR_T it = itrange.begin;
+		size_t newlines = 0;
+		
+		if (trimLeadingWhitespaces)
+		{
+			newlines = skipWhitespaces(it, itrange.end);
+		}
+
+		StringIteratorRange::ITERATOR_T begin = it;
+
+		if (it == itrange.end)
+			return ParseResult(ParseResult::Status::Invalid, { itrange.shifted(newlines), (std::stringstream() << "Expected any character string, got empty statement").str() });
+
+		for (; it != itrange.end; ++it)
+		{
+			if (it == itrange.end)
+				break;
+
+			char chr = *it;
+
+			if (predFinishing(itrange.begin, it, itrange.end))
+				break;
+
+			if (!predAllowed(itrange.begin, it, itrange.end))
+				return ParseResult(ParseResult::Status::Invalid, { itrange.shifted(newlines), (std::stringstream() << "Encountered disallowed character \"" << chr << "\"").str()});
+		}
+
+		if (begin == it)
+			return ParseResult(ParseResult::Status::Invalid, { itrange.shifted(newlines), (std::stringstream() << "Expected any character string, got empty statement").str()});
+
+		return ParseResult(ParseResult::Status::Ok, StringIteratorRange(begin, it, itrange.getFile(), itrange.getLine() + newlines));
 	}
 
 	void ParserWord::copy(char *destination, StringIteratorRange itrange)

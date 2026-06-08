@@ -5,7 +5,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserFieldDeclarationSimple")
+TEST_CASE("Parser::FieldDeclaration::Simple")
 {
 	std::string txt = "type somefield;";
 
@@ -18,7 +18,7 @@ TEST_CASE("ParserFieldDeclarationSimple")
 	REQUIRE(pField.accessSpecifier.getModifier() == gscript::Modifier::None);
 }
 
-TEST_CASE("ParserFieldDeclarationPrivate")
+TEST_CASE("Parser::FieldDeclaration::Private")
 {
 	std::string txt = "private type somefield;";
 
@@ -31,7 +31,7 @@ TEST_CASE("ParserFieldDeclarationPrivate")
 	REQUIRE(pField.accessSpecifier.getModifier() & Bitfield(gscript::Modifier::AccessPrivate));
 }
 
-TEST_CASE("ParserFieldDeclarationWithValue")
+TEST_CASE("Parser::FieldDeclaration::WithValue")
 {
 	std::string txt = "type somefield = 42;";
 
@@ -45,7 +45,7 @@ TEST_CASE("ParserFieldDeclarationWithValue")
 	REQUIRE(pField.accessSpecifier.getModifier() == gscript::Modifier::None);
 }
 
-TEST_CASE("ParserFieldDeclarationWithStatement")
+TEST_CASE("Parser::FieldDeclaration::WithStatement")
 {
 	std::string txt = "type somefield = somefunc();";
 
@@ -59,7 +59,7 @@ TEST_CASE("ParserFieldDeclarationWithStatement")
 	REQUIRE(pField.accessSpecifier.getModifier() == gscript::Modifier::None);
 }
 
-TEST_CASE("ParserFieldDeclarationFailureSingleWord")
+TEST_CASE("Parser::FieldDeclaration::FailureSingleWord")
 {
 	std::string txt = "somefield";
 
@@ -70,7 +70,7 @@ TEST_CASE("ParserFieldDeclarationFailureSingleWord")
 	REQUIRE(result.details.message == "Expected name");
 }
 
-TEST_CASE("ParserFieldDeclarationFailureNoSemicolon")
+TEST_CASE("Parser::FieldDeclaration::FailureNoSemicolon")
 {
 	std::string txt = "type somefield";
 
@@ -81,7 +81,7 @@ TEST_CASE("ParserFieldDeclarationFailureNoSemicolon")
 	REQUIRE(result.details.message == "Expected \";\", got empty string");
 }
 
-TEST_CASE("ParserFieldDeclarationCommentLineBefore")
+TEST_CASE("Parser::FieldDeclaration::CommentLineBefore")
 {
 	std::string txt = 
 		"// This is a comment\n"
@@ -96,7 +96,7 @@ TEST_CASE("ParserFieldDeclarationCommentLineBefore")
 	REQUIRE(pField.accessSpecifier.getModifier() == gscript::Modifier::None);
 }
 
-TEST_CASE("ParserFieldDeclarationCommentBlockBetweenTypeAndName")
+TEST_CASE("Parser::FieldDeclaration::CommentBlockBetweenTypeAndName")
 {
 	std::string txt = "type /* This is a comment */ somefield;";
 
@@ -109,7 +109,7 @@ TEST_CASE("ParserFieldDeclarationCommentBlockBetweenTypeAndName")
 	REQUIRE(pField.accessSpecifier.getModifier() == gscript::Modifier::None);
 }
 
-TEST_CASE("ParserFieldDeclarationCommentBlockBetweenPrivateAndType")
+TEST_CASE("Parser::FieldDeclaration::CommentBlockBetweenPrivateAndType")
 {
 	std::string txt = "private /* This is a comment */ type somefield;";
 
@@ -122,7 +122,7 @@ TEST_CASE("ParserFieldDeclarationCommentBlockBetweenPrivateAndType")
 	REQUIRE(pField.accessSpecifier.getModifier() & Bitfield(gscript::Modifier::AccessPrivate));
 }
 
-TEST_CASE("ParserFieldDeclarationCommentLineBeforePrivate")
+TEST_CASE("Parser::FieldDeclaration::CommentLineBeforePrivate")
 {
 	std::string txt = 
 		"// This is a comment\n"

@@ -95,7 +95,8 @@ namespace gscript
 
 		for (auto& pf : pclass.fields)
 		{
-			auto field = std::make_unique<ScriptFieldDeclaration>(pf.name, ScriptType::create(pf.type, *cl), this->compileStatement(cl.get(), pf.value));
+			//auto field = std::make_unique<ScriptFieldDeclaration>(pf.name, ScriptType::create(pf.type, *cl), this->compileStatement(cl.get(), pf.value));
+			auto field = std::make_unique<ScriptFieldDeclarationPrototype>(*cl, pf.name, ScriptType::create(pf.type, *cl), this->compileStatement(cl.get(), pf.value));
 			cl->addFieldDeclaration(std::move(field));
 		}
 
@@ -492,6 +493,7 @@ namespace gscript
 
 		for (auto& cls : ns.getClasses())
 		{
+			this->finalizeClass(cls);
 			this->finalizeScope(*cls);
 		}
 	}
@@ -508,6 +510,24 @@ namespace gscript
 			}
 		}
 	}
+
+	void Compiler::finalizeClass(std::unique_ptr<ScriptClass>& cls)
+	{
+		for (auto& field : cls->getFields())
+		{
+			if (auto proto = dynamic_cast<ScriptFieldDeclarationPrototype*>(field.get()))
+			{
+				auto built = proto->build(*cls);
+				//ScriptFieldDeclaration(*static_cast<ScriptFieldDeclaration*>(built.get()));
+				field = std::make_unique<ScriptFieldDeclaration>(*static_cast<ScriptFieldDeclaration*>(built.release()));
+				//field = proto->build(*cls);
+			}
+			/*std::unique_ptr<ScriptCallable> clb = std::move(field);
+			this->finalizeCallable(clb, *cls);*/
+		}
+	}
+
+	// TODO - unify this
 
 	void Compiler::finalizeCallable(std::shared_ptr<ScriptCallable>& callable, ScriptScopeBase& scope)
 	{
@@ -539,7 +559,6 @@ namespace gscript
 				stmt->callable = proto->build(scope);
 			}
 			this->finalizeCallable(stmt->callable, scope);
-			//stmt->setup();
 		}
 		else if (auto ret = std::dynamic_pointer_cast<ScriptReturn>(callable))
 		{
@@ -605,7 +624,6 @@ namespace gscript
 				stmt->callable = proto->build(scope);
 			}
 			this->finalizeCallable(stmt->callable, scope);
-			//stmt->setup();
 		}
 		else if (auto ret = dynamic_cast<ScriptReturn*>(callable.get()))
 		{

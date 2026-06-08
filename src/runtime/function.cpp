@@ -82,10 +82,13 @@ namespace gscript
 		}
 	}
 
+	// TODO - instead of forcing validateParams in every runtime call, move this
+	// check to compilation stage
 	bool ScriptFunction::validateParams(const CALLABLE_PARAMS_T &c, bool throwException)
 	{
 		if (c.size() != this->getParameters().size())
 		{
+			// TODO - provide more info on parameters here
 			this->throwBadParameters(std::string("Number of parameters does not match, given ") + std::to_string(c.size()) +
 				", expected " + std::to_string(this->getParameters().size()));
 			return false;
@@ -100,7 +103,7 @@ namespace gscript
 			int idx = it - this->getParameters().begin();
 
 			auto typeA = it->getType();
-			auto typeB = c[idx]->getType();
+			auto typeB = c[idx]->data()->getType(); // TODO - need to reconsider how to handle references
 
 			if (*typeA != *typeB)
 			{

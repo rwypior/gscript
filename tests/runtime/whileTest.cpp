@@ -12,7 +12,7 @@
 #include <vector>
 #include <memory>
 
-TEST_CASE_METHOD(GscriptTest, "RuntimeWhile")
+TEST_CASE_METHOD(GscriptTest, "Runtime::While::Simple")
 {
 	// Test variable
 	auto& testVariable = globalNamespace.registerVariable("testVariable", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), std::make_unique<gscript::ScriptIntValue>(0));
@@ -49,7 +49,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeWhile")
 	REQUIRE(testVariable.getValue()->as<gscript::ScriptIntValue>().getValue() == 10);
 }
 
-TEST_CASE_METHOD(GscriptTest, "RuntimeWhileIncrement")
+TEST_CASE_METHOD(GscriptTest, "Runtime::While::Increment")
 {
 	// Test variable
 	auto& testVariable = globalNamespace.registerVariable("testVariable", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), std::make_unique<gscript::ScriptIntValue>(0));

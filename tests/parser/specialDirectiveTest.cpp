@@ -3,7 +3,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserSpecialDirective")
+TEST_CASE("Parser::Special::Simple")
 {
 	std::string txt = "@test";
 
@@ -15,7 +15,7 @@ TEST_CASE("ParserSpecialDirective")
 	REQUIRE(result.result.end == txt.end());
 }
 
-TEST_CASE("ParserSpecialWithLeadingSpaces")
+TEST_CASE("Parser::Special::WithLeadingSpaces")
 {
 	std::string txt = "     @test";
 
@@ -29,7 +29,7 @@ TEST_CASE("ParserSpecialWithLeadingSpaces")
 	REQUIRE(result.result.end == txt.begin() + 5 + 5);
 }
 
-TEST_CASE("ParserSpecialWithTrailingSpaces")
+TEST_CASE("Parser::Special::WithTrailingSpaces")
 {
 	std::string txt = "@test     ";
 
@@ -41,7 +41,7 @@ TEST_CASE("ParserSpecialWithTrailingSpaces")
 	REQUIRE(result.result.end == txt.begin() + 5);
 }
 
-TEST_CASE("ParserSpecialWithTrailingLeadingSpaces")
+TEST_CASE("Parser::Special::WithTrailingLeadingSpaces")
 {
 	std::string txt = "     @test     ";
 
@@ -53,7 +53,7 @@ TEST_CASE("ParserSpecialWithTrailingLeadingSpaces")
 	REQUIRE(result.result.end == txt.begin() + 5 + 5);
 }
 
-TEST_CASE("ParserSpecialDirectiveFailureNoChar")
+TEST_CASE("Parser::Special::DirectiveFailureNoChar")
 {
 	std::string txt = "test";
 
@@ -63,7 +63,7 @@ TEST_CASE("ParserSpecialDirectiveFailureNoChar")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserSpecialDirectiveFailureWrongChar")
+TEST_CASE("Parser::Special::DirectiveFailureWrongChar")
 {
 	std::string txt = "#test";
 
@@ -73,7 +73,7 @@ TEST_CASE("ParserSpecialDirectiveFailureWrongChar")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserSpecialDirectiveFailureWrongDirective")
+TEST_CASE("Parser::Special::DirectiveFailureWrongDirective")
 {
 	std::string txt = "#something";
 
@@ -83,7 +83,7 @@ TEST_CASE("ParserSpecialDirectiveFailureWrongDirective")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserSpecialDirectiveCommentLineBefore")
+TEST_CASE("Parser::Special::DirectiveCommentLineBefore")
 {
 	std::string txt = 
 		"// This is a comment\n"
@@ -97,7 +97,7 @@ TEST_CASE("ParserSpecialDirectiveCommentLineBefore")
 	REQUIRE(result.result.end == txt.end());
 }
 
-TEST_CASE("ParserSpecialDirectiveCommentBlockBefore")
+TEST_CASE("Parser::Special::DirectiveCommentBlockBefore")
 {
 	std::string txt = 
 		"/* This is a comment */\n"

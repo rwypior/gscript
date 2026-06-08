@@ -6,7 +6,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserCallarglistSimple")
+TEST_CASE("Parser::Callarglist::Simple")
 {
 	std::string txt = "(1, 2, \"string\")";
 
@@ -20,7 +20,7 @@ TEST_CASE("ParserCallarglistSimple")
 	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pArglist.parameters.at(2)->components.at(0))->value == "string");
 }
 
-TEST_CASE("ParserCallarglistWithStatements")
+TEST_CASE("Parser::Callarglist::WithStatements")
 {
 	std::string txt = "(1, 4 + 2, \"string\", somefunc(555))";
 
@@ -35,7 +35,7 @@ TEST_CASE("ParserCallarglistWithStatements")
 	REQUIRE(std::dynamic_pointer_cast<gscript::ParserFuncCall>(pArglist.parameters.at(3)->components.at(0)));
 }
 
-TEST_CASE("ParserCallarglistEmpty")
+TEST_CASE("Parser::Callarglist::Empty")
 {
 	std::string txt = "()";
 
@@ -46,7 +46,7 @@ TEST_CASE("ParserCallarglistEmpty")
 	REQUIRE(pArglist.parameters.size() == 0);
 }
 
-TEST_CASE("ParserCallarglistEmptyString")
+TEST_CASE("Parser::Callarglist::EmptyString")
 {
 	std::string txt = "";
 
@@ -56,7 +56,7 @@ TEST_CASE("ParserCallarglistEmptyString")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserCallarglistTwoWords")
+TEST_CASE("Parser::Callarglist::TwoWords")
 {
 	std::string txt = "(int x, int y)";
 
@@ -66,7 +66,7 @@ TEST_CASE("ParserCallarglistTwoWords")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserCallarglistSpecialWords")
+TEST_CASE("Parser::Callarglist::SpecialWords")
 {
 	std::string txt = "(int x, class y)";
 
@@ -76,7 +76,7 @@ TEST_CASE("ParserCallarglistSpecialWords")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserCallarglistInvalidArg")
+TEST_CASE("Parser::Callarglist::InvalidArg")
 {
 	std::string txt = "(some#thing)";
 
@@ -86,7 +86,7 @@ TEST_CASE("ParserCallarglistInvalidArg")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserCallarglistFailureNoEnclosure")
+TEST_CASE("Parser::Callarglist::FailureNoEnclosure")
 {
 	std::string txt = "(";
 
@@ -96,7 +96,7 @@ TEST_CASE("ParserCallarglistFailureNoEnclosure")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserCallarglistFailureEmptyString")
+TEST_CASE("Parser::Callarglist::FailureEmptyString")
 {
 	std::string txt = "";
 
@@ -106,7 +106,7 @@ TEST_CASE("ParserCallarglistFailureEmptyString")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserCallarglistCommentLineBeforeBegin")
+TEST_CASE("Parser::Callarglist::CommentLineBeforeBegin")
 {
 	std::string txt = 
 		"// This is a comment\n"
@@ -122,7 +122,7 @@ TEST_CASE("ParserCallarglistCommentLineBeforeBegin")
 	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pArglist.parameters.at(2)->components.at(0))->value == "string");
 }
 
-TEST_CASE("ParserCallarglistCommentBlockBetweenArgs")
+TEST_CASE("Parser::Callarglist::CommentBlockBetweenArgs")
 {
 	std::string txt = 
 		"// This is a comment\n"
@@ -138,7 +138,7 @@ TEST_CASE("ParserCallarglistCommentBlockBetweenArgs")
 	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pArglist.parameters.at(2)->components.at(0))->value == "string");
 }
 
-TEST_CASE("ParserCallarglistEmptyCommentBlockInside")
+TEST_CASE("Parser::Callarglist::EmptyCommentBlockInside")
 {
 	std::string txt = "(/* This is a comment */)";
 

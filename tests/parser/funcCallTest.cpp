@@ -7,7 +7,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserFuncCallSimple")
+TEST_CASE("Parser::FuncCall::Simple")
 {
 	std::string txt = "some_function();";
 
@@ -18,7 +18,7 @@ TEST_CASE("ParserFuncCallSimple")
 	REQUIRE(pFunc.name == "some_function");
 }
 
-TEST_CASE("ParserFuncCallWithParams")
+TEST_CASE("Parser::FuncCall::WithParams")
 {
 	std::string txt = "some_function(1, 2, 3);";
 
@@ -33,7 +33,7 @@ TEST_CASE("ParserFuncCallWithParams")
 	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pFunc.arglist.parameters.at(2)->components.at(0))->value == "3");
 }
 
-TEST_CASE("ParserFuncCallFailureNoArglist")
+TEST_CASE("Parser::FuncCall::FailureNoArglist")
 {
 	std::string txt = "some_function;";
 
@@ -43,7 +43,7 @@ TEST_CASE("ParserFuncCallFailureNoArglist")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserFuncCallMethod")
+TEST_CASE("Parser::FuncCall::Method")
 {
 	// Method calling is done through statements - first an object is needed, followed by
 	// member accessor, and finally function call
@@ -101,7 +101,7 @@ TEST_CASE("ParserFuncCallMethod")
 	}
 }
 
-TEST_CASE("ParserFuncCallCommentLineBefore")
+TEST_CASE("Parser::FuncCall::CommentLineBefore")
 {
 	std::string txt = 
 		"// This is a comment\n"
@@ -114,7 +114,7 @@ TEST_CASE("ParserFuncCallCommentLineBefore")
 	REQUIRE(pFunc.name == "some_function");
 }
 
-TEST_CASE("ParserFuncCallCommentBlockAfterFunc")
+TEST_CASE("Parser::FuncCall::CommentBlockAfterFunc")
 {
 	std::string txt = "some_function /* This is a comment */ ();";
 
@@ -125,7 +125,7 @@ TEST_CASE("ParserFuncCallCommentBlockAfterFunc")
 	REQUIRE(pFunc.name == "some_function");
 }
 
-TEST_CASE("ParserFuncCallCommentBlockBeforeSemicolon")
+TEST_CASE("Parser::FuncCall::CommentBlockBeforeSemicolon")
 {
 	std::string txt = "some_function() /* This is a comment */ ;";
 

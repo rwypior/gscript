@@ -64,8 +64,9 @@ namespace gscript
 
 	std::unique_ptr<ScriptValue> ScriptVarReferenceRead::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T& c)
 	{
+		// Note: keep in mind this can return a reference to a reference
 		auto& val = this->accessor->get(&scope)->getValue();
-		return std::make_unique<ScriptReferenceValue>(std::make_shared<ScriptReferenceType>(val->getType()), val.get());
+		return std::make_unique<ScriptReferenceValue>(std::make_shared<ScriptReferenceType>(val->getType()), val->data());
 	}
 
 	// Prototype
@@ -79,6 +80,7 @@ namespace gscript
 	{
 		std::unique_ptr<ScriptVarRead> result;
 
+		// TODO - change this to something better
 		try
 		{
 			if (this->isReference)
@@ -97,7 +99,17 @@ namespace gscript
 			}
 			catch (...)
 			{
-				throw;
+				try
+				{
+					if (this->isReference)
+						result = std::make_unique<ScriptVarReferenceRead>(FieldAccessor::find(scope, this->varname));
+					else
+						result = std::make_unique<ScriptVarRead>(FieldAccessor::find(scope, this->varname));
+				}
+				catch (...)
+				{
+					throw;
+				}
 			}
 		}
 

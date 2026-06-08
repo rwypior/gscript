@@ -17,7 +17,7 @@
 #include <iostream>
 #include <ostream>
 
-TEST_CASE_METHOD(GscriptTest, "CompilerExtensionPrintlnFromNamespace")
+TEST_CASE_METHOD(GscriptTest, "Compiler::Extension::PrintlnFromNamespace")
 {
 	std::string txt =
 		"#import <console>"

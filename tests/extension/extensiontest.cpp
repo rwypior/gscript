@@ -55,7 +55,7 @@ public:
 	}
 };
 
-TEST_CASE_METHOD(GscriptTest, "ExtensionSampleExtension")
+TEST_CASE_METHOD(GscriptTest, "Extension::SampleExtension::Basic")
 {
 	auto ext = new SampleExtension();
 	script.extend(ext);

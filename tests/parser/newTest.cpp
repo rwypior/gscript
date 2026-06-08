@@ -3,7 +3,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserNewSimple")
+TEST_CASE("Parser::New::Simple")
 {
 	std::string txt = "new someclass();";
 
@@ -14,7 +14,7 @@ TEST_CASE("ParserNewSimple")
 	REQUIRE(pNew.name == "someclass");
 }
 
-TEST_CASE("ParserNewNamespaceAccessor")
+TEST_CASE("Parser::New::NamespaceAccessor")
 {
 	std::string txt = "new ns::someclass();";
 
@@ -25,7 +25,7 @@ TEST_CASE("ParserNewNamespaceAccessor")
 	REQUIRE(pNew.name == "ns::someclass");
 }
 
-TEST_CASE("ParserNewFailureNoMethod")
+TEST_CASE("Parser::New::FailureNoMethod")
 {
 	std::string txt = "new();";
 
@@ -36,7 +36,7 @@ TEST_CASE("ParserNewFailureNoMethod")
 	REQUIRE(result.details.message == "Expected name");
 }
 
-TEST_CASE("ParserNewFailureNoParentheses")
+TEST_CASE("Parser::New::FailureNoParentheses")
 {
 	std::string txt = "new;";
 
@@ -47,7 +47,7 @@ TEST_CASE("ParserNewFailureNoParentheses")
 	REQUIRE(result.details.message == "Expected name");
 }
 
-TEST_CASE("ParserNewFailureOnlyNew")
+TEST_CASE("Parser::New::FailureOnlyNew")
 {
 	std::string txt = "new";
 
@@ -58,7 +58,7 @@ TEST_CASE("ParserNewFailureOnlyNew")
 	REQUIRE(result.details.message == "Expected name");
 }
 
-TEST_CASE("ParserNewFailureEmptyString")
+TEST_CASE("Parser::New::FailureEmptyString")
 {
 	std::string txt = "";
 
@@ -69,7 +69,7 @@ TEST_CASE("ParserNewFailureEmptyString")
 	REQUIRE(result.details.message == "Expected \"new\", got empty statement");
 }
 
-TEST_CASE("ParserNewCommentLineBefore")
+TEST_CASE("Parser::New::CommentLineBefore")
 {
 	std::string txt = 
 		"// This is a comment\n"
@@ -82,7 +82,7 @@ TEST_CASE("ParserNewCommentLineBefore")
 	REQUIRE(pNew.name == "someclass");
 }
 
-TEST_CASE("ParserNewCommentBlockAfterNew")
+TEST_CASE("Parser::New::CommentBlockAfterNew")
 {
 	std::string txt = "new /* This is a comment */ someclass();";
 

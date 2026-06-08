@@ -4,7 +4,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserVarSimple")
+TEST_CASE("Parser::Var::Simple")
 {
 	std::string txt = "myvar";
 
@@ -15,7 +15,7 @@ TEST_CASE("ParserVarSimple")
 	REQUIRE(pVar.name == "myvar");
 }
 
-TEST_CASE("ParserVarArray")
+TEST_CASE("Parser::Var::Array")
 {
 	std::string txt = "myvar[42]";
 
@@ -27,7 +27,7 @@ TEST_CASE("ParserVarArray")
 	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pVar.arrayAccessor->statement.components.at(0))->value == "42");
 }
 
-TEST_CASE("ParserVarFailureEmptyString")
+TEST_CASE("Parser::Var::FailureEmptyString")
 {
 	std::string txt = "";
 
@@ -38,7 +38,7 @@ TEST_CASE("ParserVarFailureEmptyString")
 	REQUIRE(result.details.message == "Expected name");
 }
 
-TEST_CASE("ParserVarFailureArrayNoEnclosure")
+TEST_CASE("Parser::Var::FailureArrayNoEnclosure")
 {
 	std::string txt = "myvar[";
 
@@ -49,7 +49,7 @@ TEST_CASE("ParserVarFailureArrayNoEnclosure")
 	REQUIRE(result.details.message == "Empty statement"); // TODO - this needs better error message
 }
 
-TEST_CASE("ParserVarFailureArrayEmpty")
+TEST_CASE("Parser::Var::FailureArrayEmpty")
 {
 	std::string txt = "myvar[]";
 
@@ -60,7 +60,7 @@ TEST_CASE("ParserVarFailureArrayEmpty")
 	REQUIRE(result.details.message == "Expected non-empty statement");
 }
 
-TEST_CASE("ParserVarMemberAccess")
+TEST_CASE("Parser::Var::MemberAccess")
 {
 	// Variable found here is myobject - the rest of the path would be parsed by a statement
 
@@ -73,7 +73,7 @@ TEST_CASE("ParserVarMemberAccess")
 	REQUIRE(pVar.name == "myobject");
 }
 
-TEST_CASE("ParserVarCommentLineBefore")
+TEST_CASE("Parser::Var::CommentLineBefore")
 {
 	std::string txt = 
 		"// This is a comment\n"
@@ -86,7 +86,7 @@ TEST_CASE("ParserVarCommentLineBefore")
 	REQUIRE(pVar.name == "myvar");
 }
 
-TEST_CASE("ParserVarCommentBlockBeforeArray")
+TEST_CASE("Parser::Var::CommentBlockBeforeArray")
 {
 	std::string txt = "myvar /* This is a comment */ [42]";
 

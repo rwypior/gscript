@@ -5,7 +5,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserVarDeclarationSimple")
+TEST_CASE("Parser::VarDeclaration::Simple")
 {
 	std::string txt = "int myvar;";
 
@@ -18,7 +18,7 @@ TEST_CASE("ParserVarDeclarationSimple")
 	REQUIRE(pVar.value.components.empty());
 }
 
-TEST_CASE("ParserVarDeclarationWithValue")
+TEST_CASE("Parser::VarDeclaration::WithValue")
 {
 	std::string txt = "int myvar = 42;";
 
@@ -32,7 +32,7 @@ TEST_CASE("ParserVarDeclarationWithValue")
 	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pVar.value.components.at(0))->value == "42");
 }
 
-TEST_CASE("ParserVarDeclarationWithValueStatement")
+TEST_CASE("Parser::VarDeclaration::WithValueStatement")
 {
 	std::string txt = "int myvar = somefunc();";
 
@@ -46,7 +46,7 @@ TEST_CASE("ParserVarDeclarationWithValueStatement")
 	REQUIRE(std::static_pointer_cast<gscript::ParserFuncCall>(pVar.value.components.at(0))->name == "somefunc");
 }
 
-TEST_CASE("ParserVarDeclarationFailureNoSemicolon")
+TEST_CASE("Parser::VarDeclaration::FailureNoSemicolon")
 {
 	std::string txt = "int myvar";
 
@@ -57,7 +57,7 @@ TEST_CASE("ParserVarDeclarationFailureNoSemicolon")
 	REQUIRE(result.details.message == "Expected \";\", got empty string");
 }
 
-TEST_CASE("ParserVarDeclarationFailureNoAssignOperator")
+TEST_CASE("Parser::VarDeclaration::FailureNoAssignOperator")
 {
 	std::string txt = "int myvar 42";
 
@@ -68,7 +68,7 @@ TEST_CASE("ParserVarDeclarationFailureNoAssignOperator")
 	REQUIRE(result.details.message == "Expected \";\", got \"4\"");
 }
 
-TEST_CASE("ParserVarDeclarationFailureNoType")
+TEST_CASE("Parser::VarDeclaration::FailureNoType")
 {
 	std::string txt = "myvar";
 
@@ -79,7 +79,7 @@ TEST_CASE("ParserVarDeclarationFailureNoType")
 	REQUIRE(result.details.message == "Expected name");
 }
 
-TEST_CASE("ParserVarDeclarationCommentLineBeforeType")
+TEST_CASE("Parser::VarDeclaration::CommentLineBeforeType")
 {
 	std::string txt = 
 		"// This is a comment\n"
@@ -94,7 +94,7 @@ TEST_CASE("ParserVarDeclarationCommentLineBeforeType")
 	REQUIRE(pVar.value.components.empty());
 }
 
-TEST_CASE("ParserVarDeclarationCommentBlockBetweenTypeAndName")
+TEST_CASE("Parser::VarDeclaration::CommentBlockBetweenTypeAndName")
 {
 	std::string txt = 
 		"int /* This is a comment */ myvar;";
@@ -108,7 +108,7 @@ TEST_CASE("ParserVarDeclarationCommentBlockBetweenTypeAndName")
 	REQUIRE(pVar.value.components.empty());
 }
 
-TEST_CASE("ParserVarDeclarationCommentLineAfterEnd")
+TEST_CASE("Parser::VarDeclaration::CommentLineAfterEnd")
 {
 	// This test is probably redundant
 

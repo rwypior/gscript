@@ -14,6 +14,7 @@ namespace gscript
 	class ScriptVariable;
 	class ScriptType;
 	class ScriptFunction;
+	class ScriptFieldDeclaration;
 
 	// Variable accessor stores a scope and address of given variable which
 	// may be used at later point to access said variable
@@ -52,11 +53,36 @@ namespace gscript
 	public:
 		using VariableAccessor::VariableAccessor;
 
-		SCRIPT_API virtual std::unique_ptr<VariableAccessor> clone() const;
+		SCRIPT_API virtual std::unique_ptr<VariableAccessor> clone() const override;
 
 		SCRIPT_API static std::unique_ptr<ParameterAccessor> find(ScriptScopeBase& scope, const std::string& name, bool searchParents = true);
 		SCRIPT_API ScriptVariable* get(ScriptScopeBase* scope = nullptr);
 		SCRIPT_API const std::shared_ptr<ScriptType> getType() const;
+	};
+
+	// Field accessor stores a scope and address of given class field which
+	// may be used at later point to access said variable
+	// Works in a similar way to VariableAccessor.
+	// Is only valid for classes
+	class FieldAccessor : public VariableAccessor
+	{
+	public:
+		using VariableAccessor::VariableAccessor;
+
+		/*SCRIPT_API virtual ~FieldAccessor();
+		SCRIPT_API FieldAccessor();
+		SCRIPT_API FieldAccessor(ScriptScopeBase* scope, size_t addr);
+		SCRIPT_API FieldAccessor(const FieldAccessor& b);*/
+
+		//SCRIPT_API virtual std::unique_ptr<FieldAccessor> clone() const;
+		SCRIPT_API virtual std::unique_ptr<VariableAccessor> clone() const override;
+
+		SCRIPT_API static std::unique_ptr<FieldAccessor> find(ScriptScopeBase& scope, const std::string& name, bool searchParents = true);
+		//SCRIPT_API ScriptFieldDeclaration* get(ScriptScopeBase* scope = nullptr);
+		SCRIPT_API ScriptVariable* get(ScriptScopeBase* scope = nullptr) override;
+		SCRIPT_API const std::shared_ptr<ScriptType> getType() const override;
+		SCRIPT_API void setScope(ScriptScopeBase* scope);
+		SCRIPT_API operator bool() const;
 	};
 
 	// Function accessor stores a scope and address of given function which

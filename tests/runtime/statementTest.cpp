@@ -14,7 +14,7 @@
 #include <vector>
 #include <memory>
 
-TEST_CASE_METHOD(GscriptTest, "RuntimeStatement")
+TEST_CASE_METHOD(GscriptTest, "Runtime::Statement::Simple")
 {
 	// Variables
 	auto& var1 = globalNamespace.registerVariable(
@@ -53,7 +53,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeStatement")
 	REQUIRE(result->as<gscript::ScriptIntValue>().getValue() == 13581);
 }
 
-TEST_CASE_METHOD(GscriptTest, "RuntimeStatementWithFuncCalls")
+TEST_CASE_METHOD(GscriptTest, "Runtime::Statement::WithFuncCalls")
 {
 	// Function
 	auto& myFunc = globalNamespace.registerFunction("myfunc", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), {}, {});

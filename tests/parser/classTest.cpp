@@ -3,7 +3,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserClassSimple")
+TEST_CASE("Parser::Class::Simple")
 {
 	std::string txt =
 		"class MyClass {\n"
@@ -18,7 +18,7 @@ TEST_CASE("ParserClassSimple")
 	REQUIRE(pClass.methods.empty());
 }
 
-TEST_CASE("ParserClassWithConstructor")
+TEST_CASE("Parser::Class::WithConstructor")
 {
 	std::string txt =
 		"class MyClass {\n"
@@ -38,7 +38,7 @@ TEST_CASE("ParserClassWithConstructor")
 	REQUIRE(pClass.methods.at(0).arglist.parameters.empty());
 }
 
-TEST_CASE("ParserClassFailureWithStatement")
+TEST_CASE("Parser::Class::FailureWithStatement")
 {
 	std::string txt =
 		"class MyClass {\n"
@@ -55,7 +55,7 @@ TEST_CASE("ParserClassFailureWithStatement")
 	REQUIRE(result.details.message == "Expected one of: constructor, method, field; got \"a_statement;\"");
 }
 
-TEST_CASE("ParserClassWithFunction")
+TEST_CASE("Parser::Class::WithFunction")
 {
 	std::string txt =
 		"class MyClass {\n"

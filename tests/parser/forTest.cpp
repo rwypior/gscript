@@ -3,7 +3,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserForSimple")
+TEST_CASE("Parser::For::Simple")
 {
 	std::string txt = "for (int i; i < 10; i++) {}";
 
@@ -13,7 +13,7 @@ TEST_CASE("ParserForSimple")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserForWithBody")
+TEST_CASE("Parser::For::WithBody")
 {
 	std::string txt = 
 		"for (int i; i < 5; i++)\n"
@@ -27,7 +27,7 @@ TEST_CASE("ParserForWithBody")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserForSingleStatementBody")
+TEST_CASE("Parser::For::SingleStatementBody")
 {
 	std::string txt = "for (int i; i < 10; i++) some_statement();";
 
@@ -38,7 +38,7 @@ TEST_CASE("ParserForSingleStatementBody")
 	REQUIRE(pfor.body.body.statements.size() == 1);
 }
 
-TEST_CASE("ParserForFailureNoArgList")
+TEST_CASE("Parser::For::FailureNoArgList")
 {
 	std::string txt = "for";
 
@@ -48,7 +48,7 @@ TEST_CASE("ParserForFailureNoArgList")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserForFailureNoBody")
+TEST_CASE("Parser::For::FailureNoBody")
 {
 	std::string txt = "for(int i; i < 10; i++)\n";
 
@@ -58,7 +58,7 @@ TEST_CASE("ParserForFailureNoBody")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserForNoFirstParameter")
+TEST_CASE("Parser::For::NoFirstParameter")
 {
 	std::string txt = "for (; i < 10; i++) {}";
 
@@ -68,7 +68,7 @@ TEST_CASE("ParserForNoFirstParameter")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserForNoSecondParameter")
+TEST_CASE("Parser::For::NoSecondParameter")
 {
 	std::string txt = "for (int i; ; i++) {}";
 
@@ -78,7 +78,7 @@ TEST_CASE("ParserForNoSecondParameter")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserForNoThirdParameter")
+TEST_CASE("Parser::For::NoThirdParameter")
 {
 	std::string txt = "for (int i; i < 10; ) {}";
 
@@ -88,7 +88,7 @@ TEST_CASE("ParserForNoThirdParameter")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserForOnlyFirstParameter")
+TEST_CASE("Parser::For::OnlyFirstParameter")
 {
 	std::string txt = "for (int i; ; ) {}";
 
@@ -98,7 +98,7 @@ TEST_CASE("ParserForOnlyFirstParameter")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserForOnlySecondParameter")
+TEST_CASE("Parser::For::OnlySecondParameter")
 {
 	std::string txt = "for (; i < 10; ) {}";
 
@@ -108,7 +108,7 @@ TEST_CASE("ParserForOnlySecondParameter")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserForOnlyThirdParameter")
+TEST_CASE("Parser::For::OnlyThirdParameter")
 {
 	std::string txt = "for (; ; i++) {}";
 
@@ -118,7 +118,7 @@ TEST_CASE("ParserForOnlyThirdParameter")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserForCommentLineBefore")
+TEST_CASE("Parser::For::CommentLineBefore")
 {
 	std::string txt = 
 		"// This is a comment\n"
@@ -130,7 +130,7 @@ TEST_CASE("ParserForCommentLineBefore")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserForCommentBlockBetweenForAndArglist")
+TEST_CASE("Parser::For::CommentBlockBetweenForAndArglist")
 {
 	std::string txt = "for /* This is a comment */ (int i; i < 10; i++) {}";
 
@@ -140,7 +140,7 @@ TEST_CASE("ParserForCommentBlockBetweenForAndArglist")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserForCommentBlockAfterVar")
+TEST_CASE("Parser::For::CommentBlockAfterVar")
 {
 	std::string txt = "for (int i; /* This is a comment */ i < 10; i++) {}";
 
@@ -150,7 +150,7 @@ TEST_CASE("ParserForCommentBlockAfterVar")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserForCommentBlockAfterCondition")
+TEST_CASE("Parser::For::CommentBlockAfterCondition")
 {
 	std::string txt = "for (int i; i < 10; /* This is a comment */ i++) {}";
 
@@ -160,7 +160,7 @@ TEST_CASE("ParserForCommentBlockAfterCondition")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserForCommentBlockAfterStep")
+TEST_CASE("Parser::For::CommentBlockAfterStep")
 {
 	std::string txt = "for (int i; i < 10; i++ /* This is a comment */) {}";
 
@@ -170,7 +170,7 @@ TEST_CASE("ParserForCommentBlockAfterStep")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserForCommentBlockBeforeVarSemicolon")
+TEST_CASE("Parser::For::CommentBlockBeforeVarSemicolon")
 {
 	std::string txt = "for (int i /* This is a comment */; i < 10; i++) {}";
 
@@ -180,7 +180,7 @@ TEST_CASE("ParserForCommentBlockBeforeVarSemicolon")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserForCommentBlockBeforeBody")
+TEST_CASE("Parser::For::CommentBlockBeforeBody")
 {
 	std::string txt = "for (int i; i < 10; i++) /* This is a comment */ {}";
 

@@ -3,7 +3,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParseChar")
+TEST_CASE("Parser::Char::Simple")
 {
 	std::string txt = "x";
 	auto result = gscript::ParserChar::parse(txt, 'x');
@@ -13,7 +13,7 @@ TEST_CASE("ParseChar")
 	REQUIRE(result.result.end == txt.end());
 }
 
-TEST_CASE("ParseCharSpaces")
+TEST_CASE("Parser::Char::Spaces")
 {
 	std::string txt = "     x";
 	auto result = gscript::ParserChar::parse(txt, 'x');
@@ -23,7 +23,7 @@ TEST_CASE("ParseCharSpaces")
 	REQUIRE(result.result.end == txt.end());
 }
 
-TEST_CASE("ParseCharTrailingSpaces")
+TEST_CASE("Parser::Char::TrailingSpaces")
 {
 	std::string txt = "x     ";
 	auto result = gscript::ParserChar::parse(txt, 'x');
@@ -33,7 +33,7 @@ TEST_CASE("ParseCharTrailingSpaces")
 	REQUIRE(result.result.end == txt.begin() + 1);
 }
 
-TEST_CASE("ParseCharTrailingLeadingSpaces")
+TEST_CASE("Parser::Char::TrailingLeadingSpaces")
 {
 	std::string txt = "     x     ";
 	auto result = gscript::ParserChar::parse(txt, 'x');
@@ -43,7 +43,7 @@ TEST_CASE("ParseCharTrailingLeadingSpaces")
 	REQUIRE(result.result.end == txt.begin() + 5 + 1);
 }
 
-TEST_CASE("ParseCharSpacesNotAllowedFailure")
+TEST_CASE("Parser::Char::SpacesNotAllowedFailure")
 {
 	std::string txt = "     x";
 	auto result = gscript::ParserChar::parse(txt, 'x', false);
@@ -51,7 +51,7 @@ TEST_CASE("ParseCharSpacesNotAllowedFailure")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParseCharSpacesNotAllowed")
+TEST_CASE("Parser::Char::SpacesNotAllowed")
 {
 	std::string txt = "x";
 	auto result = gscript::ParserChar::parse(txt, 'x', false);
@@ -59,7 +59,7 @@ TEST_CASE("ParseCharSpacesNotAllowed")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParseCharSpacesNotAllowedWithTrailing")
+TEST_CASE("Parser::Char::SpacesNotAllowedWithTrailing")
 {
 	std::string txt = "x     ";
 	auto result = gscript::ParserChar::parse(txt, 'x', false);
@@ -69,7 +69,7 @@ TEST_CASE("ParseCharSpacesNotAllowedWithTrailing")
 	REQUIRE(result.result.end == txt.begin() + 1);
 }
 
-TEST_CASE("ParseCharParseUntilNonWhitespaceSimple")
+TEST_CASE("Parser::Char::ParseUntilNonWhitespaceSimple")
 {
 	std::string txt = "     x";
 	auto result = gscript::ParserChar::parseUntilNonWhitespace(txt);
@@ -79,7 +79,7 @@ TEST_CASE("ParseCharParseUntilNonWhitespaceSimple")
 	REQUIRE(result.result.end == txt.end());
 }
 
-TEST_CASE("ParseCharParseUntilNonWhitespaceTrailingSpaces")
+TEST_CASE("Parser::Char::ParseUntilNonWhitespaceTrailingSpaces")
 {
 	std::string txt = "     x   ";
 	auto result = gscript::ParserChar::parseUntilNonWhitespace(txt);
@@ -89,7 +89,7 @@ TEST_CASE("ParseCharParseUntilNonWhitespaceTrailingSpaces")
 	REQUIRE(result.result.end == txt.end() - 3);
 }
 
-TEST_CASE("ParseCharParseUntilNonWhitespaceNewlines")
+TEST_CASE("Parser::Char::ParseUntilNonWhitespaceNewlines")
 {
 	std::string txt = 
 		"     \n"

@@ -42,21 +42,41 @@ namespace gscript
 	protected:
 		std::unique_ptr<VariableAccessor> accessor;
 		std::unique_ptr<ScriptCallable> statement;
+
+		SCRIPT_API ScriptVarDeclaration(std::unique_ptr<VariableAccessor>&& accessor, std::unique_ptr<ScriptCallable> &&callable);
 	};
 
 	class ScriptFieldDeclaration : public ScriptVarDeclaration
 	{
 	public:
 		SCRIPT_API ScriptFieldDeclaration(const ScriptFieldDeclaration& b);
-		SCRIPT_API ScriptFieldDeclaration(const std::string& name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptStatement>&& statement);
+		SCRIPT_API ScriptFieldDeclaration(ScriptScope &scope, const std::string& name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptStatement>&& statement);
+		SCRIPT_API ScriptFieldDeclaration(ScriptScope &scope, const std::string& name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptValue>&& value);
+		SCRIPT_API ScriptFieldDeclaration(ScriptScope &scope, const std::string& name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptCallable>&& callable);
+		SCRIPT_API ScriptFieldDeclaration(std::unique_ptr<VariableAccessor>&& accessor, const std::string& name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptCallable>&& callable);
+		SCRIPT_API ScriptFieldDeclaration(std::unique_ptr<VariableAccessor>&& accessor, const std::string& name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptValue>&& value);
+
+		const std::string& getName() const;
 
 		SCRIPT_API virtual std::unique_ptr<ScriptCallable> clone() override;
 
-		SCRIPT_API void instantiate(ScriptScopeBase& instance);
+		virtual std::unique_ptr<ScriptValue> run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T& params = CALLABLE_PARAMS_T()) override;
 
-	private:
+	protected:
 		std::string name;
 		const std::shared_ptr<ScriptType> type;
+
+	private:
+		SCRIPT_API void instantiate(ScriptScopeBase& instance);
+	};
+
+	class ScriptFieldDeclarationPrototype : public ScriptFieldDeclaration, public ScriptCallablePrototype
+	{
+	public:
+		SCRIPT_API ScriptFieldDeclarationPrototype(ScriptScope& scope, const std::string& name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptStatement>&& statement);
+		SCRIPT_API ScriptFieldDeclarationPrototype(ScriptScope& scope, const std::string& name, const std::shared_ptr<ScriptType> type, std::unique_ptr<ScriptValue>&& value);
+
+		SCRIPT_API virtual std::unique_ptr<ScriptCallable> build(ScriptScopeBase& scope) override;
 	};
 }
 

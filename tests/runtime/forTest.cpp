@@ -12,7 +12,7 @@
 #include <vector>
 #include <memory>
 
-TEST_CASE_METHOD(GscriptTest, "RuntimeFor")
+TEST_CASE_METHOD(GscriptTest, "Runtime::For::Basic")
 {
 	// For variable
 	auto literal0 = std::make_unique<gscript::ScriptLiteral>(std::make_unique<gscript::ScriptIntValue>(0));

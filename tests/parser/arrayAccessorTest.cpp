@@ -4,7 +4,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserArrayAccessorLiteralRequired")
+TEST_CASE("Parser::ArrayAccessor::LiteralRequired")
 {
 	std::string txt = "[0]";
 
@@ -16,7 +16,7 @@ TEST_CASE("ParserArrayAccessorLiteralRequired")
 	REQUIRE(pArrAccessor.staticIndex == 0);
 }
 
-TEST_CASE("ParserArrayAccessorLiteralRequiredFailed")
+TEST_CASE("Parser::ArrayAccessor::LiteralRequiredFailed")
 {
 	std::string txt = "[]";
 
@@ -26,7 +26,7 @@ TEST_CASE("ParserArrayAccessorLiteralRequiredFailed")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserArrayAccessorLiteralFailed")
+TEST_CASE("Parser::ArrayAccessor::LiteralFailed")
 {
 	std::string txt = "[somevar]";
 
@@ -36,7 +36,7 @@ TEST_CASE("ParserArrayAccessorLiteralFailed")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserArrayAccessorStatement")
+TEST_CASE("Parser::ArrayAccessor::Statement")
 {
 	std::string txt = "[somevar]";
 
@@ -47,7 +47,7 @@ TEST_CASE("ParserArrayAccessorStatement")
 	REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pArrAccessor.statement.components.at(0))->name == "somevar");
 }
 
-TEST_CASE("ParserArrayAccessorStatementRequiredFailed")
+TEST_CASE("Parser::ArrayAccessor::StatementRequiredFailed")
 {
 	std::string txt = "[]";
 
@@ -57,7 +57,7 @@ TEST_CASE("ParserArrayAccessorStatementRequiredFailed")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserArrayAccessorOptional")
+TEST_CASE("Parser::ArrayAccessor::Optional")
 {
 	std::string txt1 = "[]";
 	std::string txt2 = "[something]";
@@ -72,7 +72,7 @@ TEST_CASE("ParserArrayAccessorOptional")
 	REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pArrAccessor.statement.components.at(0))->name == "something");
 }
 
-TEST_CASE("ParserArrayAccessorNoIndex")
+TEST_CASE("Parser::ArrayAccessor::NoIndex")
 {
 	std::string txt1 = "[]";
 	std::string txt2 = "[123]";
@@ -86,7 +86,7 @@ TEST_CASE("ParserArrayAccessorNoIndex")
 	REQUIRE(!result2.isOk());
 }
 
-TEST_CASE("ParserArrayAccessorFailureNoEnclosure")
+TEST_CASE("Parser::ArrayAccessor::FailureNoEnclosure")
 {
 	std::string txt = "[";
 
@@ -96,7 +96,7 @@ TEST_CASE("ParserArrayAccessorFailureNoEnclosure")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserArrayAccessorFailureEmptyString")
+TEST_CASE("Parser::ArrayAccessor::FailureEmptyString")
 {
 	std::string txt = "";
 
@@ -106,7 +106,7 @@ TEST_CASE("ParserArrayAccessorFailureEmptyString")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserArrayAccessorCommentLineBeforeBegin")
+TEST_CASE("Parser::ArrayAccessor::CommentLineBeforeBegin")
 {
 	std::string txt = 
 		"// This is a comment\n"
@@ -120,7 +120,7 @@ TEST_CASE("ParserArrayAccessorCommentLineBeforeBegin")
 	REQUIRE(pArrAccessor.staticIndex == 0);
 }
 
-TEST_CASE("ParserArrayAccessorCommentLineAfterBegin")
+TEST_CASE("Parser::ArrayAccessor::CommentLineAfterBegin")
 {
 	std::string txt = 
 		"[\n"
@@ -135,7 +135,7 @@ TEST_CASE("ParserArrayAccessorCommentLineAfterBegin")
 	REQUIRE(pArrAccessor.staticIndex == 0);
 }
 
-TEST_CASE("ParserArrayAccessorCommentBlockBeforeEnd")
+TEST_CASE("Parser::ArrayAccessor::CommentBlockBeforeEnd")
 {
 	std::string txt = 
 		"[0 /* This is a comment */]";

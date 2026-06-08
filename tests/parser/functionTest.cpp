@@ -6,7 +6,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserFunctionSimple")
+TEST_CASE("Parser::Function::Simple")
 {
 	std::string txt =
 		"void myfunc() {\n"
@@ -21,7 +21,7 @@ TEST_CASE("ParserFunctionSimple")
 	REQUIRE(pFunc.returnTypeName == "void");
 }
 
-TEST_CASE("ParserFunctionWithParams")
+TEST_CASE("Parser::Function::WithParams")
 {
 	std::string txt =
 		"void myfunc(string str) {\n"
@@ -38,7 +38,7 @@ TEST_CASE("ParserFunctionWithParams")
 	REQUIRE(pFunc.arglist.parameters.at(0).name == "str");
 }
 
-TEST_CASE("ParserFunctionFailureNoArglist")
+TEST_CASE("Parser::Function::FailureNoArglist")
 {
 	std::string txt =
 		"void myfunc {\n"
@@ -52,7 +52,7 @@ TEST_CASE("ParserFunctionFailureNoArglist")
 	REQUIRE(result.details.message == "Expected \"(\", got \"{\"");
 }
 
-TEST_CASE("ParserFunctionFailureNoReturnType")
+TEST_CASE("Parser::Function::FailureNoReturnType")
 {
 	std::string txt =
 		"myfunc {\n"
@@ -66,7 +66,7 @@ TEST_CASE("ParserFunctionFailureNoReturnType")
 	REQUIRE(result.details.message == "Expected name");
 }
 
-TEST_CASE("ParserFunctionWithStatements")
+TEST_CASE("Parser::Function::WithStatements")
 {
 	std::string txt =
 		"string myfunc() {\n"
@@ -88,7 +88,7 @@ TEST_CASE("ParserFunctionWithStatements")
 	REQUIRE(std::dynamic_pointer_cast<gscript::ParserStatement>(pFunc.body.statements.at(2)));
 }
 
-TEST_CASE("ParserFunctionFailureNoEnclosure")
+TEST_CASE("Parser::Function::FailureNoEnclosure")
 {
 	std::string txt =
 		"string myfunc() {\n"
@@ -105,7 +105,7 @@ TEST_CASE("ParserFunctionFailureNoEnclosure")
 	// TODO - need to fix line numbers in errors - line 4 or 5 maybe
 }
 
-TEST_CASE("ParserFunctionReturn")
+TEST_CASE("Parser::Function::Return")
 {
 	std::string txt =
 		"int myfunc() {\n"
@@ -124,7 +124,7 @@ TEST_CASE("ParserFunctionReturn")
 	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(ret->value.components.at(0))->value == "42");
 }
 
-TEST_CASE("ParserFunctionCommentLineBefore")
+TEST_CASE("Parser::Function::CommentLineBefore")
 {
 	std::string txt =
 		"// This is a comment\n"
@@ -140,7 +140,7 @@ TEST_CASE("ParserFunctionCommentLineBefore")
 	REQUIRE(pFunc.returnTypeName == "void");
 }
 
-TEST_CASE("ParserFunctionCommentLineBeforeBlockEnd")
+TEST_CASE("Parser::Function::CommentLineBeforeBlockEnd")
 {
 	std::string txt =
 		"void myfunc() {\n"
@@ -156,7 +156,7 @@ TEST_CASE("ParserFunctionCommentLineBeforeBlockEnd")
 	REQUIRE(pFunc.returnTypeName == "void");
 }
 
-TEST_CASE("ParserFunctionCommentBlockAfterType")
+TEST_CASE("Parser::Function::CommentBlockAfterType")
 {
 	std::string txt =
 		"void /* This is a comment */ myfunc() {\n"
@@ -171,7 +171,7 @@ TEST_CASE("ParserFunctionCommentBlockAfterType")
 	REQUIRE(pFunc.returnTypeName == "void");
 }
 
-TEST_CASE("ParserFunctionCommentBlockAfterName")
+TEST_CASE("Parser::Function::CommentBlockAfterName")
 {
 	std::string txt =
 		"void myfunc /* This is a comment */ () {\n"
@@ -186,7 +186,7 @@ TEST_CASE("ParserFunctionCommentBlockAfterName")
 	REQUIRE(pFunc.returnTypeName == "void");
 }
 
-TEST_CASE("ParserFunctionCommentBlockAfterArglist")
+TEST_CASE("Parser::Function::CommentBlockAfterArglist")
 {
 	std::string txt =
 		"void myfunc() /* This is a comment */ {\n"
@@ -201,7 +201,7 @@ TEST_CASE("ParserFunctionCommentBlockAfterArglist")
 	REQUIRE(pFunc.returnTypeName == "void");
 }
 
-TEST_CASE("ParserFunctionCommentBlocksBetweenStatements")
+TEST_CASE("Parser::Function::CommentBlocksBetweenStatements")
 {
 	std::string txt =
 		"string myfunc() {\n"

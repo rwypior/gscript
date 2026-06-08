@@ -13,7 +13,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE_METHOD(GscriptTest, "CompilerPrototypeResolvingNestedFuncCall")
+TEST_CASE_METHOD(GscriptTest, "Compiler::Prototype::ResolvingNestedFuncCall")
 {
 	std::string txt =
 		"int getint() {\n"
@@ -64,7 +64,7 @@ TEST_CASE_METHOD(GscriptTest, "CompilerPrototypeResolvingNestedFuncCall")
 	REQUIRE(stmt0_call0->getFunc().get()->getName() == "otherfunc");
 }
 
-TEST_CASE_METHOD(GscriptTest, "CompilerPrototypeResolvingVariablesReads")
+TEST_CASE_METHOD(GscriptTest, "Compiler::Prototype::ResolvingVariablesReads")
 {
 	std::string txt =
 		"void somefunc() {\n"

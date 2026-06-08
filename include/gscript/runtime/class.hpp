@@ -22,6 +22,8 @@ namespace gscript
 
 	class ScriptClass : public ScriptNamespace
 	{
+		friend class ScriptClassPrototype;
+
 	public:
 		static constexpr char keywordThis[] = "this";
 
@@ -29,7 +31,8 @@ namespace gscript
 		SCRIPT_API virtual ~ScriptClass();
 		SCRIPT_API ScriptClass(ScriptScopeBase& scope, const std::string &name, ScriptClass *base = nullptr);
 
-		SCRIPT_API ScriptMethod *findMethod(const std::string &name, const PARAMS_T &params, bool searchParents = true, bool searchBase = true);
+		SCRIPT_API ScriptMethod *findMethod(const std::string &name, const PARAMS_T& params, bool searchParents = true, bool searchBase = true);
+		SCRIPT_API ScriptMethod *findOperator(OperatorType operatorType, const PARAMS_T& params, bool searchParents = true, bool searchBase = true);
 		SCRIPT_API ScriptClass *getBase() const;
 
 		SCRIPT_API bool isBaseOf(const ScriptClass *base) const;
@@ -47,7 +50,12 @@ namespace gscript
 		SCRIPT_API std::unique_ptr<ScriptClassInstance> instantiate(const CALLABLE_PARAMS_T &c = CALLABLE_PARAMS_T());
 
 		SCRIPT_API void initialize(ScriptClassInstance &instance);
+
+		SCRIPT_API virtual std::vector<std::unique_ptr<ScriptFieldDeclaration>>& getFields();
+		SCRIPT_API virtual const std::vector<std::unique_ptr<ScriptFieldDeclaration>>& getFields() const;
 		SCRIPT_API void addFieldDeclaration(std::unique_ptr<ScriptFieldDeclaration>&& svd);
+		SCRIPT_API ScopedAddress findFieldAddr(const std::string& name);
+		SCRIPT_API ScriptFieldDeclaration* findField(const std::string& name);
 
 		SCRIPT_API const std::string &getName() const;
 

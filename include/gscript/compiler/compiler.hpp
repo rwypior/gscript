@@ -81,6 +81,7 @@ namespace gscript
 
 		void SCRIPT_API finalize(ScriptNamespace& ns);
 		void SCRIPT_API finalizeScope(ScriptScopeBase& scope);
+		void SCRIPT_API finalizeClass(std::unique_ptr<ScriptClass>& cls);
 		void SCRIPT_API finalizeCallable(std::shared_ptr<ScriptCallable>& callable, ScriptScopeBase& scope);
 		void SCRIPT_API finalizeCallable(std::unique_ptr<ScriptCallable>& callable, ScriptScopeBase& scope);
 	};

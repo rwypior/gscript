@@ -25,12 +25,13 @@ namespace gscript
 		: ScriptFunction(scope, name, returnType, parameters)
 		, accessModifier(modifier)
 	{
-		this->createThis(static_cast<ScriptClass&>(scope));
+		if (!(modifier & Modifier::Static))
+			this->createThis(static_cast<ScriptClass&>(scope));
 	}
 
 	std::unique_ptr<ScriptValue> ScriptMethod::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T& c)
 	{
-		assert(this->getThis().getValue() && "Methods must be run by instrun");
+		assert((this->accessModifier & Modifier::Static) || this->getThis().getValue() && "Methods must be run by instrun");
 
 		this->validateParams(c);
 

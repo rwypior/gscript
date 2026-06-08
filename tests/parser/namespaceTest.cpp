@@ -3,7 +3,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserNamespaceSimple")
+TEST_CASE("Parser::Namespace::Simple")
 {
 	std::string txt =
 		"namespace MyNamespace {\n"
@@ -19,7 +19,7 @@ TEST_CASE("ParserNamespaceSimple")
 	REQUIRE(pNamespace.functions.empty());
 }
 
-TEST_CASE("ParserNamespaceFailureNoNamespaceKeyword")
+TEST_CASE("Parser::Namespace::FailureNoNamespaceKeyword")
 {
 	std::string txt =
 		"MyNamespace {\n"
@@ -33,7 +33,7 @@ TEST_CASE("ParserNamespaceFailureNoNamespaceKeyword")
 	REQUIRE(result.details.message == "Expected \"namespace\"");
 }
 
-TEST_CASE("ParserNamespaceFailureNoOpening")
+TEST_CASE("Parser::Namespace::FailureNoOpening")
 {
 	std::string txt =
 		"namespace MyNamespace\n"
@@ -46,7 +46,7 @@ TEST_CASE("ParserNamespaceFailureNoOpening")
 	REQUIRE(result.details.message == "Expected \"{\", got empty string");
 }
 
-TEST_CASE("ParserNamespaceFailureNoEnclosure")
+TEST_CASE("Parser::Namespace::FailureNoEnclosure")
 {
 	std::string txt =
 		"namespace MyNamespace {\n"
@@ -60,7 +60,7 @@ TEST_CASE("ParserNamespaceFailureNoEnclosure")
 	REQUIRE(result.details.message == "Expected \"}\", got empty string");
 }
 
-TEST_CASE("ParserNamespaceWithClasses")
+TEST_CASE("Parser::Namespace::WithClasses")
 {
 	std::string txt =
 		"namespace MyNamespace {\n"
@@ -80,7 +80,7 @@ TEST_CASE("ParserNamespaceWithClasses")
 	REQUIRE(pNamespace.functions.empty());
 }
 
-TEST_CASE("ParserNamespaceWithFunctions")
+TEST_CASE("Parser::Namespace::WithFunctions")
 {
 	std::string txt =
 		"namespace MyNamespace {\n"
@@ -100,7 +100,7 @@ TEST_CASE("ParserNamespaceWithFunctions")
 	REQUIRE(pNamespace.functions.size() == 2);
 }
 
-TEST_CASE("ParserNamespaceWithNamespaces")
+TEST_CASE("Parser::Namespace::WithNamespaces")
 {
 	std::string txt =
 		"namespace MyNamespace {\n"
@@ -120,7 +120,7 @@ TEST_CASE("ParserNamespaceWithNamespaces")
 	REQUIRE(pNamespace.functions.empty());
 }
 
-TEST_CASE("ParserNamespaceWithEverything")
+TEST_CASE("Parser::Namespace::WithEverything")
 {
 	std::string txt =
 		"namespace MyNamespace {\n"
@@ -148,7 +148,7 @@ TEST_CASE("ParserNamespaceWithEverything")
 	REQUIRE(pNamespace.functions.size() == 2);
 }
 
-TEST_CASE("ParserNamespaceCommentBeforeNamespace")
+TEST_CASE("Parser::Namespace::CommentBeforeNamespace")
 {
 	std::string txt =
 		"// This is a namespace\n"
@@ -166,7 +166,7 @@ TEST_CASE("ParserNamespaceCommentBeforeNamespace")
 	REQUIRE(pNamespace.functions.empty());
 }
 
-TEST_CASE("ParserNamespaceCommentBlockBeforeNamespace")
+TEST_CASE("Parser::Namespace::CommentBlockBeforeNamespace")
 {
 	std::string txt =
 		"/* This is a namespace */\n"
@@ -184,7 +184,7 @@ TEST_CASE("ParserNamespaceCommentBlockBeforeNamespace")
 	REQUIRE(pNamespace.functions.empty());
 }
 
-TEST_CASE("ParserNamespaceCommentBeforeName")
+TEST_CASE("Parser::Namespace::CommentBeforeName")
 {
 	std::string txt =
 		"namespace //MyNamespace {\n"

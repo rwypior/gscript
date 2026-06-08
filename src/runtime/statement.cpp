@@ -18,6 +18,16 @@
 #include <cassert>
 #include <algorithm>
 
+namespace
+{
+	std::vector<std::unique_ptr<gscript::ScriptCallable>> callableVec(std::unique_ptr<gscript::ScriptCallable>&& callable)
+	{
+		std::vector<std::unique_ptr<gscript::ScriptCallable>> vec; 
+		vec.push_back(std::move(callable));
+		return vec;
+	}
+}
+
 namespace gscript
 {
 	ScriptStatement::ScriptStatement(const ScriptStatement& b)
@@ -36,6 +46,11 @@ namespace gscript
 		}
 
 		this->resolveOperations(sharedCallables.rbegin(), sharedCallables.rend(), this->callable);
+	}
+
+	ScriptStatement::ScriptStatement(std::unique_ptr<ScriptCallable>&& callable)
+		: ScriptStatement(callableVec(std::move(callable)))
+	{
 	}
 
 	ScriptStatement::ScriptStatement(ScriptStatement&& stmt) noexcept

@@ -4,6 +4,8 @@
 #include "gscript/runtime/funcParam.hpp"
 #include "gscript/runtime/literal.hpp"
 
+#include <sstream>
+
 namespace gscript
 {
 	PARAMS_T extractParams(std::vector<std::unique_ptr<ScriptStatement>>& statements)
@@ -31,5 +33,27 @@ namespace gscript
 		auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
 		stmtvecbody.push_back(std::make_unique<gscript::ScriptLiteral>(gscript::ScriptType::null()));
 		return std::make_unique<gscript::ScriptStatement>(std::move(stmtvecbody));
+	}
+
+	std::string parametersToString(const PARAMS_T& params, const bool withNewLines)
+	{
+		std::stringstream str;
+		str << "(";
+		if (withNewLines && !params.empty())
+			str << "\n";
+		for (unsigned int i = 0; i < params.size(); i++)
+		{
+			auto& param = params[i];
+			if (withNewLines)
+				str << "\t";
+
+			str << ScriptType::translateType(param.getType()->getTypeDescriptor());
+			if (withNewLines)
+				str << "\n";
+			else if (i < params.size() - 1)
+				str << ", ";
+		}
+		str << ")";
+		return str.str();
 	}
 }

@@ -5,5 +5,6 @@ target_sources(gscript PRIVATE
 	"pExternSpecial.cpp" "pFieldDeclaration.cpp" "pFor.cpp" "pForArglist.cpp" "pFuncCall.cpp" "pFunction.cpp" "pIf.cpp"
 	"pImportDirective.cpp" "pInherit.cpp" "pLineComment.cpp" "pListSeparator.cpp" "pLiteral.cpp" "pMethod.cpp"
 	"pNamespace.cpp" "pNameSpecifier.cpp" "pNew.cpp" "pOperator.cpp" "pReference.cpp" "pReturn.cpp" "pSpecialDirective.cpp"
-	"pStatement.cpp" "pTypeSpecifier.cpp" "pVar.cpp" "pVarDeclaration.cpp" "pWhile.cpp"
-  "ParseResult.cpp" "pChar.cpp" "pWord.cpp")
+	"pStatement.cpp" "pTypeSpecifier.cpp" "pVar.cpp" "pVarDeclaration.cpp" "pWhile.cpp" "pOperatorDeclaration.cpp"
+	"ParseResult.cpp" "pChar.cpp" "pWord.cpp"
+)

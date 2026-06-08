@@ -144,7 +144,7 @@ namespace
 		PayloadClass(gscript::ScriptScope& scope)
 			: gscript::ScriptClass(scope, "Payload", nullptr)
 		{
-			this->fieldDeclarations.push_back(gscript::createFieldDeclaration<PayloadValue::Type>("payload"));
+			this->fieldDeclarations.push_back(gscript::createFieldDeclaration<PayloadValue::Type>(*this, "payload"));
 			this->registerFunction(std::make_unique<PayloadConstructor>(*this));
 		}
 	};
@@ -215,7 +215,7 @@ namespace
 	};
 }
 
-TEST_CASE_METHOD(GscriptTest, "IntegrationExternValueTest")
+TEST_CASE_METHOD(GscriptTest, "Integration::ExternValueTest::Basic")
 {
 	std::string txt =
 		R"GSCRIPT(

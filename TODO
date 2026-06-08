@@ -1,6 +1,14 @@
 TODOs
 =====
 
+Top priority
+------------
+
+Fix failing tests
+
+Normal priority
+---------------
+
 - Change true, false and null to literals
 - Make VariableAccessors find addresses during compilation
 - Add test for nested scopes

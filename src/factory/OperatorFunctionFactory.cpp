@@ -4,8 +4,11 @@
 #include "gscript/runtime/varRead.hpp"
 #include "gscript/runtime/variable.hpp"
 #include "gscript/runtime/operator.hpp"
+#include "gscript/runtime/class.hpp"
 #include "gscript/type.hpp"
 #include "gscript/compileException.hpp"
+
+#include <sstream>
 
 namespace gscript
 {
@@ -70,11 +73,42 @@ namespace gscript
 			using type = ScriptNullValue;
 		};
 
+		// Operators
+
+		std::unique_ptr<gscript::ScriptValue> operator+(int a, std::unique_ptr<gscript::ScriptClassInstance>& b)
+		{
+			return nullptr;
+		}
+
+		std::unique_ptr<gscript::ScriptValue> operator-(int a, std::unique_ptr<gscript::ScriptClassInstance>& b)
+		{
+			return nullptr;
+		}
+
+		std::unique_ptr<gscript::ScriptValue> operator*(int a, std::unique_ptr<gscript::ScriptClassInstance>& b)
+		{
+			return nullptr;
+		}
+
+		std::unique_ptr<gscript::ScriptValue> operator/(int a, std::unique_ptr<gscript::ScriptClassInstance>& b)
+		{
+			return nullptr;
+		}
+
+		std::unique_ptr<gscript::ScriptValue> operator==(int a, std::unique_ptr<gscript::ScriptClassInstance>& b)
+		{
+			return nullptr;
+		}
+
+		std::unique_ptr<gscript::ScriptValue> operator!=(int a, std::unique_ptr<gscript::ScriptClassInstance>& b)
+		{
+			return nullptr;
+		}
+
 		// Functions
 
 		namespace Functions
 		{
-
 // Disable the 'unsafe mix of type' warnings
 #pragma warning(push)
 #pragma warning(disable: 4804 4805)
@@ -83,16 +117,22 @@ namespace gscript
 			std::unique_ptr<ScriptValue> Add(ScriptScopeBase& scope, ScriptCallable *left, ScriptCallable *right)
 			{
 				auto val = static_cast<T_LEFT*>(left->run(scope)->data())->getValue() + static_cast<T_RIGHT*>(right->run(scope)->data())->getValue();
-				return std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
+				if constexpr (isUniquePtr<decltype(val)>::value)
+					return val;
+				else
+					return std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 			}
 
 			template<typename T_LEFT, typename T_RIGHT>
 			std::unique_ptr<ScriptValue> AddTo(ScriptScopeBase& scope, ScriptCallable *left, ScriptCallable *right)
 			{
+				// TODO - we're getting ScriptVariable instead of ScriptReferenceVariable here,
+				// it's probably the reason why the variable isn't changing, check this!!!
 				auto val = static_cast<T_LEFT*>(left->run(scope)->data())->getValue() + static_cast<T_RIGHT*>(right->run(scope)->data())->getValue();
 				auto res = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
-				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
-				vr->get()->setValue(res->clone());
+				ScriptVarRead* vr = static_cast<ScriptVarReferenceRead*>(left);
+				auto var = vr->get();
+				var->setValue(res->clone());
 				return res;
 			}
 
@@ -108,7 +148,7 @@ namespace gscript
 			{
 				auto val = static_cast<T_LEFT*>(left->run(scope)->data())->getValue() - static_cast<T_RIGHT*>(right->run(scope)->data())->getValue();
 				auto res = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
-				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
+				ScriptVarRead* vr = static_cast<ScriptVarRead*>(left);
 				vr->get()->setValue(res->clone());
 				return res;
 			}
@@ -125,7 +165,7 @@ namespace gscript
 			{
 				auto val = static_cast<T_LEFT*>(left->run(scope)->data())->getValue() * static_cast<T_RIGHT*>(right->run(scope)->data())->getValue();
 				auto res = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
-				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
+				ScriptVarRead* vr = static_cast<ScriptVarRead*>(left);
 				vr->get()->setValue(res->clone());
 				return res;
 			}
@@ -142,7 +182,7 @@ namespace gscript
 			{
 				auto val = static_cast<T_LEFT*>(left->run(scope)->data())->getValue() / static_cast<T_RIGHT*>(right->run(scope)->data())->getValue();
 				auto res = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
-				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
+				ScriptVarRead* vr = static_cast<ScriptVarRead*>(left);
 				vr->get()->setValue(res->clone());
 				return res;
 			}
@@ -195,6 +235,7 @@ namespace gscript
 			std::unique_ptr<ScriptValue> PreDecrement(ScriptScopeBase& scope, ScriptCallable*, ScriptCallable *right)
 			{
 				auto val = static_cast<T_RIGHT*>(right->run(scope)->data())->getValue() - 1;
+				//auto val = --static_cast<T_RIGHT*>(right->run(scope)->data())->getValue();
 				auto res = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(right);
 				vr->get()->setValue(res->clone());
@@ -206,6 +247,7 @@ namespace gscript
 			{
 				auto data = left->run(scope)->data();
 				auto val = static_cast<T_LEFT*>(data)->getValue() - 1;
+				//auto val = static_cast<T_LEFT*>(data)->getValue()--;
 				auto newVal = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
 				auto res = data->clone();
 				ScriptVarRead *vr = static_cast<ScriptVarRead*>(left);
@@ -226,7 +268,6 @@ namespace gscript
 			template<typename T_LEFT>
 			std::unique_ptr<ScriptValue> PostIncrement(ScriptScopeBase& scope, ScriptCallable *left, ScriptCallable*)
 			{
-				//auto lvalue = left->run(scope);
 				auto data = left->run(scope)->data();
 				auto val = static_cast<T_LEFT*>(data)->getValue() + 1;
 				auto newVal = std::make_unique<typename OperatorReturnType<decltype(val)>::type>(val);
@@ -242,7 +283,7 @@ namespace gscript
 		// Factory
 
 		template<typename L, typename R>
-		OperatorFunction getFunction(OperatorType func)
+		OperatorFunction getFunctionPOD(OperatorType func)
 		{
 			switch (func)
 			{
@@ -270,36 +311,80 @@ namespace gscript
 			return nullptr;
 		}
 
-		template<typename T>
-		OperatorFunction getFunction(ValueType right, OperatorType func)
+		template<typename L, typename R>
+		OperatorFunction getFunction(std::shared_ptr<ScriptCallable> left, std::shared_ptr<ScriptCallable> right, OperatorType func)
 		{
-			switch (right)
+			if constexpr (std::is_same<L, ScriptClassValue>::value)
 			{
-			case ValueType::Bool: return getFunction<T, ScriptBoolValue>(func);
-			case ValueType::Char: return getFunction<T, ScriptCharValue>(func);
-			case ValueType::Byte: return getFunction<T, ScriptByteValue>(func);
-			case ValueType::Int: return getFunction <T, ScriptIntValue> (func);
-			case ValueType::UnsignedInt: return getFunction<T, ScriptUnsignedIntValue>(func);
-			case ValueType::Float: return getFunction<T, ScriptFloatValue>(func);
-			case ValueType::Double: return getFunction<T, ScriptDoubleValue>(func);
-			case ValueType::Void: return getFunction<T, ScriptNullValue>(func);
+				auto& cls = std::static_pointer_cast<ScriptClassType>(left->getType())->getClass();
+				auto params = PARAMS_T{ { left->getType() }, { right->getType() } };
+				auto oper = cls.findOperator(
+					func, params
+				);
+				if (!oper)
+				{
+					throw CompileException((
+							std::stringstream() << "Cannot find an operator \"" << getOperatorFunctionName(func) << "\" " <<
+							parametersToString(params) << " in class \"" << cls.getName() << "\""
+						).str()
+					);
+				}
+				return [&oper](ScriptScopeBase& scope, ScriptCallable* left, ScriptCallable* right) {
+					CALLABLE_PARAMS_T cparams;
+					cparams.push_back(left->run(scope));
+					cparams.push_back(right->run(scope));
+					return oper->run(scope, std::move(cparams));
+				};
+			}
+			else if constexpr (std::is_same<R, ScriptClassValue>::value)
+			{
+				return nullptr;
+			}
+			else
+			{
+				return getFunctionPOD<L, R>(func);
 			}
 
 			return nullptr;
 		}
 
-		OperatorFunction getFunction(ValueType left, ValueType right, OperatorType func)
+		template<typename T>
+		OperatorFunction getFunction(std::shared_ptr<ScriptCallable> left, std::shared_ptr<ScriptCallable> right, OperatorType func)
 		{
-			switch (left)
+			ValueType typeRight = right ? right->getType()->getTypeDescriptor() : ValueType::Void;
+
+			switch (typeRight)
 			{
-			case ValueType::Bool: return getFunction<ScriptBoolValue>(right, func);
-			case ValueType::Char: return getFunction<ScriptCharValue>(right, func);
-			case ValueType::Byte: return getFunction<ScriptByteValue>(right, func);
-			case ValueType::Int: return getFunction<ScriptIntValue>(right, func);
-			case ValueType::UnsignedInt: return getFunction<ScriptUnsignedIntValue>(right, func);
-			case ValueType::Float: return getFunction<ScriptFloatValue>(right, func);
-			case ValueType::Double: return getFunction<ScriptDoubleValue>(right, func);
-			case ValueType::Void: return getFunction<ScriptNullValue>(right, func);
+			case ValueType::Bool: return getFunction<T, ScriptBoolValue>(std::move(left), std::move(right), func);
+			case ValueType::Char: return getFunction<T, ScriptCharValue>(std::move(left), std::move(right), func);
+			case ValueType::Byte: return getFunction<T, ScriptByteValue>(std::move(left), std::move(right), func);
+			case ValueType::Int: return getFunction <T, ScriptIntValue>(std::move(left), std::move(right), func);
+			case ValueType::UnsignedInt: return getFunction<T, ScriptUnsignedIntValue>(std::move(left), std::move(right), func);
+			case ValueType::Float: return getFunction<T, ScriptFloatValue>(std::move(left), std::move(right), func);
+			case ValueType::Double: return getFunction<T, ScriptDoubleValue>(std::move(left), std::move(right), func);
+			case ValueType::Void: return getFunction<T, ScriptNullValue>(std::move(left), std::move(right), func);
+			case ValueType::Class: return getFunction<T, ScriptClassValue>(std::move(left), std::move(right), func);
+			}
+
+			return nullptr;
+		}
+
+		OperatorFunction getFunction(std::shared_ptr<ScriptCallable> left, std::shared_ptr<ScriptCallable> right, OperatorType func)
+		{
+			ValueType typeLeft = left ? left->getType()->getTypeDescriptor() : ValueType::Void;
+			ValueType typeRight = right ? right->getType()->getTypeDescriptor() : ValueType::Void;
+
+			switch (typeLeft)
+			{
+			case ValueType::Bool: return getFunction<ScriptBoolValue>(std::move(left), std::move(right), func);
+			case ValueType::Char: return getFunction<ScriptCharValue>(std::move(left), std::move(right), func);
+			case ValueType::Byte: return getFunction<ScriptByteValue>(std::move(left), std::move(right), func);
+			case ValueType::Int: return getFunction<ScriptIntValue>(std::move(left), std::move(right), func);
+			case ValueType::UnsignedInt: return getFunction<ScriptUnsignedIntValue>(std::move(left), std::move(right), func);
+			case ValueType::Float: return getFunction<ScriptFloatValue>(std::move(left), std::move(right), func);
+			case ValueType::Double: return getFunction<ScriptDoubleValue>(std::move(left), std::move(right), func);
+			case ValueType::Void: return getFunction<ScriptNullValue>(std::move(left), std::move(right), func);
+			case ValueType::Class: return getFunction<ScriptClassValue>(std::move(left), std::move(right), func);
 			}
 
 			return nullptr;

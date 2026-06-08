@@ -3,7 +3,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserIfSimple")
+TEST_CASE("Parser::If::Simple")
 {
 	std::string txt = "if (myvar) {}";
 
@@ -13,7 +13,7 @@ TEST_CASE("ParserIfSimple")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserIfSingleStatement")
+TEST_CASE("Parser::If::SingleStatement")
 {
 	std::string txt = "if (myvar) statement;";
 
@@ -23,7 +23,7 @@ TEST_CASE("ParserIfSingleStatement")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserIfWithBody")
+TEST_CASE("Parser::If::WithBody")
 {
 	std::string txt =
 		"if (true)\n"
@@ -37,7 +37,7 @@ TEST_CASE("ParserIfWithBody")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserIfFailureNoArgList")
+TEST_CASE("Parser::If::FailureNoArgList")
 {
 	std::string txt = "if";
 
@@ -48,7 +48,7 @@ TEST_CASE("ParserIfFailureNoArgList")
 	REQUIRE(result.details.message == "Expected argument list");
 }
 
-TEST_CASE("ParserIfFailureNoBody")
+TEST_CASE("Parser::If::FailureNoBody")
 {
 	std::string txt = "if(something)\n";
 
@@ -59,7 +59,7 @@ TEST_CASE("ParserIfFailureNoBody")
 	REQUIRE(result.details.message == "Expected statement");
 }
 
-TEST_CASE("ParserIfFailureMultipleStatements")
+TEST_CASE("Parser::If::FailureMultipleStatements")
 {
 	std::string txt = "if(a; b; c)\n";
 
@@ -70,7 +70,7 @@ TEST_CASE("ParserIfFailureMultipleStatements")
 	REQUIRE(result.details.message == "Expected \")\", got \"; b; c)\"");
 }
 
-TEST_CASE("ParserIfElse")
+TEST_CASE("Parser::If::Else")
 {
 	std::string txt = 
 		"if(myvar) {}\n"
@@ -82,7 +82,7 @@ TEST_CASE("ParserIfElse")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserIfElseSingleStatements")
+TEST_CASE("Parser::If::ElseSingleStatements")
 {
 	std::string txt = 
 		"if(myvar) statement;\n"
@@ -94,7 +94,7 @@ TEST_CASE("ParserIfElseSingleStatements")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserIfElseIf")
+TEST_CASE("Parser::If::ElseIf")
 {
 	std::string txt = 
 		"if(myvar) {}\n"
@@ -106,7 +106,7 @@ TEST_CASE("ParserIfElseIf")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserIfElseIfSingleStatements")
+TEST_CASE("Parser::If::ElseIfSingleStatements")
 {
 	std::string txt = 
 		"if(myvar) statement;\n"
@@ -118,7 +118,7 @@ TEST_CASE("ParserIfElseIfSingleStatements")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserIfElseIfElse")
+TEST_CASE("Parser::If::ElseIfElse")
 {
 	std::string txt = 
 		"if(myvar) {}\n"
@@ -131,7 +131,7 @@ TEST_CASE("ParserIfElseIfElse")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserIfElseIfElseSingleStatements")
+TEST_CASE("Parser::If::ElseIfElseSingleStatements")
 {
 	std::string txt = 
 		"if(myvar) statement;\n"
@@ -145,7 +145,7 @@ TEST_CASE("ParserIfElseIfElseSingleStatements")
 	REQUIRE(!pif.pelse.body.body.statements.empty());
 }
 
-TEST_CASE("ParserIfCommentLineBefore")
+TEST_CASE("Parser::If::CommentLineBefore")
 {
 	std::string txt = 
 		"// This is a comment\n"
@@ -157,7 +157,7 @@ TEST_CASE("ParserIfCommentLineBefore")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserIfCommentLineBeforeTwice")
+TEST_CASE("Parser::If::CommentLineBeforeTwice")
 {
 	std::string txt = 
 		"// This is a comment, \n"
@@ -170,7 +170,7 @@ TEST_CASE("ParserIfCommentLineBeforeTwice")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserIfCommentBlockBetweenIfAndArglist")
+TEST_CASE("Parser::If::CommentBlockBetweenIfAndArglist")
 {
 	std::string txt = "if /* This is a comment */ (myvar) {}";
 
@@ -180,7 +180,7 @@ TEST_CASE("ParserIfCommentBlockBetweenIfAndArglist")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserIfCommentBlockBetweenArglistAndBlock")
+TEST_CASE("Parser::If::CommentBlockBetweenArglistAndBlock")
 {
 	std::string txt = "if (myvar) /* This is a comment */ {}";
 
@@ -190,7 +190,7 @@ TEST_CASE("ParserIfCommentBlockBetweenArglistAndBlock")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserIfCommentBlockInArglist")
+TEST_CASE("Parser::If::CommentBlockInArglist")
 {
 	std::string txt = "if (myvar /* This is a comment */) {}";
 
@@ -200,7 +200,7 @@ TEST_CASE("ParserIfCommentBlockInArglist")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserIfCommentBlockInElseArglist")
+TEST_CASE("Parser::If::CommentBlockInElseArglist")
 {
 	std::string txt = 
 		"if (myvar) {}\n"
@@ -212,7 +212,7 @@ TEST_CASE("ParserIfCommentBlockInElseArglist")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserIfCommentsBetweenIfElses")
+TEST_CASE("Parser::If::CommentsBetweenIfElses")
 {
 	std::string txt = 
 		"if (myvar) {}\n"

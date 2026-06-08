@@ -1,5 +1,7 @@
 #include "gscript/runtime/return.hpp"
 
+#include <cassert>
+
 namespace gscript
 {
 	ScriptReturn::ScriptReturn(const ScriptReturn& b)
@@ -19,7 +21,9 @@ namespace gscript
 
 	std::unique_ptr<ScriptValue> ScriptReturn::run(ScriptScopeBase& scope, const CALLABLE_PARAMS_T &c)
 	{
-		return std::make_unique<ScriptReturnValue>(this->statement->run(scope));
+		auto retval = this->statement->run(scope);
+		assert(retval->getType() && "Returned value must have a type");
+		return std::make_unique<ScriptReturnValue>(std::move(retval));
 	}
 
 	const std::shared_ptr<ScriptType> ScriptReturn::getType() const

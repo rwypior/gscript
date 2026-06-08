@@ -10,7 +10,7 @@ namespace gscript
 	}
 
 	FunctionParameter::FunctionParameter(const std::shared_ptr<ScriptType> type, const std::string &name)
-		: ScriptVariable(name, type, ScriptType::createEmptyValue(type->getTypeDescriptor()))
+		: ScriptVariable(name, type, ScriptType::createEmptyValue(type->getTypeDescriptor(), type))
 	{
 	}
 

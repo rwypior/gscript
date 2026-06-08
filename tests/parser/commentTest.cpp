@@ -3,7 +3,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserCommentSingleLine")
+TEST_CASE("Parser::Comment::SingleLine")
 {
 	{
 		std::string txt = "// This is a comment";
@@ -39,7 +39,7 @@ TEST_CASE("ParserCommentSingleLine")
 	}
 }
 
-TEST_CASE("ParserCommentLineWithNumbers")
+TEST_CASE("Parser::Comment::LineWithNumbers")
 {
 	std::string txt = "// Th1s 1s 4 c0mm3nt";
 
@@ -51,7 +51,7 @@ TEST_CASE("ParserCommentLineWithNumbers")
 	REQUIRE(result.result.end == txt.end());
 }
 
-TEST_CASE("ParserCommentLineMultiple")
+TEST_CASE("Parser::Comment::LineMultiple")
 {
 	std::string txt =
 		"// This is a comment\n"
@@ -65,7 +65,7 @@ TEST_CASE("ParserCommentLineMultiple")
 	REQUIRE(result.result.end == txt.end());
 }
 
-TEST_CASE("ParserCommentLineMultiplePrependedWithWhitelines")
+TEST_CASE("Parser::Comment::LineMultiplePrependedWithWhitelines")
 {
 	std::string txt =
 		"		// This is a comment\n"
@@ -79,7 +79,7 @@ TEST_CASE("ParserCommentLineMultiplePrependedWithWhitelines")
 	REQUIRE(result.result.end == txt.end());
 }
 
-TEST_CASE("ParserCommentLineMultipleWithSpecialCharacters")
+TEST_CASE("Parser::Comment::LineMultipleWithSpecialCharacters")
 {
 	std::string txt =
 		"// This is a comment, \n"
@@ -93,7 +93,7 @@ TEST_CASE("ParserCommentLineMultipleWithSpecialCharacters")
 	REQUIRE(result.result.end == txt.end());
 }
 
-TEST_CASE("ParserCommentLineMultipleWithBlankLines")
+TEST_CASE("Parser::Comment::LineMultipleWithBlankLines")
 {
 	std::string txt =
 		"// This is a comment\n"
@@ -108,7 +108,7 @@ TEST_CASE("ParserCommentLineMultipleWithBlankLines")
 	REQUIRE(result.result.end == txt.end());
 }
 
-TEST_CASE("ParserCommentBlock")
+TEST_CASE("Parser::Comment::Block")
 {
 	{
 		std::string txt = "/* This is a block comment */";
@@ -122,7 +122,7 @@ TEST_CASE("ParserCommentBlock")
 	}
 }
 
-TEST_CASE("ParserCommentBlockMultiline")
+TEST_CASE("Parser::Comment::BlockMultiline")
 {
 	{
 		std::string txt =

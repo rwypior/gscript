@@ -79,7 +79,11 @@ namespace gscript
 
 		SCRIPT_API virtual bool matches(const ScriptVariable &var);
 
+		SCRIPT_API static std::unique_ptr<ScriptType> createClass(ScriptClass *cls);
 		SCRIPT_API static std::unique_ptr<ScriptType> createClass(const std::string &classname, ScriptScopeBase& scope);
+		SCRIPT_API static std::unique_ptr<ScriptType> createReference(const std::shared_ptr<ScriptType> type);
+		SCRIPT_API static std::unique_ptr<ScriptType> createClassReference(ScriptClass* cls);
+		SCRIPT_API static std::unique_ptr<ScriptType> createClassReference(const std::string& classname, ScriptScopeBase& scope);
 		SCRIPT_API static std::unique_ptr<ScriptType> createPod(ValueType valuetype);
 		SCRIPT_API static std::unique_ptr<ScriptType> createVoid();
 		SCRIPT_API static std::unique_ptr<ScriptType> createNull();

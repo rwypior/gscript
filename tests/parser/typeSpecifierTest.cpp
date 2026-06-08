@@ -3,7 +3,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserTypeSpecifierSimple")
+TEST_CASE("Parser::TypeSpecifier::Simple")
 {
 	std::string txt = "int";
 
@@ -16,7 +16,7 @@ TEST_CASE("ParserTypeSpecifierSimple")
 	REQUIRE(pTypeSpecifier.name == "int");
 }
 
-TEST_CASE("ParserTypeSpecifierReference")
+TEST_CASE("Parser::TypeSpecifier::Reference")
 {
 	std::string txt = "int&";
 
@@ -29,7 +29,7 @@ TEST_CASE("ParserTypeSpecifierReference")
 	REQUIRE(pTypeSpecifier.name == "int");
 }
 
-TEST_CASE("ParserTypeSpecifierArray")
+TEST_CASE("Parser::TypeSpecifier::Array")
 {
 	std::string txt = "int[]";
 
@@ -42,7 +42,7 @@ TEST_CASE("ParserTypeSpecifierArray")
 	REQUIRE(pTypeSpecifier.name == "int");
 }
 
-TEST_CASE("ParserTypeSpecifierArrayReference")
+TEST_CASE("Parser::TypeSpecifier::ArrayReference")
 {
 	std::string txt = "int[]&";
 
@@ -55,7 +55,7 @@ TEST_CASE("ParserTypeSpecifierArrayReference")
 	REQUIRE(pTypeSpecifier.name == "int");
 }
 
-TEST_CASE("ParserTypeSpecifierFailureEmptyString")
+TEST_CASE("Parser::TypeSpecifier::FailureEmptyString")
 {
 	std::string txt = "";
 
@@ -66,7 +66,7 @@ TEST_CASE("ParserTypeSpecifierFailureEmptyString")
 	REQUIRE(result.details.message == "Expected name");
 }
 
-TEST_CASE("ParserTypeSpecifierFailureArrayNoName")
+TEST_CASE("Parser::TypeSpecifier::FailureArrayNoName")
 {
 	std::string txt = "[]";
 
@@ -77,7 +77,7 @@ TEST_CASE("ParserTypeSpecifierFailureArrayNoName")
 	REQUIRE(result.details.message == "Expected name");
 }
 
-TEST_CASE("ParserTypeSpecifierFailureReferenceNoName")
+TEST_CASE("Parser::TypeSpecifier::FailureReferenceNoName")
 {
 	std::string txt = "&";
 
@@ -88,7 +88,7 @@ TEST_CASE("ParserTypeSpecifierFailureReferenceNoName")
 	REQUIRE(result.details.message == "Expected name");
 }
 
-TEST_CASE("ParserTypeSpecifierFailureArrayReferenceNoName")
+TEST_CASE("Parser::TypeSpecifier::FailureArrayReferenceNoName")
 {
 	std::string txt = "[]&";
 
@@ -99,7 +99,7 @@ TEST_CASE("ParserTypeSpecifierFailureArrayReferenceNoName")
 	REQUIRE(result.details.message == "Expected name");
 }
 
-TEST_CASE("ParserTypeSpecifierCommentLineBefore")
+TEST_CASE("Parser::TypeSpecifier::CommentLineBefore")
 {
 	std::string txt = 
 		"// This is a comment\n"
@@ -114,7 +114,7 @@ TEST_CASE("ParserTypeSpecifierCommentLineBefore")
 	REQUIRE(pTypeSpecifier.name == "int");
 }
 
-TEST_CASE("ParserTypeSpecifierCommentBlockBeforeReference")
+TEST_CASE("Parser::TypeSpecifier::CommentBlockBeforeReference")
 {
 	std::string txt = "int /* This is a comment */ &";
 
@@ -127,7 +127,7 @@ TEST_CASE("ParserTypeSpecifierCommentBlockBeforeReference")
 	REQUIRE(pTypeSpecifier.name == "int");
 }
 
-TEST_CASE("ParserTypeSpecifierCommentBlockAfterReference")
+TEST_CASE("Parser::TypeSpecifier::CommentBlockAfterReference")
 {
 	std::string txt = "int& /* This is a comment */";
 
@@ -140,7 +140,7 @@ TEST_CASE("ParserTypeSpecifierCommentBlockAfterReference")
 	REQUIRE(pTypeSpecifier.name == "int");
 }
 
-TEST_CASE("ParserTypeSpecifierCommentBlockBeforeArray")
+TEST_CASE("Parser::TypeSpecifier::CommentBlockBeforeArray")
 {
 	std::string txt = "int /* This is a comment */ []";
 
@@ -153,7 +153,7 @@ TEST_CASE("ParserTypeSpecifierCommentBlockBeforeArray")
 	REQUIRE(pTypeSpecifier.name == "int");
 }
 
-TEST_CASE("ParserTypeSpecifierCommentBlockAfterArray")
+TEST_CASE("Parser::TypeSpecifier::CommentBlockAfterArray")
 {
 	std::string txt = "int [] /* This is a comment */";
 

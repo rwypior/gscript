@@ -3,7 +3,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserNameSpecifierAlnum")
+TEST_CASE("Parser::NameSpecifier::Alnum")
 {
 	std::string txt = "qwertyuiopasdfghjklzxcvbnm0123456789";
 
@@ -14,7 +14,7 @@ TEST_CASE("ParserNameSpecifierAlnum")
 	REQUIRE(pName.name == txt);
 }
 
-TEST_CASE("ParserNameSpecifierEmpty")
+TEST_CASE("Parser::NameSpecifier::Empty")
 {
 	std::string txt = "";
 
@@ -24,7 +24,7 @@ TEST_CASE("ParserNameSpecifierEmpty")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserNameSpecifierSingleColon")
+TEST_CASE("Parser::NameSpecifier::SingleColon")
 {
 	std::string txt = ":";
 
@@ -34,7 +34,7 @@ TEST_CASE("ParserNameSpecifierSingleColon")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserNameSpecifierStartsWithSpaces")
+TEST_CASE("Parser::NameSpecifier::StartsWithSpaces")
 {
 	std::string txt = " name";
 
@@ -45,7 +45,7 @@ TEST_CASE("ParserNameSpecifierStartsWithSpaces")
 	REQUIRE(pName.name == "name");
 }
 
-TEST_CASE("ParserNameSpecifierWithSpaces")
+TEST_CASE("Parser::NameSpecifier::WithSpaces")
 {
 	std::string txt = "na me";
 
@@ -56,7 +56,7 @@ TEST_CASE("ParserNameSpecifierWithSpaces")
 	REQUIRE(pName.name == "na"); // The rest is trimmed
 }
 
-TEST_CASE("ParserNameSpecifierStartsWithNumbers")
+TEST_CASE("Parser::NameSpecifier::StartsWithNumbers")
 {
 	std::string txt = "123name";
 
@@ -66,7 +66,7 @@ TEST_CASE("ParserNameSpecifierStartsWithNumbers")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserNameSpecifierAllowedCharacters")
+TEST_CASE("Parser::NameSpecifier::AllowedCharacters")
 {
 	// Currently only _ is allowed
 	std::string txt = "some_name";
@@ -78,7 +78,7 @@ TEST_CASE("ParserNameSpecifierAllowedCharacters")
 	REQUIRE(pName.name == "some_name");
 }
 
-TEST_CASE("ParserNameSpecifierDisallowedCharacters")
+TEST_CASE("Parser::NameSpecifier::DisallowedCharacters")
 {
 	std::string txt1 = "my@email";
 	std::string txt2 = "!negate";
@@ -128,7 +128,7 @@ TEST_CASE("ParserNameSpecifierDisallowedCharacters")
 	REQUIRE(!gscript::ParserNameSpecifier().parse(txt11).isOk());
 }
 
-TEST_CASE("ParserNameSpecifierNamespaceAccessor")
+TEST_CASE("Parser::NameSpecifier::NamespaceAccessor")
 {
 	std::string txt = "namespace::name";
 
@@ -139,7 +139,7 @@ TEST_CASE("ParserNameSpecifierNamespaceAccessor")
 	REQUIRE(pName.name == "namespace::name");
 }
 
-TEST_CASE("ParserNameSpecifierNamespaceAccessorBegin")
+TEST_CASE("Parser::NameSpecifier::NamespaceAccessorBegin")
 {
 	{
 		std::string txt = "::something";
@@ -161,7 +161,7 @@ TEST_CASE("ParserNameSpecifierNamespaceAccessorBegin")
 	}
 }
 
-TEST_CASE("ParserNameSpecifierNamespaceAccessorEnd")
+TEST_CASE("Parser::NameSpecifier::NamespaceAccessorEnd")
 {
 	{
 		std::string txt = "something::";

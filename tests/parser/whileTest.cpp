@@ -4,7 +4,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserWhileSimple")
+TEST_CASE("Parser::While::Simple")
 {
 	std::string txt = "while (myvar) {}";
 
@@ -15,7 +15,7 @@ TEST_CASE("ParserWhileSimple")
 	REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pwhile.arglist.parameters.at(0)->components.at(0))->name == "myvar");
 }
 
-TEST_CASE("ParserWhileWithBody")
+TEST_CASE("Parser::While::WithBody")
 {
 	std::string txt = 
 		"while (myvar)\n"
@@ -31,7 +31,7 @@ TEST_CASE("ParserWhileWithBody")
 	REQUIRE(pwhile.body.body.statements.size() == 1);
 }
 
-TEST_CASE("ParserWhileFailureNoBody")
+TEST_CASE("Parser::While::FailureNoBody")
 {
 	std::string txt = "while (myvar)";
 
@@ -42,7 +42,7 @@ TEST_CASE("ParserWhileFailureNoBody")
 	REQUIRE(result.details.message == "Expected statement");
 }
 
-TEST_CASE("ParserWhileFailureNoArglist")
+TEST_CASE("Parser::While::FailureNoArglist")
 {
 	std::string txt = "while";
 
@@ -53,7 +53,7 @@ TEST_CASE("ParserWhileFailureNoArglist")
 	REQUIRE(result.details.message == "Expected argument list");
 }
 
-TEST_CASE("ParserWhileFailureNoArgs")
+TEST_CASE("Parser::While::FailureNoArgs")
 {
 	std::string txt = "while ()";
 
@@ -64,7 +64,7 @@ TEST_CASE("ParserWhileFailureNoArgs")
 	REQUIRE(result.details.message == "Expected statement");
 }
 
-TEST_CASE("ParserWhileCommentLineBefore")
+TEST_CASE("Parser::While::CommentLineBefore")
 {
 	std::string txt = 
 		"// This is a comment\n"
@@ -77,7 +77,7 @@ TEST_CASE("ParserWhileCommentLineBefore")
 	REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pwhile.arglist.parameters.at(0)->components.at(0))->name == "myvar");
 }
 
-TEST_CASE("ParserWhileCommentBlockAfterWhile")
+TEST_CASE("Parser::While::CommentBlockAfterWhile")
 {
 	std::string txt = "while /* This is a comment */ (myvar) {}";
 
@@ -88,7 +88,7 @@ TEST_CASE("ParserWhileCommentBlockAfterWhile")
 	REQUIRE(std::static_pointer_cast<gscript::ParserVar>(pwhile.arglist.parameters.at(0)->components.at(0))->name == "myvar");
 }
 
-TEST_CASE("ParserWhileCommentBlockAfterArglist")
+TEST_CASE("Parser::While::CommentBlockAfterArglist")
 {
 	std::string txt = "while (myvar) /* This is a comment */ {}";
 

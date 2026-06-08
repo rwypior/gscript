@@ -15,7 +15,7 @@
 #include <vector>
 #include <memory>
 
-TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionSimple")
+TEST_CASE_METHOD(GscriptTest, "Runtime::Function::Simple")
 {
 	// Function
 	gscript::ScriptFunction myFunc(globalNamespace, "myfunc", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), {}, {});
@@ -47,7 +47,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionSimple")
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 25);
 }
 
-TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionReturn")
+TEST_CASE_METHOD(GscriptTest, "Runtime::Function::Return")
 {
 	// Function
 	gscript::ScriptFunction myFunc(globalNamespace, "myfunc", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), {}, {});
@@ -77,7 +77,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionReturn")
 	REQUIRE(result->as<gscript::ScriptIntValue>().getValue() == 42);
 }
 
-TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionReturnFromBlock")
+TEST_CASE_METHOD(GscriptTest, "Runtime::Function::ReturnFromBlock")
 {
 	// Function
 	gscript::ScriptFunction myFunc(globalNamespace, "myfunc", gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace), {}, {});
@@ -130,7 +130,7 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionReturnFromBlock")
 	REQUIRE(result->as<gscript::ScriptIntValue>().getValue() == 42);
 }
 
-TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionWithParams")
+TEST_CASE_METHOD(GscriptTest, "Runtime::Function::WithParams")
 {
 	// Function
 	gscript::ScriptFunction myFunc(
@@ -175,7 +175,54 @@ TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionWithParams")
 	REQUIRE(myVariable1.getValue()->as<gscript::ScriptIntValue>().getValue() == 1337);
 }
 
-TEST_CASE_METHOD(GscriptTest, "RuntimeFunctionRecursive")
+TEST_CASE_METHOD(GscriptTest, "Runtime::Function::WithParamsAdd")
+{
+	// Function
+	gscript::ScriptFunction myFunc(
+		globalNamespace, 
+		"myfunc", 
+		gscript::ScriptType::create(gscript::ValueType::Int, globalNamespace),
+		{
+			{ std::make_shared<gscript::ScriptType>(gscript::ValueType::Int), "arg1" },
+			{ std::make_shared<gscript::ScriptType>(gscript::ValueType::Int), "arg2" }
+		},
+		{}
+	);
+
+	// Function block
+	auto add = std::make_unique<gscript::ScriptOperatorAdd>(gscript::OperatorLinkage::Both);
+	auto varreadParam1 = std::make_unique<gscript::ScriptVarReadPrototype>("arg1");
+	auto varreadParam2 = std::make_unique<gscript::ScriptVarReadPrototype>("arg2");
+	auto stmtvecbody = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
+	stmtvecbody.push_back(std::move(varreadParam1));
+	stmtvecbody.push_back(std::move(add));
+	stmtvecbody.push_back(std::move(varreadParam2));
+	auto stmt1 = std::make_unique<gscript::ScriptStatement>(std::move(stmtvecbody));
+	stmt1->setup(myFunc);
+	auto ret = std::make_unique<gscript::ScriptReturn>(std::move(stmt1));
+	auto stmtvecbody1 = std::vector<std::unique_ptr<gscript::ScriptCallable>>();
+	stmtvecbody1.push_back(std::move(ret));
+	auto eb = std::make_unique<gscript::ScriptExecutiveBlock>(std::move(stmtvecbody1));
+
+	myFunc.merge(std::move(eb));
+	myFunc.setup(myFunc);
+
+	// Test
+
+	std::vector<std::unique_ptr<gscript::ScriptValue>> params1;
+	params1.push_back(std::make_unique<gscript::ScriptIntValue>(42));
+	params1.push_back(std::make_unique<gscript::ScriptIntValue>(84));
+	auto result = myFunc.run(myFunc, std::move(params1));
+	REQUIRE(result->as<gscript::ScriptIntValue>().getValue() == 126);
+
+	std::vector<std::unique_ptr<gscript::ScriptValue>> params2;
+	params2.push_back(std::make_unique<gscript::ScriptIntValue>(1300));
+	params2.push_back(std::make_unique<gscript::ScriptIntValue>(37));
+	auto result2 = myFunc.run(myFunc, std::move(params2));
+	REQUIRE(result2->as<gscript::ScriptIntValue>().getValue() == 1337);
+}
+
+TEST_CASE_METHOD(GscriptTest, "Runtime::Function::Recursive")
 {
 	// Function
 

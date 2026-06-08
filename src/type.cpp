@@ -119,12 +119,38 @@ namespace gscript
 		return std::make_shared<ScriptType>(ValueType::Bool);
 	}
 
+	std::unique_ptr<ScriptType> ScriptType::createClass(ScriptClass* cls)
+	{
+		return std::make_unique<ScriptClassType>(*cls);
+	}
+
 	std::unique_ptr<ScriptType> ScriptType::createClass(const std::string& classname, ScriptScopeBase& scope)
 	{
+		if (auto cls = dynamic_cast<ScriptClass*>(&scope))
+		{
+			if (cls->getName() == classname)
+				return createClass(cls);
+		}
+
 		if (ScriptClass* c = scope.getGlobalNamespace()->findClass(classname))
-			return std::make_unique<ScriptClassType>(*c);
+			return createClass(c);
 
 		throw CompileException(std::string("Class \"") + classname + "\" was not found");
+	}
+
+	std::unique_ptr<ScriptType> ScriptType::createReference(const std::shared_ptr<ScriptType> type)
+	{
+		return std::make_unique<ScriptReferenceType>(type);
+	}
+
+	std::unique_ptr<ScriptType> ScriptType::createClassReference(ScriptClass* cls)
+	{
+		return createReference(createClass(cls));
+	}
+
+	std::unique_ptr<ScriptType> ScriptType::createClassReference(const std::string & classname, ScriptScopeBase & scope)
+	{
+		return createReference(createClass(classname, scope));
 	}
 
 	std::unique_ptr<ScriptType> ScriptType::createPod(ValueType valuetype)

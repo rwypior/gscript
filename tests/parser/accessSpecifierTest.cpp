@@ -3,7 +3,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserAccessSpecifierPublic")
+TEST_CASE("Parser::AccessSpecifier::Public")
 {
 	std::string txt = "public";
 
@@ -14,7 +14,7 @@ TEST_CASE("ParserAccessSpecifierPublic")
 	REQUIRE(pAcc.getModifier() == gscript::Modifier::AccessPublic);
 }
 
-TEST_CASE("ParserAccessSpecifierPrivate")
+TEST_CASE("Parser::AccessSpecifier::Private")
 {
 	std::string txt = "private";
 
@@ -25,7 +25,7 @@ TEST_CASE("ParserAccessSpecifierPrivate")
 	REQUIRE(pAcc.getModifier() == gscript::Modifier::AccessPrivate);
 }
 
-TEST_CASE("ParserAccessSpecifierProtected")
+TEST_CASE("Parser::AccessSpecifier::Protected")
 {
 	std::string txt = "protected";
 
@@ -36,7 +36,7 @@ TEST_CASE("ParserAccessSpecifierProtected")
 	REQUIRE(pAcc.getModifier() == gscript::Modifier::AccessProtected);
 }
 
-TEST_CASE("ParserAccessSpecifierConst")
+TEST_CASE("Parser::AccessSpecifier::Const")
 {
 	std::string txt = "const";
 
@@ -47,7 +47,7 @@ TEST_CASE("ParserAccessSpecifierConst")
 	REQUIRE(pAcc.getModifier() & (gscript::Modifier::AccessPublic | gscript::Modifier::Const));
 }
 
-TEST_CASE("ParserAccessSpecifierStatic")
+TEST_CASE("Parser::AccessSpecifier::Static")
 {
 	std::string txt = "static";
 
@@ -58,7 +58,7 @@ TEST_CASE("ParserAccessSpecifierStatic")
 	REQUIRE(pAcc.getModifier() == (gscript::Modifier::AccessPublic | gscript::Modifier::Static));
 }
 
-TEST_CASE("ParserAccessSpecifierVirtual")
+TEST_CASE("Parser::AccessSpecifier::Virtual")
 {
 	std::string txt = "virtual";
 
@@ -69,7 +69,7 @@ TEST_CASE("ParserAccessSpecifierVirtual")
 	REQUIRE(pAcc.getModifier() == (gscript::Modifier::AccessPublic | gscript::Modifier::Virtual));
 }
 
-TEST_CASE("ParserAccessSpecifierUnknown")
+TEST_CASE("Parser::AccessSpecifier::Unknown")
 {
 	std::string txt = "something";
 
@@ -79,7 +79,7 @@ TEST_CASE("ParserAccessSpecifierUnknown")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserAccessSpecifierMixed")
+TEST_CASE("Parser::AccessSpecifier::Mixed")
 {
 	std::string txt = "public static";
 
@@ -90,7 +90,7 @@ TEST_CASE("ParserAccessSpecifierMixed")
 	REQUIRE(pAcc.getModifier() & (gscript::Modifier::AccessPublic | gscript::Modifier::Static));
 }
 
-TEST_CASE("ParserAccessSpecifierRepeated")
+TEST_CASE("Parser::AccessSpecifier::Repeated")
 {
 	std::string txt = "public public";
 
@@ -101,7 +101,7 @@ TEST_CASE("ParserAccessSpecifierRepeated")
 	REQUIRE(pAcc.getModifier() & Bitfield(gscript::Modifier::AccessPublic));
 }
 
-TEST_CASE("ParserAccessSpecifierEmpty")
+TEST_CASE("Parser::AccessSpecifier::Empty")
 {
 	// Whatever is set in the constructor is the default
 
@@ -126,7 +126,7 @@ TEST_CASE("ParserAccessSpecifierEmpty")
 	}
 }
 
-TEST_CASE("ParserAccessSpecifierLineCommentBefore")
+TEST_CASE("Parser::AccessSpecifier::LineCommentBefore")
 {
 	std::string txt = 
 		"// This is a comment\n"
@@ -139,7 +139,7 @@ TEST_CASE("ParserAccessSpecifierLineCommentBefore")
 	REQUIRE(pAcc.getModifier() & (gscript::Modifier::AccessPublic | gscript::Modifier::Static));
 }
 
-TEST_CASE("ParserAccessSpecifierLineCommentBetween")
+TEST_CASE("Parser::AccessSpecifier::LineCommentBetween")
 {
 	std::string txt = 
 		"public\n"

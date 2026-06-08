@@ -3,7 +3,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserInheritSimple")
+TEST_CASE("Parser::Inherit::Simple")
 {
 	std::string txt = ":something";
 
@@ -13,7 +13,7 @@ TEST_CASE("ParserInheritSimple")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserInheritSpaces")
+TEST_CASE("Parser::Inherit::Spaces")
 {
 	std::string txt = "			   :  	 something		";
 
@@ -23,7 +23,7 @@ TEST_CASE("ParserInheritSpaces")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserInheritFailure")
+TEST_CASE("Parser::Inherit::Failure")
 {
 	std::string txt = "  just some stuff    ";
 
@@ -34,7 +34,7 @@ TEST_CASE("ParserInheritFailure")
 	REQUIRE(result.details.message == "Expected \":\", got \"j\"");
 }
 
-TEST_CASE("ParserInheritFailureEmpty")
+TEST_CASE("Parser::Inherit::FailureEmpty")
 {
 	std::string txt = "";
 
@@ -45,7 +45,7 @@ TEST_CASE("ParserInheritFailureEmpty")
 	REQUIRE(result.details.message == "Expected \":\", got empty string");
 }
 
-TEST_CASE("ParserInheritFailureNoTarget")
+TEST_CASE("Parser::Inherit::FailureNoTarget")
 {
 	std::string txt = ":";
 
@@ -56,7 +56,7 @@ TEST_CASE("ParserInheritFailureNoTarget")
 	REQUIRE(result.details.message == "Expected name");
 }
 
-TEST_CASE("ParserInheritCommentLineBefore")
+TEST_CASE("Parser::Inherit::CommentLineBefore")
 {
 	std::string txt = 
 		"// This is a comment\n"
@@ -68,7 +68,7 @@ TEST_CASE("ParserInheritCommentLineBefore")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserInheritCommentBlockBefore")
+TEST_CASE("Parser::Inherit::CommentBlockBefore")
 {
 	std::string txt = "/* This is a comment */:something";
 
@@ -78,7 +78,7 @@ TEST_CASE("ParserInheritCommentBlockBefore")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserInheritCommentBlockAfterColon")
+TEST_CASE("Parser::Inherit::CommentBlockAfterColon")
 {
 	std::string txt = ": /* This is a comment */something";
 
@@ -88,7 +88,7 @@ TEST_CASE("ParserInheritCommentBlockAfterColon")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserInheritCommentLineAfterName")
+TEST_CASE("Parser::Inherit::CommentLineAfterName")
 {
 	std::string txt = ": something // This is a comment";
 

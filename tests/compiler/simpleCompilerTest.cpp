@@ -12,7 +12,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE_METHOD(GscriptTest, "CompilerFuncCall")
+TEST_CASE_METHOD(GscriptTest, "Compiler::Simple::FuncCall")
 {
 	std::string txt =
 		"void myfunc() {\n"
@@ -57,7 +57,7 @@ TEST_CASE_METHOD(GscriptTest, "CompilerFuncCall")
 }
 
 
-TEST_CASE_METHOD(GscriptTest, "CompilerEmptyFunctions")
+TEST_CASE_METHOD(GscriptTest, "Compiler::Simple::EmptyFunctions")
 {
 	std::string txt =
 		"void myfunc() {\n"
@@ -83,7 +83,7 @@ TEST_CASE_METHOD(GscriptTest, "CompilerEmptyFunctions")
 	REQUIRE(otherfunc);
 }
 
-TEST_CASE_METHOD(GscriptTest, "CompilerClassVarRead")
+TEST_CASE_METHOD(GscriptTest, "Compiler::Simple::ClassVarRead")
 {
 	std::string txt =
 		"class myClass {\n"
@@ -116,7 +116,7 @@ TEST_CASE_METHOD(GscriptTest, "CompilerClassVarRead")
 	REQUIRE(myvar->getValue()->as<gscript::ScriptIntValue>().getValue() == 42);
 }
 
-TEST_CASE_METHOD(GscriptTest, "CompilerClassInheritance")
+TEST_CASE_METHOD(GscriptTest, "Compiler::Simple::ClassInheritance")
 {
 	std::string txt =
 		"class base {\n"
@@ -151,7 +151,7 @@ TEST_CASE_METHOD(GscriptTest, "CompilerClassInheritance")
 	REQUIRE(fnc->getName() == "fnc");
 }
 
-TEST_CASE_METHOD(GscriptTest, "CompilerObjectCall")
+TEST_CASE_METHOD(GscriptTest, "Compiler::Simple::ObjectCall")
 {
 	std::string txt =
 		"class myClass {\n"
@@ -190,7 +190,7 @@ TEST_CASE_METHOD(GscriptTest, "CompilerObjectCall")
 	REQUIRE(res->as<gscript::ScriptIntValue>().getValue() == 42);
 }
 
-TEST_CASE_METHOD(GscriptTest, "CompilerVirtualCall")
+TEST_CASE_METHOD(GscriptTest, "Compiler::Simple::VirtualCall")
 {
 	std::string txt =
 		"class base {\n"

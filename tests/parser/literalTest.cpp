@@ -3,7 +3,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserLiteralInt")
+TEST_CASE("Parser::Literal::Int")
 {
 	std::string txt = "42";
 
@@ -15,7 +15,7 @@ TEST_CASE("ParserLiteralInt")
 	REQUIRE(pLit.type == gscript::ValueType::Int);
 }
 
-TEST_CASE("ParserLiteralDouble")
+TEST_CASE("Parser::Literal::Double")
 {
 	std::string txt = "13.37";
 
@@ -27,7 +27,7 @@ TEST_CASE("ParserLiteralDouble")
 	REQUIRE(pLit.type == gscript::ValueType::Double);
 }
 
-TEST_CASE("ParserLiteralFloat")
+TEST_CASE("Parser::Literal::Float")
 {
 	{
 		std::string txt = "13.37f";
@@ -52,7 +52,7 @@ TEST_CASE("ParserLiteralFloat")
 	}
 }
 
-TEST_CASE("ParserLiteralDoubleFloat")
+TEST_CASE("Parser::Literal::DoubleFloat")
 {
 	std::string txt = "13.37ff";
 
@@ -63,7 +63,7 @@ TEST_CASE("ParserLiteralDoubleFloat")
 	REQUIRE(result.details.message == "Invalid character \"f\" in numeric literal");
 }
 
-TEST_CASE("ParserLiteralDoubleWithSpaces")
+TEST_CASE("Parser::Literal::DoubleWithSpaces")
 {
 	std::string txt = "13 . 37";
 
@@ -74,7 +74,7 @@ TEST_CASE("ParserLiteralDoubleWithSpaces")
 	REQUIRE(pLit.value == "13");
 }
 
-TEST_CASE("ParserLiteralString")
+TEST_CASE("Parser::Literal::String")
 {
 	std::string txt = "\"something\"";
 
@@ -86,7 +86,7 @@ TEST_CASE("ParserLiteralString")
 	REQUIRE(pLit.type == gscript::ValueType::String);
 }
 
-TEST_CASE("ParserLiteralDecimalSeparatorNoDigits")
+TEST_CASE("Parser::Literal::DecimalSeparatorNoDigits")
 {
 	{
 		std::string txt = ".";

@@ -22,6 +22,7 @@ namespace gscript
 		ScriptNamespace(const ScriptNamespace&) = delete;
 		SCRIPT_API ScriptNamespace(ScriptScopeBase* parentScope = NULL);
 		SCRIPT_API ScriptNamespace(ScriptScopeBase* parentScope, const std::string &name);
+		SCRIPT_API ScriptNamespace(ScriptNamespace&& ns);
 		
 		// Register a given class in the namespace, and take ownership of it
 		SCRIPT_API ScriptClass& registerClass(std::unique_ptr<ScriptClass> &&c);

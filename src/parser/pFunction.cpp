@@ -12,6 +12,7 @@
 #include "gscript/parser/pExternSpecial.hpp"
 #include "gscript/parser/pAbstractSpecial.hpp"
 #include "gscript/parser/pComment.hpp"
+#include "gscript/parser/pOperatorDeclaration.hpp"
 
 #include "gscript/compileException.hpp"
 
@@ -45,13 +46,26 @@ namespace gscript
 		}
 
 		typeEnd = parseComment(typeEnd, itrange.end);
-		ParseResult name = (ParserNameSpecifier()).parse(StringIteratorRange(typeEnd, itrange.end));
-		if (!name.isOk())
-			return name;
 
-		this->name = name.getWord();
+		ParserOperatorDeclaration oper;
 
-		ParseResult arglist = this->arglist.parse(StringIteratorRange(name.result.end, itrange.end));
+		ParseResult nameResult = oper.parse(StringIteratorRange(typeEnd, itrange.end));
+		if (nameResult.isOk())
+		{
+			this->operatorType = oper.operatorType;
+		}
+		else if (!nameResult.isFatal())
+		{
+			nameResult = (ParserNameSpecifier()).parse(StringIteratorRange(typeEnd, itrange.end));
+			if (!nameResult.isOk())
+				return nameResult;
+		}
+		else
+			return nameResult;
+
+		this->name = nameResult.getWord();
+
+		ParseResult arglist = this->arglist.parse(StringIteratorRange(nameResult.result.end, itrange.end));
 		if (!arglist.isOk())
 			return arglist;
 

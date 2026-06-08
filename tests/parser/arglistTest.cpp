@@ -4,7 +4,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserArglistSimple")
+TEST_CASE("Parser::Arglist::Simple")
 {
 	std::string txt = "(int a, string something, float s0m3numb3r, someclass cls)";
 
@@ -23,7 +23,7 @@ TEST_CASE("ParserArglistSimple")
 	REQUIRE(pArglist.parameters.at(3).name == "cls");
 }
 
-TEST_CASE("ParserArglistDefaults")
+TEST_CASE("Parser::Arglist::Defaults")
 {
 	std::string txt = "(int a, int b = 42, int c = 1337)";
 
@@ -43,7 +43,7 @@ TEST_CASE("ParserArglistDefaults")
 	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pArglist.parameters.at(2).value.components.at(0))->value == "1337");
 }
 
-TEST_CASE("ParserArglistEmpty")
+TEST_CASE("Parser::Arglist::Empty")
 {
 	std::string txt = "()";
 
@@ -54,7 +54,7 @@ TEST_CASE("ParserArglistEmpty")
 	REQUIRE(pArglist.parameters.size() == 0);
 }
 
-TEST_CASE("ParserArglistNoArgName")
+TEST_CASE("Parser::Arglist::NoArgName")
 {
 	// NOTE - maybe a parameter without a name should be allowed?
 
@@ -66,7 +66,7 @@ TEST_CASE("ParserArglistNoArgName")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserArglistInvalidArgname")
+TEST_CASE("Parser::Arglist::InvalidArgname")
 {
 	std::string txt = "(int some:thing)";
 
@@ -76,7 +76,7 @@ TEST_CASE("ParserArglistInvalidArgname")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserArglistFailureNoEnclosure")
+TEST_CASE("Parser::Arglist::FailureNoEnclosure")
 {
 	std::string txt = "(";
 
@@ -86,7 +86,7 @@ TEST_CASE("ParserArglistFailureNoEnclosure")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserArglistFailureEmptyString")
+TEST_CASE("Parser::Arglist::FailureEmptyString")
 {
 	std::string txt = "";
 
@@ -96,7 +96,7 @@ TEST_CASE("ParserArglistFailureEmptyString")
 	REQUIRE(!result.isOk());
 }
 
-TEST_CASE("ParserArglistCommentLineBeforeStart")
+TEST_CASE("Parser::Arglist::CommentLineBeforeStart")
 {
 	std::string txt = 
 		"// This is a comment\n"
@@ -108,7 +108,7 @@ TEST_CASE("ParserArglistCommentLineBeforeStart")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserArglistCommentBlockBetweenArgs")
+TEST_CASE("Parser::Arglist::CommentBlockBetweenArgs")
 {
 	std::string txt =
 		"(int x, /* This is a comment */ string str)";
@@ -119,7 +119,7 @@ TEST_CASE("ParserArglistCommentBlockBetweenArgs")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserArglistCommentLineBetweenArgs")
+TEST_CASE("Parser::Arglist::CommentLineBetweenArgs")
 {
 	std::string txt =
 		"(int x, // This is a comment - string str)\n"
@@ -132,7 +132,7 @@ TEST_CASE("ParserArglistCommentLineBetweenArgs")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserArglistCommentBlockBetweenTypeAndName")
+TEST_CASE("Parser::Arglist::CommentBlockBetweenTypeAndName")
 {
 	std::string txt =
 		"(int /* This is a comment */ x, string str)";
@@ -143,7 +143,7 @@ TEST_CASE("ParserArglistCommentBlockBetweenTypeAndName")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserArglistCommentBlockBeforeArglistEnd")
+TEST_CASE("Parser::Arglist::CommentBlockBeforeArglistEnd")
 {
 	std::string txt =
 		"(int x /* This is a comment */)";

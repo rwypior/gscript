@@ -20,6 +20,8 @@ namespace gscript
 
 		std::string externName = "";
 
+		OperatorType operatorType = OperatorType::Invalid;
+
 		TypeDescriptor returnTypeClassifier;
 		ParserBlockBody body;
 

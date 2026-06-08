@@ -3,7 +3,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserReferenceSimple")
+TEST_CASE("Parser::Reference::Simple")
 {
 	std::string txt = "&";
 
@@ -13,7 +13,7 @@ TEST_CASE("ParserReferenceSimple")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserReferenceWithName")
+TEST_CASE("Parser::Reference::WithName")
 {
 	std::string txt = "&something";
 
@@ -23,7 +23,7 @@ TEST_CASE("ParserReferenceWithName")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserReferenceFailure")
+TEST_CASE("Parser::Reference::Failure")
 {
 	std::string txt = "something";
 
@@ -34,7 +34,7 @@ TEST_CASE("ParserReferenceFailure")
 	REQUIRE(result.details.message == "Expected \"&\", got \"s\"");
 }
 
-TEST_CASE("ParserReferenceFailureEmptyString")
+TEST_CASE("Parser::Reference::FailureEmptyString")
 {
 	std::string txt = "";
 
@@ -45,7 +45,7 @@ TEST_CASE("ParserReferenceFailureEmptyString")
 	REQUIRE(result.details.message == "Expected \"&\", got empty string");
 }
 
-TEST_CASE("ParserReferenceCommentLineBefore")
+TEST_CASE("Parser::Reference::CommentLineBefore")
 {
 	std::string txt = 
 		"// This is a comment\n"
@@ -57,7 +57,7 @@ TEST_CASE("ParserReferenceCommentLineBefore")
 	REQUIRE(result.isOk());
 }
 
-TEST_CASE("ParserReferenceCommentLineAfter")
+TEST_CASE("Parser::Reference::CommentLineAfter")
 {
 	std::string txt = 
 		"&\n"

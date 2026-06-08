@@ -68,10 +68,7 @@ namespace gscript
 
 	void ScriptOperator::assignOperatorFunction()
 	{
-		ValueType typeLeft = this->left ? this->left->getType()->getTypeDescriptor() : ValueType::Void;
-		ValueType typeRight = this->right ? this->right->getType()->getTypeDescriptor() : ValueType::Void;
-
-		this->operatorFunction = OperatorFunctionFactory::getFunction(typeLeft, typeRight, this->getOperatorType());
+		this->operatorFunction = OperatorFunctionFactory::getFunction(this->left, this->right, this->getOperatorType());
 	}
 
 	bool ScriptOperator::needFactory() const

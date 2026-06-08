@@ -3,7 +3,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserOperatorSimple")
+TEST_CASE("Parser::Operator::Simple")
 {
 	std::string txt = "+";
 
@@ -14,7 +14,7 @@ TEST_CASE("ParserOperatorSimple")
 	REQUIRE(pOper.getChar() == "+");
 }
 
-TEST_CASE("ParserOperatorIncrement")
+TEST_CASE("Parser::Operator::Increment")
 {
 	std::string txt = "++";
 
@@ -25,7 +25,7 @@ TEST_CASE("ParserOperatorIncrement")
 	REQUIRE(pOper.getChar() == "++");
 }
 
-TEST_CASE("ParserOperatorTriplePlus")
+TEST_CASE("Parser::Operator::TriplePlus")
 {
 	std::string txt = "+++";
 
@@ -36,7 +36,7 @@ TEST_CASE("ParserOperatorTriplePlus")
 	REQUIRE(pOper.getChar() == "++");
 }
 
-TEST_CASE("ParserOperatorMultipleOperators")
+TEST_CASE("Parser::Operator::MultipleOperators")
 {
 	// Things like this will fail in statement tests
 
@@ -49,7 +49,7 @@ TEST_CASE("ParserOperatorMultipleOperators")
 	REQUIRE(pOper.getChar() == "+");
 }
 
-TEST_CASE("ParserOperatorFailureNoOperator")
+TEST_CASE("Parser::Operator::FailureNoOperator")
 {
 	std::string txt = "something";
 
@@ -60,7 +60,7 @@ TEST_CASE("ParserOperatorFailureNoOperator")
 	REQUIRE(result.details.message == "Expected operator, got \"something\"");
 }
 
-TEST_CASE("ParserOperatorFailureEmptyString")
+TEST_CASE("Parser::Operator::FailureEmptyString")
 {
 	std::string txt = "";
 

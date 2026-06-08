@@ -5,7 +5,7 @@
 
 #include <catch2/catch_all.hpp>
 
-TEST_CASE("ParserReturnSimple")
+TEST_CASE("Parser::Return::Simple")
 {
 	std::string txt = "return 42;";
 
@@ -17,7 +17,7 @@ TEST_CASE("ParserReturnSimple")
 	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pReturn.value.components.at(0))->value == "42");
 }
 
-TEST_CASE("ParserReturnFuncCall")
+TEST_CASE("Parser::Return::FuncCall")
 {
 	std::string txt = "return somefunc();";
 
@@ -29,7 +29,7 @@ TEST_CASE("ParserReturnFuncCall")
 	REQUIRE(std::static_pointer_cast<gscript::ParserFuncCall>(pReturn.value.components.at(0))->name == "somefunc");
 }
 
-TEST_CASE("ParserReturnFailureNothing")
+TEST_CASE("Parser::Return::FailureNothing")
 {
 	std::string txt = "return";
 
@@ -40,7 +40,7 @@ TEST_CASE("ParserReturnFailureNothing")
 	REQUIRE(result.details.message == "Empty statement");
 }
 
-TEST_CASE("ParserReturnFailureNoSemicolon")
+TEST_CASE("Parser::Return::FailureNoSemicolon")
 {
 	std::string txt = "return 13";
 
@@ -51,7 +51,7 @@ TEST_CASE("ParserReturnFailureNoSemicolon")
 	REQUIRE(result.details.message == "Expected \";\", got empty string");
 }
 
-TEST_CASE("ParserReturnFailureEmptyString")
+TEST_CASE("Parser::Return::FailureEmptyString")
 {
 	std::string txt = "";
 
@@ -62,7 +62,7 @@ TEST_CASE("ParserReturnFailureEmptyString")
 	REQUIRE(result.details.message == "Expected \"return\", got empty statement");
 }
 
-TEST_CASE("ParserReturnCommentLineBefore")
+TEST_CASE("Parser::Return::CommentLineBefore")
 {
 	std::string txt = 
 		"// This is a comment\n"
@@ -76,7 +76,7 @@ TEST_CASE("ParserReturnCommentLineBefore")
 	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pReturn.value.components.at(0))->value == "42");
 }
 
-TEST_CASE("ParserReturnCommentLineBeforeTwice")
+TEST_CASE("Parser::Return::CommentLineBeforeTwice")
 {
 	std::string txt = 
 		"// This is a comment\n"
@@ -91,7 +91,7 @@ TEST_CASE("ParserReturnCommentLineBeforeTwice")
 	REQUIRE(std::static_pointer_cast<gscript::ParserLiteral>(pReturn.value.components.at(0))->value == "42");
 }
 
-TEST_CASE("ParserReturnCommentBlockAfterReturn")
+TEST_CASE("Parser::Return::CommentBlockAfterReturn")
 {
 	std::string txt = "return /* This is a comment */ 42;";
 

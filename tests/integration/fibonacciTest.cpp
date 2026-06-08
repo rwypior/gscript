@@ -7,7 +7,7 @@
 
 #include <ostream>
 
-TEST_CASE("IntegrationFibonacciTest")
+TEST_CASE("Integration::FibonacciTest::Basic")
 {
 	std::string txt =
 		R"GSCRIPT(

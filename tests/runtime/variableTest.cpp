@@ -161,6 +161,6 @@ TEST_CASE_METHOD(GscriptTest, "Runtime::Variable::FailureNotFound")
 
 	REQUIRE_THROWS_MATCHES(
 		std::make_unique<gscript::ScriptVarRead>(globalNamespace, "notexisting"), 
-		gscript::CompileException, 
-		Catch::Matchers::Message("Variable \"notexisting\" not found"));
+		gscript::VariableNotFoundException,
+		Catch::Matchers::Message("Variable \"notexisting\" was not found"));
 }

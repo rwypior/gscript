@@ -16,6 +16,27 @@ namespace gscript
 	class ScriptFunction;
 	class ScriptFieldDeclaration;
 
+	enum class VariableAccessorCode
+	{
+		Ok,
+		UnknownError,
+		VariableNotFound,
+		ParameterNotFound,
+		FieldNotFound,
+		InvalidParamContext,
+		InvalidFieldContext
+	};
+
+	class AccessorException : public CompileException
+	{
+	public:
+		SCRIPT_API AccessorException(VariableAccessorCode code, const std::string& varname);
+
+	private:
+		VariableAccessorCode code = VariableAccessorCode::UnknownError;
+		const std::string& varname;
+	};
+
 	// Variable accessor stores a scope and address of given variable which
 	// may be used at later point to access said variable
 	// Scope is mutable and may be changed by scoped call, for example by calling
@@ -44,6 +65,40 @@ namespace gscript
 		size_t addr = NullAddr;
 	};
 
+	// Invalid variable accessor - used as a return value to denote a problem occurred
+	// in VariableAccessor::find call
+	class InvalidAccessor
+	{
+	public:
+		virtual std::unique_ptr<std::exception> createException() const = 0;
+		virtual VariableAccessorCode getCode() const = 0;
+	};
+
+	template<typename Base>
+	class InvalidAccessorImpl : public InvalidAccessor, public Base
+	{
+	public:
+		InvalidAccessorImpl(VariableAccessorCode code, const std::string& varname)
+		{
+			assert(code != VariableAccessorCode::Ok && "Something's not right here");
+		}
+		~InvalidAccessorImpl() = default;
+
+		virtual std::unique_ptr<std::exception> createException() const override
+		{
+			return std::make_unique<AccessorException>(this->code, this->varname);
+		}
+
+		virtual VariableAccessorCode getCode() const override
+		{
+			return this->code;
+		}
+
+	private:
+		VariableAccessorCode code = VariableAccessorCode::UnknownError;
+		std::string varname;
+	};
+
 	// Variable accessor stores a scope and address of given function parameter which
 	// may be used at later point to access said variable
 	// Works in a similar way to VariableAccessor.
@@ -69,16 +124,9 @@ namespace gscript
 	public:
 		using VariableAccessor::VariableAccessor;
 
-		/*SCRIPT_API virtual ~FieldAccessor();
-		SCRIPT_API FieldAccessor();
-		SCRIPT_API FieldAccessor(ScriptScopeBase* scope, size_t addr);
-		SCRIPT_API FieldAccessor(const FieldAccessor& b);*/
-
-		//SCRIPT_API virtual std::unique_ptr<FieldAccessor> clone() const;
 		SCRIPT_API virtual std::unique_ptr<VariableAccessor> clone() const override;
 
 		SCRIPT_API static std::unique_ptr<FieldAccessor> find(ScriptScopeBase& scope, const std::string& name, bool searchParents = true);
-		//SCRIPT_API ScriptFieldDeclaration* get(ScriptScopeBase* scope = nullptr);
 		SCRIPT_API ScriptVariable* get(ScriptScopeBase* scope = nullptr) override;
 		SCRIPT_API const std::shared_ptr<ScriptType> getType() const override;
 		SCRIPT_API void setScope(ScriptScopeBase* scope);

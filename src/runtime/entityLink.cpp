@@ -3,8 +3,42 @@
 #include "gscript/runtime/function.hpp"
 #include "gscript/runtime/class.hpp"
 
+#include <sstream>
+
+namespace
+{
+	std::string getAccessorExceptionMessage(gscript::VariableAccessorCode code, const std::string& varname)
+	{
+		switch (code)
+		{
+		case gscript::VariableAccessorCode::VariableNotFound:
+			return (std::stringstream() << "Variable \"" << varname << "\" was not found").str();
+		case gscript::VariableAccessorCode::ParameterNotFound:
+			return (std::stringstream() << "Parameter \"" << varname << "\" was not found").str();
+		case gscript::VariableAccessorCode::FieldNotFound:
+			return (std::stringstream() << "Field \"" << varname << "\" was not found").str();
+		case gscript::VariableAccessorCode::InvalidParamContext:
+			return (std::stringstream() << "Parameter accessor is only valid in functions and methods").str();
+		case gscript::VariableAccessorCode::InvalidFieldContext:
+			return (std::stringstream() << "Field accessor is only valid in classes").str();
+		default:
+		case gscript::VariableAccessorCode::UnknownError:
+			return "Unknown accessor error has occurred";
+		}
+	}
+}
+
 namespace gscript
 {
+	// Exception
+
+	AccessorException::AccessorException(VariableAccessorCode code, const std::string& varname)
+		: CompileException(getAccessorExceptionMessage(code, varname))
+		, code(code)
+		, varname(varname)
+	{
+	}
+
 	// Variable accessor
 
 	VariableAccessor::VariableAccessor(ScriptScopeBase* scope, size_t addr)
@@ -33,7 +67,7 @@ namespace gscript
 		auto addr = scope.findVariableAddr(name, searchParents);
 
 		if (!addr)
-			throw CompileException("Variable \"" + name + "\" not found");
+			return std::make_unique<InvalidAccessorImpl<VariableAccessor>>(VariableAccessorCode::VariableNotFound, name);
 
 		return std::make_unique<VariableAccessor>(addr.scope, addr.addr);
 	}
@@ -89,12 +123,12 @@ namespace gscript
 		ScriptFunction* fnc = scope.getClosestFunction(true);
 
 		if (!fnc)
-			throw CompileException("Variable \"" + name + "\" not found");
+			return std::make_unique<InvalidAccessorImpl<ParameterAccessor>>(VariableAccessorCode::ParameterNotFound, name);
 
 		auto addr = fnc->findParamAddr(name);
 
 		if (!addr)
-			throw CompileException("Variable \"" + name + "\" not found");
+			return std::make_unique<InvalidAccessorImpl<ParameterAccessor>>(VariableAccessorCode::ParameterNotFound, name);
 
 		return std::make_unique<ParameterAccessor>(addr.scope, addr.addr);
 	}
@@ -129,22 +163,6 @@ namespace gscript
 	
 	// Field accessor
 
-	//FieldAccessor::~FieldAccessor() = default;
-
-	//FieldAccessor::FieldAccessor() = default;
-
-	//FieldAccessor::FieldAccessor(ScriptScopeBase* scope, size_t addr)
-	//	: scope(scope)
-	//	, addr(addr)
-	//{
-	//}
-
-	//FieldAccessor::FieldAccessor(const FieldAccessor& b)
-	//	: scope(b.scope)
-	//	, addr(b.addr)
-	//{
-	//}
-
 	std::unique_ptr<VariableAccessor> FieldAccessor::clone() const
 	{
 		return std::make_unique<FieldAccessor>(*this);
@@ -152,30 +170,17 @@ namespace gscript
 
 	std::unique_ptr<FieldAccessor> FieldAccessor::find(ScriptScopeBase& scope, const std::string& name, bool searchParents)
 	{
-		assert(dynamic_cast<ScriptClass*>(&scope) && "Fields may only be accessed in classes");
-		ScriptClass& cls = static_cast<ScriptClass&>(scope);
+		auto cls = dynamic_cast<ScriptClass*>(&scope);
+		if (!cls)
+			return std::make_unique<InvalidAccessorImpl<FieldAccessor>>(VariableAccessorCode::InvalidFieldContext, name);
 
-		auto addr = cls.findFieldAddr(name);
+		auto addr = cls->findFieldAddr(name);
 
 		if (!addr)
-			throw CompileException("Class field \"" + name + "\" not found");
+			return std::make_unique<InvalidAccessorImpl<FieldAccessor>>(VariableAccessorCode::FieldNotFound, name);
 
 		return std::make_unique<FieldAccessor>(addr.scope, addr.addr);
 	}
-
-	/*ScriptFieldDeclaration* FieldAccessor::get(ScriptScopeBase* scope)
-	{
-		assert(this->scope && "Scope must not be null");
-		assert(dynamic_cast<ScriptClass*>(scope) && "Fields may only be accessed in classes");
-
-		auto usedScope = &RemapScope::map(*this->scope);
-
-		ScriptClass* cls = static_cast<ScriptClass*>(usedScope);
-
-		if (this->addr > cls->getFields().size())
-			return nullptr;
-		return cls->getFields().at(this->addr).get();
-	}*/
 
 	ScriptVariable* FieldAccessor::get(ScriptScopeBase* scope)
 	{

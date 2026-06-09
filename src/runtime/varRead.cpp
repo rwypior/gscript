@@ -4,6 +4,23 @@
 
 #include "gscript/compileException.hpp"
 
+namespace
+{
+	bool accessorReturnedWarning(std::unique_ptr<gscript::VariableAccessor>& accessor)
+	{
+		auto invalid = dynamic_cast<gscript::InvalidAccessor*>(accessor.get());
+		if (!invalid)
+			return false;
+		switch (invalid->getCode())
+		{
+		case gscript::VariableAccessorCode::InvalidFieldContext:
+		case gscript::VariableAccessorCode::InvalidParamContext:
+			return true;
+		}
+		return false;
+	}
+}
+
 namespace gscript
 {
 	ScriptVarRead::ScriptVarRead(const ScriptVarRead& b)
@@ -24,6 +41,9 @@ namespace gscript
 	ScriptVarRead::ScriptVarRead(ScriptScopeBase& scope, const std::string& name)
 		: accessor(VariableAccessor::find(scope, name))
 	{
+		assert(!accessorReturnedWarning(this->accessor) && "Accessor returned warning, meaning invalid context was probably used");
+		if (!*accessor)
+			throw VariableNotFoundException(name);
 	}
 
 	std::unique_ptr<ScriptCallable> ScriptVarRead::clone()
@@ -78,42 +98,21 @@ namespace gscript
 
 	std::unique_ptr<ScriptCallable> ScriptVarReadPrototype::build(ScriptScopeBase& scope)
 	{
+		std::unique_ptr<VariableAccessor> accessor = VariableAccessor::find(scope, this->varname);
+		if (!*accessor)
+			accessor = ParameterAccessor::find(scope, this->varname);
+		if (!*accessor)
+			accessor = FieldAccessor::find(scope, this->varname);
+
+		assert(!accessorReturnedWarning(accessor) && "Accessor returned warning, meaning invalid context was probably used");
+
+		if (!*accessor)
+			throw VariableNotFoundException(this->varname);
+
 		std::unique_ptr<ScriptVarRead> result;
-
-		// TODO - change this to something better
-		try
-		{
-			if (this->isReference)
-				result = std::make_unique<ScriptVarReferenceRead>(VariableAccessor::find(scope, this->varname));
-			else
-				result = std::make_unique<ScriptVarRead>(VariableAccessor::find(scope, this->varname));
-		}
-		catch (...)
-		{
-			try
-			{
-				if (this->isReference)
-					result = std::make_unique<ScriptVarReferenceRead>(ParameterAccessor::find(scope, this->varname));
-				else
-					result = std::make_unique<ScriptVarRead>(ParameterAccessor::find(scope, this->varname));
-			}
-			catch (...)
-			{
-				try
-				{
-					if (this->isReference)
-						result = std::make_unique<ScriptVarReferenceRead>(FieldAccessor::find(scope, this->varname));
-					else
-						result = std::make_unique<ScriptVarRead>(FieldAccessor::find(scope, this->varname));
-				}
-				catch (...)
-				{
-					throw;
-				}
-			}
-		}
-
-		return result;
+		if (this->isReference)
+			return std::make_unique<ScriptVarReferenceRead>(std::move(accessor));
+		return std::make_unique<ScriptVarRead>(std::move(accessor));
 	}
 
 	const std::string& ScriptVarReadPrototype::getName() const

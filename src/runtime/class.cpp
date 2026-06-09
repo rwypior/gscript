@@ -46,7 +46,6 @@ namespace gscript
 
 		for (auto& field : this->fieldDeclarations)
 		{
-			//field->instantiate(*inst);
 			field->run(*inst);
 		}
 

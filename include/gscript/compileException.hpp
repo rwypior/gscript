@@ -3,6 +3,7 @@
 
 #include <exception>
 #include <string>
+#include <sstream>
 
 namespace gscript
 {
@@ -22,6 +23,15 @@ namespace gscript
 
 	protected:
 		std::string msg;
+	};
+
+	class VariableNotFoundException : public CompileException
+	{
+	public:
+		VariableNotFoundException(const std::string& varname)
+			: CompileException((std::stringstream() << "Variable \"" << varname << "\" was not found").str())
+		{
+		}
 	};
 }
 

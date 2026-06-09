@@ -17,7 +17,6 @@ namespace gscript
 	class ScriptVarRead : public ScriptCallable, public ScriptScopedCall
 	{
 	public:
-		//ScriptVarRead(ScriptScope& scope);
 		SCRIPT_API ScriptVarRead(const ScriptVarRead& b);
 		SCRIPT_API explicit ScriptVarRead(std::unique_ptr<VariableAccessor>&& accessor);
 		SCRIPT_API ScriptVarRead(ScriptScopeBase& scope, ScriptVariable *variable);
